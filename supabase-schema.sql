@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS public.products (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug TEXT NOT NULL UNIQUE,
   name TEXT NOT NULL,
-  category TEXT NOT NULL CHECK (category IN ('MODA', 'COSMETICA', 'ACCESORIOS')),
+  category TEXT NOT NULL CHECK (category IN ('MODA', 'COSMETICA', 'ACCESORIOS', 'VASELINAS', 'JABONES', 'NIÑOS', 'POMADAS')),
   description TEXT NOT NULL DEFAULT '',
   price INTEGER NOT NULL DEFAULT 0,
   images TEXT[] NOT NULL DEFAULT '{}',

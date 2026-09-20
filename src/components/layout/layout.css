@@ -103,24 +103,41 @@
 .logo-text-brand {
   display: flex;
   flex-direction: column;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
-.logo-text-brand .brand-name {
+.brand-name-uppercase {
   font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #23191E;
-  letter-spacing: -0.01em;
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #E05A88;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(224, 90, 136, 0.15);
 }
 
-.logo-text-brand .brand-sub {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.62rem;
-  font-weight: 600;
+.brand-sub-syndy {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #B52B5B;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+}
+
+.brand-title-uppercase {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
   color: #E05A88;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-syndy-tagline {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #8C2347;
+  letter-spacing: 0.05em;
 }
 
 .hidden {

@@ -7,11 +7,13 @@ export interface Profile {
   last_seen: string;
 }
 
+export type CategoryType = 'MODA' | 'COSMETICA' | 'ACCESORIOS' | 'VASELINAS' | 'JABONES' | 'NIÑOS' | 'POMADAS';
+
 export interface Product {
   id: string;
   slug: string;
   name: string;
-  category: 'MODA' | 'COSMETICA' | 'ACCESORIOS';
+  category: CategoryType;
   description: string;
   price: number;
   images: string[];
@@ -27,7 +29,7 @@ export interface TrafficSession {
   device_type: string;
 }
 
-export type ProductCategory = 'TODOS' | 'MODA' | 'COSMETICA' | 'ACCESORIOS';
+export type ProductCategory = 'TODOS' | CategoryType;
 
 export interface AuthContextType {
   user: any | null;

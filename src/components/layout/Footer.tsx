@@ -15,8 +15,8 @@ export const Footer: React.FC = () => {
           <div className="footer-brand-row">
             <img src="/icons/ebna-logo.png" alt="EBNA Logo" className="footer-logo-circle" />
             <div>
-              <h2 className="brand-title">EBNA</h2>
-              <p className="brand-tagline">Moda & Cosmética — El lujo que mereces.</p>
+              <h2 className="brand-title-uppercase">EBNA</h2>
+              <p className="brand-syndy-tagline">SYNDY LUXURY — Moda & Cosmética de Lujo</p>
             </div>
           </div>
           

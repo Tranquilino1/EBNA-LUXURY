@@ -58,7 +58,7 @@ export function ProductFormModal({ product, onClose }: ProductFormModalProps) {
       const productPayload = {
         name: formData.name,
         slug: generatedSlug,
-        category: formData.category as 'MODA' | 'COSMETICA' | 'ACCESORIOS',
+        category: formData.category as any,
         description: formData.description,
         price: priceNum,
         in_stock: formData.in_stock,
@@ -104,9 +104,13 @@ export function ProductFormModal({ product, onClose }: ProductFormModalProps) {
             value={formData.category}
             onChange={handleChange}
           >
-            <option value="MODA">MODA</option>
-            <option value="COSMETICA">COSMÉTICA</option>
-            <option value="ACCESORIOS">ACCESORIOS</option>
+            <option value="VASELINAS">VASELINAS</option>
+            <option value="COSMETICA">COSMÉTICA & CREMAS</option>
+            <option value="JABONES">JABONES</option>
+            <option value="NIÑOS">NIÑOS & BEBÉS</option>
+            <option value="POMADAS">POMADAS & TRATAMIENTOS</option>
+            <option value="MODA">MODA (ZARA / NIKE / ADIDAS)</option>
+            <option value="ACCESORIOS">ACCESORIOS & BOLSOS</option>
           </select>
         </div>
 

@@ -51,8 +51,8 @@ export const Navbar: React.FC = () => {
         <Link to="/" className="navbar-logo">
           <img src="/icons/ebna-logo.png" alt="EBNA" className="logo-img" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
           <div className="logo-text-brand">
-            <span className="brand-name">EBNA</span>
-            <span className="brand-sub">Moda & Cosmética</span>
+            <span className="brand-name-uppercase">EBNA</span>
+            <span className="brand-sub-syndy">SYNDY LUXURY</span>
           </div>
         </Link>
 
