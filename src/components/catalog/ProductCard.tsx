@@ -28,10 +28,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
     >
       <div className="product-image-container">
         <img 
-          src={product.images?.[0] || '/icons/ebna-logo.png'} 
+          src={product.images?.[0] || 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80'} 
           alt={product.name} 
           className="product-image"
           loading="lazy"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80';
+          }}
         />
         <span className="product-category-badge">{product.category}</span>
         {product.in_stock ? (

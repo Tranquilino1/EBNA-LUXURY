@@ -3,7 +3,7 @@ import { supabase, isSupabaseConfigured } from '../config/supabase';
 import { demoGetProducts } from '../lib/demoData';
 import type { Product, ProductCategory } from '../types';
 
-const OFFLINE_CACHE_KEY = 'ebna_offline_products_cache';
+const OFFLINE_CACHE_KEY = 'ebna_products_v4_cache';
 
 export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: string) {
   const [products, setProducts] = useState<Product[]>([]);

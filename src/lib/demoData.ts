@@ -462,7 +462,7 @@ export let DEMO_PRODUCTS: Product[] = [
 // Local Storage Helper for Demo Mode
 export const getStoredProducts = (): Product[] => {
   try {
-    const stored = localStorage.getItem('ebna_products_storage');
+    const stored = localStorage.getItem('ebna_products_v4_storage');
     if (stored) {
       return JSON.parse(stored);
     }
@@ -474,8 +474,8 @@ export const getStoredProducts = (): Product[] => {
 
 export const saveStoredProducts = (products: Product[]) => {
   try {
-    localStorage.setItem('ebna_products_storage', JSON.stringify(products));
-    localStorage.setItem('ebna_offline_products_cache', JSON.stringify(products));
+    localStorage.setItem('ebna_products_v4_storage', JSON.stringify(products));
+    localStorage.setItem('ebna_products_v4_cache', JSON.stringify(products));
   } catch (e) {
     console.error('Error saving stored products', e);
   }
