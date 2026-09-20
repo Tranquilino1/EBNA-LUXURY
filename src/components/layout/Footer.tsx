@@ -1,0 +1,62 @@
+import React from 'react';
+import { Link } from 'react-router';
+import { Phone, MessageCircle, Sparkles, Share2, Heart } from 'lucide-react';
+import './layout.css';
+
+export const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="footer glass-panel">
+      <div className="footer-content">
+        <div className="footer-brand">
+          <div className="footer-brand-row">
+            <img src="/icons/ebna-logo.png" alt="EBNA Logo" className="footer-logo-circle" />
+            <div>
+              <h2 className="brand-title">EBNA</h2>
+              <p className="brand-tagline">Moda & Cosmética — El lujo que mereces.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-contact">
+          <h3>Contacto</h3>
+          <div className="contact-links">
+            <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="contact-link">
+              <MessageCircle size={18} className="text-ebna" /> +240 222 633 687
+            </a>
+            <a href="https://wa.me/240222439904" target="_blank" rel="noopener noreferrer" className="contact-link">
+              <MessageCircle size={18} className="text-ebna" /> +240 222 439 904
+            </a>
+            <a href="tel:+240222633687" className="contact-link">
+              <Phone size={18} /> Llamar
+            </a>
+          </div>
+        </div>
+
+        <div className="footer-links">
+          <h3>Enlaces Rápidos</h3>
+          <nav className="quick-links">
+            <Link to="/">Inicio</Link>
+            <Link to="/catalogo">Catálogo</Link>
+            <Link to="/login">Iniciar Sesión</Link>
+          </nav>
+        </div>
+
+        <div className="footer-social">
+          <h3>Síguenos</h3>
+          <div className="social-icons">
+            <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="WhatsApp"><MessageCircle size={22} /></a>
+            <a href="#" className="social-link" aria-label="Lujo"><Sparkles size={22} /></a>
+            <a href="#" className="social-link" aria-label="Favoritos"><Heart size={22} /></a>
+            <a href="#" className="social-link" aria-label="Compartir"><Share2 size={22} /></a>
+          </div>
+        </div>
+      </div>
+      
+      <div className="footer-bottom">
+        <p>&copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+  );
+};
