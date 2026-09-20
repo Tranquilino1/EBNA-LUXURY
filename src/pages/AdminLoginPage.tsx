@@ -100,9 +100,7 @@ export function AdminLoginPage() {
           </Link>
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.75rem', color: 'var(--color-text-tertiary)' }}>
-          <p>Demo: admin@ebna.com / admin123</p>
-        </div>
+
       </div>
     </div>
   );
