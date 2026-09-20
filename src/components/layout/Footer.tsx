@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { Phone, MessageCircle, Sparkles, Share2, Heart } from 'lucide-react';
+import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, Monitor, Apple } from 'lucide-react';
+import { QRModal } from '../ui/QRModal';
 import './layout.css';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
 
   return (
     <footer className="footer glass-panel">
@@ -16,6 +18,17 @@ export const Footer: React.FC = () => {
               <h2 className="brand-title">EBNA</h2>
               <p className="brand-tagline">Moda & Cosmética — El lujo que mereces.</p>
             </div>
+          </div>
+          
+          <div className="footer-app-badges" onClick={() => setIsQRModalOpen(true)} style={{ cursor: 'pointer', marginTop: '1rem' }}>
+            <div className="platform-badges">
+              <div className="platform-badge"><Smartphone size={14} /> Android</div>
+              <div className="platform-badge"><Apple size={14} /> iOS</div>
+              <div className="platform-badge"><Monitor size={14} /> PC</div>
+            </div>
+            <p style={{ fontSize: '0.78rem', color: '#E05A88', marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+              <QrCode size={16} /> Escanea para la App en tu móvil
+            </p>
           </div>
         </div>
 
@@ -40,6 +53,12 @@ export const Footer: React.FC = () => {
             <Link to="/">Inicio</Link>
             <Link to="/catalogo">Catálogo</Link>
             <Link to="/login">Iniciar Sesión</Link>
+            <button 
+              onClick={() => setIsQRModalOpen(true)} 
+              style={{ background: 'none', border: 'none', color: '#E05A88', cursor: 'pointer', padding: 0, font: 'inherit', textAlign: 'left', fontWeight: 600 }}
+            >
+              📱 Código QR App
+            </button>
           </nav>
         </div>
 
@@ -55,8 +74,10 @@ export const Footer: React.FC = () => {
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados.</p>
+        <p>&copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados. | Aplicación PWA compatible con Android, iOS y PC.</p>
       </div>
+
+      <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
     </footer>
   );
 };

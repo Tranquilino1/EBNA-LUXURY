@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Menu, X, User, LogOut, Settings, Circle } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, Circle, QrCode } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTraffic } from '../../contexts/TrafficContext';
+import { QRModal } from '../ui/QRModal';
 import './layout.css';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   
   const { user, profile, isAdmin, signOut } = useAuth();
   const { onlineCount } = useTraffic();
@@ -65,6 +67,15 @@ export const Navbar: React.FC = () => {
 
         {/* Right side: Traffic and Auth */}
         <div className="navbar-actions">
+          <button 
+            className="qr-trigger-btn"
+            onClick={() => setIsQRModalOpen(true)}
+            title="Ver Código QR de la App"
+          >
+            <QrCode size={18} />
+            <span className="desktop-only">App QR</span>
+          </button>
+
           <div className="traffic-counter">
             <Circle className="pulse-dot" size={10} fill="#10B981" color="#10B981" />
             <span>{onlineCount} en línea</span>
@@ -129,6 +140,8 @@ export const Navbar: React.FC = () => {
           )}
         </div>
       )}
+      {/* QR Modal */}
+      <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
     </header>
   );
 };

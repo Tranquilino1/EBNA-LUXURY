@@ -50,6 +50,28 @@
   border-radius: 50px;
 }
 
+.qr-trigger-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(224, 90, 136, 0.12);
+  border: 1px solid rgba(224, 90, 136, 0.3);
+  color: #E05A88;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qr-trigger-btn:hover {
+  background: #E05A88;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(224, 90, 136, 0.3);
+}
+
 .navbar-logo {
   display: flex;
   align-items: center;
