@@ -1150,3 +1150,68 @@ img {
   height: auto;
   display: block;
 }
+
+/* ==========================================================================
+   Ultra-Responsive Mobile Breakpoints & Layout Adjustments
+   ========================================================================== */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .hero-title {
+    font-size: 2.1rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem !important;
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .product-card {
+    padding: 10px !important;
+  }
+
+  .navbar {
+    padding: 8px 14px !important;
+  }
+
+  .brand-name {
+    font-size: 1.1rem !important;
+  }
+
+  .brand-sub {
+    font-size: 0.6rem !important;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .modal-content, .qr-modal-content {
+    padding: 1.25rem !important;
+    border-radius: 18px !important;
+  }
+
+  .platform-badges {
+    flex-wrap: wrap !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .catalog-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+

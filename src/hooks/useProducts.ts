@@ -3,6 +3,8 @@ import { supabase, isSupabaseConfigured } from '../config/supabase';
 import { demoGetProducts } from '../lib/demoData';
 import type { Product, ProductCategory } from '../types';
 
+const OFFLINE_CACHE_KEY = 'ebna_offline_products_cache';
+
 export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: string) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -12,45 +14,75 @@ export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: 
     setLoading(true);
     setError(null);
     try {
-      if (isSupabaseConfigured() && supabase) {
+      let fetchedList: Product[] = [];
+
+      if (isSupabaseConfigured() && supabase && navigator.onLine) {
         let query = supabase
           .from('products')
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (category && category !== 'TODOS') {
-          query = query.eq('category', category);
-        }
-
-        if (searchQuery) {
-          query = query.ilike('name', `%${searchQuery}%`);
-        }
-
         const { data, error: fetchError } = await query;
 
-        if (fetchError) throw fetchError;
-        setProducts(data as Product[]);
+        if (!fetchError && data && data.length > 0) {
+          fetchedList = data as Product[];
+          // Save to local offline cache
+          try {
+            localStorage.setItem(OFFLINE_CACHE_KEY, JSON.stringify(fetchedList));
+          } catch (e) {
+            console.warn('Could not save to localStorage:', e);
+          }
+        } else {
+          throw fetchError || new Error('No data from Supabase');
+        }
       } else {
-        // Fallback to demo data
-        let demoProducts = await demoGetProducts();
-        
-        if (category && category !== 'TODOS') {
-          demoProducts = demoProducts.filter(p => p.category === category);
-        }
-        
-        if (searchQuery) {
-          const lowerQuery = searchQuery.toLowerCase();
-          demoProducts = demoProducts.filter(p => p.name.toLowerCase().includes(lowerQuery));
-        }
-
-        // Sort by created_at desc (simulation)
-        demoProducts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-        
-        setProducts(demoProducts);
+        throw new Error('Offline or Supabase not available');
       }
+
+      // Filter locally by category and search
+      let filtered = fetchedList;
+      if (category && category !== 'TODOS') {
+        filtered = filtered.filter(p => p.category === category);
+      }
+      if (searchQuery) {
+        const lowerQuery = searchQuery.toLowerCase();
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(lowerQuery));
+      }
+      setProducts(filtered);
+
     } catch (err: any) {
-      console.error('Error fetching products:', err);
-      setError(err);
+      console.warn('Using local offline cache for products:', err);
+
+      // Try reading from offline cache first
+      let localCache: Product[] = [];
+      try {
+        const cached = localStorage.getItem(OFFLINE_CACHE_KEY);
+        if (cached) {
+          localCache = JSON.parse(cached);
+        }
+      } catch (e) {
+        console.warn('Error reading offline cache:', e);
+      }
+
+      // Fallback to pre-loaded catalog if cache is empty
+      if (localCache.length === 0) {
+        localCache = await demoGetProducts();
+        try {
+          localStorage.setItem(OFFLINE_CACHE_KEY, JSON.stringify(localCache));
+        } catch (e) {}
+      }
+
+      let filtered = localCache;
+      if (category && category !== 'TODOS') {
+        filtered = filtered.filter(p => p.category === category);
+      }
+      if (searchQuery) {
+        const lowerQuery = searchQuery.toLowerCase();
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(lowerQuery));
+      }
+
+      filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setProducts(filtered);
     } finally {
       setLoading(false);
     }
