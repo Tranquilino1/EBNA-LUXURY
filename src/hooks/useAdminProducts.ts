@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { demoGetProducts, demoAddProduct, demoUpdateProduct, demoDeleteProduct, getDeletedProductIds, markProductAsDeleted } from '../lib/demoData';
+import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
@@ -65,6 +66,10 @@ export function useAdminProducts() {
 
   useEffect(() => {
     fetchProducts();
+    const unsubscribe = subscribeToCatalogChanges(() => {
+      fetchProducts();
+    });
+    return () => unsubscribe();
   }, [fetchProducts]);
 
   const addProduct = async (productData: Partial<Product>, imageFile?: File) => {
@@ -92,21 +97,30 @@ export function useAdminProducts() {
         images: imagesObj 
       };
 
-      // 1. Add locally
+      // 1. Add locally (0ms instantaneous execution)
       const created = demoAddProduct(newProduct);
+      setProducts(prev => [created, ...prev.filter(p => p.id !== created.id)]);
 
-      // 2. Add to Supabase
-      await supabase.from('products').upsert({
-        slug: newSlug,
+      // 2. Add to Supabase non-blocking background
+      const supabasePayload: any = {
         name: created.name,
         category: created.category,
         description: created.description,
         price: created.price,
-        images: created.images,
+        images: [created.images.primary],
         in_stock: created.in_stock
-      }, { onConflict: 'slug' });
+      };
 
-      await fetchProducts();
+      if (created.id && created.id.length === 36) {
+        supabasePayload.id = created.id;
+      }
+      if (created.slug) {
+        supabasePayload.slug = created.slug;
+      }
+
+      supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' }).then(({ error }) => {
+        if (error) console.warn('Supabase sync notice:', error.message);
+      });
     } catch (err) {
       console.error('Error adding product:', err);
       throw err;
@@ -125,23 +139,32 @@ export function useAdminProducts() {
         };
       }
 
-      // 1. Update locally
+      // 1. Update locally (0ms instantaneous execution)
       const updated = demoUpdateProduct(id, updatedData);
 
       if (updated) {
-        // 2. Update in Supabase
-        await supabase.from('products').upsert({
-          slug: updated.slug,
+        setProducts(prev => prev.map(p => (p.id === id || p.slug === id) ? updated : p));
+
+        // 2. Update in Supabase non-blocking background
+        const supabasePayload: any = {
           name: updated.name,
           category: updated.category,
           description: updated.description,
           price: updated.price,
-          images: updated.images,
+          images: [updated.images.primary],
           in_stock: updated.in_stock
-        }, { onConflict: 'slug' });
-      }
+        };
+        if (updated.id && updated.id.length === 36) {
+          supabasePayload.id = updated.id;
+        }
+        if (updated.slug) {
+          supabasePayload.slug = updated.slug;
+        }
 
-      await fetchProducts();
+        supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' }).then(({ error }) => {
+          if (error) console.warn('Supabase sync notice:', error.message);
+        });
+      }
     } catch (err) {
       console.error('Error updating product:', err);
       throw err;

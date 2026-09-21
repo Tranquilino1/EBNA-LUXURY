@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { demoGetProducts, getDeletedProductIds } from '../lib/demoData';
+import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
 
@@ -89,6 +90,10 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
   useEffect(() => {
     fetchProducts();
+    const unsubscribe = subscribeToCatalogChanges(() => {
+      fetchProducts();
+    });
+    return () => unsubscribe();
   }, [fetchProducts]);
 
   return { products, loading, error, refetch: fetchProducts };

@@ -1,4 +1,6 @@
 import type { Product, Profile } from '../types';
+import { generateUUID } from './utils';
+import { notifyCatalogChange } from './broadcast';
 
 export interface UserAccount {
   id: string;
@@ -6315,8 +6317,10 @@ export function demoSaveProducts(products: Product[]): void {
 
 export function demoAddProduct(productData: Partial<Product>): Product {
   const list = demoGetProducts();
-  const id = 'ebna-' + Date.now();
-  const slug = (productData.name || 'producto').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + id;
+  const id = (productData.id && productData.id.includes('-') && productData.id.length === 36)
+    ? productData.id 
+    : generateUUID();
+  const slug = (productData.name || 'producto').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + id.slice(0, 8);
   
   const rawImages = productData.images as any;
   const primaryImg = (rawImages && typeof rawImages === 'object' && 'primary' in rawImages)
@@ -6353,12 +6357,13 @@ export function demoAddProduct(productData: Partial<Product>): Product {
 
   const updated = [newProduct, ...list];
   demoSaveProducts(updated);
+  notifyCatalogChange('add', newProduct);
   return newProduct;
 }
 
 export function demoUpdateProduct(id: string, updates: Partial<Product>): Product | null {
   const list = demoGetProducts();
-  const index = list.findIndex(p => p.id === id);
+  const index = list.findIndex(p => p.id === id || p.slug === id);
   if (index === -1) return null;
 
   const updatedProduct = {
@@ -6369,6 +6374,7 @@ export function demoUpdateProduct(id: string, updates: Partial<Product>): Produc
 
   list[index] = updatedProduct;
   demoSaveProducts(list);
+  notifyCatalogChange('update', updatedProduct);
   return updatedProduct;
 }
 
@@ -6384,6 +6390,7 @@ export function demoDeleteProduct(id: string): boolean {
 
   const filtered = list.filter(p => p.id !== id && p.slug !== id);
   demoSaveProducts(filtered);
+  notifyCatalogChange('delete', { id });
   return true;
 }
 
