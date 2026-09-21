@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MessageCircle, ChevronDown } from 'lucide-react';
 import type { Product } from '../../types';
 import { buildWhatsAppUrl } from '../../lib/whatsapp';
+import { recordProductOrder } from '../../lib/popularityTracker';
 import './catalog.css';
 
 interface WhatsAppButtonProps {
@@ -19,6 +20,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
 
   const handlePrimaryClick = () => {
     if (!showNumbers) {
+      recordProductOrder(product.id);
       window.open(buildWhatsAppUrl(product, 'primary'), '_blank');
     }
   };
@@ -49,6 +51,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
             href={buildWhatsAppUrl(product, 'primary')} 
             target="_blank" 
             rel="noopener noreferrer"
+            onClick={() => recordProductOrder(product.id)}
             className="wa-dropdown-item"
           >
             Línea Principal (+240 222 633 687)
@@ -57,6 +60,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
             href={buildWhatsAppUrl(product, 'secondary')} 
             target="_blank" 
             rel="noopener noreferrer"
+            onClick={() => recordProductOrder(product.id)}
             className="wa-dropdown-item"
           >
             Línea Muni Dinero (+240 555 439 904)

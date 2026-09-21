@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Flame } from 'lucide-react';
 import type { Product } from '../../types';
 import { formatPrice } from '../../lib/utils';
 import { useCart } from '../../contexts/CartContext';
 import { WhatsAppButton } from './WhatsAppButton';
+import { getProductOrdersCount } from '../../lib/popularityTracker';
 import './catalog.css';
 
 interface ProductCardProps {
@@ -16,6 +17,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const ordersCount = getProductOrdersCount(product);
 
   const handleCardClick = (e: React.MouseEvent) => {
     // Prevent navigation if clicking on WhatsApp button or Cart button
@@ -58,6 +60,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
         
         <div className="product-badge-group">
           <span className="product-category-badge">{product.category}</span>
+          {ordersCount >= 25 && (
+            <span style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)', color: 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '0.68rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '3px', boxShadow: '0 2px 8px rgba(239, 68, 68, 0.4)' }}>
+              <Flame size={10} /> {ordersCount}+ Pedidos
+            </span>
+          )}
           {product.in_stock ? (
             <span className="product-stock-badge in-stock">EN STOCK</span>
           ) : (

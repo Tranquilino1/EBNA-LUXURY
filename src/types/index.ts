@@ -19,6 +19,10 @@ export interface Product {
   images: string[];
   in_stock: boolean;
   is_hidden?: boolean;
+  is_featured?: boolean;
+  order_count?: number;
+  sales_count?: number;
+  views_count?: number;
   colors?: string[];
   sizes?: string[];
   created_at: string;

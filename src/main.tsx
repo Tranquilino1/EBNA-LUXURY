@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 // Auto-purge old browser caches & obsolete localstorage on version bump
-const APP_VERSION = 'v10_product_left_text_right';
+const APP_VERSION = 'v11_popularity_algorithm';
 try {
   if (typeof window !== 'undefined') {
     if (localStorage.getItem('ebna_app_version') !== APP_VERSION) {

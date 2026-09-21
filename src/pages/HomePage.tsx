@@ -1,26 +1,44 @@
-import { useState, useRef, useEffect, type MouseEvent } from 'react';
+import { useState, useRef, useEffect, useMemo, type MouseEvent } from 'react';
 import { Link } from 'react-router';
-import { ArrowRight, Sparkles, ShieldCheck, Truck, RefreshCw, Clock } from 'lucide-react';
+import { ArrowRight, Sparkles, ShieldCheck, Truck, RefreshCw, Clock, Flame } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/catalog/ProductCard';
 import { WhatsAppButton } from '../components/catalog/WhatsAppButton';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
+import { getSortedByPopularity } from '../lib/popularityTracker';
 
 export function HomePage() {
   const { products, loading, error } = useProducts();
+  const [orderTick, setOrderTick] = useState(0);
   
   // Dynamic 30-minute rotator index based on current time
   const [halfHourChunk, setHalfHourChunk] = useState(() => Math.floor(Date.now() / (30 * 60 * 1000)));
 
   useEffect(() => {
+    const handleOrderEvent = () => setOrderTick(t => t + 1);
+    window.addEventListener('ebna_product_ordered', handleOrderEvent);
+
     const timer = setInterval(() => {
       setHalfHourChunk(Math.floor(Date.now() / (30 * 60 * 1000)));
     }, 60000); // Check every minute
-    return () => clearInterval(timer);
+
+    return () => {
+      window.removeEventListener('ebna_product_ordered', handleOrderEvent);
+      clearInterval(timer);
+    };
   }, []);
 
-  const featuredProducts = products.slice(0, 8);
+  // Priority Algorithm: Sort products by sales & order count for featured collections
+  const sortedPopularProducts = useMemo(() => {
+    // Reference orderTick to ensure re-sorting on live order event
+    if (orderTick >= 0) {
+      return getSortedByPopularity(products);
+    }
+    return products;
+  }, [products, orderTick]);
+
+  const featuredProducts = sortedPopularProducts.slice(0, 8);
   const heroIndex = products.length > 0 ? (halfHourChunk % Math.min(15, products.length)) : 0;
   const tiltProduct = products[heroIndex] || products[0];
 
@@ -140,10 +158,17 @@ export function HomePage() {
       </section>
 
       <section className="featured-section">
-        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem' }}>Colección Destacada</h2>
-            <p style={{ fontSize: '0.9rem', color: '#6E5B65' }}>Las mejores marcas de perfumería, cosmética y moda</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem', margin: 0 }}>Colección Destacada</h2>
+              <span style={{ background: 'rgba(239, 68, 68, 0.12)', color: '#EF4444', padding: '3px 10px', borderRadius: '16px', fontSize: '0.72rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <Flame size={12} /> MÁS VENDIDOS & MÁS PEDIDOS
+              </span>
+            </div>
+            <p style={{ fontSize: '0.88rem', color: '#6E5B65', margin: '4px 0 0 0' }}>
+              Productos ordenados por prioridad de ventas y demanda en tiempo real.
+            </p>
           </div>
           <Link to="/catalogo" className="link-view-all" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#D81B60', fontWeight: 600, textDecoration: 'none' }}>
             Ver Catálogo <ArrowRight size={16} />
