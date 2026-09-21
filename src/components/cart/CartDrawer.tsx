@@ -27,11 +27,6 @@ export const CartDrawer: React.FC = () => {
     setTimeout(() => setCopiedMuni(false), 2500);
   };
 
-  const handleMuniUSSD = () => {
-    // Open native dialer on mobile with Muni transfer code: *423*2*1*555439904#
-    window.location.href = 'tel:*423*2*1*555439904%23';
-  };
-
   const handleCheckout = () => {
     if (cartItems.length === 0) return;
 
@@ -271,18 +266,20 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
                       </button>
                     </div>
 
-                    {/* 3D Navy Blue USSD Execution Button */}
-                    <button 
-                      type="button"
+                    {/* 3D Navy Blue USSD Execution Link */}
+                    <a 
+                      href="tel:*423*2*1*555439904%23"
                       className="btn-muni-navy-3d"
-                      onClick={handleMuniUSSD}
-                      style={{ marginTop: '0.8rem', marginBottom: '0.5rem' }}
+                      onClick={() => {
+                        try { navigator.clipboard.writeText('*423*2*1*555439904#'); } catch(e){}
+                      }}
+                      style={{ marginTop: '0.8rem', marginBottom: '0.5rem', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                       title="Ejecutar transferencia directa Muni en tu móvil"
                     >
                       <PhoneCall size={20} />
                       <span>Ejecutar USSD Muni</span>
                       <span className="ussd-code-badge">*423*2*1*555439904#</span>
-                    </button>
+                    </a>
                     
                     <p className="muni-instructions">
                       Haz clic en el botón Azul Marino para procesar el giro directo al <strong>555439904</strong> por la red Muni.
@@ -318,16 +315,18 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
             </div>
 
             {paymentMethod === 'muni' ? (
-              <button 
+              <a 
+                href="tel:*423*2*1*555439904%23"
                 className="btn-muni-navy-3d"
                 onClick={() => {
-                  handleMuniUSSD();
-                  setTimeout(() => handleCheckout(), 1200);
+                  try { navigator.clipboard.writeText('*423*2*1*555439904#'); } catch(e){}
+                  setTimeout(() => handleCheckout(), 1500);
                 }}
+                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <PhoneCall size={20} />
                 <span>Pagar con Muni Dinero (*423*2*1*555439904#)</span>
-              </button>
+              </a>
             ) : (
               <button 
                 className="wa-checkout-btn" 

@@ -59,7 +59,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
             rel="noopener noreferrer"
             className="wa-dropdown-item"
           >
-            Línea Secundaria (+240 222 439 904)
+            Línea Muni Dinero (+240 555 439 904)
           </a>
         </div>
       )}
