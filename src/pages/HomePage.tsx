@@ -107,7 +107,7 @@ export function HomePage() {
       {/* Feature Value Props Banner */}
       <section className="features-banner glass-panel" style={{ margin: '3rem 0', padding: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.5rem', borderRadius: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ background: 'rgba(224, 90, 136, 0.12)', padding: '12px', borderRadius: '12px', color: '#E05A88' }}>
+          <div style={{ background: 'rgba(224, 90, 136, 0.12)', padding: '12px', borderRadius: '12px', color: '#D81B60' }}>
             <ShieldCheck size={26} />
           </div>
           <div>
@@ -143,7 +143,7 @@ export function HomePage() {
             <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.8rem' }}>Colección Destacada</h2>
             <p style={{ fontSize: '0.9rem', color: '#6E5B65' }}>Las mejores marcas de perfumería, cosmética y moda</p>
           </div>
-          <Link to="/catalogo" className="link-view-all" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#E05A88', fontWeight: 600, textDecoration: 'none' }}>
+          <Link to="/catalogo" className="link-view-all" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#D81B60', fontWeight: 600, textDecoration: 'none' }}>
             Ver Catálogo <ArrowRight size={16} />
           </Link>
         </div>

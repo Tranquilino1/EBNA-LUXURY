@@ -26,7 +26,7 @@ export function ProductPage() {
   if (error) return <div className="error-message">{error.message || 'Error al cargar el producto'}</div>;
   if (!product) return <div className="not-found" style={{ padding: '4rem', textAlign: 'center' }}>Producto no encontrado</div>;
 
-  const secondaryPhone = '+240 222 439 904';
+  const secondaryPhone = '+240 555 439 904';
   const primaryWaUrl = buildWhatsAppUrl(product, 'primary', selectedSize, selectedColor);
   const secondaryWaUrl = buildWhatsAppUrl(product, 'secondary', selectedSize, selectedColor);
 
@@ -34,12 +34,12 @@ export function ProductPage() {
     <div className="product-page luxury-container" style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
       <SEO title={product.name} description={product.description} product={product} />
       <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: '#6E5B65', marginBottom: '1rem' }}>
-        <Link to="/" style={{ color: '#E05A88', textDecoration: 'none' }}>Inicio</Link> &gt; 
-        <Link to="/catalogo" style={{ color: '#E05A88', textDecoration: 'none' }}>Catálogo</Link> &gt; 
+        <Link to="/" style={{ color: '#D81B60', textDecoration: 'none' }}>Inicio</Link> &gt; 
+        <Link to="/catalogo" style={{ color: '#D81B60', textDecoration: 'none' }}>Catálogo</Link> &gt; 
         <span style={{ color: '#23191E', fontWeight: 600 }}>{product.name}</span>
       </nav>
 
-      <Link to="/catalogo" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#E05A88', fontWeight: 600, textDecoration: 'none', marginBottom: '2rem' }}>
+      <Link to="/catalogo" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#D81B60', fontWeight: 600, textDecoration: 'none', marginBottom: '2rem' }}>
         <ArrowLeft size={18} /> Volver al catálogo
       </Link>
 
@@ -67,7 +67,7 @@ export function ProductPage() {
         
         <div className="product-info-section glass-panel" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span className={`badge badge-${product.category.toLowerCase()}`} style={{ fontSize: '0.8rem', padding: '6px 14px', background: 'rgba(224,90,136,0.12)', color: '#E05A88', borderRadius: '20px', fontWeight: 700 }}>
+            <span className={`badge badge-${product.category.toLowerCase()}`} style={{ fontSize: '0.8rem', padding: '6px 14px', background: 'rgba(224,90,136,0.12)', color: '#D81B60', borderRadius: '20px', fontWeight: 700 }}>
               {product.category}
             </span>
             <span style={{ fontSize: '0.8rem', color: '#25D366', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -80,7 +80,7 @@ export function ProductPage() {
           </h1>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#E05A88', letterSpacing: '-0.02em' }}>
+            <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#D81B60', letterSpacing: '-0.02em' }}>
               {formatPrice(product.price)}
             </span>
           </div>
@@ -103,9 +103,9 @@ export function ProductPage() {
                   style={{
                     padding: '8px 16px',
                     borderRadius: '12px',
-                    border: selectedSize === size ? '2px solid #E05A88' : '1px solid rgba(0,0,0,0.15)',
+                    border: selectedSize === size ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
                     background: selectedSize === size ? 'rgba(224,90,136,0.12)' : 'white',
-                    color: selectedSize === size ? '#E05A88' : '#333',
+                    color: selectedSize === size ? '#D81B60' : '#333',
                     fontWeight: selectedSize === size ? 800 : 600,
                     fontSize: '0.88rem',
                     cursor: 'pointer',
@@ -132,9 +132,9 @@ export function ProductPage() {
                   style={{
                     padding: '8px 16px',
                     borderRadius: '12px',
-                    border: selectedColor === color ? '2px solid #E05A88' : '1px solid rgba(0,0,0,0.15)',
+                    border: selectedColor === color ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
                     background: selectedColor === color ? 'rgba(224,90,136,0.12)' : 'white',
-                    color: selectedColor === color ? '#E05A88' : '#333',
+                    color: selectedColor === color ? '#D81B60' : '#333',
                     fontWeight: selectedColor === color ? 800 : 600,
                     fontSize: '0.88rem',
                     cursor: 'pointer',
@@ -183,7 +183,7 @@ export function ProductPage() {
               <span>Entrega inmediata en Malabo y envíos a todo Guinea Ecuatorial</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', color: '#6E5B65' }}>
-              <ShieldCheck size={18} style={{ color: '#E05A88' }} />
+              <ShieldCheck size={18} style={{ color: '#D81B60' }} />
               <span>Atención directa por WhatsApp con confirmación de stock</span>
             </div>
           </div>
@@ -198,7 +198,7 @@ export function ProductPage() {
                 padding: '14px 24px',
                 borderRadius: '30px',
                 border: 'none',
-                background: product.in_stock ? 'linear-gradient(135deg, #E05A88 0%, #C43869 100%)' : '#A3999E',
+                background: product.in_stock ? 'linear-gradient(135deg, #D81B60 0%, #C43869 100%)' : '#A3999E',
                 color: 'white',
                 fontWeight: 800,
                 fontSize: '1rem',
@@ -232,7 +232,7 @@ export function ProductPage() {
               className="btn-secondary full-width"
               style={{ textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
             >
-              <Phone size={18} /> Contacto Alternativo ({secondaryPhone})
+              <Phone size={18} /> Muni Dinero / Contacto ({secondaryPhone})
             </a>
           </div>
         </div>
@@ -240,3 +240,4 @@ export function ProductPage() {
     </div>
   );
 }
+

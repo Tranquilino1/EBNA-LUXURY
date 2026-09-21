@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { Loader } from '../components/ui/Loader';
-import { Sparkles } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,8 @@ export function RegisterPage() {
     password: '',
     confirm_password: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
@@ -50,49 +52,206 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card glass-panel">
-        <div className="auth-header">
-          <Sparkles className="brand-icon" size={32} />
-          <h2>Crear Cuenta</h2>
-          <p>Únete a la familia EBNA</p>
+    <div style={{ minHeight: '100vh', backgroundColor: '#FFFFFF' }}>
+      <div className="wave-header" style={{
+        backgroundColor: '#D81B60',
+        padding: '40px 20px 60px',
+        borderBottomLeftRadius: '30px',
+        borderBottomRightRadius: '30px',
+        textAlign: 'center',
+        color: 'white',
+        marginBottom: '20px'
+      }}>
+        <div style={{
+          width: '70px',
+          height: '70px',
+          margin: '0 auto 16px',
+          borderRadius: '50%',
+          overflow: 'hidden',
+          backgroundColor: '#fff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <img src="/icons/ebna-logo.png" alt="EBNA Logo" className="wave-logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
+        <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>Crear Cuenta</h2>
+        <p style={{ margin: '8px 0 0', opacity: 0.9 }}>Únete a la familia EBNA</p>
+      </div>
 
-        {error && <div className="auth-error">{error}</div>}
+      <div style={{ padding: '0 20px', maxWidth: '400px', margin: '0 auto', paddingBottom: '40px' }}>
+        {error && <div style={{ color: '#ef4444', backgroundColor: '#fee2e2', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{error}</div>}
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <label>Nombre Completo</label>
-            <input type="text" name="full_name" className="glass-input" value={formData.full_name} onChange={handleChange} required />
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div>
+            <input 
+              type="text" 
+              name="full_name" 
+              placeholder="Nombre Completo"
+              value={formData.full_name} 
+              onChange={handleChange} 
+              required 
+              style={{
+                width: '100%',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '12px 14px',
+                fontSize: '16px',
+                color: '#1E293B',
+                boxSizing: 'border-box'
+              }}
+            />
           </div>
           
-          <div className="form-group">
-            <label>Teléfono (WhatsApp)</label>
-            <input type="tel" name="phone" className="glass-input" value={formData.phone} onChange={handleChange} required />
+          <div>
+            <input 
+              type="tel" 
+              name="phone" 
+              placeholder="Teléfono (WhatsApp)"
+              value={formData.phone} 
+              onChange={handleChange} 
+              required 
+              style={{
+                width: '100%',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '12px 14px',
+                fontSize: '16px',
+                color: '#1E293B',
+                boxSizing: 'border-box'
+              }}
+            />
           </div>
 
-          <div className="form-group">
-            <label>Correo Electrónico</label>
-            <input type="email" name="email" className="glass-input" value={formData.email} onChange={handleChange} required />
+          <div>
+            <input 
+              type="email" 
+              name="email" 
+              placeholder="Correo Electrónico"
+              value={formData.email} 
+              onChange={handleChange} 
+              required 
+              autoCapitalize="none"
+              autoCorrect="off"
+              style={{
+                width: '100%',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '12px 14px',
+                fontSize: '16px',
+                color: '#1E293B',
+                boxSizing: 'border-box'
+              }}
+            />
           </div>
           
-          <div className="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password" className="glass-input" value={formData.password} onChange={handleChange} required minLength={6} />
+          <div style={{ position: 'relative' }}>
+            <input 
+              type={showPassword ? "text" : "password"} 
+              name="password" 
+              placeholder="Contraseña"
+              value={formData.password} 
+              onChange={handleChange} 
+              required 
+              minLength={6} 
+              autoCapitalize="none"
+              autoCorrect="off"
+              style={{
+                width: '100%',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '12px 14px',
+                fontSize: '16px',
+                color: '#1E293B',
+                boxSizing: 'border-box',
+                paddingRight: '40px'
+              }}
+            />
+            <button 
+              type="button" 
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '12px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                color: '#64748B',
+                cursor: 'pointer',
+                padding: 0,
+                display: 'flex'
+              }}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
-          <div className="form-group">
-            <label>Confirmar Contraseña</label>
-            <input type="password" name="confirm_password" className="glass-input" value={formData.confirm_password} onChange={handleChange} required minLength={6} />
+          <div style={{ position: 'relative' }}>
+            <input 
+              type={showConfirmPassword ? "text" : "password"} 
+              name="confirm_password" 
+              placeholder="Confirmar Contraseña"
+              value={formData.confirm_password} 
+              onChange={handleChange} 
+              required 
+              minLength={6} 
+              autoCapitalize="none"
+              autoCorrect="off"
+              style={{
+                width: '100%',
+                border: '1px solid #E2E8F0',
+                borderRadius: '10px',
+                padding: '12px 14px',
+                fontSize: '16px',
+                color: '#1E293B',
+                boxSizing: 'border-box',
+                paddingRight: '40px'
+              }}
+            />
+            <button 
+              type="button" 
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={{
+                position: 'absolute',
+                right: '12px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                color: '#64748B',
+                cursor: 'pointer',
+                padding: 0,
+                display: 'flex'
+              }}
+            >
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
-          <button type="submit" className="btn-primary full-width" disabled={loading}>
+          <button type="submit" disabled={loading} style={{
+            background: '#D81B60',
+            color: 'white',
+            borderRadius: '14px',
+            width: '100%',
+            padding: '14px',
+            fontWeight: 700,
+            border: 'none',
+            fontSize: '16px',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '8px'
+          }}>
             {loading ? <Loader size="small" /> : 'Crear Cuenta'}
           </button>
         </form>
 
-        <div className="auth-footer">
-          <p>¿Ya tienes una cuenta? <Link to="/login">Iniciar Sesión</Link></p>
+        <div style={{ textAlign: 'center', marginTop: '32px' }}>
+          <Link to="/login" style={{ color: '#1E293B', textDecoration: 'none', fontSize: '15px' }}>
+            ¿Ya tienes una cuenta? <span style={{ color: '#D81B60', fontWeight: 600 }}>Iniciar Sesión</span>
+          </Link>
         </div>
       </div>
     </div>

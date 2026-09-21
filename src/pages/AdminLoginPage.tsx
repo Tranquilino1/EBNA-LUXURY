@@ -55,7 +55,7 @@ export function AdminLoginPage() {
     <div className="auth-page" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem' }}>
       <div className="auth-card glass-panel" style={{ maxWidth: '440px', width: '100%', background: 'white', padding: '2.5rem', borderRadius: '24px', border: '1px solid var(--color-glass-border)', boxShadow: '0 8px 30px rgba(0,0,0,0.05)' }}>
         <div className="auth-header" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(224, 90, 136, 0.12)', color: 'var(--color-primary-dark)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.8rem' }}>
+          <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(216, 27, 96, 0.12)', color: 'var(--color-primary-dark)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.8rem' }}>
             <Shield size={32} />
           </div>
           <h2 style={{ fontSize: '1.6rem', fontFamily: 'var(--font-serif)', color: 'var(--color-primary-dark)', margin: 0 }}>
@@ -144,7 +144,7 @@ export function AdminLoginPage() {
           <button 
             type="submit" 
             className="btn-primary" 
-            style={{ width: '100%', padding: '0.85rem', borderRadius: '999px', border: 'none', background: 'linear-gradient(135deg, #E05A88, #C4436F)', color: 'white', fontWeight: 700, fontSize: '0.95rem', cursor: loading ? 'wait' : 'pointer', boxShadow: '0 4px 15px rgba(224, 90, 136, 0.3)', marginTop: '0.5rem' }} 
+            style={{ width: '100%', padding: '0.85rem', borderRadius: '999px', border: 'none', background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', fontWeight: 700, fontSize: '0.95rem', cursor: loading ? 'wait' : 'pointer', boxShadow: '0 4px 15px rgba(216, 27, 96, 0.3)', marginTop: '0.5rem' }} 
             disabled={loading}
           >
             {loading ? (

@@ -75,14 +75,14 @@ export const Navbar: React.FC = () => {
             title="Ver Carrito de Compras"
             style={{
               position: 'relative',
-              background: 'rgba(224, 90, 136, 0.12)',
-              border: '1px solid rgba(224, 90, 136, 0.25)',
+              background: 'rgba(216, 27, 96, 0.12)',
+              border: '1px solid rgba(216, 27, 96, 0.25)',
               borderRadius: '20px',
               padding: '8px 14px',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              color: '#E05A88',
+              color: '#D81B60',
               cursor: 'pointer',
               fontWeight: 700,
               fontSize: '0.85rem',
@@ -93,7 +93,7 @@ export const Navbar: React.FC = () => {
             {totalItemsCount > 0 && (
               <span
                 style={{
-                  background: '#E05A88',
+                  background: '#D81B60',
                   color: 'white',
                   borderRadius: '50%',
                   width: '20px',
@@ -104,7 +104,7 @@ export const Navbar: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginLeft: '2px',
-                  boxShadow: '0 2px 6px rgba(224,90,136,0.4)',
+                  boxShadow: '0 2px 6px rgba(216, 27, 96, 0.4)',
                 }}
               >
                 {totalItemsCount}

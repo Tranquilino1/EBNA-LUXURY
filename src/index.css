@@ -37,17 +37,17 @@ body {
    ========================================================================== */
 :root {
   /* Colors */
-  --canvas-base: #FBF8F9;
+  --canvas-base: #FFFFFF;
   --canvas-dark: #2A1F2D;
   
-  --brand-accent: #E05A88;
-  --brand-glow: #FF85A1;
-  --brand-dark: #C44370;
-  --brand-light: #F7D6E0;
+  --brand-accent: #D81B60;
+  --brand-glow: #E91E80;
+  --brand-dark: #C2185B;
+  --brand-light: #FCE4EC;
   
-  --text-primary: #23191E;
-  --text-secondary: #6E5B65;
-  --text-tertiary: #A28D98;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
   --text-inverse: #FFFFFF;
   
   --danger: #FF4A4A;
@@ -56,7 +56,7 @@ body {
   --success-glow: #4ADE80;
   --warning: #F59E0B;
   
-  --badge-moda: #FF85A1;
+  --badge-moda: #E91E80;
   --badge-cosmetica: #D8B4E2;
   --badge-accesorios: #FFD166;
 
@@ -71,10 +71,10 @@ body {
   --border-gradient: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%);
   
   /* Shadows (Pink Tint) */
-  --shadow-sm: 0 4px 12px rgba(224, 90, 136, 0.05);
-  --shadow-md: 0 8px 24px rgba(224, 90, 136, 0.08), 0 2px 4px rgba(224, 90, 136, 0.02);
-  --shadow-lg: 0 16px 40px rgba(224, 90, 136, 0.12), 0 4px 8px rgba(224, 90, 136, 0.04);
-  --shadow-glow: 0 0 24px rgba(224, 90, 136, 0.25);
+  --shadow-sm: 0 4px 12px rgba(216, 27, 96, 0.05);
+  --shadow-md: 0 8px 24px rgba(216, 27, 96, 0.08), 0 2px 4px rgba(216, 27, 96, 0.02);
+  --shadow-lg: 0 16px 40px rgba(216, 27, 96, 0.12), 0 4px 8px rgba(216, 27, 96, 0.04);
+  --shadow-glow: 0 0 24px rgba(216, 27, 96, 0.25);
   
   /* Bevel */
   --bevel-inset: inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -1px 1px rgba(0, 0, 0, 0.02);
@@ -95,7 +95,7 @@ body {
   /* Border Radius */
   --radius-xs: 6px;
   --radius-sm: 12px;
-  --radius-md: 20px;
+  --radius-md: 14px;
   --radius-lg: 28px;
   --radius-full: 9999px;
   
@@ -185,7 +185,7 @@ p {
 .luxury-canvas {
   background-color: var(--canvas-base);
   background-image: 
-    radial-gradient(circle at 80% 10%, rgba(224, 90, 136, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(216, 27, 96, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 20% 50%, rgba(255, 133, 161, 0.05) 0%, transparent 40%),
     radial-gradient(circle at 50% 90%, rgba(247, 214, 224, 0.1) 0%, transparent 50%);
   background-attachment: fixed;
@@ -200,7 +200,7 @@ p {
   left: 60%;
   width: 40vw;
   height: 40vw;
-  background: radial-gradient(circle, rgba(224, 90, 136, 0.06) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(216, 27, 96, 0.06) 0%, transparent 60%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
@@ -285,6 +285,57 @@ p {
   border-radius: var(--radius-lg);
 }
 
+/* Wave Header — Organic Curved Top */
+.wave-header {
+  background: linear-gradient(135deg, #D81B60, #C2185B);
+  border-radius: 0 0 32px 32px;
+  color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+}
+.wave-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 200px;
+  height: 200px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.wave-header::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -10%;
+  width: 150px;
+  height: 150px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.wave-header h2 {
+  color: #FFFFFF;
+  font-size: 1.6rem;
+  margin-bottom: 0.3rem;
+}
+.wave-header p {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.88rem;
+}
+.wave-header .wave-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.3);
+  object-fit: cover;
+  margin-bottom: 0.8rem;
+  background: white;
+}
+
 .glass-input, .glass-select, .glass-textarea {
   width: 100%;
   background: rgba(255, 255, 255, 0.7);
@@ -302,7 +353,7 @@ p {
 .glass-input:focus, .glass-select:focus, .glass-textarea:focus {
   background: rgba(255, 255, 255, 0.9);
   border-color: var(--brand-accent);
-  box-shadow: 0 0 0 3px rgba(224, 90, 136, 0.15), inset 0 2px 4px rgba(0,0,0,0.02);
+  box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.15), inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .glass-input::placeholder, .glass-textarea::placeholder {
@@ -354,11 +405,11 @@ p {
   line-height: 1.5;
   background: linear-gradient(135deg, var(--brand-glow), var(--brand-accent));
   color: var(--text-inverse);
-  box-shadow: 0 4px 12px rgba(224, 90, 136, 0.3), inset 0 1px 1px rgba(255,255,255,0.4);
+  box-shadow: 0 4px 12px rgba(216, 27, 96, 0.3), inset 0 1px 1px rgba(255,255,255,0.4);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 6px 16px rgba(224, 90, 136, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
+  box-shadow: 0 6px 16px rgba(216, 27, 96, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
   transform: translateY(-1px);
 }
 .btn-primary:active {
@@ -497,7 +548,7 @@ p {
 
 .badge-moda {
   background-color: rgba(255, 133, 161, 0.15);
-  color: #C44370;
+  color: #C2185B;
   border: 1px solid rgba(255, 133, 161, 0.3);
 }
 
@@ -814,7 +865,7 @@ p {
   background: var(--brand-accent);
   color: var(--text-inverse);
   border-color: var(--brand-accent);
-  box-shadow: 0 4px 12px rgba(224, 90, 136, 0.25);
+  box-shadow: 0 4px 12px rgba(216, 27, 96, 0.25);
 }
 
 /* Search */

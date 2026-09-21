@@ -26,7 +26,7 @@ export const Footer: React.FC = () => {
               <div className="platform-badge"><Apple size={14} /> iOS</div>
               <div className="platform-badge"><Monitor size={14} /> PC</div>
             </div>
-            <p style={{ fontSize: '0.78rem', color: '#E05A88', marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
+            <p style={{ fontSize: '0.78rem', color: '#D81B60', marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
               <QrCode size={16} /> Escanea para la App en tu móvil
             </p>
           </div>
@@ -53,7 +53,7 @@ export const Footer: React.FC = () => {
             <Link to="/admin/login" style={{ color: '#D97706', fontWeight: 700 }}>👑 Panel Admin</Link>
             <button 
               onClick={() => setIsQRModalOpen(true)} 
-              style={{ background: 'none', border: 'none', color: '#E05A88', cursor: 'pointer', padding: 0, font: 'inherit', textAlign: 'left', fontWeight: 600 }}
+              style={{ background: 'none', border: 'none', color: '#D81B60', cursor: 'pointer', padding: 0, font: 'inherit', textAlign: 'left', fontWeight: 600 }}
             >
               📱 Código QR App
             </button>
@@ -87,9 +87,9 @@ export const Footer: React.FC = () => {
             </a>
             <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.2rem' }}>
               <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Canal WhatsApp"><MessageCircle size={22} color="#25D366" /></a>
-              <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Lujo"><Sparkles size={22} color="#E05A88" /></a>
-              <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Favoritos"><Heart size={22} color="#E05A88" /></a>
-              <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Compartir"><Share2 size={22} color="#E05A88" /></a>
+              <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Lujo"><Sparkles size={22} color="#D81B60" /></a>
+              <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Favoritos"><Heart size={22} color="#D81B60" /></a>
+              <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Compartir"><Share2 size={22} color="#D81B60" /></a>
             </div>
           </div>
         </div>

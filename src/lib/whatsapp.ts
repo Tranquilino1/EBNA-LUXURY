@@ -2,7 +2,7 @@ import type { Product } from '../types';
 import { formatPrice } from './utils';
 
 const PRIMARY_PHONE = '240222633687';
-const SECONDARY_PHONE = '240222439904';
+const SECONDARY_PHONE = '240555439904'; // Muni Dinero (+240 555 439 904)
 
 export const buildWhatsAppUrl = (
   product: Product, 

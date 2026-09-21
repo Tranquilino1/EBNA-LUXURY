@@ -76,7 +76,7 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
         <div className="cart-drawer-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div className="cart-icon-wrapper">
-              <ShoppingBag size={20} color="#E05A88" />
+              <ShoppingBag size={20} color="#D81B60" />
             </div>
             <div>
               <h3 className="cart-title">Tu Carrito de Compras</h3>
@@ -292,7 +292,7 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
 
             <div className="cart-value-props">
               <div><Truck size={14} color="#25D366" /> <span>{shippingType === 'express' ? '⚡ Entrega en 3 Días' : '📦 Entrega 5-7 días'}</span></div>
-              <div><ShieldCheck size={14} color="#E05A88" /> <span>Garantía EBNA Luxury</span></div>
+              <div><ShieldCheck size={14} color="#D81B60" /> <span>Garantía EBNA Luxury</span></div>
             </div>
 
             <button 

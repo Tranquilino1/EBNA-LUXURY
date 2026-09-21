@@ -13,16 +13,16 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
   return (
     <div className="qr-modal-overlay" onClick={onClose}>
       <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()}>
-        <button className="qr-modal-close" onClick={onClose} aria-label="Cerrar">
-          <X size={20} />
+        <button className="qr-modal-close" onClick={onClose} aria-label="Cerrar y salir del escaneo">
+          <X size={24} />
         </button>
 
         <div className="qr-modal-header">
           <div className="qr-icon-badge">
-            <QrCode size={28} color="#E05A88" />
+            <QrCode size={28} color="#D81B60" />
           </div>
-          <h2>Acceso Móvil & QR</h2>
-          <p className="qr-subtitle">Escanea para acceder desde cualquier dispositivo</p>
+          <h2>Acceso Móvil & Código QR</h2>
+          <p className="qr-subtitle">Escanea para abrir en cualquier dispositivo • Toca [X] para salir</p>
         </div>
 
         <div className="qr-image-container">
@@ -75,3 +75,4 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
     </div>
   );
 };
+

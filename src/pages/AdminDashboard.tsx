@@ -92,7 +92,7 @@ export function AdminDashboard() {
             <h1 style={{ fontSize: '1.8rem', fontFamily: 'var(--font-serif)', color: 'var(--color-primary-dark)', margin: 0 }}>
               Panel EBNA Luxury Admin
             </h1>
-            <span style={{ background: 'rgba(224, 90, 136, 0.15)', color: 'var(--color-primary-dark)', padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+            <span style={{ background: 'rgba(216, 27, 96, 0.15)', color: 'var(--color-primary-dark)', padding: '0.2rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
               <ShieldCheck size={14} />
               {profile?.role || 'ADMIN'}
             </span>
@@ -125,7 +125,7 @@ export function AdminDashboard() {
               padding: '0.75rem 1.4rem',
               borderRadius: '14px',
               border: 'none',
-              background: activeTab === tab.id ? 'linear-gradient(135deg, #E05A88, #C4436F)' : 'transparent',
+              background: activeTab === tab.id ? 'linear-gradient(135deg, #D81B60, #C2185B)' : 'transparent',
               color: activeTab === tab.id ? 'white' : 'var(--color-text-muted)',
               fontWeight: 600,
               fontSize: '0.9rem',
@@ -201,7 +201,7 @@ export function AdminDashboard() {
                   <Trash2 size={18} /> Borrar Todo Permanentemente
                 </button>
               )}
-              <button onClick={handleCreate} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.4rem', borderRadius: '999px', border: 'none', background: 'linear-gradient(135deg, #E05A88, #C4436F)', color: 'white', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(224, 90, 136, 0.3)' }}>
+              <button onClick={handleCreate} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.4rem', borderRadius: '999px', border: 'none', background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(216, 27, 96, 0.3)' }}>
                 <Plus size={20} /> Añadir Producto
               </button>
             </div>
@@ -236,7 +236,7 @@ export function AdminDashboard() {
                       </td>
                       <td style={{ padding: '0.8rem 1rem', fontWeight: 600 }}>{product.name}</td>
                       <td style={{ padding: '0.8rem 1rem' }}>
-                        <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(224, 90, 136, 0.1)', color: 'var(--color-primary-dark)' }}>
+                        <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(216, 27, 96, 0.1)', color: 'var(--color-primary-dark)' }}>
                           {product.category}
                         </span>
                       </td>
@@ -257,8 +257,8 @@ export function AdminDashboard() {
                             border: 'none',
                             fontSize: '0.75rem',
                             fontWeight: 700,
-                            background: product.is_hidden ? '#f3f4f6' : 'rgba(224, 90, 136, 0.15)',
-                            color: product.is_hidden ? '#6b7280' : '#E05A88',
+                            background: product.is_hidden ? '#f3f4f6' : 'rgba(216, 27, 96, 0.15)',
+                            color: product.is_hidden ? '#6b7280' : '#D81B60',
                             cursor: 'pointer'
                           }}
                         >
@@ -343,3 +343,4 @@ export function AdminDashboard() {
     </div>
   );
 }
+

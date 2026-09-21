@@ -21,36 +21,38 @@
   overflow-y: auto;
   margin: auto;
   background: linear-gradient(135deg, rgba(255, 240, 245, 0.98), rgba(255, 225, 235, 0.95));
-  border: 1.5px solid rgba(224, 90, 136, 0.4);
-  box-shadow: 0 20px 50px rgba(224, 90, 136, 0.3), 0 0 40px rgba(255, 182, 193, 0.4);
+  border: 1.5px solid rgba(216, 27, 96, 0.4);
+  box-shadow: 0 20px 50px rgba(216, 27, 96, 0.3), 0 0 40px rgba(255, 182, 193, 0.4);
   border-radius: 28px;
   padding: 2.2rem 1.6rem 1.8rem 1.6rem;
   text-align: center;
-  color: #2D1820;
+  color: #1E293B;
 }
 
 .qr-modal-close {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  background: #E05A88;
-  border: none;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #D81B60, #C2185B);
+  border: 2px solid #FFFFFF;
   color: #FFFFFF;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(224, 90, 136, 0.35);
-  transition: all 0.2s ease;
-  z-index: 20;
+  box-shadow: 0 4px 16px rgba(216, 27, 96, 0.5);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .qr-modal-close:hover, .qr-modal-close:active {
-  background: #C4436F;
-  transform: scale(1.08) rotate(90deg);
+  background: #A31545;
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 6px 20px rgba(216, 27, 96, 0.6);
 }
 
 .qr-icon-badge {
@@ -58,25 +60,25 @@
   height: 56px;
   margin: 0 auto 0.75rem auto;
   background: rgba(254, 237, 242, 0.9);
-  border: 2px solid rgba(224, 90, 136, 0.3);
+  border: 2px solid rgba(216, 27, 96, 0.3);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(224, 90, 136, 0.15);
+  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.15);
 }
 
 .qr-modal-header h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1F1116;
+  color: #1E293B;
   margin-bottom: 0.3rem;
 }
 
 .qr-subtitle {
   font-size: 0.85rem;
-  color: #7A4E5E;
+  color: #64748B;
 }
 
 .qr-image-container {
@@ -87,8 +89,8 @@
   padding: 10px;
   background: #FFFFFF;
   border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(224, 90, 136, 0.2);
-  border: 2px solid #F8B4C9;
+  box-shadow: 0 10px 25px rgba(216, 27, 96, 0.2);
+  border: 2px solid #F48FB1;
 }
 
 .qr-code-img {
@@ -109,9 +111,9 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  background: rgba(224, 90, 136, 0.12);
-  border: 1px solid rgba(224, 90, 136, 0.25);
-  color: #B52B5B;
+  background: rgba(216, 27, 96, 0.12);
+  border: 1px solid rgba(216, 27, 96, 0.25);
+  color: #AD1457;
   padding: 0.4rem 0.75rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -121,13 +123,13 @@
 .app-status-badge {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #A31D4B;
+  color: #880E4F;
   margin-bottom: 0.2rem;
 }
 
 .url-text {
   font-size: 0.78rem;
-  color: #7A4E5E;
+  color: #64748B;
   margin-bottom: 1.4rem;
   font-family: monospace;
 }
@@ -152,25 +154,25 @@
 }
 
 .btn-qr-download {
-  background: linear-gradient(135deg, #E05A88, #C93B6B);
+  background: linear-gradient(135deg, #D81B60, #C2185B);
   color: #FFFFFF;
-  box-shadow: 0 4px 15px rgba(224, 90, 136, 0.3);
+  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
 }
 
 .btn-qr-download:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(224, 90, 136, 0.4);
+  box-shadow: 0 6px 20px rgba(216, 27, 96, 0.4);
 }
 
 .btn-qr-open {
   background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(224, 90, 136, 0.3);
-  color: #8C2347;
+  border: 1px solid rgba(216, 27, 96, 0.3);
+  color: #880E4F;
 }
 
 .btn-qr-open:hover {
   background: #FFFFFF;
-  color: #E05A88;
+  color: #D81B60;
 }
 
 @keyframes fadeIn {
