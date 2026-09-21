@@ -64,10 +64,33 @@ export function useAdminProducts() {
 
   useEffect(() => {
     fetchProducts();
+
+    // 1. Local BroadcastChannel for same-device multi-tab sync
     const unsubscribe = subscribeToCatalogChanges(() => {
       fetchProducts();
     });
-    return () => unsubscribe();
+
+    // 2. Supabase Realtime WebSockets for Instant Cross-Device Sync (Mobile <-> PC)
+    const channel = supabase
+      .channel('admin-products-realtime-sync')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'products' },
+        () => {
+          fetchProducts();
+        }
+      )
+      .subscribe();
+
+    // 3. Window focus listener to re-verify state when user switches back to PC browser
+    const handleFocus = () => fetchProducts();
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      unsubscribe();
+      supabase.removeChannel(channel);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [fetchProducts]);
 
   const addProduct = async (productData: Partial<Product>, imageFile?: File) => {
