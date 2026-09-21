@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { QrCode, Smartphone, Monitor, Apple, Download, X, ExternalLink } from 'lucide-react';
 import './qrModal.css';
 
@@ -10,7 +11,7 @@ interface QRModalProps {
 export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className="qr-modal-overlay" onClick={onClose}>
       <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()}>
         <button className="qr-modal-close" onClick={onClose} aria-label="Cerrar y salir del escaneo">
@@ -72,7 +73,7 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
           </a>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
-
