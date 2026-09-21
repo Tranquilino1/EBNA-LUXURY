@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { Loader } from '../components/ui/Loader';
 import { Eye, EyeOff } from 'lucide-react';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -33,6 +34,10 @@ export function LoginPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#FFFFFF' }}>
+      <SEOHead 
+        title="Iniciar Sesión — EBNA Luxury"
+        description="Accede a tu cuenta en EBNA Moda y Cosmética de Lujo en Guinea Ecuatorial."
+      />
       <div className="wave-header" style={{
         backgroundColor: '#D81B60',
         padding: '40px 20px 60px',

@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router';
 import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
-import { SEO } from '../components/seo/SEO';
+import { SEOHead } from '../components/seo/SEOHead';
 import { buildWhatsAppUrl } from '../lib/whatsapp';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
@@ -32,7 +32,13 @@ export function ProductPage() {
 
   return (
     <div className="product-page luxury-container" style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
-      <SEO title={product.name} description={product.description} product={product} />
+      <SEOHead 
+        title={`${product.name} — EBNA Luxury`} 
+        description={product.description} 
+        product={product} 
+        ogImage={product.images?.[0]} 
+        type="product"
+      />
       <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: '#6E5B65', marginBottom: '1rem' }}>
         <Link to="/" style={{ color: '#D81B60', textDecoration: 'none' }}>Inicio</Link> &gt; 
         <Link to="/catalogo" style={{ color: '#D81B60', textDecoration: 'none' }}>Catálogo</Link> &gt; 

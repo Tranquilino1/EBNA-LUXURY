@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { Shield, Loader2, Lock } from 'lucide-react';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -43,21 +44,24 @@ export function AdminLoginPage() {
 
       const { error: signInError } = await signIn(email, password);
       if (signInError) {
-        setError(signInError.message || 'Credenciales de administrador incorrectas');
-        setLoading(false);
-        return;
+        setError(signInError.message || 'Credenciales de administración no válidas');
+      } else {
+        navigate('/admin/dashboard');
       }
-
-      navigate('/admin/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Error de autenticación');
+      setError(err.message || 'Error al autenticar');
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-page" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem' }}>
-      <div className="auth-card glass-panel" style={{ maxWidth: '440px', width: '100%', background: 'white', padding: '2.5rem', borderRadius: '24px', border: '1px solid var(--color-glass-border)', boxShadow: '0 8px 30px rgba(0,0,0,0.05)' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#F8F9FA', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+      <SEOHead 
+        title="Acceso Panel de Administración — EBNA Luxury"
+        description="Portal de administración de EBNA Moda y Cosmética."
+      />
+      <div className="glass-panel" style={{ width: '100%', maxWidth: '420px', padding: '40px 30px', borderRadius: '24px', background: 'white', boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}>
         <div className="auth-header" style={{ textAlign: 'center', marginBottom: '1.8rem' }}>
           <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(216, 27, 96, 0.12)', color: '#D81B60', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.8rem', border: '2px solid rgba(216, 27, 96, 0.25)' }}>
             <Shield size={30} />

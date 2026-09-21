@@ -7,6 +7,7 @@ import { WhatsAppButton } from '../components/catalog/WhatsAppButton';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
 import { getSortedByPopularity } from '../lib/popularityTracker';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export function HomePage() {
   const { products, loading, error } = useProducts();
@@ -77,6 +78,10 @@ export function HomePage() {
 
   return (
     <div className="home-page">
+      <SEOHead 
+        title="EBNA Moda y Cosmética — Tienda de Lujo en Guinea Ecuatorial"
+        description="Descubre la boutique de lujo EBNA en Malabo y Bata, Guinea Ecuatorial. Alta perfumería, cosmética de tratamiento y moda de marcas internacionales Zara."
+      />
       <section className="hero-section">
         {/* Left Side: 30-Min Rotating Product Showcase Card */}
         {tiltProduct && (

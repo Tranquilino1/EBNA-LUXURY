@@ -6,6 +6,7 @@ import { ProductGrid } from '../components/catalog/ProductGrid';
 import { Loader } from '../components/ui/Loader';
 import type { ProductCategory } from '../types';
 import { getSortedByPopularity } from '../lib/popularityTracker';
+import { SEOHead } from '../components/seo/SEOHead';
 
 export function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState<ProductCategory>('TODOS');
@@ -25,6 +26,10 @@ export function CatalogPage() {
 
   return (
     <div className="catalog-page">
+      <SEOHead 
+        title="Catálogo de Productos y Cosmética — EBNA Luxury"
+        description="Explora nuestro catálogo completo de ropa, fragancias de lujo, vaselinas, serums y cosméticos con envíos directos a Malabo y Bata."
+      />
       <header className="catalog-header">
         <h1>Nuestro Catálogo</h1>
         <p>Explora nuestra exclusiva colección de moda, cosmética y accesorios diseñados para ti.</p>

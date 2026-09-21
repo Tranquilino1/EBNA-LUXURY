@@ -85,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           <span className="product-price-value">{formatPrice(product.price)}</span>
         </div>
         
-        <div className="product-actions" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px' }}>
+        <div className="product-actions" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px', alignItems: 'center' }}>
           <WhatsAppButton product={product} fullWidth size="sm" />
           <button
             type="button"
@@ -95,21 +95,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               addToCart(product, 1);
             }}
             title="Agregar al Carrito"
-            style={{
-              padding: '8px 12px',
-              borderRadius: '12px',
-              border: 'none',
-              background: 'linear-gradient(135deg, #E02868 0%, #D81B60 50%, #B8114E 100%)',
-              color: 'white',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 14px rgba(216, 27, 96, 0.35)',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-            }}
           >
-            <ShoppingBag size={16} />
+            <ShoppingBag size={18} />
           </button>
         </div>
       </div>
