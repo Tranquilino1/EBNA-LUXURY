@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      selfDestroying: false,
+      selfDestroying: true,
       includeAssets: ['icons/favicon.png', 'icons/ebna-logo.png', 'icons/apple-touch-icon.png'],
       manifest: {
         name: 'EBNA Luxury App',

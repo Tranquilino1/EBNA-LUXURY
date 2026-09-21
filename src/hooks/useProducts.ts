@@ -1,24 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoGetProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
 
 export function useProducts(category?: FilterCategoryType, searchQuery?: string) {
-  // Start with instant local items for 0ms initial render speed
-  const [products, setProducts] = useState<Product[]>(() => {
-    let list = demoGetProducts();
-    if (category && category !== 'TODOS') {
-      list = list.filter((p: Product) => p.category === category);
-    }
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      list = list.filter((p: Product) => p.name.toLowerCase().includes(q) || (p.sku && p.sku.toLowerCase().includes(q)));
-    }
-    return list;
-  });
-
-  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchProducts = useCallback(async () => {
