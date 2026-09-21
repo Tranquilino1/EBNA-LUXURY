@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoGetProducts, demoAddProduct, demoUpdateProduct, demoDeleteProduct } from '../lib/demoData';
+import { demoGetProducts, demoAddProduct, demoUpdateProduct, demoDeleteProduct, getDeletedProductIds, markProductAsDeleted } from '../lib/demoData';
 import { supabase } from '../config/supabase';
 import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
@@ -47,6 +47,11 @@ export function useAdminProducts() {
         data.forEach((p: Product) => map.set(p.slug, p));
         mappedRemote.forEach((p: Product) => map.set(p.slug, p));
         data = Array.from(map.values());
+      }
+
+      const deleted = getDeletedProductIds();
+      if (deleted.length > 0) {
+        data = data.filter((p: Product) => !deleted.includes(p.id) && !deleted.includes(p.slug));
       }
 
       data.sort((a: Product, b: Product) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -145,19 +150,29 @@ export function useAdminProducts() {
 
   const deleteProduct = async (id: string) => {
     try {
-      const prod = products.find(p => p.id === id);
-      // 1. Delete locally
-      demoDeleteProduct(id);
+      const prod = products.find(p => p.id === id || p.slug === id);
+      const targetSlug = prod?.slug;
 
-      // 2. Delete from Supabase
-      if (prod) {
-        await supabase.from('products').delete().eq('slug', prod.slug);
+      // 1. Delete locally and add to persistent deletion blacklist
+      demoDeleteProduct(id);
+      if (targetSlug) markProductAsDeleted(targetSlug);
+      if (id) markProductAsDeleted(id);
+
+      // 2. Optimistic local state update
+      setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug));
+
+      // 3. Delete from Supabase (by slug and by id)
+      if (targetSlug) {
+        await supabase.from('products').delete().eq('slug', targetSlug);
+      }
+      if (id) {
+        await supabase.from('products').delete().eq('id', id);
       }
 
       await fetchProducts();
     } catch (err) {
       console.error('Error deleting product:', err);
-      throw err;
+      setProducts(prev => prev.filter(p => p.id !== id));
     }
   };
 

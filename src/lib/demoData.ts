@@ -6255,20 +6255,54 @@ INITIAL_PRODUCTS.forEach(p => {
 
 const LOCAL_PRODUCTS_KEY = 'ebna_local_products_v4';
 const LOCAL_USERS_KEY = 'ebna_local_users_v4';
+const LOCAL_DELETED_KEY = 'ebna_deleted_ids_v4';
+
+export function getDeletedProductIds(): string[] {
+  try {
+    const saved = localStorage.getItem(LOCAL_DELETED_KEY);
+    return saved ? JSON.parse(saved) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function markProductAsDeleted(idOrSlug: string): void {
+  try {
+    const deleted = getDeletedProductIds();
+    if (!deleted.includes(idOrSlug)) {
+      deleted.push(idOrSlug);
+      localStorage.setItem(LOCAL_DELETED_KEY, JSON.stringify(deleted));
+    }
+  } catch (e) {
+    console.warn('Error saving deleted product id:', e);
+  }
+}
 
 export function demoGetProducts(): Product[] {
+  let list: Product[] = [];
   try {
     const saved = localStorage.getItem(LOCAL_PRODUCTS_KEY);
-    if (saved) {
+    if (saved !== null) {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+      if (Array.isArray(parsed)) {
+        list = parsed;
+      } else {
+        list = INITIAL_PRODUCTS;
       }
+    } else {
+      list = INITIAL_PRODUCTS;
     }
   } catch (e) {
     console.warn('Error loading products from local cache:', e);
+    list = INITIAL_PRODUCTS;
   }
-  return INITIAL_PRODUCTS;
+
+  const deleted = getDeletedProductIds();
+  if (deleted.length > 0) {
+    list = list.filter(p => !deleted.includes(p.id) && !deleted.includes(p.slug));
+  }
+
+  return list;
 }
 
 export function demoSaveProducts(products: Product[]): void {
@@ -6340,7 +6374,15 @@ export function demoUpdateProduct(id: string, updates: Partial<Product>): Produc
 
 export function demoDeleteProduct(id: string): boolean {
   const list = demoGetProducts();
-  const filtered = list.filter(p => p.id !== id);
+  const target = list.find(p => p.id === id || p.slug === id);
+  if (target) {
+    markProductAsDeleted(target.id);
+    if (target.slug) markProductAsDeleted(target.slug);
+  } else {
+    markProductAsDeleted(id);
+  }
+
+  const filtered = list.filter(p => p.id !== id && p.slug !== id);
   demoSaveProducts(filtered);
   return true;
 }
