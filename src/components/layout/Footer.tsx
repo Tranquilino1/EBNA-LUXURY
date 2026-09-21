@@ -36,13 +36,10 @@ export const Footer: React.FC = () => {
           <h3>Contacto</h3>
           <div className="contact-links">
             <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="contact-link">
-              <MessageCircle size={18} className="text-ebna" /> +240 222 633 687
+              <MessageCircle size={18} className="text-ebna" /> +240 222 633 687 (WhatsApp)
             </a>
-            <a href="https://wa.me/240222439904" target="_blank" rel="noopener noreferrer" className="contact-link">
-              <MessageCircle size={18} className="text-ebna" /> +240 222 439 904
-            </a>
-            <a href="tel:+240222633687" className="contact-link">
-              <Phone size={18} /> Llamar
+            <a href="https://wa.me/240555439904" target="_blank" rel="noopener noreferrer" className="contact-link" style={{ color: '#D97706', fontWeight: 600 }}>
+              <Phone size={18} color="#D97706" /> +240 555 439 904 (Muni Dinero)
             </a>
           </div>
         </div>

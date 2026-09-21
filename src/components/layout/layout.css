@@ -385,9 +385,45 @@
 
 @media (max-width: 768px) {
   .desktop-only {
-    display: none;
+    display: none !important;
   }
   .mobile-menu-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .navbar-wrapper {
+    width: 96%;
+    top: 10px;
+  }
+  .navbar {
+    padding: 8px 14px;
+    gap: 8px;
+  }
+  .navbar-logo {
+    gap: 6px;
+  }
+  .logo-img {
+    height: 38px;
+    width: 38px;
+  }
+  .brand-name-uppercase {
+    font-size: 1.15rem;
+  }
+  .brand-sub-syndy {
+    font-size: 0.58rem;
+  }
+  .navbar-actions {
+    gap: 8px;
+  }
+  .traffic-counter {
+    display: none; /* Hide traffic counter on small mobile to save space */
+  }
+  .cart-trigger-nav-btn {
+    padding: 6px 10px !important;
+  }
+  .qr-trigger-btn {
+    padding: 6px 10px !important;
   }
 }
+
