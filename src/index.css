@@ -41,9 +41,12 @@ body {
   --canvas-dark: #2A1F2D;
   
   --brand-accent: #D81B60;
-  --brand-glow: #E91E80;
-  --brand-dark: #C2185B;
+  --brand-glow: #E02868;
+  --brand-dark: #B8114E;
+  --brand-deep: #880E4F;
   --brand-light: #FCE4EC;
+  --brand-gradient: linear-gradient(135deg, #E02868 0%, #D81B60 40%, #B8114E 75%, #880E4F 100%);
+  --brand-gradient-shimmer: linear-gradient(135deg, #FF3B7B 0%, #E02868 35%, #C2185B 70%, #900C41 100%);
   
   --text-primary: #1E293B;
   --text-secondary: #64748B;
@@ -54,30 +57,31 @@ body {
   --danger-glow: #FF7575;
   --success: #25D366; /* WhatsApp Green */
   --success-glow: #4ADE80;
-  --warning: #F59E0B;
+  --warning: #64748B; /* Replaced orange with neutral slate gray */
   
   --badge-moda: #E91E80;
   --badge-cosmetica: #D8B4E2;
-  --badge-accesorios: #FFD166;
+  --badge-accesorios: #94A3B8;
 
-  /* Glassmorphism */
-  --glass-subtle: rgba(255, 255, 255, 0.48);
-  --glass-primary: rgba(255, 255, 255, 0.55);
-  --glass-prominent: rgba(255, 255, 255, 0.62);
-  --glass-filter: blur(18px) saturate(180%);
+  /* Futuristic Crystalline Glassmorphism */
+  --glass-subtle: rgba(255, 255, 255, 0.55);
+  --glass-primary: rgba(255, 255, 255, 0.68);
+  --glass-prominent: rgba(255, 255, 255, 0.78);
+  --glass-crystalline: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.48) 100%);
+  --glass-filter: blur(20px) saturate(190%);
   
-  --border-light: rgba(255, 255, 255, 0.85);
-  --border-soft: rgba(255, 255, 255, 0.35);
-  --border-gradient: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%);
+  --border-light: rgba(255, 255, 255, 0.9);
+  --border-soft: rgba(216, 27, 96, 0.16);
+  --border-gradient: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(216,27,96,0.2) 50%, rgba(255,255,255,0.4) 100%);
   
-  /* Shadows (Pink Tint) */
-  --shadow-sm: 0 4px 12px rgba(216, 27, 96, 0.05);
-  --shadow-md: 0 8px 24px rgba(216, 27, 96, 0.08), 0 2px 4px rgba(216, 27, 96, 0.02);
-  --shadow-lg: 0 16px 40px rgba(216, 27, 96, 0.12), 0 4px 8px rgba(216, 27, 96, 0.04);
-  --shadow-glow: 0 0 24px rgba(216, 27, 96, 0.25);
+  /* Floating Shadows (Crystalline Depth) */
+  --shadow-sm: 0 4px 14px rgba(216, 27, 96, 0.05);
+  --shadow-md: 0 10px 30px rgba(216, 27, 96, 0.09), 0 2px 6px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 20px 48px rgba(216, 27, 96, 0.15), 0 6px 16px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 28px rgba(216, 27, 96, 0.3);
   
-  /* Bevel */
-  --bevel-inset: inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -1px 1px rgba(0, 0, 0, 0.02);
+  /* Bevel & Mirror Refraction */
+  --bevel-inset: inset 0 1px 1.5px rgba(255, 255, 255, 0.95), inset 0 -1px 1px rgba(0, 0, 0, 0.03);
   
   /* Typography */
   --font-serif: 'Playfair Display', serif;

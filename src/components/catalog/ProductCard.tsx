@@ -92,14 +92,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               padding: '8px 12px',
               borderRadius: '12px',
               border: 'none',
-              background: 'linear-gradient(135deg, #E05A88, #C43869)',
+              background: 'linear-gradient(135deg, #E02868 0%, #D81B60 50%, #B8114E 100%)',
               color: 'white',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(224,90,136,0.3)',
-              transition: 'transform 0.2s ease',
+              boxShadow: '0 4px 14px rgba(216, 27, 96, 0.35)',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
             }}
           >
             <ShoppingBag size={16} />

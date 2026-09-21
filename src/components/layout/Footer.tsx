@@ -38,8 +38,8 @@ export const Footer: React.FC = () => {
             <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="contact-link">
               <MessageCircle size={18} className="text-ebna" /> +240 222 633 687 (WhatsApp)
             </a>
-            <a href="https://wa.me/240555439904" target="_blank" rel="noopener noreferrer" className="contact-link" style={{ color: '#D97706', fontWeight: 600 }}>
-              <Phone size={18} color="#D97706" /> +240 555 439 904 (Muni Dinero)
+            <a href="https://wa.me/240555439904" target="_blank" rel="noopener noreferrer" className="contact-link" style={{ color: '#64748B', fontWeight: 600 }}>
+              <Phone size={18} color="#64748B" /> +240 555 439 904 (Muni Dinero)
             </a>
           </div>
         </div>
@@ -50,7 +50,6 @@ export const Footer: React.FC = () => {
             <Link to="/">Inicio</Link>
             <Link to="/catalogo">Catálogo</Link>
             <Link to="/login">Iniciar Sesión</Link>
-            <Link to="/admin/login" style={{ color: '#D97706', fontWeight: 700 }}>👑 Panel Admin</Link>
             <button 
               onClick={() => setIsQRModalOpen(true)} 
               style={{ background: 'none', border: 'none', color: '#D81B60', cursor: 'pointer', padding: 0, font: 'inherit', textAlign: 'left', fontWeight: 600 }}
