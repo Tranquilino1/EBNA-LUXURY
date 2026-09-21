@@ -12,51 +12,45 @@ export function useAdminProducts() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      let data = demoGetProducts();
-
-      // Try fetching from Supabase
+      // Fetch exclusively from Supabase
       const { data: dbProducts, error } = await supabase
         .from('products')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error && dbProducts && dbProducts.length > 0) {
+      if (error) {
+        console.error('Supabase fetch error:', error);
+        setProducts([]);
+        return;
+      }
+
+      if (dbProducts) {
         const mappedRemote: Product[] = dbProducts.map((item: any) => {
-          const primaryImg = item.images?.primary || (Array.isArray(item.images) ? item.images[0] : '/icons/ebna-logo.png');
+          const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
           return {
-            id: item.id || 'eb-' + Date.now(),
-            sku: item.sku || 'EB-LUX-' + Math.floor(Math.random() * 900 + 100),
+            id: item.id,
+            sku: item.sku,
             name: item.name,
-            category: item.category || 'MODA_MUJER',
+            category: item.category,
             subcategory: item.subcategory || 'General',
-            priceFCFA: item.priceFCFA || item.price || 15000,
-            inStock: item.inStock !== undefined ? item.inStock : (item.in_stock !== undefined ? item.in_stock : true),
+            priceFCFA: item.price_fcfa || item.price,
+            price: item.price,
+            inStock: item.in_stock,
+            in_stock: item.in_stock,
             description: item.description || '',
             images: {
               primary: primaryImg,
-              gallery: [primaryImg]
+              gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg])
             },
             slug: item.slug,
-            price: item.priceFCFA || item.price || 15000,
-            in_stock: item.inStock !== undefined ? item.inStock : true,
-            created_at: item.created_at || new Date().toISOString(),
-            updated_at: item.updated_at || new Date().toISOString(),
+            created_at: item.created_at,
+            updated_at: item.updated_at,
           };
         });
-
-        const map = new Map<string, Product>();
-        mappedRemote.forEach((p: Product) => map.set(p.slug, p));
-        data.forEach((p: Product) => map.set(p.slug, p));
-        data = Array.from(map.values());
+        setProducts(mappedRemote);
+      } else {
+        setProducts([]);
       }
-
-      const deleted = getDeletedProductIds();
-      if (deleted.length > 0) {
-        data = data.filter((p: Product) => !deleted.includes(p.id) && !deleted.includes(p.slug));
-      }
-
-      data.sort((a: Product, b: Product) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      setProducts(data);
     } catch (err) {
       console.error('Error fetching admin products:', err);
     } finally {

@@ -23,81 +23,68 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
   const fetchProducts = useCallback(async () => {
     try {
-      // 1. Instant local render
-      let localList = demoGetProducts();
-
-      // 2. Fetch from Supabase in background
+      setLoading(true);
+      // Fetch exclusively from Supabase
       const { data: remoteProducts, error: dbError } = await supabase
         .from('products')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!dbError && remoteProducts && remoteProducts.length > 0) {
-        const map = new Map<string, Product>();
-        // 1. Add remote products
-        remoteProducts.forEach((item: any) => {
-          const primaryImg = item.images?.primary || (Array.isArray(item.images) ? item.images[0] : '/icons/ebna-logo.png');
-          const pKey = item.slug || item.id;
-          if (pKey) {
-            map.set(pKey, {
-              id: item.id || pKey,
-              sku: item.sku || 'EB-LUX-00',
-              slug: item.slug || pKey,
-              name: item.name,
-              brand: item.brand || 'EBNA Luxury Collection',
-              category: item.category || 'MODA_MUJER',
-              subcategory: item.subcategory || 'General',
-              priceFCFA: item.price_fcfa || item.priceFCFA || item.price || 15000,
-              price: item.price_fcfa || item.priceFCFA || item.price || 15000,
-              inStock: item.in_stock !== undefined ? item.in_stock : true,
-              in_stock: item.in_stock !== undefined ? item.in_stock : true,
-              is_hidden: item.is_hidden || false,
-              description: item.description || '',
-              images: { primary: primaryImg, gallery: [primaryImg] },
-              colors: item.colors || ['Blanco', 'Negro'],
-              sizes: item.sizes || ['S', 'M', 'L'],
-              created_at: item.created_at || new Date().toISOString(),
-              updated_at: item.updated_at || new Date().toISOString(),
-            });
-          }
-        });
-        // 2. Put local curated / edited products SECOND so local data takes 100% priority
-        localList.forEach((p: Product) => map.set(p.slug || p.id, p));
-        localList = Array.from(map.values());
+      if (dbError) {
+        throw dbError;
       }
 
-      // Filter out deleted items and hidden items for public view
-      const deletedIds = getDeletedProductIds();
-      localList = localList.filter((p: Product) => !p.is_hidden && !isProductDeleted(p, deletedIds));
+      let finalList: Product[] = [];
+
+      if (remoteProducts && remoteProducts.length > 0) {
+        finalList = remoteProducts.map((item: any) => {
+          const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
+          return {
+            id: item.id,
+            sku: item.sku,
+            slug: item.slug,
+            name: item.name,
+            brand: item.brand || 'EBNA Luxury Collection',
+            category: item.category || 'MODA_MUJER',
+            subcategory: item.subcategory || 'General',
+            priceFCFA: item.price_fcfa || item.price,
+            price: item.price,
+            inStock: item.in_stock !== undefined ? item.in_stock : true,
+            in_stock: item.in_stock !== undefined ? item.in_stock : true,
+            is_hidden: item.is_hidden || false,
+            description: item.description || '',
+            images: { primary: primaryImg, gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]) },
+            colors: item.colors || ['Blanco', 'Negro'],
+            sizes: item.sizes || ['S', 'M', 'L'],
+            created_at: item.created_at,
+            updated_at: item.updated_at,
+          };
+        });
+      }
+
+      // Filter out hidden items for public view
+      finalList = finalList.filter((p: Product) => !p.is_hidden);
 
       // Filter by category
       if (category && category !== 'TODOS') {
-        localList = localList.filter((p: Product) => p.category === category);
+        finalList = finalList.filter((p: Product) => p.category === category);
       }
 
       // Filter by search query
       if (searchQuery) {
         const lowerQuery = searchQuery.toLowerCase();
-        localList = localList.filter((p: Product) => 
+        finalList = finalList.filter((p: Product) => 
           p.name.toLowerCase().includes(lowerQuery) || 
           (p.sku && p.sku.toLowerCase().includes(lowerQuery)) ||
           p.description.toLowerCase().includes(lowerQuery)
         );
       }
 
-      setProducts(localList);
+      setProducts(finalList);
     } catch (err: any) {
-      console.warn('Fallback to local products cache:', err);
-      let localList = demoGetProducts();
-      localList = localList.filter((p: Product) => !p.is_hidden);
-      if (category && category !== 'TODOS') {
-        localList = localList.filter((p: Product) => p.category === category);
-      }
-      if (searchQuery) {
-        const lowerQuery = searchQuery.toLowerCase();
-        localList = localList.filter((p: Product) => p.name.toLowerCase().includes(lowerQuery));
-      }
-      setProducts(localList);
+      console.warn('Supabase fetch failed, showing empty state or fallback:', err);
+      // Removed the local demoData fallback to ensure strict Supabase usage as requested by user.
+      setProducts([]);
       setError(err);
     } finally {
       setLoading(false);
