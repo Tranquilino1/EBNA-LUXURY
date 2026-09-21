@@ -60,22 +60,7 @@ export function HomePage() {
   return (
     <div className="home-page">
       <section className="hero-section">
-        <div className="hero-content">
-          <span className="text-label-luxury"><Sparkles size={16} /> NUEVA COLECCIÓN EXCLUSIVA</span>
-          <h1 className="text-hero-display">
-            Elegancia & Estilo,<br/>
-            <i>Hecho para Ti</i>
-          </h1>
-          <p className="hero-lead">
-            Descubre la esencia del lujo con EBNA. Tu boutique exclusiva de alta perfumería, cosmética de tratamiento y moda de marcas internacionales.
-          </p>
-          <div className="hero-cta-group" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <Link to="/catalogo" className="btn-primary cta-button">
-              Explorar Catálogo <ArrowRight size={20} />
-            </Link>
-          </div>
-        </div>
-        
+        {/* Left Side: 30-Min Rotating Product Showcase Card */}
         {tiltProduct && (
           <div className="hero-visual">
             <div 
@@ -102,6 +87,23 @@ export function HomePage() {
             </div>
           </div>
         )}
+
+        {/* Right Side: Hero Text Content & CTA */}
+        <div className="hero-content">
+          <span className="text-label-luxury"><Sparkles size={16} /> NUEVA COLECCIÓN EXCLUSIVA</span>
+          <h1 className="text-hero-display">
+            Elegancia & Estilo,<br/>
+            <i>Hecho para Ti</i>
+          </h1>
+          <p className="hero-lead">
+            Descubre la esencia del lujo con EBNA. Tu boutique exclusiva de alta perfumería, cosmética de tratamiento y moda de marcas internacionales.
+          </p>
+          <div className="hero-cta-group" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <Link to="/catalogo" className="btn-primary cta-button">
+              Explorar Catálogo <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* Feature Value Props Banner */}
