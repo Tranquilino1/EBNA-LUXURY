@@ -33,20 +33,36 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
         .order('created_at', { ascending: false });
 
       if (!dbError && remoteProducts && remoteProducts.length > 0) {
-        // Merge remote products with local list by slug to prevent duplicates
         const map = new Map<string, Product>();
-        localList.forEach((p: Product) => map.set(p.slug || p.id, p));
+        // 1. Add remote products
         remoteProducts.forEach((item: any) => {
-          const existing = map.get(item.slug || item.id);
-          if (existing) {
-            map.set(item.slug || item.id, {
-              ...existing,
-              ...item,
-              priceFCFA: item.priceFCFA || item.price || existing.priceFCFA,
-              price: item.priceFCFA || item.price || existing.price,
+          const primaryImg = item.images?.primary || (Array.isArray(item.images) ? item.images[0] : '/icons/ebna-logo.png');
+          const pKey = item.slug || item.id;
+          if (pKey) {
+            map.set(pKey, {
+              id: item.id || pKey,
+              sku: item.sku || 'EB-LUX-00',
+              slug: item.slug || pKey,
+              name: item.name,
+              brand: item.brand || 'EBNA Luxury Collection',
+              category: item.category || 'MODA_MUJER',
+              subcategory: item.subcategory || 'General',
+              priceFCFA: item.price_fcfa || item.priceFCFA || item.price || 15000,
+              price: item.price_fcfa || item.priceFCFA || item.price || 15000,
+              inStock: item.in_stock !== undefined ? item.in_stock : true,
+              in_stock: item.in_stock !== undefined ? item.in_stock : true,
+              is_hidden: item.is_hidden || false,
+              description: item.description || '',
+              images: { primary: primaryImg, gallery: [primaryImg] },
+              colors: item.colors || ['Blanco', 'Negro'],
+              sizes: item.sizes || ['S', 'M', 'L'],
+              created_at: item.created_at || new Date().toISOString(),
+              updated_at: item.updated_at || new Date().toISOString(),
             });
           }
         });
+        // 2. Put local curated / edited products SECOND so local data takes 100% priority
+        localList.forEach((p: Product) => map.set(p.slug || p.id, p));
         localList = Array.from(map.values());
       }
 

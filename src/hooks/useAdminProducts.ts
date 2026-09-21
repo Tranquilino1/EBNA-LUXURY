@@ -45,8 +45,8 @@ export function useAdminProducts() {
         });
 
         const map = new Map<string, Product>();
-        data.forEach((p: Product) => map.set(p.slug, p));
         mappedRemote.forEach((p: Product) => map.set(p.slug, p));
+        data.forEach((p: Product) => map.set(p.slug, p));
         data = Array.from(map.values());
       }
 
