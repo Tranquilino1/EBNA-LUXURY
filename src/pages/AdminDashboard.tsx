@@ -2,18 +2,21 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
 import { Loader } from '../components/ui/Loader';
-import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck } from 'lucide-react';
+import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, Megaphone, Sparkles, Check } from 'lucide-react';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
 import type { Product, ProductCategory } from '../types';
 import { formatPrice } from '../lib/utils';
+import { getActiveHeroPromo, setActiveHeroPromo, DEFAULT_PROMO_TEMPLATES, type HeroPromoConfig } from '../lib/promoManager';
 
 export function AdminDashboard() {
   const { user, profile, signOut } = useAuth();
   const { products, loading, addProduct, updateProduct, deleteProduct, toggleStock, refetch } = useAdminProducts();
-  const [activeTab, setActiveTab] = useState<'inventory' | 'users' | 'security' | 'analytics'>('inventory');
+  const [activeTab, setActiveTab] = useState<'inventory' | 'promos' | 'users' | 'security' | 'analytics'>('inventory');
+  const [promoConfig, setPromoConfig] = useState<HeroPromoConfig>(getActiveHeroPromo());
+  const [promoSavedNotice, setPromoSavedNotice] = useState(false);
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -111,6 +114,7 @@ export function AdminDashboard() {
       <nav style={{ display: 'flex', gap: '0.8rem', marginBottom: '2rem', borderBottom: '1px solid var(--color-glass-border)', paddingBottom: '0.5rem', overflowX: 'auto' }}>
         {[
           { id: 'inventory' as const, label: `Inventario (${products.length})`, icon: <Package size={18} /> },
+          { id: 'promos' as const, label: 'Promociones & Anuncios Hero', icon: <Megaphone size={18} /> },
           { id: 'users' as const, label: 'Usuarios & Roles', icon: <Users size={18} /> },
           { id: 'security' as const, label: 'Mi Cuenta & Seguridad', icon: <KeyRound size={18} /> },
           { id: 'analytics' as const, label: 'Analítica', icon: <BarChart3 size={18} /> },
@@ -367,6 +371,266 @@ export function AdminDashboard() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* TAB PROMOS: HERO ADVERTISING & PROMOTIONS EDITING */}
+      {activeTab === 'promos' && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+          {/* Editor Form */}
+          <div style={{ background: 'white', padding: '2rem', borderRadius: '24px', border: '1px solid var(--color-glass-border)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.2rem' }}>
+              <div style={{ background: 'linear-gradient(135deg, #D81B60, #C2185B)', padding: '0.5rem', borderRadius: '12px', color: 'white', display: 'flex' }}>
+                <Megaphone size={20} />
+              </div>
+              <div>
+                <h2 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', color: 'var(--color-primary-dark)', margin: 0 }}>
+                  Configurar Anuncio Hero (Cada 30 min)
+                </h2>
+                <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: '2px 0 0 0' }}>
+                  Edita el espacio publicitario que acompaña al producto destacado en la página de inicio.
+                </p>
+              </div>
+            </div>
+
+            {/* Template Presets */}
+            <div style={{ marginBottom: '1.5rem', background: '#F8FAFC', padding: '1rem', borderRadius: '16px', border: '1px solid var(--color-glass-border)' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '0.6rem' }}>
+                Plantillas por Defecto Rapidas
+              </label>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {DEFAULT_PROMO_TEMPLATES.map((tmpl) => (
+                  <button
+                    key={tmpl.id}
+                    onClick={() => setPromoConfig(tmpl)}
+                    style={{
+                      padding: '0.45rem 0.85rem',
+                      borderRadius: '999px',
+                      border: promoConfig.id === tmpl.id ? '2px solid #D81B60' : '1px solid var(--color-glass-border)',
+                      background: promoConfig.id === tmpl.id ? 'rgba(216, 27, 96, 0.1)' : 'white',
+                      color: promoConfig.id === tmpl.id ? '#D81B60' : '#475569',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    ⚡ {tmpl.badge}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Product Select */}
+            {products.length > 0 && (
+              <div style={{ marginBottom: '1.2rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.4rem' }}>
+                  Seleccionar Imagen de Producto del Catálogo (Opcional):
+                </label>
+                <select
+                  onChange={(e) => {
+                    const prod = products.find(p => p.id === e.target.value);
+                    if (prod && prod.images?.[0]) {
+                      setPromoConfig(prev => ({
+                        ...prev,
+                        imageUrl: prod.images[0],
+                        title: prod.name
+                      }));
+                    }
+                  }}
+                  style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem', background: 'white' }}
+                >
+                  <option value="">-- Elige un producto para extraer su imagen --</option>
+                  {products.map(p => (
+                    <option key={p.id} value={p.id}>{p.name} ({formatPrice(p.price)})</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Form Fields */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.3rem' }}>
+                  URL de Imagen del Anuncio:
+                </label>
+                <input
+                  type="text"
+                  value={promoConfig.imageUrl}
+                  onChange={(e) => setPromoConfig({ ...promoConfig, imageUrl: e.target.value })}
+                  placeholder="https://..."
+                  style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
+                <div>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.3rem' }}>
+                    Etiqueta Superior (Badge):
+                  </label>
+                  <input
+                    type="text"
+                    value={promoConfig.badge}
+                    onChange={(e) => setPromoConfig({ ...promoConfig, badge: e.target.value })}
+                    placeholder="Ej: OFERTA DE LA SEMANA"
+                    style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.3rem' }}>
+                    Descuento / Tag:
+                  </label>
+                  <input
+                    type="text"
+                    value={promoConfig.discountBadge}
+                    onChange={(e) => setPromoConfig({ ...promoConfig, discountBadge: e.target.value })}
+                    placeholder="Ej: -50% DESC"
+                    style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.3rem' }}>
+                  Título del Anuncio (Con Animación de Texto):
+                </label>
+                <input
+                  type="text"
+                  value={promoConfig.title}
+                  onChange={(e) => setPromoConfig({ ...promoConfig, title: e.target.value })}
+                  placeholder="Ej: Elegancia y Estilo Hecho Para Ti"
+                  style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.3rem' }}>
+                  Descripción Corta del Anuncio:
+                </label>
+                <textarea
+                  rows={3}
+                  value={promoConfig.description}
+                  onChange={(e) => setPromoConfig({ ...promoConfig, description: e.target.value })}
+                  placeholder="Ej: Producto exclusivo rebajado al 50%..."
+                  style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem', resize: 'vertical' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
+                <div>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.3rem' }}>
+                    Texto Botón CTA:
+                  </label>
+                  <input
+                    type="text"
+                    value={promoConfig.buttonText}
+                    onChange={(e) => setPromoConfig({ ...promoConfig, buttonText: e.target.value })}
+                    placeholder="Ej: Ver Producto ➔"
+                    style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 600, color: '#334155', display: 'block', marginBottom: '0.3rem' }}>
+                    Enlace de Destino:
+                  </label>
+                  <input
+                    type="text"
+                    value={promoConfig.buttonLink}
+                    onChange={(e) => setPromoConfig({ ...promoConfig, buttonLink: e.target.value })}
+                    placeholder="Ej: /#catalogo"
+                    style={{ width: '100%', padding: '0.65rem 0.9rem', borderRadius: '12px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem' }}
+                  />
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', gap: '0.8rem', marginTop: '1rem', alignItems: 'center' }}>
+                <button
+                  onClick={() => {
+                    setActiveHeroPromo(promoConfig);
+                    setPromoSavedNotice(true);
+                    setTimeout(() => setPromoSavedNotice(false), 3000);
+                  }}
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem',
+                    padding: '0.85rem 1.4rem',
+                    borderRadius: '999px',
+                    border: 'none',
+                    background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+                    color: 'white',
+                    fontWeight: 700,
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 15px rgba(216, 27, 96, 0.35)'
+                  }}
+                >
+                  <Sparkles size={18} /> Publicar Anuncio en Inicio
+                </button>
+              </div>
+
+              {promoSavedNotice && (
+                <div style={{ padding: '0.75rem', borderRadius: '12px', background: 'rgba(34, 197, 94, 0.15)', color: '#15803d', fontWeight: 700, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Check size={18} /> ¡Anuncio actualizado y publicado en directo en la página de inicio!
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Live Interactive Preview */}
+          <div>
+            <h3 style={{ fontSize: '1.1rem', fontFamily: 'var(--font-serif)', color: 'var(--color-primary-dark)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Eye size={18} /> Vista Previa Directa (En Vivo)
+            </h3>
+
+            <div className="hero-promo-spotlight-card" style={{ maxWidth: '480px', margin: '0 auto' }}>
+              <div style={{ position: 'relative', width: '100%', height: '220px', borderRadius: '16px', overflow: 'hidden', marginBottom: '1rem' }}>
+                <img
+                  src={promoConfig.imageUrl || '/icons/ebna-logo.png'}
+                  alt={promoConfig.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <span className="hero-promo-badge">
+                  {promoConfig.badge}
+                </span>
+                <span className="hero-promo-discount">
+                  {promoConfig.discountBadge}
+                </span>
+              </div>
+
+              <h4 className="text-promo-video-animated" style={{ fontSize: '1.3rem', margin: '0 0 0.6rem 0', lineHeight: 1.3 }}>
+                {promoConfig.title}
+              </h4>
+
+              <p style={{ fontSize: '0.85rem', color: '#475569', lineHeight: 1.5, margin: '0 0 1.2rem 0' }}>
+                {promoConfig.description}
+              </p>
+
+              <a
+                href={promoConfig.buttonLink}
+                className="btn-primary"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  width: '100%',
+                  padding: '0.75rem 1.2rem',
+                  borderRadius: '999px',
+                  background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+                  color: 'white',
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  textDecoration: 'none'
+                }}
+              >
+                {promoConfig.buttonText}
+              </a>
+            </div>
           </div>
         </div>
       )}

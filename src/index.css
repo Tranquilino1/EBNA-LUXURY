@@ -635,6 +635,49 @@ p {
   to { transform: rotate(360deg); }
 }
 
+/* Video-like Moving Animated Typography for Promo Banner */
+.text-promo-video-animated {
+  font-family: 'Playfair Display', serif;
+  background: linear-gradient(
+    90deg,
+    #D81B60 0%,
+    #FF3B7B 25%,
+    #E02868 50%,
+    #880E4F 75%,
+    #D81B60 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textVideoMarquee 4s linear infinite;
+  display: inline-block;
+  font-weight: 800;
+  text-shadow: 0 4px 15px rgba(216, 27, 96, 0.15);
+}
+
+@keyframes textVideoMarquee {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.hero-promo-spotlight-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 246, 249, 0.85) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(216, 27, 96, 0.25);
+  border-radius: 24px;
+  padding: 1.4rem;
+  box-shadow: 0 12px 35px rgba(216, 27, 96, 0.12), inset 0 1.5px 2px rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  max-width: 360px;
+  width: 100%;
+}
+
 .animate-fade-in-up {
   animation: luxuryFadeInUp var(--transition-slow) forwards;
   opacity: 0;
