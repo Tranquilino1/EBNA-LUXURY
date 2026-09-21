@@ -21,10 +21,10 @@ export const Footer: React.FC = () => {
           </div>
           
           <div className="footer-app-badges" onClick={() => setIsQRModalOpen(true)} style={{ cursor: 'pointer', marginTop: '1rem' }}>
-            <div className="platform-badges">
-              <div className="platform-badge"><Smartphone size={14} /> Android</div>
-              <div className="platform-badge"><Apple size={14} /> iOS</div>
-              <div className="platform-badge"><Monitor size={14} /> PC</div>
+            <div className="platform-badges" style={{ display: 'flex', gap: '8px' }}>
+              <a href="/downloads/ebna-luxury.apk" download="EBNA-Luxury.apk" className="platform-badge" style={{ textDecoration: 'none' }} title="Descargar APK Android"><Smartphone size={14} /> Android APK</a>
+              <a href="/downloads/ebna-luxury.mobileconfig" download="EBNA-Luxury.mobileconfig" className="platform-badge" style={{ textDecoration: 'none' }} title="Instalar App iOS"><Apple size={14} /> iOS App</a>
+              <div className="platform-badge" onClick={() => setIsQRModalOpen(true)} style={{ cursor: 'pointer' }}><Monitor size={14} /> PC</div>
             </div>
             <p style={{ fontSize: '0.78rem', color: '#D81B60', marginTop: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
               <QrCode size={16} /> Escanea para la App en tu móvil

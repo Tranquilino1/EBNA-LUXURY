@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>FullScreen</key>
+			<true/>
+			<key>IsRemovable</key>
+			<true/>
+			<key>Label</key>
+			<string>EBNA Luxury</string>
+			<key>PayloadDescription</key>
+			<string>Aplicación Oficial EBNA Luxury — Moda &amp; Cosmética de Lujo en Guinea Ecuatorial</string>
+			<key>PayloadDisplayName</key>
+			<string>EBNA Luxury App</string>
+			<key>PayloadIdentifier</key>
+			<string>com.ebna.luxury.app</string>
+			<key>PayloadType</key>
+			<string>com.apple.webClip.managed</string>
+			<key>PayloadUUID</key>
+			<string>a1b2c3d4-e5f6-7890-abcd-1234567890ab</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>URL</key>
+			<string>https://ebna-luxury.vercel.app</string>
+		</dict>
+	</array>
+	<key>PayloadDisplayName</key>
+	<string>EBNA Luxury App</string>
+	<key>PayloadIdentifier</key>
+	<string>com.ebna.luxury.profile</string>
+	<key>PayloadOrganization</key>
+	<string>EBNA Luxury Inc.</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>f1e2d3c4-b5a6-9876-5432-109876543210</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
