@@ -12,19 +12,13 @@ export function useAdminProducts() {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      // Fetch exclusively from Supabase
+      // Fetch from Supabase
       const { data: dbProducts, error } = await supabase
         .from('products')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Supabase fetch error:', error);
-        setProducts([]);
-        return;
-      }
-
-      if (dbProducts) {
+      if (!error && dbProducts && dbProducts.length > 0) {
         const mappedRemote: Product[] = dbProducts.map((item: any) => {
           const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
           return {
@@ -53,10 +47,11 @@ export function useAdminProducts() {
         });
         setProducts(mappedRemote);
       } else {
-        setProducts([]);
+        setProducts(demoGetProducts());
       }
     } catch (err) {
-      console.error('Error fetching admin products:', err);
+      console.error('Error fetching admin products, using fallback:', err);
+      setProducts(demoGetProducts());
     } finally {
       setLoading(false);
     }

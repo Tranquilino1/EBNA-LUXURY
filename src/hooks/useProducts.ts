@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { demoGetProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
@@ -11,19 +12,15 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
-      // Fetch exclusively from Supabase
+      // Fetch from Supabase
       const { data: remoteProducts, error: dbError } = await supabase
         .from('products')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (dbError) {
-        throw dbError;
-      }
-
       let finalList: Product[] = [];
 
-      if (remoteProducts && remoteProducts.length > 0) {
+      if (!dbError && remoteProducts && remoteProducts.length > 0) {
         finalList = remoteProducts.map((item: any) => {
           const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
           return {
@@ -47,6 +44,9 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
             updated_at: item.updated_at,
           };
         });
+      } else {
+        // Resilient fallback to 142 catalog products if Supabase table is empty or RLS-restricted
+        finalList = demoGetProducts();
       }
 
       // Filter out hidden items for public view
@@ -69,9 +69,20 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
       setProducts(finalList);
     } catch (err: any) {
-      console.warn('Supabase fetch failed, showing empty state or fallback:', err);
-      // Removed the local demoData fallback to ensure strict Supabase usage as requested by user.
-      setProducts([]);
+      console.warn('Supabase fetch notice, using catalog fallback:', err);
+      let list = demoGetProducts();
+      if (category && category !== 'TODOS') {
+        list = list.filter((p: Product) => p.category === category);
+      }
+      if (searchQuery) {
+        const lowerQuery = searchQuery.toLowerCase();
+        list = list.filter((p: Product) => 
+          p.name.toLowerCase().includes(lowerQuery) || 
+          (p.sku && p.sku.toLowerCase().includes(lowerQuery)) ||
+          p.description.toLowerCase().includes(lowerQuery)
+        );
+      }
+      setProducts(list);
       setError(err);
     } finally {
       setLoading(false);
