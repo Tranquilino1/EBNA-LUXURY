@@ -53,6 +53,7 @@ export const Footer: React.FC = () => {
             <Link to="/">Inicio</Link>
             <Link to="/catalogo">Catálogo</Link>
             <Link to="/login">Iniciar Sesión</Link>
+            <Link to="/admin/login" style={{ color: '#D97706', fontWeight: 700 }}>👑 Panel Admin</Link>
             <button 
               onClick={() => setIsQRModalOpen(true)} 
               style={{ background: 'none', border: 'none', color: '#E05A88', cursor: 'pointer', padding: 0, font: 'inherit', textAlign: 'left', fontWeight: 600 }}

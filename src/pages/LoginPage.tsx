@@ -69,8 +69,13 @@ export function LoginPage() {
           </button>
         </form>
 
-        <div className="auth-footer">
+        <div className="auth-footer" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
           <p>¿No tienes una cuenta? <Link to="/registro">Crear una cuenta</Link></p>
+          <p style={{ fontSize: '0.85rem', marginTop: '0.4rem' }}>
+            <Link to="/admin/login" style={{ color: '#D97706', fontWeight: 700 }}>
+              👑 ¿Eres Administrador? Accede al Panel Admin aquí →
+            </Link>
+          </p>
         </div>
       </div>
     </div>

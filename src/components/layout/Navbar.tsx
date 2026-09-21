@@ -183,6 +183,14 @@ export const Navbar: React.FC = () => {
               Iniciar Sesión
             </Link>
           )}
+          <Link 
+            to="/admin/login" 
+            className="mobile-nav-link"
+            style={{ color: '#D97706', fontWeight: 700 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            👑 Panel Administrador
+          </Link>
         </div>
       )}
       {/* QR Modal */}

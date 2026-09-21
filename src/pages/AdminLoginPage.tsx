@@ -34,9 +34,21 @@ export function AdminLoginPage() {
     }
   };
 
-  const handleFillCredentials = () => {
-    setEmail('Admin@ebna.com');
-    setPassword('@sindyluxury2026');
+  const handleQuickLogin = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      const { error: signInError } = await signIn('Admin@ebna.com', '@sindyluxury2026');
+      if (signInError) {
+        setError(signInError.message || 'Error de autenticación');
+      } else {
+        navigate('/admin/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Error de autenticación');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,28 +66,31 @@ export function AdminLoginPage() {
           </p>
         </div>
 
-        {/* Credentials Info Badge */}
-        <div 
-          onClick={handleFillCredentials}
+        {/* 1-Tap Quick Mobile Admin Login */}
+        <button
+          type="button"
+          onClick={handleQuickLogin}
+          disabled={loading}
           style={{
-            background: 'rgba(224, 90, 136, 0.08)',
-            border: '1px dashed rgba(224, 90, 136, 0.4)',
-            borderRadius: '12px',
-            padding: '0.8rem 1rem',
-            marginBottom: '1.5rem',
-            fontSize: '0.8rem',
-            color: 'var(--color-primary-dark)',
+            width: '100%',
+            background: 'linear-gradient(135deg, #10B981, #059669)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '14px',
+            padding: '0.9rem',
+            fontWeight: 800,
+            fontSize: '0.9rem',
             cursor: 'pointer',
-            transition: 'all 0.2s ease'
+            boxShadow: '0 4px 15px rgba(16,185,129,0.3)',
+            marginBottom: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem'
           }}
-          title="Haz clic para autorrellenar las credenciales oficiales"
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 700, marginBottom: '0.2rem' }}>
-            <KeyRound size={16} /> Credenciales Oficiales de Acceso:
-          </div>
-          <div>Usuario: <strong>Admin@ebna.com</strong></div>
-          <div>Contraseña: <strong>@sindyluxury2026</strong></div>
-        </div>
+          <KeyRound size={18} /> ⚡ ENTRAR DIRECTO COMO ADMIN
+        </button>
 
         {error && (
           <div style={{
@@ -102,6 +117,8 @@ export function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Admin@ebna.com"
+              autoCapitalize="none"
+              autoCorrect="off"
               required
               style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)', fontSize: '0.9rem' }}
             />
@@ -117,6 +134,8 @@ export function AdminLoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="@sindyluxury2026"
+              autoCapitalize="none"
+              autoCorrect="off"
               required
               style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)', fontSize: '0.9rem' }}
             />
