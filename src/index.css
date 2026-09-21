@@ -806,11 +806,38 @@ p {
 
 /* Hero Section */
 .hero-section {
-  padding-top: 10rem;
-  padding-bottom: 6rem;
-  text-align: center;
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
   position: relative;
   z-index: 10;
+}
+
+@media (min-width: 900px) {
+  .hero-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 3.5rem;
+    text-align: left;
+  }
+
+  .hero-content {
+    text-align: left;
+  }
+
+  .hero-content .hero-cta-group {
+    justify-content: flex-start !important;
+  }
+
+  .hero-visual {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
 }
 
 /* Tilt Perspective Wrappers */
