@@ -4,38 +4,35 @@ import { formatPrice } from './utils';
 const PRIMARY_PHONE = '240222633687';
 const SECONDARY_PHONE = '240555439904'; // Muni Dinero (+240 555 439 904)
 
-export const buildWhatsAppUrl = (
+export const generateWhatsAppLink = (
   product: Product, 
-  phone: 'primary' | 'secondary',
+  phoneType: 'primary' | 'secondary' = 'primary',
   selectedSize?: string,
   selectedColor?: string
 ): string => {
-  const number = phone === 'primary' ? PRIMARY_PHONE : SECONDARY_PHONE;
-  const productUrl = `${window.location.origin}/producto/${product.slug}`;
+  const number = phoneType === 'primary' ? PRIMARY_PHONE : SECONDARY_PHONE;
+  const priceVal = product.priceFCFA || product.price || 0;
+  const skuText = product.sku ? `\n- *Ref/SKU:* ${product.sku}` : '';
+  const brandText = product.brand ? `\n- *Marca:* ${product.brand}` : '';
   
   let optionsText = '';
-  if (selectedSize) optionsText += `\n📏 Talla: ${selectedSize}`;
-  if (selectedColor) optionsText += `\n🎨 Color: ${selectedColor}`;
+  if (selectedSize) optionsText += `\n- *Talla:* ${selectedSize}`;
+  if (selectedColor) optionsText += `\n- *Color:* ${selectedColor}`;
 
-  const message = `¡Hola! 👋 Quisiera comprar este producto en EBNA Luxury:
+  const message = `¡Hola EBNA Luxury! 👋 Deseo ordenar el siguiente producto:
+- *Producto:* ${product.name}${skuText}${brandText}
+- *Precio:* ${formatPrice(priceVal)}${optionsText}
+- *Estado:* ${product.inStock || product.in_stock ? 'Disponible (En Stock)' : 'Consulta Stock'}
 
-🛍️ *${product.name}*
-💰 Precio: ${formatPrice(product.price)}${optionsText}
-📌 Estado: ${product.in_stock ? 'Disponible (En Stock)' : 'Consulta Stock'}
-🔖 ID: ${product.id}
+¿Tienen disponibilidad para entrega en Malabo/Bata?`;
 
-🔗 Ver en catálogo: ${productUrl}
-
-¿Me confirman disponibilidad y forma de entrega?`;
-
-  const encodedMessage = encodeURIComponent(message);
-  return `https://wa.me/${number}?text=${encodedMessage}`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 };
 
-export const buildGeneralWhatsAppUrl = (phone: 'primary' | 'secondary'): string => {
-  const number = phone === 'primary' ? PRIMARY_PHONE : SECONDARY_PHONE;
-  
-  const message = `¡Hola! 👋 Quisiera información general sobre los productos y envíos en EBNA Luxury.`;
-  const encodedMessage = encodeURIComponent(message);
-  return `https://wa.me/${number}?text=${encodedMessage}`;
+export const buildWhatsAppUrl = generateWhatsAppLink;
+
+export const buildGeneralWhatsAppUrl = (phoneType: 'primary' | 'secondary' = 'primary'): string => {
+  const number = phoneType === 'primary' ? PRIMARY_PHONE : SECONDARY_PHONE;
+  const message = `¡Hola EBNA Luxury! 👋 Quisiera consultar el catálogo general y las opciones de envío para Malabo/Bata.`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 };

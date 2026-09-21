@@ -7,16 +7,45 @@ export interface Profile {
   last_seen: string;
 }
 
-export type CategoryType = 'MODA' | 'VESTIDOS' | 'CALZADO' | 'COSMETICA' | 'PERFUMES' | 'ACCESORIOS' | 'VASELINAS' | 'JABONES' | 'NIÑOS' | 'POMADAS' | 'HIGIENE' | 'HOMBRES' | 'MUJERES';
+export type ProductCategory = 
+  | 'MODA_MUJER'
+  | 'MODA_HOMBRE'
+  | 'CALZADO'
+  | 'BOLSOS_ACCESORIOS'
+  | 'PERFUMERIA'
+  | 'COSMETICA_FACIAL'
+  | 'HIGIENE_CORPORAL';
+
+export interface ProductImages {
+  primary: string;
+  gallery?: string[];
+  [index: number]: string;
+}
+
+export interface ProductDetails {
+  size?: string[];
+  volume?: string;
+  material?: string;
+}
 
 export interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  category: CategoryType;
+  id: string; // UUID or semantic ID (e.g. 'eb-perf-001')
+  sku: string; // Unique SKU code (e.g. 'EB-PERF-01')
+  name: string; // Precise commercial title
+  brand?: string; // Brand (Zara, Chanel, Instituto Español, Palmolive, EBNA Collection)
+  category: ProductCategory;
+  subcategory: string; // e.g. 'Perfumes', 'Vestidos de Noche', 'Lociones'
+  priceFCFA: number; // Price in FCFA (XAF)
+  originalPriceFCFA?: number; // Original price for discounts
+  inStock: boolean;
+  featured?: boolean;
   description: string;
+  images: ProductImages;
+  details?: ProductDetails;
+
+  // Backwards compatibility properties for zero regression across UI components
+  slug: string;
   price: number;
-  images: string[];
   in_stock: boolean;
   is_hidden?: boolean;
   is_featured?: boolean;
@@ -57,7 +86,7 @@ export interface TrafficSession {
   device_type: string;
 }
 
-export type ProductCategory = 'TODOS' | CategoryType;
+export type FilterCategoryType = 'TODOS' | ProductCategory;
 
 export interface AuthContextType {
   user: any | null;

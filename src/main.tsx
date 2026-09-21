@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 // Auto-purge old browser caches & obsolete localstorage on version bump
-const APP_VERSION = 'v15_curated_catalog_and_fixed_counter';
+const APP_VERSION = 'v16_visual_catalog_realignment';
 try {
   if (typeof window !== 'undefined') {
     if (localStorage.getItem('ebna_app_version') !== APP_VERSION) {

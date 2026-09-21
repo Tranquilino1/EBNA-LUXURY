@@ -97,13 +97,13 @@ export function HomePage() {
                 style={style}
               >
                 <div className="glare-effect"></div>
-                <img src={tiltProduct.images?.[0] || '/icons/ebna-logo.png'} alt={tiltProduct.name} className="tilt-image" />
+                <img src={tiltProduct.images?.primary || (Array.isArray(tiltProduct.images) ? tiltProduct.images[0] : '/icons/ebna-logo.png')} alt={tiltProduct.name} className="tilt-image" />
                 <div className="tilt-info">
                   <span className="tilt-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                    <Clock size={12} /> {tiltProduct.category} • DESTACADO 30 MIN
+                    <Clock size={12} /> {(tiltProduct.category || '').replace(/_/g, ' ')} • DESTACADO 30 MIN
                   </span>
                   <h3>{tiltProduct.name}</h3>
-                  <p className="price">{formatPrice(tiltProduct.price)}</p>
+                  <p className="price">{formatPrice(tiltProduct.priceFCFA || tiltProduct.price)}</p>
                   <WhatsAppButton product={tiltProduct} size="sm" />
                 </div>
               </div>

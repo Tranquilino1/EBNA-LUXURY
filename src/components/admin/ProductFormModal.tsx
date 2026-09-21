@@ -96,7 +96,11 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
         is_hidden: formData.is_hidden,
         sizes: parsedSizes.length > 0 ? parsedSizes : ['S', 'M', 'L', 'XL'],
         colors: parsedColors.length > 0 ? parsedColors : ['Blanco', 'Negro', 'Rojo'],
-        images: [finalImageUrl],
+        images: {
+          primary: finalImageUrl,
+          gallery: [finalImageUrl],
+          0: finalImageUrl,
+        },
       };
 
       if (product) {

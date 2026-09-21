@@ -109,13 +109,18 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
             <>
               <div className="cart-items-list">
                 {cartItems.map((item) => {
-                  const itemTotal = item.product.price * item.quantity;
+                  const priceVal = item.product.priceFCFA || item.product.price || 0;
+                  const itemTotal = priceVal * item.quantity;
+                  const itemImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : '/icons/ebna-logo.png');
                   return (
                     <div key={item.cartItemId} className="cart-item-card glass-card">
                       <img 
-                        src={item.product.images?.[0] || '/icons/ebna-logo.png'} 
+                        src={itemImg} 
                         alt={item.product.name} 
                         className="cart-item-img"
+                        onError={(e) => {
+                          e.currentTarget.src = '/icons/ebna-logo.png';
+                        }}
                       />
                       <div className="cart-item-details">
                         <h4 className="cart-item-name" title={item.product.name}>{item.product.name}</h4>
@@ -127,7 +132,7 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
                         </div>
 
                         <div className="cart-item-price-row">
-                          <span className="cart-item-unit-price">{formatPrice(item.product.price)} c/u</span>
+                          <span className="cart-item-unit-price">{formatPrice(priceVal)} c/u</span>
                           <span className="cart-item-total">{formatPrice(itemTotal)}</span>
                         </div>
 

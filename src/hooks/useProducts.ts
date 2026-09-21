@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { demoGetProducts } from '../lib/demoData';
 import { supabase } from '../config/supabase';
-import type { Product, ProductCategory } from '../types';
+import type { Product, FilterCategoryType } from '../types';
 
-export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: string) {
+export function useProducts(category?: FilterCategoryType, searchQuery?: string) {
   // Start with instant local items for 0ms initial render speed
   const [products, setProducts] = useState<Product[]>(() => {
     let list = demoGetProducts();
@@ -12,7 +12,7 @@ export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: 
     }
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      list = list.filter((p: Product) => p.name.toLowerCase().includes(q));
+      list = list.filter((p: Product) => p.name.toLowerCase().includes(q) || (p.sku && p.sku.toLowerCase().includes(q)));
     }
     return list;
   });
@@ -32,54 +32,40 @@ export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: 
         .order('created_at', { ascending: false });
 
       if (!dbError && remoteProducts && remoteProducts.length > 0) {
-        // Map Supabase products to Product format
-        const mappedRemote: Product[] = remoteProducts.map((item: any) => ({
-          id: item.id,
-          slug: item.slug,
-          name: item.name,
-          category: item.category,
-          description: item.description || '',
-          price: item.price,
-          images: item.images && item.images.length > 0 ? item.images : ['/icons/ebna-logo.png'],
-          in_stock: item.in_stock !== undefined ? item.in_stock : true,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-        }));
-
         // Merge remote products with local list by slug to prevent duplicates
         const map = new Map<string, Product>();
-        localList.forEach((p: Product) => map.set(p.slug, p));
-        mappedRemote.forEach((p: Product) => map.set(p.slug, p));
+        localList.forEach((p: Product) => map.set(p.slug || p.id, p));
+        remoteProducts.forEach((item: any) => {
+          const existing = map.get(item.slug || item.id);
+          if (existing) {
+            map.set(item.slug || item.id, {
+              ...existing,
+              ...item,
+              priceFCFA: item.priceFCFA || item.price || existing.priceFCFA,
+              price: item.priceFCFA || item.price || existing.price,
+            });
+          }
+        });
         localList = Array.from(map.values());
       }
 
       // Filter out hidden items for public view
       localList = localList.filter((p: Product) => !p.is_hidden);
 
-      // Filter by category with intelligent taxonomy mapping
-      const matchesCategory = (p: Product, cat: ProductCategory) => {
-        if (!cat || cat === 'TODOS') return true;
-        if (p.category === cat) return true;
-        if (cat === 'MODA' && (p.category === 'VESTIDOS' || p.category === 'CALZADO' || p.category === 'MODA')) return true;
-        if (cat === 'HIGIENE' && (p.category === 'VASELINAS' || p.category === 'POMADAS' || p.category === 'HIGIENE')) return true;
-        if (cat === 'JABONES' && (p.category === 'JABONES' || p.category === 'VASELINAS' || p.category === 'POMADAS')) return true;
-        if (cat === 'HOMBRES' && (p.name.toLowerCase().includes('men') || p.name.toLowerCase().includes('boy') || p.category === 'CALZADO')) return true;
-        if (cat === 'MUJERES' && (p.name.toLowerCase().includes('women') || p.category === 'VESTIDOS' || p.name.toLowerCase().includes('dress'))) return true;
-        return false;
-      };
-
+      // Filter by category
       if (category && category !== 'TODOS') {
-        localList = localList.filter((p: Product) => matchesCategory(p, category));
+        localList = localList.filter((p: Product) => p.category === category);
       }
 
       // Filter by search query
       if (searchQuery) {
         const lowerQuery = searchQuery.toLowerCase();
-        localList = localList.filter((p: Product) => p.name.toLowerCase().includes(lowerQuery));
+        localList = localList.filter((p: Product) => 
+          p.name.toLowerCase().includes(lowerQuery) || 
+          (p.sku && p.sku.toLowerCase().includes(lowerQuery)) ||
+          p.description.toLowerCase().includes(lowerQuery)
+        );
       }
-
-      // Sort newest first
-      localList.sort((a: Product, b: Product) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
       setProducts(localList);
     } catch (err: any) {

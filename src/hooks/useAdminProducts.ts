@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { demoGetProducts, demoAddProduct, demoUpdateProduct, demoDeleteProduct } from '../lib/demoData';
 import { supabase } from '../config/supabase';
-import type { Product } from '../types';
+import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
 
 export function useAdminProducts() {
@@ -20,18 +20,28 @@ export function useAdminProducts() {
         .order('created_at', { ascending: false });
 
       if (!error && dbProducts && dbProducts.length > 0) {
-        const mappedRemote: Product[] = dbProducts.map((item: any) => ({
-          id: item.id,
-          slug: item.slug,
-          name: item.name,
-          category: item.category,
-          description: item.description || '',
-          price: item.price,
-          images: item.images && item.images.length > 0 ? item.images : ['/icons/ebna-logo.png'],
-          in_stock: item.in_stock !== undefined ? item.in_stock : true,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-        }));
+        const mappedRemote: Product[] = dbProducts.map((item: any) => {
+          const primaryImg = item.images?.primary || (Array.isArray(item.images) ? item.images[0] : '/icons/ebna-logo.png');
+          return {
+            id: item.id || 'eb-' + Date.now(),
+            sku: item.sku || 'EB-LUX-' + Math.floor(Math.random() * 900 + 100),
+            name: item.name,
+            category: item.category || 'MODA_MUJER',
+            subcategory: item.subcategory || 'General',
+            priceFCFA: item.priceFCFA || item.price || 15000,
+            inStock: item.inStock !== undefined ? item.inStock : (item.in_stock !== undefined ? item.in_stock : true),
+            description: item.description || '',
+            images: {
+              primary: primaryImg,
+              gallery: [primaryImg]
+            },
+            slug: item.slug,
+            price: item.priceFCFA || item.price || 15000,
+            in_stock: item.inStock !== undefined ? item.inStock : true,
+            created_at: item.created_at || new Date().toISOString(),
+            updated_at: item.updated_at || new Date().toISOString(),
+          };
+        });
 
         const map = new Map<string, Product>();
         data.forEach((p: Product) => map.set(p.slug, p));
@@ -54,22 +64,27 @@ export function useAdminProducts() {
 
   const addProduct = async (productData: Partial<Product>, imageFile?: File) => {
     try {
-      let imagesList: string[] = productData.images || [];
+      let primaryUrl = '/icons/ebna-logo.png';
+      if (productData.images?.primary) {
+        primaryUrl = productData.images.primary;
+      } else if (Array.isArray(productData.images) && productData.images.length > 0) {
+        primaryUrl = productData.images[0];
+      }
 
       if (imageFile) {
-        const localUrl = URL.createObjectURL(imageFile);
-        imagesList = [localUrl, ...imagesList];
+        primaryUrl = URL.createObjectURL(imageFile);
       }
 
-      if (imagesList.length === 0) {
-        imagesList = ['/icons/ebna-logo.png'];
-      }
+      const imagesObj: ProductImages = {
+        primary: primaryUrl,
+        gallery: [primaryUrl]
+      };
 
       const newSlug = generateSlug(productData.name || 'producto-' + Date.now());
-      const newProduct = { 
+      const newProduct: Partial<Product> = { 
         ...productData, 
         slug: newSlug,
-        images: imagesList 
+        images: imagesObj 
       };
 
       // 1. Add locally
@@ -99,7 +114,10 @@ export function useAdminProducts() {
 
       if (imageFile) {
         const localUrl = URL.createObjectURL(imageFile);
-        updatedData.images = [localUrl, ...(updates.images || [])];
+        updatedData.images = {
+          primary: localUrl,
+          gallery: [localUrl]
+        };
       }
 
       // 1. Update locally
@@ -145,7 +163,7 @@ export function useAdminProducts() {
 
   const toggleStock = async (id: string, currentStockStatus: boolean) => {
     const prod = products.find(p => p.id === id);
-    demoUpdateProduct(id, { in_stock: !currentStockStatus });
+    demoUpdateProduct(id, { in_stock: !currentStockStatus, inStock: !currentStockStatus });
     if (prod) {
       await supabase.from('products').update({ in_stock: !currentStockStatus }).eq('slug', prod.slug);
     }

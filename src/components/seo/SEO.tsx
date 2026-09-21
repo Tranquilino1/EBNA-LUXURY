@@ -41,8 +41,9 @@ export const SEO: React.FC<SEOProps> = ({
     if (ogDesc) ogDesc.setAttribute('content', metaDescription);
 
     const ogImg = document.querySelector('meta[property="og:image"]');
-    if (ogImg && (product?.images?.[0] || image)) {
-      ogImg.setAttribute('content', product?.images?.[0] || image);
+    const primaryImg = product ? (product.images?.primary || (Array.isArray(product.images) ? product.images[0] : image)) : image;
+    if (ogImg && primaryImg) {
+      ogImg.setAttribute('content', primaryImg);
     }
 
     // Dynamic Product JSON-LD schema insertion
@@ -55,17 +56,23 @@ export const SEO: React.FC<SEOProps> = ({
         document.head.appendChild(scriptTag);
       }
 
+      const priceVal = product.priceFCFA || product.price || 0;
       const productSchema = {
         '@context': 'https://schema.org',
         '@type': 'Product',
         name: product.name,
-        image: product.images || [image],
+        image: [primaryImg],
         description: product.description,
+        sku: product.sku || product.id,
+        brand: {
+          '@type': 'Brand',
+          name: product.brand || 'EBNA Luxury'
+        },
         offers: {
           '@type': 'Offer',
           priceCurrency: 'XAF',
-          price: product.price,
-          availability: product.in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          price: priceVal,
+          availability: (product.inStock || product.in_stock) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
           seller: {
             '@type': 'Organization',
             name: 'EBNA Luxury',

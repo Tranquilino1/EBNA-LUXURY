@@ -4,12 +4,12 @@ import { SearchBar } from '../components/ui/SearchBar';
 import { CategoryFilter } from '../components/catalog/CategoryFilter';
 import { ProductGrid } from '../components/catalog/ProductGrid';
 import { Loader } from '../components/ui/Loader';
-import type { ProductCategory } from '../types';
+import type { FilterCategoryType } from '../types';
 import { getSortedByPopularity } from '../lib/popularityTracker';
 import { SEOHead } from '../components/seo/SEOHead';
 
 export function CatalogPage() {
-  const [activeCategory, setActiveCategory] = useState<ProductCategory>('TODOS');
+  const [activeCategory, setActiveCategory] = useState<FilterCategoryType>('TODOS');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<'popularity' | 'price-asc' | 'price-desc'>('popularity');
   
@@ -19,20 +19,20 @@ export function CatalogPage() {
   if (sortBy === 'popularity') {
     sortedList = getSortedByPopularity(sortedList);
   } else if (sortBy === 'price-asc') {
-    sortedList.sort((a, b) => a.price - b.price);
+    sortedList.sort((a, b) => (a.priceFCFA || a.price) - (b.priceFCFA || b.price));
   } else if (sortBy === 'price-desc') {
-    sortedList.sort((a, b) => b.price - a.price);
+    sortedList.sort((a, b) => (b.priceFCFA || b.price) - (a.priceFCFA || a.price));
   }
 
   return (
     <div className="catalog-page">
       <SEOHead 
-        title="Catálogo de Productos y Cosmética — EBNA Luxury"
-        description="Explora nuestro catálogo completo de ropa, fragancias de lujo, vaselinas, serums y cosméticos con envíos directos a Malabo y Bata."
+        title="EBNA Luxury | Moda y Cosmética de Lujo en Guinea Ecuatorial"
+        description="Explora nuestro catálogo completo de ropa de mujer y hombre, calzado, bolsos, perfumería de lujo y cosmética con envío directo en FCFA a Malabo y Bata."
       />
       <header className="catalog-header">
-        <h1>Nuestro Catálogo</h1>
-        <p>Explora nuestra exclusiva colección de moda, cosmética y accesorios diseñados para ti.</p>
+        <h1>Nuestro Catálogo de Lujo</h1>
+        <p>Explora nuestra exclusiva colección de moda, cosmética, perfumería y accesorios en Guinea Ecuatorial.</p>
       </header>
 
       <div className="catalog-controls">

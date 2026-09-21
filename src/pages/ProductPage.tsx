@@ -31,13 +31,16 @@ export function ProductPage() {
   const primaryWaUrl = buildWhatsAppUrl(product, 'primary', selectedSize, selectedColor);
   const secondaryWaUrl = buildWhatsAppUrl(product, 'secondary', selectedSize, selectedColor);
 
+  const mainImage = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : '/icons/ebna-logo.png');
+  const priceVal = product.priceFCFA || product.price || 0;
+
   return (
     <div className="product-page luxury-container" style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
       <SEOHead 
         title={`${product.name} — EBNA Luxury`} 
         description={product.description} 
         product={product} 
-        ogImage={product.images?.[0]} 
+        ogImage={mainImage} 
         type="product"
       />
       <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: '#6E5B65', marginBottom: '1rem' }}>
@@ -53,14 +56,17 @@ export function ProductPage() {
       <div className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
         <div className="product-image-section glass-panel" style={{ padding: '1.25rem', borderRadius: '24px', background: 'radial-gradient(circle at center, #FFFFFF 40%, #F8F2F5 100%)', position: 'relative' }}>
           <img 
-            src={product.images?.[0] || '/icons/ebna-logo.png'} 
+            src={mainImage} 
             alt={product.name} 
             className="main-image" 
             style={{ width: '100%', maxHeight: '480px', objectFit: 'cover', borderRadius: '16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
+            onError={(e) => {
+              e.currentTarget.src = '/icons/ebna-logo.png';
+            }}
           />
 
           <div style={{ position: 'absolute', top: '24px', left: '24px', display: 'flex', gap: '8px' }}>
-            {product.in_stock ? (
+            {product.inStock || product.in_stock ? (
               <span style={{ background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', fontWeight: 800, fontSize: '0.75rem', padding: '6px 14px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}>
                 <PackageCheck size={14} /> DISPONIBLE / EN STOCK
               </span>
@@ -74,8 +80,8 @@ export function ProductPage() {
         
         <div className="product-info-section glass-panel" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span className={`badge badge-${product.category.toLowerCase()}`} style={{ fontSize: '0.8rem', padding: '6px 14px', background: 'rgba(224,90,136,0.12)', color: '#D81B60', borderRadius: '20px', fontWeight: 700 }}>
-              {product.category}
+            <span className={`badge badge-${(product.category || '').toLowerCase()}`} style={{ fontSize: '0.8rem', padding: '6px 14px', background: 'rgba(224,90,136,0.12)', color: '#D81B60', borderRadius: '20px', fontWeight: 700 }}>
+              {(product.category || '').replace(/_/g, ' ')}
             </span>
             <span style={{ fontSize: '0.8rem', color: '#25D366', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Sparkles size={14} /> 100% Auténtico
@@ -88,7 +94,7 @@ export function ProductPage() {
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
             <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#D81B60', letterSpacing: '-0.02em' }}>
-              {formatPrice(product.price)}
+              {formatPrice(priceVal)}
             </span>
           </div>
           

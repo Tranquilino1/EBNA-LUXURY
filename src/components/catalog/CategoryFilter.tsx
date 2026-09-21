@@ -1,24 +1,23 @@
 import React from 'react';
-import { Sparkles, Shirt, Palette, Gem, Droplet, Sun, Baby, UserCheck, HeartHandshake } from 'lucide-react';
-import type { ProductCategory } from '../../types';
+import { Sparkles, Footprints, ShoppingBag, Flame, Sparkle, Heart, Droplets, User } from 'lucide-react';
+import type { FilterCategoryType } from '../../types';
 import './catalog.css';
 
 interface CategoryFilterProps {
-  activeCategory: ProductCategory;
-  onCategoryChange: (category: ProductCategory) => void;
+  activeCategory: FilterCategoryType;
+  onCategoryChange: (category: FilterCategoryType) => void;
 }
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, onCategoryChange }) => {
-  const categories: { id: ProductCategory; label: string; icon: React.ReactNode }[] = [
+  const categories: { id: FilterCategoryType; label: string; icon: React.ReactNode }[] = [
     { id: 'TODOS', label: 'Todos los Productos', icon: <Sparkles size={18} /> },
-    { id: 'MODA', label: 'Moda & Calzado', icon: <Shirt size={18} /> },
-    { id: 'COSMETICA', label: 'Cosmética & Cuidado', icon: <Palette size={18} /> },
-    { id: 'HIGIENE', label: 'Higiene & Baño', icon: <Droplet size={18} /> },
-    { id: 'JABONES', label: 'Jabones Artesanales', icon: <Sun size={18} /> },
-    { id: 'ACCESORIOS', label: 'Accesorios & Bonnets', icon: <Gem size={18} /> },
-    { id: 'HOMBRES', label: 'Colección Hombres', icon: <UserCheck size={18} /> },
-    { id: 'MUJERES', label: 'Colección Mujeres', icon: <HeartHandshake size={18} /> },
-    { id: 'NIÑOS', label: 'Niños & Bebés', icon: <Baby size={18} /> },
+    { id: 'MODA_MUJER', label: 'Moda Mujer', icon: <Heart size={18} /> },
+    { id: 'MODA_HOMBRE', label: 'Moda Hombre', icon: <User size={18} /> },
+    { id: 'CALZADO', label: 'Calzado & Sneakers', icon: <Footprints size={18} /> },
+    { id: 'BOLSOS_ACCESORIOS', label: 'Bolsos & Accesorios', icon: <ShoppingBag size={18} /> },
+    { id: 'PERFUMERIA', label: 'Perfumería de Lujo', icon: <Flame size={18} /> },
+    { id: 'COSMETICA_FACIAL', label: 'Cosmética Facial', icon: <Sparkle size={18} /> },
+    { id: 'HIGIENE_CORPORAL', label: 'Higiene Corporal & Jabones', icon: <Droplets size={18} /> },
   ];
 
   return (

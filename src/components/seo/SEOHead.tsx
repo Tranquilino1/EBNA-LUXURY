@@ -11,8 +11,8 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = 'EBNA Moda y Cosmética — Tienda de Lujo en Guinea Ecuatorial',
-  description = 'Descubre la boutique de lujo EBNA en Guinea Ecuatorial (Malabo y Bata). Moda internacional Zara, perfumes exclusivos, vaselinas y cosmética de tratamiento.',
+  title = 'EBNA Luxury | Moda y Cosmética de Lujo en Guinea Ecuatorial',
+  description = 'Descubre la boutique de lujo EBNA en Guinea Ecuatorial (Malabo y Bata). Moda internacional, perfumería exclusiva, calzado, vaselinas y cosmética en FCFA.',
   canonicalUrl = window.location.href,
   ogImage = 'https://ebna-luxury.vercel.app/icons/icon-512x512.png',
   product,
@@ -37,21 +37,24 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
     // 3. Standard Meta Tags
     setMeta('description', description);
-    setMeta('keywords', 'EBNA, SYNDY LUXURY, moda, cosmética, perfumería, Guinea Ecuatorial, Malabo, Bata, FCFA');
+    setMeta('keywords', 'EBNA Luxury, EBNA, Moda, Perfumes, Cosmética, Guinea Ecuatorial, Malabo, Bata, FCFA, XAF');
     setMeta('robots', 'index, follow');
 
     // 4. OpenGraph Tags
+    const primaryImg = product ? (product.images?.primary || (Array.isArray(product.images) ? product.images[0] : ogImage)) : ogImage;
+
     setMeta('og:title', fullTitle, true);
     setMeta('og:description', description, true);
-    setMeta('og:image', ogImage, true);
+    setMeta('og:image', primaryImg, true);
     setMeta('og:url', canonicalUrl, true);
     setMeta('og:type', product ? 'og:product' : type, true);
+    setMeta('og:site_name', 'EBNA Luxury', true);
 
     // 5. Twitter Card Tags
     setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', fullTitle);
     setMeta('twitter:description', description);
-    setMeta('twitter:image', ogImage);
+    setMeta('twitter:image', primaryImg);
 
     // 6. Canonical URL
     let canonicalElement = document.querySelector('link[rel="canonical"]');
@@ -73,20 +76,26 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     }
 
     if (product) {
+      const priceVal = product.priceFCFA || product.price || 0;
       // Product Schema.org
       const productSchema = {
         '@context': 'https://schema.org',
         '@type': 'Product',
         'name': product.name,
-        'image': product.images && product.images.length > 0 ? product.images : [ogImage],
+        'image': [primaryImg],
         'description': product.description,
-        'sku': product.id,
+        'sku': product.sku || product.id,
+        'brand': {
+          '@type': 'Brand',
+          'name': product.brand || 'EBNA Luxury'
+        },
         'offers': {
           '@type': 'Offer',
           'url': canonicalUrl,
           'priceCurrency': 'XAF',
-          'price': product.price,
-          'availability': product.in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          'price': priceVal,
+          'itemCondition': 'https://schema.org/NewCondition',
+          'availability': (product.inStock || product.in_stock) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
           'seller': {
             '@type': 'Organization',
             'name': 'EBNA Luxury'
@@ -95,16 +104,17 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       };
       scriptElement.textContent = JSON.stringify(productSchema);
     } else {
-      // Store Schema.org
+      // ClothingStore Schema.org
       const storeSchema = {
         '@context': 'https://schema.org',
-        '@type': 'Store',
-        'name': 'EBNA Moda y Cosmética — SYNDY LUXURY',
+        '@type': 'ClothingStore',
+        'name': 'EBNA Luxury — Moda y Cosmética',
         'url': 'https://ebna-luxury.vercel.app/',
         'logo': 'https://ebna-luxury.vercel.app/icons/icon-512x512.png',
         'description': description,
         'telephone': '+240 222 633 687',
         'currenciesAccepted': 'XAF',
+        'priceRange': 'FCFA',
         'address': {
           '@type': 'PostalAddress',
           'addressCountry': 'GQ',
