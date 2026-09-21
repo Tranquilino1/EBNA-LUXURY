@@ -1,6 +1,6 @@
-import { useState, useRef, type MouseEvent } from 'react';
+import { useState, useRef, useEffect, type MouseEvent } from 'react';
 import { Link } from 'react-router';
-import { ArrowRight, Sparkles, ShieldCheck, Truck, RefreshCw } from 'lucide-react';
+import { ArrowRight, Sparkles, ShieldCheck, Truck, RefreshCw, Clock } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/catalog/ProductCard';
 import { WhatsAppButton } from '../components/catalog/WhatsAppButton';
@@ -9,8 +9,20 @@ import { formatPrice } from '../lib/utils';
 
 export function HomePage() {
   const { products, loading, error } = useProducts();
+  
+  // Dynamic 30-minute rotator index based on current time
+  const [halfHourChunk, setHalfHourChunk] = useState(() => Math.floor(Date.now() / (30 * 60 * 1000)));
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHalfHourChunk(Math.floor(Date.now() / (30 * 60 * 1000)));
+    }, 60000); // Check every minute
+    return () => clearInterval(timer);
+  }, []);
+
   const featuredProducts = products.slice(0, 8);
-  const tiltProduct = products[0];
+  const heroIndex = products.length > 0 ? (halfHourChunk % Math.min(15, products.length)) : 0;
+  const tiltProduct = products[heroIndex] || products[0];
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<React.CSSProperties>({});
@@ -79,7 +91,9 @@ export function HomePage() {
                 <div className="glare-effect"></div>
                 <img src={tiltProduct.images?.[0] || '/icons/ebna-logo.png'} alt={tiltProduct.name} className="tilt-image" />
                 <div className="tilt-info">
-                  <span className="tilt-badge">{tiltProduct.category}</span>
+                  <span className="tilt-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                    <Clock size={12} /> {tiltProduct.category} • DESTACADO 30 MIN
+                  </span>
                   <h3>{tiltProduct.name}</h3>
                   <p className="price">{formatPrice(tiltProduct.price)}</p>
                   <WhatsAppButton product={tiltProduct} size="sm" />

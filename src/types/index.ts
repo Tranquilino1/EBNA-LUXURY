@@ -7,7 +7,7 @@ export interface Profile {
   last_seen: string;
 }
 
-export type CategoryType = 'MODA' | 'COSMETICA' | 'ACCESORIOS' | 'VASELINAS' | 'JABONES' | 'NIÑOS' | 'POMADAS';
+export type CategoryType = 'MODA' | 'VESTIDOS' | 'CALZADO' | 'COSMETICA' | 'PERFUMES' | 'ACCESORIOS' | 'VASELINAS' | 'JABONES' | 'NIÑOS' | 'POMADAS';
 
 export interface Product {
   id: string;
@@ -18,8 +18,32 @@ export interface Product {
   price: number;
   images: string[];
   in_stock: boolean;
+  is_hidden?: boolean;
+  colors?: string[];
+  sizes?: string[];
   created_at: string;
   updated_at: string;
+}
+
+export interface CartItem {
+  cartItemId: string;
+  product: Product;
+  quantity: number;
+  selectedSize: string;
+  selectedColor: string;
+}
+
+export interface CartContextType {
+  cartItems: CartItem[];
+  isCartOpen: boolean;
+  setIsCartOpen: (open: boolean) => void;
+  addToCart: (product: Product, quantity?: number, selectedSize?: string, selectedColor?: string) => void;
+  removeFromCart: (cartItemId: string) => void;
+  updateQuantity: (cartItemId: string, newQuantity: number) => void;
+  clearCart: () => void;
+  totalItemsCount: number;
+  subtotalPrice: number;
+  triggerParticleBurst: (colorType?: 'pink' | 'green' | 'red') => void;
 }
 
 export interface TrafficSession {
@@ -39,6 +63,7 @@ export interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: any | null }>;
   signUp: (email: string, password: string, fullName: string, phone: string) => Promise<{ error: any | null }>;
   signOut: () => Promise<void>;
+  updatePassword?: (newPassword: string) => Promise<{ error: any | null }>;
 }
 
 export interface TrafficContextType {

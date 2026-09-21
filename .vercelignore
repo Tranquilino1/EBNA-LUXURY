@@ -1,0 +1,12 @@
+*.zip
+*.png
+*.jpeg
+*.jpg
+!public/**
+!src/**
+node_modules
+.git
+.env
+Shein-dataset-samples-main.zip
+dataset_clothing_images-main.zip
+logo y sus variantes.png

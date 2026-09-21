@@ -1,88 +1,89 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase, isSupabaseConfigured } from '../config/supabase';
 import { demoGetProducts } from '../lib/demoData';
+import { supabase } from '../config/supabase';
 import type { Product, ProductCategory } from '../types';
 
-const OFFLINE_CACHE_KEY = 'ebna_products_v4_cache';
-
 export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: string) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Start with instant local items for 0ms initial render speed
+  const [products, setProducts] = useState<Product[]>(() => {
+    let list = demoGetProducts();
+    if (category && category !== 'TODOS') {
+      list = list.filter((p: Product) => p.category === category);
+    }
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter((p: Product) => p.name.toLowerCase().includes(q));
+    }
+    return list;
+  });
+
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchProducts = useCallback(async () => {
-    setLoading(true);
-    setError(null);
     try {
-      let fetchedList: Product[] = [];
+      // 1. Instant local render
+      let localList = demoGetProducts();
 
-      if (isSupabaseConfigured() && supabase && navigator.onLine) {
-        let query = supabase
-          .from('products')
-          .select('*')
-          .order('created_at', { ascending: false });
+      // 2. Fetch from Supabase in background
+      const { data: remoteProducts, error: dbError } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-        const { data, error: fetchError } = await query;
+      if (!dbError && remoteProducts && remoteProducts.length > 0) {
+        // Map Supabase products to Product format
+        const mappedRemote: Product[] = remoteProducts.map((item: any) => ({
+          id: item.id,
+          slug: item.slug,
+          name: item.name,
+          category: item.category,
+          description: item.description || '',
+          price: item.price,
+          images: item.images && item.images.length > 0 ? item.images : ['/icons/ebna-logo.png'],
+          in_stock: item.in_stock !== undefined ? item.in_stock : true,
+          created_at: item.created_at,
+          updated_at: item.updated_at,
+        }));
 
-        if (!fetchError && data && data.length > 0) {
-          fetchedList = data as Product[];
-          // Save to local offline cache
-          try {
-            localStorage.setItem(OFFLINE_CACHE_KEY, JSON.stringify(fetchedList));
-          } catch (e) {
-            console.warn('Could not save to localStorage:', e);
-          }
-        } else {
-          throw fetchError || new Error('No data from Supabase');
-        }
-      } else {
-        throw new Error('Offline or Supabase not available');
+        // Merge remote products with local list by slug to prevent duplicates
+        const map = new Map<string, Product>();
+        localList.forEach((p: Product) => map.set(p.slug, p));
+        mappedRemote.forEach((p: Product) => map.set(p.slug, p));
+        localList = Array.from(map.values());
       }
 
-      // Filter locally by category and search
-      let filtered = fetchedList;
+      // Filter out hidden items for public view
+      localList = localList.filter((p: Product) => !p.is_hidden);
+
+      // Filter by category
       if (category && category !== 'TODOS') {
-        filtered = filtered.filter(p => p.category === category);
+        localList = localList.filter((p: Product) => p.category === category);
       }
+
+      // Filter by search query
       if (searchQuery) {
         const lowerQuery = searchQuery.toLowerCase();
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(lowerQuery));
+        localList = localList.filter((p: Product) => p.name.toLowerCase().includes(lowerQuery));
       }
-      setProducts(filtered);
 
+      // Sort newest first
+      localList.sort((a: Product, b: Product) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+      setProducts(localList);
     } catch (err: any) {
-      console.warn('Using local offline cache for products:', err);
-
-      // Try reading from offline cache first
-      let localCache: Product[] = [];
-      try {
-        const cached = localStorage.getItem(OFFLINE_CACHE_KEY);
-        if (cached) {
-          localCache = JSON.parse(cached);
-        }
-      } catch (e) {
-        console.warn('Error reading offline cache:', e);
-      }
-
-      // Fallback to pre-loaded catalog if cache is empty
-      if (localCache.length === 0) {
-        localCache = await demoGetProducts();
-        try {
-          localStorage.setItem(OFFLINE_CACHE_KEY, JSON.stringify(localCache));
-        } catch (e) {}
-      }
-
-      let filtered = localCache;
+      console.warn('Fallback to local products cache:', err);
+      let localList = demoGetProducts();
+      localList = localList.filter((p: Product) => !p.is_hidden);
       if (category && category !== 'TODOS') {
-        filtered = filtered.filter(p => p.category === category);
+        localList = localList.filter((p: Product) => p.category === category);
       }
       if (searchQuery) {
         const lowerQuery = searchQuery.toLowerCase();
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(lowerQuery));
+        localList = localList.filter((p: Product) => p.name.toLowerCase().includes(lowerQuery));
       }
-
-      filtered.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      setProducts(filtered);
+      setProducts(localList);
+      setError(err);
     } finally {
       setLoading(false);
     }

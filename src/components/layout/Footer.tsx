@@ -63,12 +63,36 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="footer-social">
-          <h3>Síguenos</h3>
-          <div className="social-icons">
-            <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="WhatsApp"><MessageCircle size={22} /></a>
-            <a href="#" className="social-link" aria-label="Lujo"><Sparkles size={22} /></a>
-            <a href="#" className="social-link" aria-label="Favoritos"><Heart size={22} /></a>
-            <a href="#" className="social-link" aria-label="Compartir"><Share2 size={22} /></a>
+          <h3>Síguenos en WhatsApp</h3>
+          <div className="social-icons" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <a
+              href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-channel-btn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                color: 'white',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                textDecoration: 'none',
+                boxShadow: '0 4px 12px rgba(37,211,102,0.3)',
+              }}
+            >
+              <MessageCircle size={18} />
+              <span>Unirse al Canal de WhatsApp</span>
+            </a>
+            <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.2rem' }}>
+              <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Canal WhatsApp"><MessageCircle size={22} color="#25D366" /></a>
+              <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Lujo"><Sparkles size={22} color="#E05A88" /></a>
+              <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Favoritos"><Heart size={22} color="#E05A88" /></a>
+              <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Compartir"><Share2 size={22} color="#E05A88" /></a>
+            </div>
           </div>
         </div>
       </div>

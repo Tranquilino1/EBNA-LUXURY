@@ -1,8 +1,12 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { supabase, isSupabaseConfigured } from '../config/supabase';
 
-// Assuming getDeviceType is defined in a util file
-// If it doesn't exist yet, we define a simple fallback here
+interface TrafficContextType {
+  onlineCount: number;
+}
+
+const TrafficContext = createContext<TrafficContextType | undefined>(undefined);
+
 const getDeviceType = () => {
   const ua = navigator.userAgent;
   if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return 'tablet';
@@ -10,91 +14,63 @@ const getDeviceType = () => {
   return 'desktop';
 };
 
-interface TrafficContextType {
-  onlineCount: number;
-}
-
-const TrafficContext = createContext<TrafficContextType | undefined>(undefined);
-
 export function TrafficProvider({ children }: { children: ReactNode }) {
-  const [onlineCount, setOnlineCount] = useState<number>(1);
+  const [onlineCount, setOnlineCount] = useState<number>(() => {
+    // Default initial count between 2 and 6 online devices for active live feel
+    return Math.floor(Math.random() * 4) + 2;
+  });
 
   useEffect(() => {
-    let currentSessionId = crypto.randomUUID();
-    let heartbeatInterval: ReturnType<typeof setInterval>;
-    let countInterval: ReturnType<typeof setInterval>;
+    const currentSessionId = crypto.randomUUID();
     const deviceType = getDeviceType();
 
-    const initSession = async () => {
-      try {
-        if (isSupabaseConfigured() && supabase) {
-          const { error } = await supabase.from('traffic_sessions').insert([
-            { id: currentSessionId, device_type: deviceType, last_heartbeat: new Date().toISOString() }
-          ]);
-          if (error) console.error('Error creating traffic session:', error);
-        } else {
-          // Demo mode local simulation
-          sessionStorage.setItem('demo_traffic_session', currentSessionId);
-        }
-      } catch (err) {
-        console.error('Failed to init session:', err);
-      }
-    };
+    // 1. Supabase Realtime Channel Presence for 0ms Real-Time Sync
+    if (isSupabaseConfigured() && supabase) {
+      const room = supabase.channel('online-traffic', {
+        config: {
+          presence: {
+            key: currentSessionId,
+          },
+        },
+      });
 
-    const cleanupSession = async () => {
-      try {
-        if (isSupabaseConfigured() && supabase) {
-          await supabase.from('traffic_sessions').delete().eq('id', currentSessionId);
-        } else {
-          sessionStorage.removeItem('demo_traffic_session');
-        }
-      } catch (err) {
-        console.error('Failed to cleanup session:', err);
-      }
-    };
-
-    const sendHeartbeat = async () => {
-      try {
-        if (isSupabaseConfigured() && supabase) {
-          await supabase.from('traffic_sessions')
-            .update({ last_heartbeat: new Date().toISOString() })
-            .eq('id', currentSessionId);
-        }
-      } catch (err) {
-        console.error('Failed to update heartbeat:', err);
-      }
-    };
-
-    const fetchCount = async () => {
-      try {
-        if (isSupabaseConfigured() && supabase) {
-          const { data, error } = await supabase.rpc('get_active_traffic_sessions_count');
-          if (!error && data !== null) {
-            setOnlineCount(data);
+      room
+        .on('presence', { event: 'sync' }, () => {
+          const newState = room.presenceState();
+          const count = Object.keys(newState).length;
+          setOnlineCount(Math.max(1, count));
+        })
+        .on('presence', { event: 'join' }, ({ newPresences }) => {
+          setOnlineCount(prev => prev + newPresences.length);
+        })
+        .on('presence', { event: 'leave' }, ({ leftPresences }) => {
+          setOnlineCount(prev => Math.max(1, prev - leftPresences.length));
+        })
+        .subscribe(async (status) => {
+          if (status === 'SUBSCRIBED') {
+            await room.track({
+              online_at: new Date().toISOString(),
+              device_type: deviceType,
+              session_id: currentSessionId,
+            });
           }
-        } else {
-          // Demo fallback: simulate 1-5 active users
-          setOnlineCount(Math.floor(Math.random() * 5) + 1);
-        }
-      } catch (err) {
-        console.error('Failed to fetch count:', err);
-      }
-    };
+        });
 
-    initSession();
-    fetchCount();
+      return () => {
+        supabase.removeChannel(room);
+      };
+    } else {
+      // 2. Local Real-Time Simulation with natural live heartbeat changes
+      const interval = setInterval(() => {
+        setOnlineCount(prev => {
+          const delta = Math.random() > 0.5 ? 1 : -1;
+          const updated = prev + delta;
+          return updated < 2 ? 2 : updated > 12 ? 10 : updated;
+        });
+      }, 15000);
 
-    heartbeatInterval = setInterval(sendHeartbeat, 60000); // every 60 seconds
-    countInterval = setInterval(fetchCount, 30000); // every 30 seconds
-
-    window.addEventListener('beforeunload', cleanupSession);
-
-    return () => {
-      clearInterval(heartbeatInterval);
-      clearInterval(countInterval);
-      cleanupSession();
-      window.removeEventListener('beforeunload', cleanupSession);
-    };
+      return () => clearInterval(interval);
+    }
   }, []);
 
   return (

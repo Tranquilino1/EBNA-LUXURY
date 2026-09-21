@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Menu, X, User, LogOut, Settings, Circle, QrCode } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, Circle, QrCode, ShoppingBag } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTraffic } from '../../contexts/TrafficContext';
+import { useCart } from '../../contexts/CartContext';
 import { QRModal } from '../ui/QRModal';
 import './layout.css';
 
@@ -14,6 +15,7 @@ export const Navbar: React.FC = () => {
   
   const { user, profile, isAdmin, signOut } = useAuth();
   const { onlineCount } = useTraffic();
+  const { setIsCartOpen, totalItemsCount } = useCart();
   
   const navigate = useNavigate();
 
@@ -65,8 +67,51 @@ export const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* Right side: Traffic and Auth */}
+        {/* Right side: Traffic, Cart, and Auth */}
         <div className="navbar-actions">
+          <button
+            className="cart-trigger-nav-btn"
+            onClick={() => setIsCartOpen(true)}
+            title="Ver Carrito de Compras"
+            style={{
+              position: 'relative',
+              background: 'rgba(224, 90, 136, 0.12)',
+              border: '1px solid rgba(224, 90, 136, 0.25)',
+              borderRadius: '20px',
+              padding: '8px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              color: '#E05A88',
+              cursor: 'pointer',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+            }}
+          >
+            <ShoppingBag size={18} />
+            <span className="desktop-only">Carrito</span>
+            {totalItemsCount > 0 && (
+              <span
+                style={{
+                  background: '#E05A88',
+                  color: 'white',
+                  borderRadius: '50%',
+                  width: '20px',
+                  height: '20px',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: '2px',
+                  boxShadow: '0 2px 6px rgba(224,90,136,0.4)',
+                }}
+              >
+                {totalItemsCount}
+              </span>
+            )}
+          </button>
+
           <button 
             className="qr-trigger-btn"
             onClick={() => setIsQRModalOpen(true)}

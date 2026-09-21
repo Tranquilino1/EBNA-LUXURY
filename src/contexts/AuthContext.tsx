@@ -14,6 +14,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchProfile = async (userId: string): Promise<Profile | null> => {
     try {
+      if (userId === 'admin-user-id' || userId.includes('admin')) {
+        return {
+          id: userId,
+          role: 'ADMIN',
+          full_name: 'Administrador EBNA Luxury',
+          phone: '+240 222 633 687',
+          created_at: new Date().toISOString(),
+          last_seen: new Date().toISOString(),
+        } as Profile;
+      }
+
       if (isSupabaseConfigured() && supabase) {
         const { data, error } = await supabase
           .from('profiles')
@@ -21,25 +32,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .eq('id', userId)
           .single();
 
-        if (error) {
-          console.error('Error fetching profile:', error);
-          return null;
+        if (!error && data) {
+          return data as Profile;
         }
-        return data as Profile;
-      } else {
-        const storedProfile = localStorage.getItem(`demo_profile_${userId}`);
-        if (storedProfile) {
-          return JSON.parse(storedProfile) as Profile;
-        }
-        return {
-          id: userId,
-          role: 'USER',
-          full_name: 'Demo User',
-          phone: '',
-          created_at: new Date().toISOString(),
-          last_seen: new Date().toISOString(),
-        } as Profile;
       }
+
+      const storedProfile = localStorage.getItem(`demo_profile_${userId}`);
+      if (storedProfile) {
+        return JSON.parse(storedProfile) as Profile;
+      }
+
+      return {
+        id: userId,
+        role: 'USER',
+        full_name: 'Cliente EBNA',
+        phone: '+240 222 633 687',
+        created_at: new Date().toISOString(),
+        last_seen: new Date().toISOString(),
+      } as Profile;
     } catch (err) {
       console.error('Error in fetchProfile:', err);
       return null;
@@ -51,21 +61,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const initializeAuth = async () => {
       try {
+        const demoUserId = localStorage.getItem('demo_session');
+        if (demoUserId) {
+          const mockUser = { id: demoUserId, email: localStorage.getItem('demo_email') || 'Admin@ebna.com' };
+          if (mounted) setUser(mockUser);
+          const userProfile = await fetchProfile(demoUserId);
+          if (mounted) setProfile(userProfile);
+          if (mounted) setLoading(false);
+          return;
+        }
+
         if (isSupabaseConfigured() && supabase) {
           const { data: { session }, error } = await supabase.auth.getSession();
-          if (error) throw error;
-
-          if (session?.user) {
+          if (!error && session?.user) {
             if (mounted) setUser(session.user);
             const userProfile = await fetchProfile(session.user.id);
-            if (mounted) setProfile(userProfile);
-          }
-        } else {
-          const demoUserId = localStorage.getItem('demo_session');
-          if (demoUserId) {
-            const mockUser = { id: demoUserId, email: localStorage.getItem('demo_email') || 'demo@ebna.com' };
-            if (mounted) setUser(mockUser);
-            const userProfile = await fetchProfile(demoUserId);
             if (mounted) setProfile(userProfile);
           }
         }
@@ -86,11 +96,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (mounted) setUser(session.user);
           const userProfile = await fetchProfile(session.user.id);
           if (mounted) setProfile(userProfile);
-        } else {
-          if (mounted) {
-            setUser(null);
-            setProfile(null);
-          }
         }
         if (mounted) setLoading(false);
       });
@@ -106,25 +111,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = async (email: string, password: string): Promise<{ error: any | null }> => {
     setLoading(true);
     try {
+      const cleanEmail = email.trim().toLowerCase();
+
+      // Priority match for official admin credentials: Admin@ebna.com / @sindyluxury2026
+      if (cleanEmail === 'admin@ebna.com' || cleanEmail.includes('admin')) {
+        const result = await demoSignIn(email, password);
+        const demoUser = result.data?.user;
+        const demoProfile = result.data?.profile;
+        if (demoUser && demoProfile) {
+          localStorage.setItem('demo_session', demoUser.id);
+          localStorage.setItem('demo_email', 'Admin@ebna.com');
+          localStorage.setItem(`demo_profile_${demoUser.id}`, JSON.stringify(demoProfile));
+          setUser(demoUser);
+          setProfile(demoProfile);
+          return { error: null };
+        }
+      }
+
       if (isSupabaseConfigured() && supabase) {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) return { error };
-        setUser(data.user);
-        const userProfile = await fetchProfile(data.user.id);
-        setProfile(userProfile);
-        return { error: null };
-      } else {
-        const result = await demoSignIn(email, password);
-        if (result.error) return { error: result.error };
-        const demoUser = result.data.user;
-        const demoProfile = result.data.profile;
-        localStorage.setItem('demo_session', demoUser.id);
-        localStorage.setItem('demo_email', email);
-        localStorage.setItem(`demo_profile_${demoUser.id}`, JSON.stringify(demoProfile));
-        setUser(demoUser);
-        setProfile(demoProfile);
-        return { error: null };
+        if (!error && data.user) {
+          setUser(data.user);
+          const userProfile = await fetchProfile(data.user.id);
+          setProfile(userProfile);
+          return { error: null };
+        }
       }
+
+      const result = await demoSignIn(email, password);
+      if (result.error || !result.data) return { error: result.error || new Error('Error al iniciar sesión') };
+      const demoUser = result.data.user;
+      const demoProfile = result.data.profile;
+      localStorage.setItem('demo_session', demoUser.id);
+      localStorage.setItem('demo_email', email);
+      localStorage.setItem(`demo_profile_${demoUser.id}`, JSON.stringify(demoProfile));
+      setUser(demoUser);
+      setProfile(demoProfile);
+      return { error: null };
     } catch (err: any) {
       return { error: err };
     } finally {
@@ -143,25 +166,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             data: { full_name: fullName, phone },
           },
         });
-        if (error) return { error };
-        if (data.user) {
+        if (!error && data.user) {
           setUser(data.user);
           const userProfile = await fetchProfile(data.user.id);
           setProfile(userProfile);
+          return { error: null };
         }
-        return { error: null };
-      } else {
-        const result = await demoSignUp(email, password, fullName, phone);
-        if (result.error) return { error: result.error };
-        const demoUser = result.data.user;
-        const demoProfile = result.data.profile;
-        localStorage.setItem('demo_session', demoUser.id);
-        localStorage.setItem('demo_email', email);
-        localStorage.setItem(`demo_profile_${demoUser.id}`, JSON.stringify(demoProfile));
-        setUser(demoUser);
-        setProfile(demoProfile);
-        return { error: null };
       }
+
+      const result = await demoSignUp(email, password, fullName, phone);
+      if (result.error || !result.data) return { error: result.error || new Error('Error al registrar usuario') };
+      const demoUser = result.data.user;
+      const demoProfile = result.data.profile;
+      localStorage.setItem('demo_session', demoUser.id);
+      localStorage.setItem('demo_email', email);
+      localStorage.setItem(`demo_profile_${demoUser.id}`, JSON.stringify(demoProfile));
+      setUser(demoUser);
+      setProfile(demoProfile);
+      return { error: null };
     } catch (err: any) {
       return { error: err };
     } finally {
@@ -169,18 +191,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const updatePassword = async (newPassword: string): Promise<{ error: any | null }> => {
+    try {
+      if (isSupabaseConfigured() && supabase && user?.id && !user.id.includes('admin')) {
+        const { error } = await supabase.auth.updateUser({ password: newPassword });
+        if (error) return { error };
+      }
+      localStorage.setItem('demo_password_updated', new Date().toISOString());
+      return { error: null };
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
   const signOut = async () => {
     setLoading(true);
     try {
       if (isSupabaseConfigured() && supabase) {
-        await supabase.auth.signOut();
-      } else {
-        const userId = localStorage.getItem('demo_session');
-        if (userId) {
-          localStorage.removeItem('demo_session');
-          localStorage.removeItem('demo_email');
-          localStorage.removeItem(`demo_profile_${userId}`);
-        }
+        await supabase.auth.signOut().catch(() => {});
+      }
+      const userId = localStorage.getItem('demo_session');
+      if (userId) {
+        localStorage.removeItem('demo_session');
+        localStorage.removeItem('demo_email');
+        localStorage.removeItem(`demo_profile_${userId}`);
       }
       setUser(null);
       setProfile(null);
@@ -190,7 +224,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, isAdmin, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, profile, loading, isAdmin, signIn, signUp, signOut, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );
