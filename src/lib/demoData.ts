@@ -6268,16 +6268,49 @@ export function getDeletedProductIds(): string[] {
   }
 }
 
-export function markProductAsDeleted(idOrSlug: string): void {
+export function markProductAsDeleted(prodOrId: any): void {
   try {
     const deleted = getDeletedProductIds();
-    if (!deleted.includes(idOrSlug)) {
-      deleted.push(idOrSlug);
+    const toMark: string[] = [];
+
+    if (typeof prodOrId === 'string') {
+      toMark.push(prodOrId);
+    } else if (prodOrId && typeof prodOrId === 'object') {
+      if (prodOrId.id) toMark.push(prodOrId.id);
+      if (prodOrId.slug) toMark.push(prodOrId.slug);
+      if (prodOrId.sku) toMark.push(prodOrId.sku);
+      if (prodOrId.name) {
+        const normName = prodOrId.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        toMark.push(normName);
+      }
+    }
+
+    let modified = false;
+    toMark.forEach(str => {
+      if (str && !deleted.includes(str)) {
+        deleted.push(str);
+        modified = true;
+      }
+    });
+
+    if (modified) {
       localStorage.setItem(LOCAL_DELETED_KEY, JSON.stringify(deleted));
     }
   } catch (e) {
     console.warn('Error saving deleted product id:', e);
   }
+}
+
+export function isProductDeleted(p: Product, deleted: string[]): boolean {
+  if (!deleted || deleted.length === 0) return false;
+  if (p.id && deleted.includes(p.id)) return true;
+  if (p.slug && deleted.includes(p.slug)) return true;
+  if (p.sku && deleted.includes(p.sku)) return true;
+  if (p.name) {
+    const normName = p.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    if (deleted.includes(normName)) return true;
+  }
+  return false;
 }
 
 export function demoGetProducts(): Product[] {
@@ -6301,7 +6334,7 @@ export function demoGetProducts(): Product[] {
 
   const deleted = getDeletedProductIds();
   if (deleted.length > 0) {
-    list = list.filter(p => !deleted.includes(p.id) && !deleted.includes(p.slug));
+    list = list.filter(p => !isProductDeleted(p, deleted));
   }
 
   return list;
@@ -6380,15 +6413,15 @@ export function demoUpdateProduct(id: string, updates: Partial<Product>): Produc
 
 export function demoDeleteProduct(id: string): boolean {
   const list = demoGetProducts();
-  const target = list.find(p => p.id === id || p.slug === id);
+  const target = list.find(p => p.id === id || p.slug === id || p.sku === id);
   if (target) {
-    markProductAsDeleted(target.id);
-    if (target.slug) markProductAsDeleted(target.slug);
+    markProductAsDeleted(target);
   } else {
     markProductAsDeleted(id);
   }
 
-  const filtered = list.filter(p => p.id !== id && p.slug !== id);
+  const deleted = getDeletedProductIds();
+  const filtered = list.filter(p => !isProductDeleted(p, deleted));
   demoSaveProducts(filtered);
   notifyCatalogChange('delete', { id });
   return true;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoGetProducts, getDeletedProductIds } from '../lib/demoData';
+import { demoGetProducts, getDeletedProductIds, isProductDeleted } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
@@ -68,7 +68,7 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
       // Filter out deleted items and hidden items for public view
       const deletedIds = getDeletedProductIds();
-      localList = localList.filter((p: Product) => !p.is_hidden && !deletedIds.includes(p.id) && !deletedIds.includes(p.slug));
+      localList = localList.filter((p: Product) => !p.is_hidden && !isProductDeleted(p, deletedIds));
 
       // Filter by category
       if (category && category !== 'TODOS') {

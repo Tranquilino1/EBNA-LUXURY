@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoGetProducts, demoAddProduct, demoUpdateProduct, demoDeleteProduct, getDeletedProductIds, markProductAsDeleted } from '../lib/demoData';
+import { demoGetProducts, demoAddProduct, demoUpdateProduct, demoDeleteProduct, getDeletedProductIds, markProductAsDeleted, isProductDeleted } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, ProductImages } from '../types';
@@ -173,29 +173,36 @@ export function useAdminProducts() {
 
   const deleteProduct = async (id: string) => {
     try {
-      const prod = products.find(p => p.id === id || p.slug === id);
-      const targetSlug = prod?.slug;
+      const prod = products.find(p => p.id === id || p.slug === id || p.sku === id);
+      const targetSlug = prod?.slug || id;
 
-      // 1. Delete locally and add to persistent deletion blacklist
+      // 1. Mark as deleted in persistent blacklist
+      if (prod) {
+        markProductAsDeleted(prod);
+      } else {
+        markProductAsDeleted(id);
+      }
       demoDeleteProduct(id);
-      if (targetSlug) markProductAsDeleted(targetSlug);
-      if (id) markProductAsDeleted(id);
 
-      // 2. Optimistic local state update
-      setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug));
+      // 2. Immediate 0ms local state update (never wait or refetch old data)
+      const deletedIds = getDeletedProductIds();
+      setProducts(prev => prev.filter(p => !isProductDeleted(p, deletedIds)));
 
-      // 3. Delete from Supabase (by slug and by id)
+      // 3. Delete from Supabase in background
       if (targetSlug) {
-        await supabase.from('products').delete().eq('slug', targetSlug);
+        supabase.from('products').delete().eq('slug', targetSlug).then(({ error }) => {
+          if (error) console.warn('Supabase delete notice:', error.message);
+        });
       }
       if (id) {
-        await supabase.from('products').delete().eq('id', id);
+        supabase.from('products').delete().eq('id', id).then(({ error }) => {
+          if (error) console.warn('Supabase delete notice:', error.message);
+        });
       }
-
-      await fetchProducts();
     } catch (err) {
       console.error('Error deleting product:', err);
-      setProducts(prev => prev.filter(p => p.id !== id));
+      const deletedIds = getDeletedProductIds();
+      setProducts(prev => prev.filter(p => !isProductDeleted(p, deletedIds)));
     }
   };
 
