@@ -34,7 +34,7 @@ export const CartDrawer: React.FC = () => {
     let itemsListText = '';
     cartItems.forEach((item, index) => {
       recordProductOrder(item.product.id);
-      const itemSubtotal = item.product.price * item.quantity;
+      const itemSubtotal = (item.product.priceFCFA || item.product.price || 0) * item.quantity;
       itemsListText += `\n${index + 1}. *${item.product.name}*
    • Cantidad: ${item.quantity} unidad(es)
    • Talla: ${item.selectedSize} | Color: ${item.selectedColor}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, getDeletedProductIds, markProductAsDeleted, isProductDeleted } from '../lib/demoData';
-import { subscribeToCatalogChanges } from '../lib/broadcast';
+import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
@@ -33,15 +33,19 @@ export function useAdminProducts() {
             name: item.name,
             category: item.category,
             subcategory: item.subcategory || 'General',
+            brand: item.brand || 'EBNA Luxury Collection',
             priceFCFA: item.price_fcfa || item.price,
             price: item.price,
-            inStock: item.in_stock,
-            in_stock: item.in_stock,
+            inStock: item.in_stock !== undefined ? item.in_stock : true,
+            in_stock: item.in_stock !== undefined ? item.in_stock : true,
+            is_hidden: item.is_hidden || false,
             description: item.description || '',
             images: {
               primary: primaryImg,
               gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg])
             },
+            colors: item.colors || ['Blanco', 'Negro'],
+            sizes: item.sizes || ['S', 'M', 'L'],
             slug: item.slug,
             created_at: item.created_at,
             updated_at: item.updated_at,
@@ -91,18 +95,24 @@ export function useAdminProducts() {
         images: imagesObj 
       };
 
-      // 1. Add locally (0ms instantaneous execution)
+      // 1. Add locally for instant UI update
       const created = demoAddProduct(newProduct);
       setProducts(prev => [created, ...prev.filter(p => p.id !== created.id)]);
 
-      // 2. Add to Supabase non-blocking background
+      // 2. Build full relational Supabase payload
       const supabasePayload: any = {
         name: created.name,
         category: created.category,
-        description: created.description,
+        subcategory: created.subcategory || 'General',
+        brand: created.brand || 'EBNA Luxury Collection',
+        description: created.description || '',
         price: created.price,
-        images: [created.images.primary],
-        in_stock: created.in_stock
+        price_fcfa: created.priceFCFA || created.price,
+        images: { primary: created.images.primary, gallery: created.images.gallery || [created.images.primary] },
+        colors: created.colors || ['Blanco', 'Negro'],
+        sizes: created.sizes || ['S', 'M', 'L'],
+        in_stock: created.in_stock !== undefined ? created.in_stock : true,
+        is_hidden: created.is_hidden || false,
       };
 
       if (created.id && created.id.length === 36) {
@@ -112,9 +122,11 @@ export function useAdminProducts() {
         supabasePayload.slug = created.slug;
       }
 
-      supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' }).then(({ error }) => {
-        if (error) console.warn('Supabase sync notice:', error.message);
-      });
+      const { error } = await supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' });
+      if (error) console.warn('Supabase sync notice:', error.message);
+
+      notifyCatalogChange('add', created);
+      await fetchProducts();
     } catch (err) {
       console.error('Error adding product:', err);
       throw err;
@@ -133,21 +145,28 @@ export function useAdminProducts() {
         };
       }
 
-      // 1. Update locally (0ms instantaneous execution)
+      // 1. Update locally for instant UI update
       const updated = demoUpdateProduct(id, updatedData);
 
       if (updated) {
         setProducts(prev => prev.map(p => (p.id === id || p.slug === id) ? updated : p));
 
-        // 2. Update in Supabase non-blocking background
+        // 2. Build full relational Supabase payload
         const supabasePayload: any = {
           name: updated.name,
           category: updated.category,
-          description: updated.description,
+          subcategory: updated.subcategory || 'General',
+          brand: updated.brand || 'EBNA Luxury Collection',
+          description: updated.description || '',
           price: updated.price,
-          images: [updated.images.primary],
-          in_stock: updated.in_stock
+          price_fcfa: updated.priceFCFA || updated.price,
+          images: { primary: updated.images.primary, gallery: updated.images.gallery || [updated.images.primary] },
+          colors: updated.colors || ['Blanco', 'Negro'],
+          sizes: updated.sizes || ['S', 'M', 'L'],
+          in_stock: updated.in_stock !== undefined ? updated.in_stock : true,
+          is_hidden: updated.is_hidden || false,
         };
+
         if (updated.id && updated.id.length === 36) {
           supabasePayload.id = updated.id;
         }
@@ -155,9 +174,11 @@ export function useAdminProducts() {
           supabasePayload.slug = updated.slug;
         }
 
-        supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' }).then(({ error }) => {
-          if (error) console.warn('Supabase sync notice:', error.message);
-        });
+        const { error } = await supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' });
+        if (error) console.warn('Supabase sync notice:', error.message);
+
+        notifyCatalogChange('update', updated);
+        await fetchProducts();
       }
     } catch (err) {
       console.error('Error updating product:', err);
@@ -170,7 +191,7 @@ export function useAdminProducts() {
       const prod = products.find(p => p.id === id || p.slug === id || p.sku === id);
       const targetSlug = prod?.slug || id;
 
-      // 1. Mark as deleted in persistent blacklist
+      // 1. Mark as deleted in persistent local tracking
       if (prod) {
         markProductAsDeleted(prod);
       } else {
@@ -178,21 +199,20 @@ export function useAdminProducts() {
       }
       demoDeleteProduct(id);
 
-      // 2. Immediate 0ms local state update (never wait or refetch old data)
+      // 2. Immediate local state update
       const deletedIds = getDeletedProductIds();
       setProducts(prev => prev.filter(p => !isProductDeleted(p, deletedIds)));
 
-      // 3. Delete from Supabase in background
+      // 3. Delete from Supabase
       if (targetSlug) {
-        supabase.from('products').delete().eq('slug', targetSlug).then(({ error }) => {
-          if (error) console.warn('Supabase delete notice:', error.message);
-        });
+        await supabase.from('products').delete().eq('slug', targetSlug);
       }
       if (id) {
-        supabase.from('products').delete().eq('id', id).then(({ error }) => {
-          if (error) console.warn('Supabase delete notice:', error.message);
-        });
+        await supabase.from('products').delete().eq('id', id);
       }
+
+      notifyCatalogChange('delete', { id, slug: targetSlug });
+      await fetchProducts();
     } catch (err) {
       console.error('Error deleting product:', err);
       const deletedIds = getDeletedProductIds();
@@ -206,6 +226,7 @@ export function useAdminProducts() {
     if (prod) {
       await supabase.from('products').update({ in_stock: !currentStockStatus }).eq('slug', prod.slug);
     }
+    notifyCatalogChange('toggleStock', { id, in_stock: !currentStockStatus });
     await fetchProducts();
   };
 
@@ -219,3 +240,4 @@ export function useAdminProducts() {
     refetch: fetchProducts,
   };
 }
+
