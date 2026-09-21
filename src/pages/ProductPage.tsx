@@ -7,6 +7,7 @@ import { SEOHead } from '../components/seo/SEOHead';
 import { buildWhatsAppUrl } from '../lib/whatsapp';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
+import { recordProductOrder } from '../lib/popularityTracker';
 
 export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -227,6 +228,7 @@ export function ProductPage() {
               rel="noopener noreferrer" 
               className="wa-btn wa-btn-lg full-width"
               style={{ textDecoration: 'none' }}
+              onClick={() => recordProductOrder(product.id)}
             >
               <span>Pedir por WhatsApp Directo</span>
             </a>
@@ -237,6 +239,7 @@ export function ProductPage() {
               rel="noopener noreferrer" 
               className="btn-secondary full-width"
               style={{ textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              onClick={() => recordProductOrder(product.id)}
             >
               <Phone size={18} /> Muni Dinero / Contacto ({secondaryPhone})
             </a>

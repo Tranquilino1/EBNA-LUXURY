@@ -12,8 +12,8 @@ export interface UserAccount {
 export const INITIAL_PRODUCTS: Product[] = [
   {
     "id": "ebna-1",
-    "slug": "sneakers-urbanos-bicolor-sports-men-s-edition-ref-eb-1-ebna-1",
-    "name": "Sneakers Urbanos Bicolor Sports Men's Edition (Ref. EB-1)",
+    "slug": "sneakers-urbanos-bicolor-sports-men-s-edition-ebna-1",
+    "name": "Sneakers Urbanos Bicolor Sports Men's Edition",
     "category": "CALZADO",
     "description": "Zapatillas deportivas de malla transpirable con suela amortiguadora de impacto. Diseño ergonómico para vestir casual con jeans o ropa deportiva en Malabo y Bata.",
     "price": 28000,
@@ -42,10 +42,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-2",
-    "slug": "set-de-cosmetica-facial-brunch-beauty-glow-serum-50ml-ebna-2",
-    "name": "Set de Cosmética Facial Brunch Beauty Glow Serum (50ml)",
+    "slug": "set-de-cosmetica-facial-brunch-beauty-glow-serum-vitamina-c-50ml-ebna-2",
+    "name": "Set de Cosmética Facial Brunch Beauty Glow Serum Vitamina C (50ml)",
     "category": "COSMETICA",
-    "description": "Concentrado ilumindor facial con vitamina C estabilizada y ácido hialurónico. Aporta frescura instantánea y efecto buena cara todo el día.",
+    "description": "Concentrado iluminador facial con vitamina C estabilizada y ácido hialurónico. Aporta frescura instantánea y efecto buena cara.",
     "price": 15000,
     "images": [
       "/products/product_2.jfif"
@@ -69,8 +69,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-3",
-    "slug": "conjunto-deportivo-hooded-crop-top-pantalon-flare-ref-eb-3-ebna-3",
-    "name": "Conjunto Deportivo Hooded Crop Top & Pantalón Flare (Ref. EB-3)",
+    "slug": "conjunto-deportivo-hooded-crop-top-pantalon-flare-rose-ebna-3",
+    "name": "Conjunto Deportivo Hooded Crop Top & Pantalón Flare Rose",
     "category": "MODA",
     "description": "Set de 2 piezas compuesto por top corto con capucha y pantalón acampanado elástico. Estilo athleisure de corte impecable.",
     "price": 25000,
@@ -98,10 +98,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-4",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-4-ebna-4",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-4)",
+    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-satin-noir-ebna-4",
+    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch Satin Noir",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 22500,
     "images": [
       "/products/product_4.jfif"
@@ -127,10 +127,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-5",
-    "slug": "chaqueta-tweed-estilo-chanel-couture-ref-eb-5-ebna-5",
-    "name": "Chaqueta Tweed Estilo Chanel Couture (Ref. EB-5)",
+    "slug": "chaqueta-tweed-estilo-chanel-couture-blanco-negro-ebna-5",
+    "name": "Chaqueta Tweed Estilo Chanel Couture Blanco & Negro",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Chaqueta sastre de tweed estructurado inspirada en los clásicos de la alta costura parisina. Destaca por su entramado de hilos metálicos, botones grabados y forro interno satinado.",
     "price": 24000,
     "images": [
       "/products/product_5.jfif"
@@ -156,10 +156,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-6",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-6-ebna-6",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-6)",
+    "slug": "mono-jumpsuit-entallado-escote-asimetrico-noir-ebna-6",
+    "name": "Mono Jumpsuit Entallado Escote Asimétrico Noir",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 25500,
     "images": [
       "/products/product_6.jfif"
@@ -185,10 +185,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-7",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-7-ebna-7",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-7)",
+    "slug": "falda-lapiz-midi-con-apertura-posterior-negra-classic-ebna-7",
+    "name": "Falda Lápiz Midi con Apertura Posterior Negra Classic",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 27000,
     "images": [
       "/products/product_7.jfif"
@@ -214,10 +214,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-8",
-    "slug": "camisa-de-lino-blanco-pure-luxury-edition-ref-eb-8-ebna-8",
-    "name": "Camisa de Lino Blanco Pure Luxury Edition (Ref. EB-8)",
+    "slug": "camisa-de-lino-blanco-pure-luxury-edition-ebna-8",
+    "name": "Camisa de Lino Blanco Pure Luxury Edition",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Camisa confeccionada en lino 100% transpirable de fibra larga. Ofrece un tacto fresco, corte clásico atemporal y acabado pulido para vestir con distinción en cualquier ocasión.",
     "price": 28500,
     "images": [
       "/products/product_8.jfif"
@@ -243,10 +243,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-9",
-    "slug": "top-elegante-drapeado-satin-chic-ref-eb-9-ebna-9",
-    "name": "Top Elegante Drapeado Satin Chic (Ref. EB-9)",
+    "slug": "top-elegante-drapeado-satin-chic-blanco-nieve-ebna-9",
+    "name": "Top Elegante Drapeado Satin Chic Blanco Nieve",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Top de satén seda con pliegues drapeados en el escote que resaltan los hombros y el busto. Un diseño versátil y glamuroso para combinar con faldas o pantalones de vestir.",
     "price": 30000,
     "images": [
       "/products/product_9.jfif"
@@ -272,10 +272,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-10",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-10-ebna-10",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-10)",
+    "slug": "conjunto-de-punto-fino-primavera-verano-beige-soft-ebna-10",
+    "name": "Conjunto de Punto Fino Primavera-Verano Beige Soft",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 31500,
     "images": [
       "/products/product_10.jfif"
@@ -301,10 +301,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-11",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-11-ebna-11",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-11)",
+    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ivory-ebna-11",
+    "name": "Blusa de Seda con Lazada al Cuello Executive Ivory",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 18000,
     "images": [
       "/products/product_11.jfif"
@@ -333,7 +333,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "slug": "jabon-vegetal-palmolive-naturals-extractos-herbales-pack-12-x-90g-ebna-12",
     "name": "Jabón Vegetal Palmolive Naturals Extractos Herbales (Pack 12 x 90g)",
     "category": "JABONES",
-    "description": "Pack familiar de jabones enriquecidos con extractos herbales purificantes y aroma botánico. Limpieza profunda respetando el pH natural de la piel.",
+    "description": "Jabón corporal elaborado con aceites vegetales y extractos botánicos naturales. Limpia suavemente la piel dejándola fresca y fragante.",
     "price": 8500,
     "images": [
       "/products/product_12.jfif"
@@ -357,10 +357,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-13",
-    "slug": "chaqueta-tweed-estilo-chanel-couture-ref-eb-13-ebna-13",
-    "name": "Chaqueta Tweed Estilo Chanel Couture (Ref. EB-13)",
+    "slug": "chaqueta-tweed-estilo-chanel-couture-rosa-pastel-dorado-ebna-13",
+    "name": "Chaqueta Tweed Estilo Chanel Couture Rosa Pastel & Dorado",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Chaqueta sastre de tweed estructurado inspirada en los clásicos de la alta costura parisina. Destaca por su entramado de hilos metálicos, botones grabados y forro interno satinado.",
     "price": 21000,
     "images": [
       "/products/product_13.jfif"
@@ -386,10 +386,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-14",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-14-ebna-14",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-14)",
+    "slug": "jumpsuit-elegante-escote-cruzado-rojo-borgona-ebna-14",
+    "name": "Jumpsuit Elegante Escote Cruzado Rojo Borgoña",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 22500,
     "images": [
       "/products/product_14.jfif"
@@ -415,10 +415,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-15",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-15-ebna-15",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-15)",
+    "slug": "falda-tubo-midi-tiro-alto-beige-sastre-ebna-15",
+    "name": "Falda Tubo Midi Tiro Alto Beige Sastre",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 24000,
     "images": [
       "/products/product_15.jfif"
@@ -444,10 +444,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-16",
-    "slug": "camisa-de-lino-blanco-pure-luxury-edition-ref-eb-16-ebna-16",
-    "name": "Camisa de Lino Blanco Pure Luxury Edition (Ref. EB-16)",
+    "slug": "camisa-de-lino-entallada-beige-arena-natural-ebna-16",
+    "name": "Camisa de Lino Entallada Beige Arena Natural",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Camisa confeccionada en lino 100% transpirable de fibra larga. Ofrece un tacto fresco, corte clásico atemporal y acabado pulido para vestir con distinción en cualquier ocasión.",
     "price": 25500,
     "images": [
       "/products/product_16.jfif"
@@ -473,8 +473,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-17",
-    "slug": "pantalon-jeans-wide-leg-streetwear-y2k-edition-ref-eb-17-ebna-17",
-    "name": "Pantalón Jeans Wide Leg Streetwear Y2K Edition (Ref. EB-17)",
+    "slug": "pantalon-jeans-wide-leg-streetwear-y2k-denim-blue-ebna-17",
+    "name": "Pantalón Jeans Wide Leg Streetwear Y2K Denim Blue",
     "category": "MODA",
     "description": "Pantalón vaquero de corte ancho holgado con detalles bordados retro Y2K. Algodón denim resistente de alta calidad.",
     "price": 28000,
@@ -502,8 +502,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-18",
-    "slug": "pack-2x-leggings-elasticos-maternidad-confort-ultra-soft-ref-eb-18-ebna-18",
-    "name": "Pack 2x Leggings Elásticos Maternidad Confort Ultra-Soft (Ref. EB-18)",
+    "slug": "pack-2x-leggings-elasticos-maternidad-confort-ultra-soft-ebna-18",
+    "name": "Pack 2x Leggings Elásticos Maternidad Confort Ultra-Soft",
     "category": "MODA",
     "description": "Set de 2 mallas de soporte premamá de tiro alto con banda anatómica elástica. Tejido transpirable de máxima suavidad.",
     "price": 18000,
@@ -531,10 +531,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-19",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-19-ebna-19",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-19)",
+    "slug": "blusa-satinada-con-lazada-al-cuello-midnight-blue-ebna-19",
+    "name": "Blusa Satinada con Lazada al Cuello Midnight Blue",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 30000,
     "images": [
       "/products/product_19.jfif"
@@ -560,10 +560,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-20",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-20-ebna-20",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-20)",
+    "slug": "pantalon-palazzo-plisado-beige-caramel-edition-ebna-20",
+    "name": "Pantalón Palazzo Plisado Beige Caramel Edition",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 31500,
     "images": [
       "/products/product_20.jfif"
@@ -589,8 +589,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-21",
-    "slug": "gafas-de-sol-classic-square-unisex-filtro-filtro-luz-azul-pack-3x-ebna-21",
-    "name": "Gafas de Sol Classic Square Unisex Filtro Filtro Luz Azul (Pack 3x)",
+    "slug": "gafas-de-sol-classic-square-unisex-filtro-luz-azul-pack-3x-ebna-21",
+    "name": "Gafas de Sol Classic Square Unisex Filtro Luz Azul (Pack 3x)",
     "category": "ACCESORIOS",
     "description": "Set de 3 gafas cuadradas estilo clásico con lentes protectoras contra pantallas y rayos UV. Montura ligera en acetato negro mate de gran durabilidad.",
     "price": 16000,
@@ -614,10 +614,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-22",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-22-ebna-22",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-22)",
+    "slug": "mono-de-noche-entallado-con-cinturon-dorado-ebna-22",
+    "name": "Mono de Noche Entallado con Cinturón Dorado",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 19500,
     "images": [
       "/products/product_22.jfif"
@@ -643,10 +643,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-23",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-23-ebna-23",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-23)",
+    "slug": "falda-lapiz-con-apertura-posterior-azul-marino-ebna-23",
+    "name": "Falda Lápiz con Apertura Posterior Azul Marino",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 21000,
     "images": [
       "/products/product_23.jfif"
@@ -672,10 +672,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-24",
-    "slug": "camisa-de-lino-blanco-pure-luxury-edition-ref-eb-24-ebna-24",
-    "name": "Camisa de Lino Blanco Pure Luxury Edition (Ref. EB-24)",
+    "slug": "camisa-de-lino-manga-larga-azul-cielo-soft-ebna-24",
+    "name": "Camisa de Lino Manga Larga Azul Cielo Soft",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Camisa confeccionada en lino 100% transpirable de fibra larga. Ofrece un tacto fresco, corte clásico atemporal y acabado pulido para vestir con distinción en cualquier ocasión.",
     "price": 22500,
     "images": [
       "/products/product_24.jfif"
@@ -701,10 +701,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-25",
-    "slug": "top-elegante-drapeado-satin-chic-ref-eb-25-ebna-25",
-    "name": "Top Elegante Drapeado Satin Chic (Ref. EB-25)",
+    "slug": "top-drapeado-en-saten-seda-rosa-blush-ebna-25",
+    "name": "Top Drapeado en Satén Seda Rosa Blush",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Top de satén seda con pliegues drapeados en el escote que resaltan los hombros y el busto. Un diseño versátil y glamuroso para combinar con faldas o pantalones de vestir.",
     "price": 24000,
     "images": [
       "/products/product_25.jfif"
@@ -730,10 +730,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-26",
-    "slug": "chaqueta-blazer-sastre-zara-style-new-collection-ref-eb-26-ebna-26",
-    "name": "Chaqueta Blazer Sastre Zara Style New Collection (Ref. EB-26)",
+    "slug": "chaqueta-blazer-sastre-zara-style-noir-executive-ebna-26",
+    "name": "Chaqueta Blazer Sastre Zara Style Noir Executive",
     "category": "MODA",
-    "description": "Blazer estructurado con solapa clásica y botones carey de inspiración europea. Prenda imprescindible de fondo de armario.",
+    "description": "Blazer sastre con solapas de muesca y estructuración en hombros. Un básico imprescindible de oficina y eventos informales que eleva al instante cualquier atuendo.",
     "price": 32000,
     "images": [
       "/products/product_26.jfif"
@@ -759,10 +759,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-27",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-27-ebna-27",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-27)",
+    "slug": "blusa-de-seda-con-lazo-frontal-rosa-empolvado-ebna-27",
+    "name": "Blusa de Seda con Lazo Frontal Rosa Empolvado",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 27000,
     "images": [
       "/products/product_27.jfif"
@@ -788,10 +788,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-28",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-28-ebna-28",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-28)",
+    "slug": "pantalon-tailored-wide-leg-en-crepe-rosa-pastel-ebna-28",
+    "name": "Pantalón Tailored Wide-Leg en Crepe Rosa Pastel",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 28500,
     "images": [
       "/products/product_28.jfif"
@@ -817,10 +817,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-29",
-    "slug": "chaqueta-tweed-estilo-chanel-couture-ref-eb-29-ebna-29",
-    "name": "Chaqueta Tweed Estilo Chanel Couture (Ref. EB-29)",
+    "slug": "chaqueta-tweed-corta-chanel-style-azul-navy-ebna-29",
+    "name": "Chaqueta Tweed Corta Chanel Style Azul Navy",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Chaqueta sastre de tweed estructurado inspirada en los clásicos de la alta costura parisina. Destaca por su entramado de hilos metálicos, botones grabados y forro interno satinado.",
     "price": 30000,
     "images": [
       "/products/product_29.jfif"
@@ -846,10 +846,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-30",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-30-ebna-30",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-30)",
+    "slug": "jumpsuit-sastre-asimetrico-verde-olivo-executive-ebna-30",
+    "name": "Jumpsuit Sastre Asimétrico Verde Olivo Executive",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 31500,
     "images": [
       "/products/product_30.jfif"
@@ -875,10 +875,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-31",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-31-ebna-31",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-31)",
+    "slug": "falda-tubo-midi-elegante-borgona-silk-touch-ebna-31",
+    "name": "Falda Tubo Midi Elegante Borgoña Silk Touch",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 18000,
     "images": [
       "/products/product_31.jfif"
@@ -904,10 +904,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-32",
-    "slug": "camisa-de-lino-blanco-pure-luxury-edition-ref-eb-32-ebna-32",
-    "name": "Camisa de Lino Blanco Pure Luxury Edition (Ref. EB-32)",
+    "slug": "camisa-de-lino-estilo-ejecutivo-verde-salvia-ebna-32",
+    "name": "Camisa de Lino Estilo Ejecutivo Verde Salvia",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Camisa confeccionada en lino 100% transpirable de fibra larga. Ofrece un tacto fresco, corte clásico atemporal y acabado pulido para vestir con distinción en cualquier ocasión.",
     "price": 19500,
     "images": [
       "/products/product_32.jfif"
@@ -933,10 +933,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-33",
-    "slug": "top-elegante-drapeado-satin-chic-ref-eb-33-ebna-33",
-    "name": "Top Elegante Drapeado Satin Chic (Ref. EB-33)",
+    "slug": "top-elegante-drapeado-satin-chic-champagne-ebna-33",
+    "name": "Top Elegante Drapeado Satin Chic Champagne",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Top de satén seda con pliegues drapeados en el escote que resaltan los hombros y el busto. Un diseño versátil y glamuroso para combinar con faldas o pantalones de vestir.",
     "price": 21000,
     "images": [
       "/products/product_33.jfif"
@@ -962,10 +962,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-34",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-34-ebna-34",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-34)",
+    "slug": "set-de-punto-acanalado-top-falda-midi-sage-green-ebna-34",
+    "name": "Set de Punto Acanalado Top & Falda Midi Sage Green",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 22500,
     "images": [
       "/products/product_34.jfif"
@@ -991,10 +991,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-35",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-35-ebna-35",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-35)",
+    "slug": "blusa-executive-en-seda-salmon-couture-ebna-35",
+    "name": "Blusa Executive en Seda Salmón Couture",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 24000,
     "images": [
       "/products/product_35.jfif"
@@ -1020,10 +1020,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-36",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-36-ebna-36",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-36)",
+    "slug": "pantalon-palazzo-saten-esmeralda-couture-ebna-36",
+    "name": "Pantalón Palazzo Satén Esmeralda Couture",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 25500,
     "images": [
       "/products/product_36.jfif"
@@ -1049,10 +1049,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-37",
-    "slug": "chaqueta-tweed-estilo-chanel-couture-ref-eb-37-ebna-37",
-    "name": "Chaqueta Tweed Estilo Chanel Couture (Ref. EB-37)",
+    "slug": "chaqueta-tweed-estilo-chanel-couture-crema-botones-perla-ebna-37",
+    "name": "Chaqueta Tweed Estilo Chanel Couture Crema & Botones Perla",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Chaqueta sastre de tweed estructurado inspirada en los clásicos de la alta costura parisina. Destaca por su entramado de hilos metálicos, botones grabados y forro interno satinado.",
     "price": 27000,
     "images": [
       "/products/product_37.jfif"
@@ -1078,10 +1078,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-38",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-38-ebna-38",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-38)",
+    "slug": "mono-fluido-de-fiesta-escote-v-blanco-marfil-ebna-38",
+    "name": "Mono Fluido de Fiesta Escote V Blanco Marfil",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 28500,
     "images": [
       "/products/product_38.jfif"
@@ -1107,10 +1107,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-39",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-39-ebna-39",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-39)",
+    "slug": "falda-lapiz-con-apertura-posterior-camel-chic-ebna-39",
+    "name": "Falda Lápiz con Apertura Posterior Camel Chic",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 30000,
     "images": [
       "/products/product_39.jfif"
@@ -1136,10 +1136,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-40",
-    "slug": "camisa-de-lino-blanco-pure-luxury-edition-ref-eb-40-ebna-40",
-    "name": "Camisa de Lino Blanco Pure Luxury Edition (Ref. EB-40)",
+    "slug": "camisa-de-lino-pure-luxury-rosa-pastel-ebna-40",
+    "name": "Camisa de Lino Pure Luxury Rosa Pastel",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Camisa confeccionada en lino 100% transpirable de fibra larga. Ofrece un tacto fresco, corte clásico atemporal y acabado pulido para vestir con distinción en cualquier ocasión.",
     "price": 31500,
     "images": [
       "/products/product_40.jfif"
@@ -1165,10 +1165,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-41",
-    "slug": "top-elegante-drapeado-satin-chic-ref-eb-41-ebna-41",
-    "name": "Top Elegante Drapeado Satin Chic (Ref. EB-41)",
+    "slug": "top-drapeado-satinado-verde-esmeralda-ebna-41",
+    "name": "Top Drapeado Satinado Verde Esmeralda",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Top de satén seda con pliegues drapeados en el escote que resaltan los hombros y el busto. Un diseño versátil y glamuroso para combinar con faldas o pantalones de vestir.",
     "price": 18000,
     "images": [
       "/products/product_41.jfif"
@@ -1194,10 +1194,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-42",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-42-ebna-42",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-42)",
+    "slug": "conjunto-dos-piezas-punto-liviano-terracota-ebna-42",
+    "name": "Conjunto Dos Piezas Punto Liviano Terracota",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 19500,
     "images": [
       "/products/product_42.jfif"
@@ -1223,10 +1223,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-43",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-43-ebna-43",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-43)",
+    "slug": "blusa-satinada-con-lazada-cuello-esmeralda-ebna-43",
+    "name": "Blusa Satinada con Lazada Cuello Esmeralda",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 21000,
     "images": [
       "/products/product_43.webp"
@@ -1252,10 +1252,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-44",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-44-ebna-44",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-44)",
+    "slug": "pantalon-fluido-tiro-alto-ivory-silky-blend-ebna-44",
+    "name": "Pantalón Fluido Tiro Alto Ivory Silky Blend",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 22500,
     "images": [
       "/products/product_44.jfif"
@@ -1281,10 +1281,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-45",
-    "slug": "chaqueta-tweed-estilo-chanel-couture-ref-eb-45-ebna-45",
-    "name": "Chaqueta Tweed Estilo Chanel Couture (Ref. EB-45)",
+    "slug": "chaqueta-tweed-chanel-style-verde-menta-hilos-dorados-ebna-45",
+    "name": "Chaqueta Tweed Chanel Style Verde Menta & Hilos Dorados",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Chaqueta sastre de tweed estructurado inspirada en los clásicos de la alta costura parisina. Destaca por su entramado de hilos metálicos, botones grabados y forro interno satinado.",
     "price": 24000,
     "images": [
       "/products/product_45.jfif"
@@ -1310,10 +1310,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-46",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-46-ebna-46",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-46)",
+    "slug": "jumpsuit-de-seda-drapeado-azul-noche-ebna-46",
+    "name": "Jumpsuit de Seda Drapeado Azul Noche",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 25500,
     "images": [
       "/products/product_46.jfif"
@@ -1339,10 +1339,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-47",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-47-ebna-47",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-47)",
+    "slug": "falda-tubo-de-tiro-alto-verde-botella-couture-ebna-47",
+    "name": "Falda Tubo de Tiro Alto Verde Botella Couture",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 27000,
     "images": [
       "/products/product_47.jfif"
@@ -1368,10 +1368,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-48",
-    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-ref-eb-48-ebna-48",
-    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris (Ref. EB-48)",
+    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-noir-ebna-48",
+    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris Noir",
     "category": "CALZADO",
-    "description": "Zapatos planos tipo bailarina confeccionados en encaje floral transpirable con acabado refinado. Plantilla acolchada para máxima comodidad todo el día.",
+    "description": "Bailarinas planas confeccionadas en fino encaje floral transparente con ribete sintético reforzado. Plantilla acojinada y suela antideslizante para caminar con gracia y confort.",
     "price": 22000,
     "images": [
       "/products/product_48.png"
@@ -1451,10 +1451,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-51",
-    "slug": "set-de-cosmetica-facial-brunch-beauty-glow-serum-50ml-ebna-51",
-    "name": "Set de Cosmética Facial Brunch Beauty Glow Serum (50ml)",
+    "slug": "serum-concentrado-rejuvenecedor-brunch-beauty-acido-hialuronico-50ml-ebna-51",
+    "name": "Serum Concentrado Rejuvenecedor Brunch Beauty Ácido Hialurónico (50ml)",
     "category": "COSMETICA",
-    "description": "Concentrado ilumindor facial con vitamina C estabilizada y ácido hialurónico. Aporta frescura instantánea y efecto buena cara todo el día.",
+    "description": "Fórmula hidratante de triple peso molecular que rellena líneas finas y restaura la firmeza cutánea.",
     "price": 15000,
     "images": [
       "/products/product_51.jfif"
@@ -1505,8 +1505,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-53",
-    "slug": "vestido-midi-gingham-smocked-tie-strap-elegance-ref-eb-53-ebna-53",
-    "name": "Vestido Midi Gingham Smocked Tie-Strap Elegance (Ref. EB-53)",
+    "slug": "vestido-midi-gingham-smocked-tie-strap-elegance-ebna-53",
+    "name": "Vestido Midi Gingham Smocked Tie-Strap Elegance",
     "category": "VESTIDOS",
     "description": "Vestido midi con estampado de cuadros gingham, cuerpo nido de abeja elástico y tirantes ajustables con lazo. Confección fluida ideal para eventos de verano.",
     "price": 24000,
@@ -1533,8 +1533,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-54",
-    "slug": "vestido-mini-halter-neck-bodycon-satin-finish-ref-eb-54-ebna-54",
-    "name": "Vestido Mini Halter Neck Bodycon Satin Finish (Ref. EB-54)",
+    "slug": "vestido-mini-halter-neck-bodycon-satin-finish-gold-ebna-54",
+    "name": "Vestido Mini Halter Neck Bodycon Satin Finish Gold",
     "category": "VESTIDOS",
     "description": "Mini vestido entallado escote halter con detalle de botones dorados. Ajuste perfecto que realza la silueta con elegancia nocturna.",
     "price": 26000,
@@ -1588,8 +1588,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-56",
-    "slug": "falda-maxi-jersey-cerelina-white-couture-ref-eb-56-ebna-56",
-    "name": "Falda Maxi Jersey Cerelina White Couture (Ref. EB-56)",
+    "slug": "falda-maxi-jersey-cerelina-white-couture-ebna-56",
+    "name": "Falda Maxi Jersey Cerelina White Couture",
     "category": "VESTIDOS",
     "description": "Falda larga de punto elástico fino drapeada con ajuste de cintura alta. Caída espectacular de inspiración helénica.",
     "price": 20000,
@@ -1616,10 +1616,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-57",
-    "slug": "top-elegante-drapeado-satin-chic-ref-eb-57-ebna-57",
-    "name": "Top Elegante Drapeado Satin Chic (Ref. EB-57)",
+    "slug": "top-elegante-drapeado-satin-chic-negro-azabache-ebna-57",
+    "name": "Top Elegante Drapeado Satin Chic Negro Azabache",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Top de satén seda con pliegues drapeados en el escote que resaltan los hombros y el busto. Un diseño versátil y glamuroso para combinar con faldas o pantalones de vestir.",
     "price": 27000,
     "images": [
       "/products/product_57.jfif"
@@ -1645,10 +1645,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-58",
-    "slug": "chaqueta-blazer-sastre-zara-style-new-collection-ref-eb-58-ebna-58",
-    "name": "Chaqueta Blazer Sastre Zara Style New Collection (Ref. EB-58)",
+    "slug": "chaqueta-blazer-sastre-zara-style-camel-warm-ebna-58",
+    "name": "Chaqueta Blazer Sastre Zara Style Camel Warm",
     "category": "MODA",
-    "description": "Blazer estructurado con solapa clásica y botones carey de inspiración europea. Prenda imprescindible de fondo de armario.",
+    "description": "Blazer sastre con solapas de muesca y estructuración en hombros. Un básico imprescindible de oficina y eventos informales que eleva al instante cualquier atuendo.",
     "price": 32000,
     "images": [
       "/products/product_58.jfif"
@@ -1674,10 +1674,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-59",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-59-ebna-59",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-59)",
+    "slug": "blusa-de-seda-con-lazada-al-cuello-champagne-glow-ebna-59",
+    "name": "Blusa de Seda con Lazada al Cuello Champagne Glow",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 30000,
     "images": [
       "/products/product_59.jfif"
@@ -1703,8 +1703,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-60",
-    "slug": "vestido-de-gala-silueta-sirena-satin-evening-dress-ref-eb-60-ebna-60",
-    "name": "Vestido de Gala Silueta Sirena Satin Evening Dress (Ref. EB-60)",
+    "slug": "vestido-de-gala-silueta-sirena-satin-evening-dress-crimson-ebna-60",
+    "name": "Vestido de Gala Silueta Sirena Satin Evening Dress Crimson",
     "category": "VESTIDOS",
     "description": "Vestido de noche drapeado en raso de seda con apertura lateral sutil. Sofisticación pura para celebraciones especiales en Guinea Ecuatorial.",
     "price": 32000,
@@ -1731,8 +1731,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-61",
-    "slug": "zapato-de-tacon-rugan-doble-tira-couture-ref-eb-61-ebna-61",
-    "name": "Zapato de Tacón Rugan Doble Tira Couture (Ref. EB-61)",
+    "slug": "zapato-de-tacon-charol-doble-tira-couture-black-ebna-61",
+    "name": "Zapato de Tacón Charol Doble Tira Couture Black",
     "category": "CALZADO",
     "description": "Zapatos de salón de charol satinado con doble tira y tacón estilizado. Diseño refinado para eventos de gala y noches exclusivas.",
     "price": 35000,
@@ -1788,8 +1788,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-63",
-    "slug": "exfoliante-labial-nutritivo-de-coco-frambuesa-30g-ebna-63",
-    "name": "Exfoliante Labial Nutritivo de Coco & Frambuesa 30g",
+    "slug": "balsamo-exfoliante-labial-mantequilla-de-cacao-vainilla-30g-ebna-63",
+    "name": "Bálsamo Exfoliante Labial Mantequilla de Cacao & Vainilla 30g",
     "category": "COSMETICA",
     "description": "Bálsamo exfoliante de labios con microcristales de azúcar natural y aceite de coco. Elimina pieles muertas e ilumina el tono natural de los labios.",
     "price": 6500,
@@ -1815,8 +1815,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-64",
-    "slug": "exfoliante-labial-nutritivo-de-coco-frambuesa-30g-ebna-64",
-    "name": "Exfoliante Labial Nutritivo de Coco & Frambuesa 30g",
+    "slug": "scrub-labial-renovador-frutos-rojos-azucar-moreno-30g-ebna-64",
+    "name": "Scrub Labial Renovador Frutos Rojos & Azúcar Moreno 30g",
     "category": "COSMETICA",
     "description": "Bálsamo exfoliante de labios con microcristales de azúcar natural y aceite de coco. Elimina pieles muertas e ilumina el tono natural de los labios.",
     "price": 6500,
@@ -1842,8 +1842,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-65",
-    "slug": "camiseta-algodon-boston-athletic-fit-oversized-tee-ref-eb-65-ebna-65",
-    "name": "Camiseta Algodón Boston Athletic Fit Oversized Tee (Ref. EB-65)",
+    "slug": "camiseta-algodon-boston-athletic-fit-oversized-tee-heather-ebna-65",
+    "name": "Camiseta Algodón Boston Athletic Fit Oversized Tee Heather",
     "category": "MODA",
     "description": "Camiseta de cuello redondo de algodón peinado de gramaje superior con tipografía universitaria en el pecho.",
     "price": 14000,
@@ -1871,10 +1871,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-66",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-66-ebna-66",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-66)",
+    "slug": "set-de-punto-fino-primavera-verano-off-white-ebna-66",
+    "name": "Set de Punto Fino Primavera-Verano Off-White",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 25500,
     "images": [
       "/products/product_66.jfif"
@@ -1900,10 +1900,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-67",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-67-ebna-67",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-67)",
+    "slug": "blusa-silk-touch-executive-blanco-puro-ebna-67",
+    "name": "Blusa Silk Touch Executive Blanco Puro",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 27000,
     "images": [
       "/products/product_67.jfif"
@@ -1929,8 +1929,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-68",
-    "slug": "gel-de-ducha-lactoadvance-instituto-espanol-1250ml-edicion-familiar-ebna-68",
-    "name": "Gel de Ducha Lactoadvance Instituto Español 1250ml (Edición Familiar)",
+    "slug": "gel-de-ducha-dermoprotector-proteinas-de-leche-miel-500ml-ebna-68",
+    "name": "Gel de Ducha Dermoprotector Proteínas de Leche & Miel 500ml",
     "category": "HIGIENE",
     "description": "Gel de baño dermoprotector enriquecido con proteínas de la leche. Aporta suavidad extrema y protección diaria para toda la familia.",
     "price": 11000,
@@ -1955,8 +1955,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-69",
-    "slug": "pantalon-jeans-wide-leg-streetwear-y2k-edition-ref-eb-69-ebna-69",
-    "name": "Pantalón Jeans Wide Leg Streetwear Y2K Edition (Ref. EB-69)",
+    "slug": "pantalon-jeans-wide-leg-streetwear-y2k-vintage-wash-ebna-69",
+    "name": "Pantalón Jeans Wide Leg Streetwear Y2K Vintage Wash",
     "category": "MODA",
     "description": "Pantalón vaquero de corte ancho holgado con detalles bordados retro Y2K. Algodón denim resistente de alta calidad.",
     "price": 28000,
@@ -1984,8 +1984,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-70",
-    "slug": "sudadera-oversized-thermal-lined-kangaroo-hoodie-ref-eb-70-ebna-70",
-    "name": "Sudadera Oversized Thermal Lined Kangaroo Hoodie (Ref. EB-70)",
+    "slug": "sudadera-oversized-thermal-lined-kangaroo-hoodie-cream-ebna-70",
+    "name": "Sudadera Oversized Thermal Lined Kangaroo Hoodie Cream",
     "category": "MODA",
     "description": "Sudadera de franela térmica con bolsillo canguro y capucha ajustable. Confort absoluto para días frescos.",
     "price": 22000,
@@ -2013,8 +2013,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-71",
-    "slug": "sudadera-oversized-thermal-lined-kangaroo-hoodie-ref-eb-71-ebna-71",
-    "name": "Sudadera Oversized Thermal Lined Kangaroo Hoodie (Ref. EB-71)",
+    "slug": "sudadera-oversized-thermal-lined-kangaroo-hoodie-onyx-ebna-71",
+    "name": "Sudadera Oversized Thermal Lined Kangaroo Hoodie Onyx",
     "category": "MODA",
     "description": "Sudadera de franela térmica con bolsillo canguro y capucha ajustable. Confort absoluto para días frescos.",
     "price": 22000,
@@ -2042,8 +2042,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-72",
-    "slug": "gel-de-ducha-botanico-flora-peony-pivoine-fresh-500ml-ebna-72",
-    "name": "Gel de Ducha Botánico Flora Peony Pivoine Fresh 500ml",
+    "slug": "exfoliante-corporal-de-curcuma-sal-marina-con-aceite-de-jojoba-250g-ebna-72",
+    "name": "Exfoliante Corporal de Cúrcuma & Sal Marina con Aceite de Jojoba 250g",
     "category": "HIGIENE",
     "description": "Gel de baño aromático con extracto de peonías frescas y aloe vera. Deja un velo de perfume floral sutil y piel aterciopelada.",
     "price": 7500,
@@ -2068,10 +2068,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-73",
-    "slug": "top-elegante-drapeado-satin-chic-ref-eb-73-ebna-73",
-    "name": "Top Elegante Drapeado Satin Chic (Ref. EB-73)",
+    "slug": "top-drapeado-satinado-rojo-rubi-couture-ebna-73",
+    "name": "Top Drapeado Satinado Rojo Rubí Couture",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Top de satén seda con pliegues drapeados en el escote que resaltan los hombros y el busto. Un diseño versátil y glamuroso para combinar con faldas o pantalones de vestir.",
     "price": 21000,
     "images": [
       "/products/product_73.jfif"
@@ -2100,7 +2100,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "slug": "jabon-artesanal-de-curcuma-acido-kojico-iluminador-100g-ebna-74",
     "name": "Jabón Artesanal de Cúrcuma & Ácido Kójico Iluminador 100g",
     "category": "JABONES",
-    "description": "Jabón artesanal enriquecido con cúrcuma orgánica y ácido kójico. Ayuda a atenuar manchas, renovar la textura cutánea y aportar luminosidad natural.",
+    "description": "Formulado para unificar el tono facial y corporal, atenuando manchas oscuras y aportando brillo natural.",
     "price": 4000,
     "images": [
       "/products/product_74.jfif"
@@ -2124,10 +2124,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-75",
-    "slug": "calzado-femenino-malla-calada-spring-style-ref-eb-75-ebna-75",
-    "name": "Calzado Femenino Malla Calada Spring Style (Ref. EB-75)",
+    "slug": "calzado-femenino-malla-calada-spring-style-transpirable-nude-ebna-75",
+    "name": "Calzado Femenino Malla Calada Spring Style Transpirable Nude",
     "category": "CALZADO",
-    "description": "Zapatos planos de diseño calado primaveral con adorno de lazo frontal. Flexibles, elegantes y ultra frescos.",
+    "description": "Calzado casual femenino de malla tejida transpirable. Suela ligera y flexible diseñada para brindar la máxima frescura y comodidad durante todo el día.",
     "price": 24000,
     "images": [
       "/products/product_75.jfif"
@@ -2154,8 +2154,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-76",
-    "slug": "locion-corporal-hidratante-avena-instituto-espanol-950ml-ebna-76",
-    "name": "Loción Corporal Hidratante Avena Instituto Español 950ml",
+    "slug": "locion-corporal-familiar-avena-miel-100-natural-500ml-ebna-76",
+    "name": "Loción Corporal Familiar Avena & Miel 100% Natural 500ml",
     "category": "HIGIENE",
     "description": "Loción corporal de formato familiar formulada con extracto de avena 100% natural. Proporciona 24 horas de hidratación profunda sin dejar sensación grasa.",
     "price": 9500,
@@ -2180,8 +2180,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-77",
-    "slug": "locion-corporal-reparadora-urea-10-instituto-espanol-500ml-ebna-77",
-    "name": "Loción Corporal Reparadora Urea 10% Instituto Español 500ml",
+    "slug": "gel-de-ducha-nutritivo-flor-de-cerezo-aceite-de-argan-500ml-ebna-77",
+    "name": "Gel de Ducha Nutritivo Flor de Cerezo & Aceite de Argán 500ml",
     "category": "HIGIENE",
     "description": "Tratamiento dermatológico intensivo con 10% de Urea para pieles muy secas o rugosas. Suaviza la piel de inmediato y elimina descamaciones.",
     "price": 8500,
@@ -2206,8 +2206,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-78",
-    "slug": "gorro-satinado-ajustable-protector-para-trenzas-cabello-largo-ebna-78",
-    "name": "Gorro Satinado Ajustable Protector para Trenzas & Cabello Largo",
+    "slug": "gorro-de-saten-doble-capa-regulable-anti-encrespamiento-ebna-78",
+    "name": "Gorro de Satén Doble Capa Regulable Anti-Encrespamiento",
     "category": "HIGIENE",
     "description": "Gorro de satén de seda doble capa con banda elástica ajustable. Previene el encrespamiento, retiene la hidratación nocturna y protege peinados y trenzas.",
     "price": 6000,
@@ -2222,20 +2222,17 @@ export const INITIAL_PRODUCTS: Product[] = [
       "Transparente"
     ],
     "sizes": [
-      "300ml",
-      "500ml",
-      "950ml",
-      "1250ml"
+      "Standard"
     ],
     "created_at": "2026-09-17T17:06:31.479Z",
     "updated_at": "2026-09-21T19:24:42.682Z"
   },
   {
     "id": "ebna-79",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-79-ebna-79",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-79)",
+    "slug": "falda-lapiz-midi-con-apertura-posterior-gris-marengo-ebna-79",
+    "name": "Falda Lápiz Midi con Apertura Posterior Gris Marengo",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 30000,
     "images": [
       "/products/product_79.jfif"
@@ -2264,7 +2261,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     "slug": "crema-unificante-anti-manchas-topicrem-mela-day-cream-spf50-40ml-ebna-80",
     "name": "Crema Unificante Anti-Manchas Topicrem Mela Day Cream SPF50+ (40ml)",
     "category": "COSMETICA",
-    "description": "Tratamiento facial despigmentante de alta gama con protección solar muy alta SPF50+. Reduce manchas oscuras y previene su reaparición unificando el tono.",
+    "description": "Tratamiento de día unificante que aclara manchas oscuras existentes y protege contra rayos UVA/UVB.",
     "price": 22000,
     "images": [
       "/products/product_80.png"
@@ -2288,10 +2285,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-81",
-    "slug": "top-elegante-drapeado-satin-chic-ref-eb-81-ebna-81",
-    "name": "Top Elegante Drapeado Satin Chic (Ref. EB-81)",
+    "slug": "top-elegante-drapeado-satin-chic-dorado-festivo-ebna-81",
+    "name": "Top Elegante Drapeado Satin Chic Dorado Festivo",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Top de satén seda con pliegues drapeados en el escote que resaltan los hombros y el busto. Un diseño versátil y glamuroso para combinar con faldas o pantalones de vestir.",
     "price": 18000,
     "images": [
       "/products/product_81.jfif"
@@ -2317,8 +2314,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-82",
-    "slug": "pantalon-corto-bermuda-casual-men-s-solid-color-ref-eb-82-ebna-82",
-    "name": "Pantalón Corto Bermuda Casual Men's Solid Color (Ref. EB-82)",
+    "slug": "pantalon-corto-bermuda-casual-men-s-solid-color-beige-ebna-82",
+    "name": "Pantalón Corto Bermuda Casual Men's Solid Color Beige",
     "category": "MODA",
     "description": "Bermuda masculina de algodón ligero con cintura elástica y cordón ajustable. Comodidad diaria garantizada.",
     "price": 15000,
@@ -2346,10 +2343,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-83",
-    "slug": "calzado-femenino-malla-calada-spring-style-ref-eb-83-ebna-83",
-    "name": "Calzado Femenino Malla Calada Spring Style (Ref. EB-83)",
+    "slug": "calzado-femenino-malla-calada-spring-style-negro-urbano-ebna-83",
+    "name": "Calzado Femenino Malla Calada Spring Style Negro Urbano",
     "category": "CALZADO",
-    "description": "Zapatos planos de diseño calado primaveral con adorno de lazo frontal. Flexibles, elegantes y ultra frescos.",
+    "description": "Calzado casual femenino de malla tejida transpirable. Suela ligera y flexible diseñada para brindar la máxima frescura y comodidad durante todo el día.",
     "price": 24000,
     "images": [
       "/products/product_83.jfif"
@@ -2376,8 +2373,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-84",
-    "slug": "conjunto-deportivo-hooded-crop-top-pantalon-flare-ref-eb-84-ebna-84",
-    "name": "Conjunto Deportivo Hooded Crop Top & Pantalón Flare (Ref. EB-84)",
+    "slug": "conjunto-deportivo-hooded-crop-top-pantalon-flare-sage-ebna-84",
+    "name": "Conjunto Deportivo Hooded Crop Top & Pantalón Flare Sage",
     "category": "MODA",
     "description": "Set de 2 piezas compuesto por top corto con capucha y pantalón acampanado elástico. Estilo athleisure de corte impecable.",
     "price": 25000,
@@ -2405,10 +2402,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-85",
-    "slug": "calzado-femenino-malla-calada-spring-style-ref-eb-85-ebna-85",
-    "name": "Calzado Femenino Malla Calada Spring Style (Ref. EB-85)",
+    "slug": "calzado-femenino-malla-calada-spring-style-blanco-puro-ebna-85",
+    "name": "Calzado Femenino Malla Calada Spring Style Blanco Puro",
     "category": "CALZADO",
-    "description": "Zapatos planos de diseño calado primaveral con adorno de lazo frontal. Flexibles, elegantes y ultra frescos.",
+    "description": "Calzado casual femenino de malla tejida transpirable. Suela ligera y flexible diseñada para brindar la máxima frescura y comodidad durante todo el día.",
     "price": 24000,
     "images": [
       "/products/product_85.jfif"
@@ -2435,10 +2432,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-86",
-    "slug": "jabon-artesanal-de-curcuma-acido-kojico-iluminador-100g-ebna-86",
-    "name": "Jabón Artesanal de Cúrcuma & Ácido Kójico Iluminador 100g",
+    "slug": "jabon-facial-anti-manchas-curcuma-kojico-vitamina-c-120g-ebna-86",
+    "name": "Jabón Facial Anti-Manchas Cúrcuma, Kójico & Vitamina C 120g",
     "category": "JABONES",
-    "description": "Jabón artesanal enriquecido con cúrcuma orgánica y ácido kójico. Ayuda a atenuar manchas, renovar la textura cutánea y aportar luminosidad natural.",
+    "description": "Limpiador facial despigmentante con potente acción antioxidante de vitamina C y cúrcuma concentrada.",
     "price": 4000,
     "images": [
       "/products/product_86.jfif"
@@ -2462,10 +2459,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-87",
-    "slug": "falda-lapiz-midi-con-apertura-posterior-ref-eb-87-ebna-87",
-    "name": "Falda Lápiz Midi con Apertura Posterior (Ref. EB-87)",
+    "slug": "falda-tubo-elegante-crema-executive-ebna-87",
+    "name": "Falda Tubo Elegante Crema Executive",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Falda lápiz de tiro alto confeccionada en tejido estructurado elástico. Presenta abertura posterior estratégica para facilitar el paso manteniendo una línea estilizada y formal.",
     "price": 27000,
     "images": [
       "/products/product_87.jfif"
@@ -2491,10 +2488,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-88",
-    "slug": "camisa-de-lino-blanco-pure-luxury-edition-ref-eb-88-ebna-88",
-    "name": "Camisa de Lino Blanco Pure Luxury Edition (Ref. EB-88)",
+    "slug": "camisa-de-lino-entallada-marfil-casual-chic-ebna-88",
+    "name": "Camisa de Lino Entallada Marfil Casual Chic",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Camisa confeccionada en lino 100% transpirable de fibra larga. Ofrece un tacto fresco, corte clásico atemporal y acabado pulido para vestir con distinción en cualquier ocasión.",
     "price": 28500,
     "images": [
       "/products/product_88.jfif"
@@ -2520,8 +2517,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-89",
-    "slug": "camiseta-algodon-boston-athletic-fit-oversized-tee-ref-eb-89-ebna-89",
-    "name": "Camiseta Algodón Boston Athletic Fit Oversized Tee (Ref. EB-89)",
+    "slug": "camiseta-algodon-boston-athletic-fit-oversized-tee-off-white-ebna-89",
+    "name": "Camiseta Algodón Boston Athletic Fit Oversized Tee Off-White",
     "category": "MODA",
     "description": "Camiseta de cuello redondo de algodón peinado de gramaje superior con tipografía universitaria en el pecho.",
     "price": 14000,
@@ -2549,10 +2546,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-90",
-    "slug": "jabon-vegetal-palmolive-naturals-extractos-herbales-pack-12-x-90g-ebna-90",
-    "name": "Jabón Vegetal Palmolive Naturals Extractos Herbales (Pack 12 x 90g)",
+    "slug": "jabon-cremoso-palmolive-naturals-miel-y-proteina-de-leche-pack-12-x-90g-ebna-90",
+    "name": "Jabón Cremoso Palmolive Naturals Miel y Proteína de Leche (Pack 12 x 90g)",
     "category": "JABONES",
-    "description": "Pack familiar de jabones enriquecidos con extractos herbales purificantes y aroma botánico. Limpieza profunda respetando el pH natural de la piel.",
+    "description": "Fórmula humectante enriquecida con miel pura y proteína de leche que nutre la epidermis en cada baño.",
     "price": 8500,
     "images": [
       "/products/product_90.jfif"
@@ -2576,10 +2573,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-91",
-    "slug": "jabon-vegetal-palmolive-naturals-extractos-herbales-pack-12-x-90g-ebna-91",
-    "name": "Jabón Vegetal Palmolive Naturals Extractos Herbales (Pack 12 x 90g)",
+    "slug": "jabon-nutritivo-palmolive-naturals-aceite-de-oliva-y-aloe-pack-12-x-90g-ebna-91",
+    "name": "Jabón Nutritivo Palmolive Naturals Aceite de Oliva y Áloe (Pack 12 x 90g)",
     "category": "JABONES",
-    "description": "Pack familiar de jabones enriquecidos con extractos herbales purificantes y aroma botánico. Limpieza profunda respetando el pH natural de la piel.",
+    "description": "Enriquecido con aceite de oliva mediterráneo y extracto de aloe vera para una piel suave e hidratada.",
     "price": 8500,
     "images": [
       "/products/product_91.webp"
@@ -2603,10 +2600,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-92",
-    "slug": "jabon-vegetal-palmolive-naturals-extractos-herbales-pack-12-x-90g-ebna-92",
-    "name": "Jabón Vegetal Palmolive Naturals Extractos Herbales (Pack 12 x 90g)",
+    "slug": "jabon-hidratante-palmolive-naturals-flor-de-cerezo-leche-pack-12-x-90g-ebna-92",
+    "name": "Jabón Hidratante Palmolive Naturals Flor de Cerezo & Leche (Pack 12 x 90g)",
     "category": "JABONES",
-    "description": "Pack familiar de jabones enriquecidos con extractos herbales purificantes y aroma botánico. Limpieza profunda respetando el pH natural de la piel.",
+    "description": "Fragancia delicada de flor de cerezo con infusión de leche humectante para renovar la textura cutánea.",
     "price": 8500,
     "images": [
       "/products/product_92.jfif"
@@ -2630,10 +2627,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-93",
-    "slug": "jabon-vegetal-palmolive-naturals-extractos-herbales-pack-12-x-90g-ebna-93",
-    "name": "Jabón Vegetal Palmolive Naturals Extractos Herbales (Pack 12 x 90g)",
+    "slug": "jabon-exfoliante-palmolive-naturals-semillas-de-karite-pack-12-x-90g-ebna-93",
+    "name": "Jabón Exfoliante Palmolive Naturals Semillas de Karité (Pack 12 x 90g)",
     "category": "JABONES",
-    "description": "Pack familiar de jabones enriquecidos con extractos herbales purificantes y aroma botánico. Limpieza profunda respetando el pH natural de la piel.",
+    "description": "Contiene micropartículas exfoliantes de semillas de karité que remueven células muertas revelando piel luminosa.",
     "price": 8500,
     "images": [
       "/products/product_93.jfif"
@@ -2657,10 +2654,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-94",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-94-ebna-94",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-94)",
+    "slug": "mono-entallado-con-escote-asimetrico-rose-satin-ebna-94",
+    "name": "Mono Entallado con Escote Asimétrico Rosé Satin",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 22500,
     "images": [
       "/products/product_94.jfif"
@@ -2713,8 +2710,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-96",
-    "slug": "zuecos-confort-crocs-original-limited-edition-ref-eb-96-ebna-96",
-    "name": "Zuecos Confort Crocs Original Limited Edition (Ref. EB-96)",
+    "slug": "zuecos-confort-crocs-original-limited-edition-lavender-ebna-96",
+    "name": "Zuecos Confort Crocs Original Limited Edition Lavender",
     "category": "CALZADO",
     "description": "Calzado ligero e impermeable con plantilla ortopédica ultra cómoda. Ideal para uso diario y descanso con estilo exclusivo.",
     "price": 18000,
@@ -2743,8 +2740,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-97",
-    "slug": "conjunto-deportivo-hooded-crop-top-pantalon-flare-ref-eb-97-ebna-97",
-    "name": "Conjunto Deportivo Hooded Crop Top & Pantalón Flare (Ref. EB-97)",
+    "slug": "conjunto-deportivo-hooded-crop-top-pantalon-flare-cocoa-ebna-97",
+    "name": "Conjunto Deportivo Hooded Crop Top & Pantalón Flare Cocoa",
     "category": "MODA",
     "description": "Set de 2 piezas compuesto por top corto con capucha y pantalón acampanado elástico. Estilo athleisure de corte impecable.",
     "price": 25000,
@@ -2772,10 +2769,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-98",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-98-ebna-98",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-98)",
+    "slug": "conjunto-casual-elegante-punto-acanalado-dusty-rose-ebna-98",
+    "name": "Conjunto Casual Elegante Punto Acanalado Dusty Rose",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 28500,
     "images": [
       "/products/product_98.jfif"
@@ -2826,10 +2823,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-100",
-    "slug": "calzado-femenino-malla-calada-spring-style-ref-eb-100-ebna-100",
-    "name": "Calzado Femenino Malla Calada Spring Style (Ref. EB-100)",
+    "slug": "calzado-femenino-malla-calada-spring-style-beige-caramel-ebna-100",
+    "name": "Calzado Femenino Malla Calada Spring Style Beige Caramel",
     "category": "CALZADO",
-    "description": "Zapatos planos de diseño calado primaveral con adorno de lazo frontal. Flexibles, elegantes y ultra frescos.",
+    "description": "Calzado casual femenino de malla tejida transpirable. Suela ligera y flexible diseñada para brindar la máxima frescura y comodidad durante todo el día.",
     "price": 24000,
     "images": [
       "/products/product_100.jfif"
@@ -2856,10 +2853,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-101",
-    "slug": "jabon-artesanal-de-curcuma-acido-kojico-iluminador-100g-ebna-101",
-    "name": "Jabón Artesanal de Cúrcuma & Ácido Kójico Iluminador 100g",
+    "slug": "barra-aclarante-corporal-curcuma-kojico-con-aceite-de-argan-ebna-101",
+    "name": "Barra Aclarante Corporal Cúrcuma & Kójico con Aceite de Argán",
     "category": "JABONES",
-    "description": "Jabón artesanal enriquecido con cúrcuma orgánica y ácido kójico. Ayuda a atenuar manchas, renovar la textura cutánea y aportar luminosidad natural.",
+    "description": "Barra aclarante corporal que combate la hiperpigmentación mientras nutre profundamente con aceite de argán.",
     "price": 4000,
     "images": [
       "/products/product_101.jfif"
@@ -2883,10 +2880,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-102",
-    "slug": "jabon-artesanal-de-curcuma-acido-kojico-iluminador-100g-ebna-102",
-    "name": "Jabón Artesanal de Cúrcuma & Ácido Kójico Iluminador 100g",
+    "slug": "jabon-exfoliante-curcuma-acido-kojico-papaya-glow-ebna-102",
+    "name": "Jabón Exfoliante Cúrcuma, Ácido Kójico & Papaya Glow",
     "category": "JABONES",
-    "description": "Jabón artesanal enriquecido con cúrcuma orgánica y ácido kójico. Ayuda a atenuar manchas, renovar la textura cutánea y aportar luminosidad natural.",
+    "description": "Combina la enzima papaína con ácido kójico para acelerar la renovación celular y disipar cicatrices de acné.",
     "price": 4000,
     "images": [
       "/products/product_102.jfif"
@@ -2910,10 +2907,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-103",
-    "slug": "jabon-corporal-hidratante-mel-aveia-nutricion-intensa-ebna-103",
-    "name": "Jabón Corporal Hidratante Mel & Aveia Nutrición Intensa",
+    "slug": "jabon-corporal-hidratante-miel-avena-nutricion-intensa-200g-ebna-103",
+    "name": "Jabón Corporal Hidratante Miel & Avena Nutrición Intensa (200g)",
     "category": "JABONES",
-    "description": "Jabón cremoso de miel y avena coloidal. Calma pieles sensibles, restaura la barrera cutánea y proporciona una textura ultrasuave.",
+    "description": "Jabón en pastilla enriquecido con miel orgánica y extracto de avena para calmar y reparar la barrera cutánea.",
     "price": 3500,
     "images": [
       "/products/product_103.png"
@@ -2937,8 +2934,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-104",
-    "slug": "zuecos-confort-crocs-original-limited-edition-ref-eb-104-ebna-104",
-    "name": "Zuecos Confort Crocs Original Limited Edition (Ref. EB-104)",
+    "slug": "zuecos-confort-crocs-original-limited-edition-mint-ebna-104",
+    "name": "Zuecos Confort Crocs Original Limited Edition Mint",
     "category": "CALZADO",
     "description": "Calzado ligero e impermeable con plantilla ortopédica ultra cómoda. Ideal para uso diario y descanso con estilo exclusivo.",
     "price": 18000,
@@ -2967,10 +2964,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-105",
-    "slug": "jabon-corporal-hidratante-mel-aveia-nutricion-intensa-ebna-105",
-    "name": "Jabón Corporal Hidratante Mel & Aveia Nutrición Intensa",
+    "slug": "jabon-artesanal-miel-de-abeja-organica-copos-de-avena-exfoliante-ebna-105",
+    "name": "Jabón Artesanal Miel de Abeja Orgánica & Copos de Avena Exfoliante",
     "category": "JABONES",
-    "description": "Jabón cremoso de miel y avena coloidal. Calma pieles sensibles, restaura la barrera cutánea y proporciona una textura ultrasuave.",
+    "description": "Elaboración artesanal con hojuelas de avena real que exfolian suavemente y miel pura humectante.",
     "price": 3500,
     "images": [
       "/products/product_105.png"
@@ -2994,10 +2991,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-106",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-106-ebna-106",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-106)",
+    "slug": "set-knitwear-primavera-verano-taupe-luxury-ebna-106",
+    "name": "Set Knitwear Primavera-Verano Taupe Luxury",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 25500,
     "images": [
       "/products/product_106.jfif"
@@ -3023,8 +3020,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-107",
-    "slug": "pantalon-corto-bermuda-casual-men-s-solid-color-ref-eb-107-ebna-107",
-    "name": "Pantalón Corto Bermuda Casual Men's Solid Color (Ref. EB-107)",
+    "slug": "pantalon-corto-bermuda-casual-men-s-solid-color-navy-ebna-107",
+    "name": "Pantalón Corto Bermuda Casual Men's Solid Color Navy",
     "category": "MODA",
     "description": "Bermuda masculina de algodón ligero con cintura elástica y cordón ajustable. Comodidad diaria garantizada.",
     "price": 15000,
@@ -3052,10 +3049,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-108",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-108-ebna-108",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-108)",
+    "slug": "pantalon-sastre-ancho-navy-executive-ebna-108",
+    "name": "Pantalón Sastre Ancho Navy Executive",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 28500,
     "images": [
       "/products/product_108.jfif"
@@ -3081,10 +3078,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-109",
-    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-ref-eb-109-ebna-109",
-    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris (Ref. EB-109)",
+    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-blanc-ebna-109",
+    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris Blanc",
     "category": "CALZADO",
-    "description": "Zapatos planos tipo bailarina confeccionados en encaje floral transpirable con acabado refinado. Plantilla acolchada para máxima comodidad todo el día.",
+    "description": "Bailarinas planas confeccionadas en fino encaje floral transparente con ribete sintético reforzado. Plantilla acojinada y suela antideslizante para caminar con gracia y confort.",
     "price": 22000,
     "images": [
       "/products/product_109.jfif"
@@ -3111,10 +3108,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-110",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-110-ebna-110",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-110)",
+    "slug": "jumpsuit-formal-estilo-minimalista-charcoal-ebna-110",
+    "name": "Jumpsuit Formal Estilo Minimalista Charcoal",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 31500,
     "images": [
       "/products/product_110.jfif"
@@ -3140,10 +3137,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-111",
-    "slug": "set-de-cosmetica-facial-brunch-beauty-glow-serum-50ml-ebna-111",
-    "name": "Set de Cosmética Facial Brunch Beauty Glow Serum (50ml)",
+    "slug": "elixir-facial-iluminador-brunch-beauty-niacinamida-rosas-50ml-ebna-111",
+    "name": "Elixir Facial Iluminador Brunch Beauty Niacinamida & Rosas (50ml)",
     "category": "COSMETICA",
-    "description": "Concentrado ilumindor facial con vitamina C estabilizada y ácido hialurónico. Aporta frescura instantánea y efecto buena cara todo el día.",
+    "description": "Serum matificante con niacinamida al 10% y agua de rosas que cierra poros y equilibra la grasa facial.",
     "price": 15000,
     "images": [
       "/products/product_111.jfif"
@@ -3167,8 +3164,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-112",
-    "slug": "chaqueta-active-soft-mid-layer-zip-up-oh-polly-style-ref-eb-112-ebna-112",
-    "name": "Chaqueta Active Soft Mid-Layer Zip Up Oh Polly Style (Ref. EB-112)",
+    "slug": "chaqueta-active-soft-mid-layer-zip-up-oh-polly-style-black-ebna-112",
+    "name": "Chaqueta Active Soft Mid-Layer Zip Up Oh Polly Style Black",
     "category": "MODA",
     "description": "Chaqueta ajustada deportiva de microfibra moldeadora con cremallera frontal y cuello alzado. Realza la figura con estilo futurista.",
     "price": 27000,
@@ -3196,8 +3193,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-113",
-    "slug": "chaqueta-active-soft-mid-layer-zip-up-oh-polly-style-ref-eb-113-ebna-113",
-    "name": "Chaqueta Active Soft Mid-Layer Zip Up Oh Polly Style (Ref. EB-113)",
+    "slug": "chaqueta-active-soft-mid-layer-zip-up-oh-polly-style-nude-ebna-113",
+    "name": "Chaqueta Active Soft Mid-Layer Zip Up Oh Polly Style Nude",
     "category": "MODA",
     "description": "Chaqueta ajustada deportiva de microfibra moldeadora con cremallera frontal y cuello alzado. Realza la figura con estilo futurista.",
     "price": 27000,
@@ -3225,10 +3222,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-114",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-114-ebna-114",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-114)",
+    "slug": "conjunto-de-punto-fino-top-pantalon-flare-camel-ebna-114",
+    "name": "Conjunto de Punto Fino Top & Pantalón Flare Camel",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 22500,
     "images": [
       "/products/product_114.jfif"
@@ -3254,8 +3251,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-115",
-    "slug": "vestido-veraniego-polka-dot-retro-flared-ref-eb-115-ebna-115",
-    "name": "Vestido Veraniego Polka Dot Retro Flared (Ref. EB-115)",
+    "slug": "vestido-veraniego-polka-dot-retro-flared-red-ebna-115",
+    "name": "Vestido Veraniego Polka Dot Retro Flared Red",
     "category": "VESTIDOS",
     "description": "Vestido acampanado con estampado de lunares vintage y escote en V. Tejido de algodón transpirable suave y fresco.",
     "price": 22000,
@@ -3282,10 +3279,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-116",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-116-ebna-116",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-116)",
+    "slug": "pantalon-palazzo-plisado-chocolate-velvet-touch-ebna-116",
+    "name": "Pantalón Palazzo Plisado Chocolate Velvet Touch",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 25500,
     "images": [
       "/products/product_116.jfif"
@@ -3311,10 +3308,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-117",
-    "slug": "crema-unificante-anti-manchas-topicrem-mela-day-cream-spf50-40ml-ebna-117",
-    "name": "Crema Unificante Anti-Manchas Topicrem Mela Day Cream SPF50+ (40ml)",
+    "slug": "serum-concentrado-despigmentante-topicrem-mela-booster-30ml-ebna-117",
+    "name": "Serum Concentrado Despigmentante Topicrem Mela Booster (30ml)",
     "category": "COSMETICA",
-    "description": "Tratamiento facial despigmentante de alta gama con protección solar muy alta SPF50+. Reduce manchas oscuras y previene su reaparición unificando el tono.",
+    "description": "Serum corrector intensivo que actúa en el corazón de los melanocitos para reducir la pigmentación persistente.",
     "price": 22000,
     "images": [
       "/products/product_117.jfif"
@@ -3338,10 +3335,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-118",
-    "slug": "crema-unificante-anti-manchas-topicrem-mela-day-cream-spf50-40ml-ebna-118",
-    "name": "Crema Unificante Anti-Manchas Topicrem Mela Day Cream SPF50+ (40ml)",
+    "slug": "leche-corporal-unificante-anti-manchas-topicrem-mela-ultra-moisturizing-200ml-ebna-118",
+    "name": "Leche Corporal Unificante Anti-Manchas Topicrem Mela Ultra-Moisturizing (200ml)",
     "category": "COSMETICA",
-    "description": "Tratamiento facial despigmentante de alta gama con protección solar muy alta SPF50+. Reduce manchas oscuras y previene su reaparición unificando el tono.",
+    "description": "Loción corporal unificante de rápida absorción que hidrata durante 24 horas y homogeneiza el tono de la piel.",
     "price": 22000,
     "images": [
       "/products/product_118.jfif"
@@ -3365,10 +3362,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-119",
-    "slug": "jabon-artesanal-de-curcuma-acido-kojico-iluminador-100g-ebna-119",
-    "name": "Jabón Artesanal de Cúrcuma & Ácido Kójico Iluminador 100g",
+    "slug": "pack-2x-jabones-curcuma-acido-kojico-tratamiento-completo-ebna-119",
+    "name": "Pack 2x Jabones Cúrcuma & Ácido Kójico Tratamiento Completo",
     "category": "JABONES",
-    "description": "Jabón artesanal enriquecido con cúrcuma orgánica y ácido kójico. Ayuda a atenuar manchas, renovar la textura cutánea y aportar luminosidad natural.",
+    "description": "Dúo de jabones aclarantes para uso diario en rostro y zonas sensibles como axilas e ingle.",
     "price": 4000,
     "images": [
       "/products/product_119.jfif"
@@ -3392,8 +3389,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-120",
-    "slug": "exfoliante-corporal-de-curcuma-sal-marina-con-aceite-de-jojoba-250g-ebna-120",
-    "name": "Exfoliante Corporal de Cúrcuma & Sal Marina con Aceite de Jojoba 250g",
+    "slug": "exfoliante-corporal-despigmentante-curcuma-sal-marina-karite-250g-ebna-120",
+    "name": "Exfoliante Corporal Despigmentante Cúrcuma, Sal Marina & Karité 250g",
     "category": "COSMETICA",
     "description": "Scrub corporal pulidor con sal marina fina, cúrcuma y aceite de jojoba puro. Remueve células muertas dejando la piel sedosa y radiante.",
     "price": 12000,
@@ -3419,10 +3416,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-121",
-    "slug": "jabon-corporal-hidratante-mel-aveia-nutricion-intensa-ebna-121",
-    "name": "Jabón Corporal Hidratante Mel & Aveia Nutrición Intensa",
+    "slug": "barra-vegetal-miel-avena-aceite-de-almendras-dulces-ebna-121",
+    "name": "Barra Vegetal Miel, Avena & Aceite de Almendras Dulces",
     "category": "JABONES",
-    "description": "Jabón cremoso de miel y avena coloidal. Calma pieles sensibles, restaura la barrera cutánea y proporciona una textura ultrasuave.",
+    "description": "Fórmula dermatológica ultrahidratante con aceite de almendras que previene la sequedad en pieles sensibles.",
     "price": 3500,
     "images": [
       "/products/product_121.jfif"
@@ -3446,10 +3443,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-122",
-    "slug": "jabon-corporal-hidratante-mel-aveia-nutricion-intensa-ebna-122",
-    "name": "Jabón Corporal Hidratante Mel & Aveia Nutrición Intensa",
+    "slug": "jabon-cremoso-suavizante-miel-avena-piel-sensible-pack-4x-ebna-122",
+    "name": "Jabón Cremoso Suavizante Miel & Avena Piel Sensible (Pack 4x)",
     "category": "JABONES",
-    "description": "Jabón cremoso de miel y avena coloidal. Calma pieles sensibles, restaura la barrera cutánea y proporciona una textura ultrasuave.",
+    "description": "Pack familiar de 4 jabones cremosos hipoalergénicos con avena coloidal y extracto de miel enriquecida.",
     "price": 3500,
     "images": [
       "/products/product_122.jfif"
@@ -3499,10 +3496,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-124",
-    "slug": "jabon-corporal-hidratante-mel-aveia-nutricion-intensa-ebna-124",
-    "name": "Jabón Corporal Hidratante Mel & Aveia Nutrición Intensa",
+    "slug": "jabon-bio-miel-avena-con-manteca-de-karite-pura-ebna-124",
+    "name": "Jabón Bio Miel & Avena con Manteca de Karité Pura",
     "category": "JABONES",
-    "description": "Jabón cremoso de miel y avena coloidal. Calma pieles sensibles, restaura la barrera cutánea y proporciona una textura ultrasuave.",
+    "description": "Tratamiento de limpieza profunda formulado con manteca de karité no refinada y miel nutritiva.",
     "price": 3500,
     "images": [
       "/products/product_124.jfif"
@@ -3526,8 +3523,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-125",
-    "slug": "lapiz-labial-liquido-velvet-matte-waterproof-long-lasting-ebna-125",
-    "name": "Lápiz Labial Líquido Velvet Matte Waterproof Long-Lasting",
+    "slug": "lapiz-labial-liquido-velvet-matte-waterproof-plum-velvet-ebna-125",
+    "name": "Lápiz Labial Líquido Velvet Matte Waterproof Plum Velvet",
     "category": "COSMETICA",
     "description": "Pintalabios líquido mate indeleble de alta pigmentación. Textura terciopelo intransferible que dura hasta 16 horas sin resecar los labios.",
     "price": 9000,
@@ -3553,8 +3550,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-126",
-    "slug": "vestido-de-gala-silueta-sirena-satin-evening-dress-ref-eb-126-ebna-126",
-    "name": "Vestido de Gala Silueta Sirena Satin Evening Dress (Ref. EB-126)",
+    "slug": "vestido-de-gala-silueta-sirena-satin-evening-dress-emerald-ebna-126",
+    "name": "Vestido de Gala Silueta Sirena Satin Evening Dress Emerald",
     "category": "VESTIDOS",
     "description": "Vestido de noche drapeado en raso de seda con apertura lateral sutil. Sofisticación pura para celebraciones especiales en Guinea Ecuatorial.",
     "price": 32000,
@@ -3581,8 +3578,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-127",
-    "slug": "vestido-de-gala-silueta-sirena-satin-evening-dress-ref-eb-127-ebna-127",
-    "name": "Vestido de Gala Silueta Sirena Satin Evening Dress (Ref. EB-127)",
+    "slug": "vestido-de-gala-silueta-sirena-satin-evening-dress-royal-blue-ebna-127",
+    "name": "Vestido de Gala Silueta Sirena Satin Evening Dress Royal Blue",
     "category": "VESTIDOS",
     "description": "Vestido de noche drapeado en raso de seda con apertura lateral sutil. Sofisticación pura para celebraciones especiales en Guinea Ecuatorial.",
     "price": 32000,
@@ -3609,8 +3606,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-128",
-    "slug": "exfoliante-corporal-de-curcuma-sal-marina-con-aceite-de-jojoba-250g-ebna-128",
-    "name": "Exfoliante Corporal de Cúrcuma & Sal Marina con Aceite de Jojoba 250g",
+    "slug": "exfoliante-corporal-nutritivo-manteca-de-karite-azucar-rubio-250g-ebna-128",
+    "name": "Exfoliante Corporal Nutritivo Manteca de Karité & Azúcar Rubio 250g",
     "category": "COSMETICA",
     "description": "Scrub corporal pulidor con sal marina fina, cúrcuma y aceite de jojoba puro. Remueve células muertas dejando la piel sedosa y radiante.",
     "price": 12000,
@@ -3636,10 +3633,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-129",
-    "slug": "set-de-cosmetica-facial-brunch-beauty-glow-serum-50ml-ebna-129",
-    "name": "Set de Cosmética Facial Brunch Beauty Glow Serum (50ml)",
+    "slug": "serum-reparador-nocturno-brunch-beauty-retinol-peptidos-50ml-ebna-129",
+    "name": "Serum Reparador Nocturno Brunch Beauty Retinol & Péptidos (50ml)",
     "category": "COSMETICA",
-    "description": "Concentrado ilumindor facial con vitamina C estabilizada y ácido hialurónico. Aporta frescura instantánea y efecto buena cara todo el día.",
+    "description": "Tratamiento intensivo de noche con retinol liposomado que estimula la renovación celular mientras duermes.",
     "price": 15000,
     "images": [
       "/products/product_129.jfif"
@@ -3663,10 +3660,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-130",
-    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-ref-eb-130-ebna-130",
-    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris (Ref. EB-130)",
+    "slug": "bailarinas-de-encaje-floral-ollio-paris-nude-rose-ebna-130",
+    "name": "Bailarinas de Encaje Floral Ollio Paris Nude Rose",
     "category": "CALZADO",
-    "description": "Zapatos planos tipo bailarina confeccionados en encaje floral transpirable con acabado refinado. Plantilla acolchada para máxima comodidad todo el día.",
+    "description": "Bailarinas planas confeccionadas en fino encaje floral transparente con ribete sintético reforzado. Plantilla acojinada y suela antideslizante para caminar con gracia y confort.",
     "price": 22000,
     "images": [
       "/products/product_130.jfif"
@@ -3693,10 +3690,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-131",
-    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-ref-eb-131-ebna-131",
-    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris (Ref. EB-131)",
+    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-champagne-ebna-131",
+    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris Champagne",
     "category": "CALZADO",
-    "description": "Zapatos planos tipo bailarina confeccionados en encaje floral transpirable con acabado refinado. Plantilla acolchada para máxima comodidad todo el día.",
+    "description": "Bailarinas planas confeccionadas en fino encaje floral transparente con ribete sintético reforzado. Plantilla acojinada y suela antideslizante para caminar con gracia y confort.",
     "price": 22000,
     "images": [
       "/products/product_131.jfif"
@@ -3723,10 +3720,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-132",
-    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-ref-eb-132-ebna-132",
-    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris (Ref. EB-132)",
+    "slug": "bailarinas-de-encaje-floral-ollio-paris-dorado-chic-ebna-132",
+    "name": "Bailarinas de Encaje Floral Ollio Paris Dorado Chic",
     "category": "CALZADO",
-    "description": "Zapatos planos tipo bailarina confeccionados en encaje floral transpirable con acabado refinado. Plantilla acolchada para máxima comodidad todo el día.",
+    "description": "Bailarinas planas confeccionadas en fino encaje floral transparente con ribete sintético reforzado. Plantilla acojinada y suela antideslizante para caminar con gracia y confort.",
     "price": 22000,
     "images": [
       "/products/product_132.jfif"
@@ -3753,10 +3750,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-133",
-    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-ref-eb-133-ebna-133",
-    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris (Ref. EB-133)",
+    "slug": "bailarinas-elegantes-encaje-floral-ollio-paris-silver-glow-ebna-133",
+    "name": "Bailarinas Elegantes Encaje Floral Ollio Paris Silver Glow",
     "category": "CALZADO",
-    "description": "Zapatos planos tipo bailarina confeccionados en encaje floral transpirable con acabado refinado. Plantilla acolchada para máxima comodidad todo el día.",
+    "description": "Bailarinas planas confeccionadas en fino encaje floral transparente con ribete sintético reforzado. Plantilla acojinada y suela antideslizante para caminar con gracia y confort.",
     "price": 22000,
     "images": [
       "/products/product_133.jfif"
@@ -3783,10 +3780,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-134",
-    "slug": "calzado-femenino-malla-calada-spring-style-ref-eb-134-ebna-134",
-    "name": "Calzado Femenino Malla Calada Spring Style (Ref. EB-134)",
+    "slug": "calzado-femenino-malla-calada-spring-style-rose-gold-ebna-134",
+    "name": "Calzado Femenino Malla Calada Spring Style Rose Gold",
     "category": "CALZADO",
-    "description": "Zapatos planos de diseño calado primaveral con adorno de lazo frontal. Flexibles, elegantes y ultra frescos.",
+    "description": "Calzado casual femenino de malla tejida transpirable. Suela ligera y flexible diseñada para brindar la máxima frescura y comodidad durante todo el día.",
     "price": 24000,
     "images": [
       "/products/product_134.jfif"
@@ -3813,10 +3810,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-135",
-    "slug": "chaqueta-blazer-sastre-zara-style-new-collection-ref-eb-135-ebna-135",
-    "name": "Chaqueta Blazer Sastre Zara Style New Collection (Ref. EB-135)",
+    "slug": "chaqueta-blazer-sastre-zara-style-ivory-elegance-ebna-135",
+    "name": "Chaqueta Blazer Sastre Zara Style Ivory Elegance",
     "category": "MODA",
-    "description": "Blazer estructurado con solapa clásica y botones carey de inspiración europea. Prenda imprescindible de fondo de armario.",
+    "description": "Blazer sastre con solapas de muesca y estructuración en hombros. Un básico imprescindible de oficina y eventos informales que eleva al instante cualquier atuendo.",
     "price": 32000,
     "images": [
       "/products/product_135.png"
@@ -3842,10 +3839,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-136",
-    "slug": "chaqueta-blazer-sastre-zara-style-new-collection-ref-eb-136-ebna-136",
-    "name": "Chaqueta Blazer Sastre Zara Style New Collection (Ref. EB-136)",
+    "slug": "chaqueta-blazer-sastre-zara-style-red-passion-ebna-136",
+    "name": "Chaqueta Blazer Sastre Zara Style Red Passion",
     "category": "MODA",
-    "description": "Blazer estructurado con solapa clásica y botones carey de inspiración europea. Prenda imprescindible de fondo de armario.",
+    "description": "Blazer sastre con solapas de muesca y estructuración en hombros. Un básico imprescindible de oficina y eventos informales que eleva al instante cualquier atuendo.",
     "price": 32000,
     "images": [
       "/products/product_136.jfif"
@@ -3871,10 +3868,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-137",
-    "slug": "chaqueta-blazer-sastre-zara-style-new-collection-ref-eb-137-ebna-137",
-    "name": "Chaqueta Blazer Sastre Zara Style New Collection (Ref. EB-137)",
+    "slug": "chaqueta-blazer-sastre-zara-style-navy-blue-ebna-137",
+    "name": "Chaqueta Blazer Sastre Zara Style Navy Blue",
     "category": "MODA",
-    "description": "Blazer estructurado con solapa clásica y botones carey de inspiración europea. Prenda imprescindible de fondo de armario.",
+    "description": "Blazer sastre con solapas de muesca y estructuración en hombros. Un básico imprescindible de oficina y eventos informales que eleva al instante cualquier atuendo.",
     "price": 32000,
     "images": [
       "/products/product_137.jfif"
@@ -3900,10 +3897,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-138",
-    "slug": "conjunto-de-punto-fino-primavera-verano-ref-eb-138-ebna-138",
-    "name": "Conjunto de Punto Fino Primavera-Verano (Ref. EB-138)",
+    "slug": "set-de-punto-fino-primavera-verano-azul-serenity-ebna-138",
+    "name": "Set de Punto Fino Primavera-Verano Azul Serenity",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Set de dos piezas tejido en hilo fino de tacto ultra suave. Ideal para climas cálidos y entretiempo, ofreciendo un ajuste cómodo y refinado para el día a día.",
     "price": 28500,
     "images": [
       "/products/product_138.jfif"
@@ -3929,10 +3926,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-139",
-    "slug": "blusa-de-seda-con-lazada-al-cuello-executive-ref-eb-139-ebna-139",
-    "name": "Blusa de Seda con Lazada al Cuello Executive (Ref. EB-139)",
+    "slug": "blusa-satinada-con-lazada-al-cuello-borgona-classic-ebna-139",
+    "name": "Blusa Satinada con Lazada al Cuello Borgoña Classic",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Blusa femenina confeccionada en seda satinada con caída fluida. Destaca por sus acabados de alta costura, puños abotonados y cuello versátil con lazo adaptable para looks ejecutivos y de gala.",
     "price": 30000,
     "images": [
       "/products/product_139.jfif"
@@ -3958,10 +3955,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-140",
-    "slug": "pantalon-palazzo-de-tiro-alto-fluid-touch-ref-eb-140-ebna-140",
-    "name": "Pantalón Palazzo de Tiro Alto Fluid Touch (Ref. EB-140)",
+    "slug": "pantalon-drapeado-champagne-satin-deluxe-ebna-140",
+    "name": "Pantalón Drapeado Champagne Satin Deluxe",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Pantalón de corte holgado confeccionado en crepe drapeado de alta densidad. Su tiro alto estiliza la figura mientras la caída fluida brinda comodidad y elegancia en cada movimiento.",
     "price": 31500,
     "images": [
       "/products/product_140.jfif"
@@ -3987,8 +3984,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-141",
-    "slug": "sudadera-oversized-thermal-lined-kangaroo-hoodie-ref-eb-141-ebna-141",
-    "name": "Sudadera Oversized Thermal Lined Kangaroo Hoodie (Ref. EB-141)",
+    "slug": "sudadera-oversized-thermal-lined-kangaroo-hoodie-mocha-ebna-141",
+    "name": "Sudadera Oversized Thermal Lined Kangaroo Hoodie Mocha",
     "category": "MODA",
     "description": "Sudadera de franela térmica con bolsillo canguro y capucha ajustable. Confort absoluto para días frescos.",
     "price": 22000,
@@ -4016,10 +4013,10 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
   {
     "id": "ebna-142",
-    "slug": "mono-jumpsuit-entallado-escote-asimetrico-ref-eb-142-ebna-142",
-    "name": "Mono Jumpsuit Entallado Escote Asimétrico (Ref. EB-142)",
+    "slug": "mono-de-alta-costura-escote-cruzado-champagne-ebna-142",
+    "name": "Mono de Alta Costura Escote Cruzado Champagne",
     "category": "MODA",
-    "description": "Prenda exclusiva de la nueva colección EBNA Luxury. Confeccionada con acabados impecables, costuras reforzadas y silueta favorecedora para lucir impecable en cualquier ocasión.",
+    "description": "Mono entero entallado con corte de sastrería y escote asimétrico contemporáneo. Confeccionado en tejido estructurado de tacto suave que abraza la silueta con total sofisticación.",
     "price": 19500,
     "images": [
       "/products/product_142.jfif"

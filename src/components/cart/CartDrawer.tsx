@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck, Copy, Check, CreditCard, MapPin, PhoneCall, Zap, Globe, Smartphone, Package } from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
+import { recordProductOrder } from '../../lib/popularityTracker';
 import './cart.css';
 
 const PRIMARY_PHONE = '240222633687'; // WhatsApp principal EBNA
@@ -32,6 +33,7 @@ export const CartDrawer: React.FC = () => {
 
     let itemsListText = '';
     cartItems.forEach((item, index) => {
+      recordProductOrder(item.product.id);
       const itemSubtotal = item.product.price * item.quantity;
       itemsListText += `\n${index + 1}. *${item.product.name}*
    • Cantidad: ${item.quantity} unidad(es)
