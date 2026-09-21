@@ -6,7 +6,7 @@ import { ProductCard } from '../components/catalog/ProductCard';
 import { WhatsAppButton } from '../components/catalog/WhatsAppButton';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
-import { getActiveHeroPromo, type HeroPromoConfig } from '../lib/promoManager';
+import { getActiveHeroPromo, PROMO_IMAGES_PUB, type HeroPromoConfig } from '../lib/promoManager';
 
 export function HomePage() {
   const { products, loading, error } = useProducts();
@@ -116,32 +116,38 @@ export function HomePage() {
 
           {/* Adjacent Hero Promo Advertising Spotlight Card */}
           <div className="hero-promo-spotlight-card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ background: 'rgba(216,27,96,0.12)', color: '#D81B60', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.05em' }}>
+            {/* Promo Image Container */}
+            <div style={{ position: 'relative', width: '100%', height: '140px', borderRadius: '12px', overflow: 'hidden', marginBottom: '0.6rem' }}>
+              <img
+                src={activePromo.imageUrl || PROMO_IMAGES_PUB[halfHourChunk % PROMO_IMAGES_PUB.length].url}
+                alt={activePromo.title}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span style={{ position: 'absolute', top: '8px', left: '8px', background: 'rgba(216,27,96,0.85)', backdropFilter: 'blur(4px)', color: 'white', padding: '3px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.05em' }}>
                 {activePromo.badge}
               </span>
-              {activePromo.discountPercentage && (
-                <span style={{ background: 'linear-gradient(135deg, #E02868, #B8114E)', color: 'white', padding: '3px 10px', borderRadius: '20px', fontSize: '0.72rem', fontWeight: 900, boxShadow: '0 4px 12px rgba(216,27,96,0.3)' }}>
-                  {activePromo.discountPercentage}
+              {activePromo.discountBadge && (
+                <span style={{ position: 'absolute', top: '8px', right: '8px', background: 'linear-gradient(135deg, #E02868, #B8114E)', color: 'white', padding: '3px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 900, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
+                  {activePromo.discountBadge}
                 </span>
               )}
             </div>
 
-            <div style={{ margin: '0.4rem 0' }}>
-              <h3 className="text-promo-video-animated" style={{ fontSize: '1.15rem', lineHeight: 1.3, margin: '0 0 0.3rem 0' }}>
+            <div style={{ margin: '0.2rem 0 0.5rem 0' }}>
+              <h3 className="text-promo-video-animated" style={{ fontSize: '1.1rem', lineHeight: 1.3, margin: '0 0 0.3rem 0' }}>
                 {activePromo.title}
               </h3>
-              <p style={{ fontSize: '0.82rem', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
+              <p style={{ fontSize: '0.8rem', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
                 {activePromo.description}
               </p>
             </div>
 
             <Link 
-              to="/catalogo" 
+              to={activePromo.buttonLink || "/catalogo"} 
               className="btn-primary" 
-              style={{ fontSize: '0.85rem', padding: '8px 18px', width: 'fit-content', borderRadius: '20px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              style={{ fontSize: '0.82rem', padding: '8px 18px', width: '100%', borderRadius: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
             >
-              <span>Aprovechar Oferta</span> <ArrowRight size={16} />
+              <span>{activePromo.buttonText || "Aprovechar Oferta"}</span> <ArrowRight size={16} />
             </Link>
           </div>
         </div>

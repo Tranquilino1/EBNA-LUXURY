@@ -9,7 +9,7 @@ import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
 import type { Product, ProductCategory } from '../types';
 import { formatPrice } from '../lib/utils';
-import { getActiveHeroPromo, setActiveHeroPromo, DEFAULT_PROMO_TEMPLATES, type HeroPromoConfig } from '../lib/promoManager';
+import { getActiveHeroPromo, setActiveHeroPromo, DEFAULT_PROMO_TEMPLATES, PROMO_IMAGES_PUB, type HeroPromoConfig } from '../lib/promoManager';
 
 export function AdminDashboard() {
   const { user, profile, signOut } = useAuth();
@@ -417,6 +417,41 @@ export function AdminDashboard() {
                     }}
                   >
                     ⚡ {tmpl.badge}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* IMG PUB Gallery Selector */}
+            <div style={{ marginBottom: '1.5rem', background: '#FFF5F8', padding: '1rem', borderRadius: '16px', border: '1px solid rgba(216, 27, 96, 0.2)' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: 800, color: '#D81B60', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.6rem' }}>
+                <Sparkles size={14} /> Galería de Imágenes Promocionales Secuenciales (Carpeta IMG PUB)
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(64px, 1fr))', gap: '8px', maxHeight: '140px', overflowY: 'auto', paddingRight: '4px' }}>
+                {PROMO_IMAGES_PUB.map((imgItem) => (
+                  <button
+                    key={imgItem.id}
+                    onClick={() => setPromoConfig(prev => ({ ...prev, imageUrl: imgItem.url }))}
+                    title={imgItem.title}
+                    style={{
+                      position: 'relative',
+                      border: promoConfig.imageUrl === imgItem.url ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.1)',
+                      borderRadius: '10px',
+                      overflow: 'hidden',
+                      padding: 0,
+                      background: '#fff',
+                      cursor: 'pointer',
+                      aspectRatio: '1',
+                      boxShadow: promoConfig.imageUrl === imgItem.url ? '0 0 10px rgba(216, 27, 96, 0.4)' : 'none',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <img src={imgItem.url} alt={imgItem.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {promoConfig.imageUrl === imgItem.url && (
+                      <span style={{ position: 'absolute', top: 2, right: 2, background: '#D81B60', color: 'white', borderRadius: '999px', padding: '1px', display: 'flex' }}>
+                        <Check size={10} />
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
