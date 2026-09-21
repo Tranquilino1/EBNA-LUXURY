@@ -87,115 +87,67 @@ export function HomePage() {
           </div>
         </div>
         
-        {/* Dual Hero Showcase: Left 30-Min Product Card & Right Animated Promo Billboard */}
-        <div className="hero-dual-showcase" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', width: '100%', maxWidth: '1000px', margin: '2rem auto 0 auto', alignItems: 'stretch' }}>
-          {/* LEFT: 30-Minute Rotating Featured Product Card */}
+        {/* Right Side: Hero Visual & Promo Advertising Spotlight Card */}
+        <div className="hero-visual" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
           {tiltProduct && (
             <div 
               className="tilt-perspective-wrapper"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
             >
               <div 
                 ref={cardRef}
                 className="glass-tilt-card"
-                style={{ ...style, width: '100%', maxWidth: '440px', minHeight: '380px' }}
+                style={style}
               >
                 <div className="glare-effect"></div>
-                
-                {/* Header Tag */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.8rem', width: '100%' }}>
-                  <span className="tilt-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(216,27,96,0.15)', color: '#D81B60', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800 }}>
-                    <Clock size={14} className="animate-spin" style={{ animationDuration: '6s' }} /> ROTATIVO 30 MIN
+                <img src={tiltProduct.images?.[0] || '/icons/ebna-logo.png'} alt={tiltProduct.name} className="tilt-image" />
+                <div className="tilt-info">
+                  <span className="tilt-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                    <Clock size={12} /> {tiltProduct.category} • DESTACADO 30 MIN
                   </span>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-gold-dark)', background: 'rgba(217, 119, 6, 0.12)', padding: '4px 10px', borderRadius: '20px' }}>
-                    ⚡ {tiltProduct.category}
-                  </span>
-                </div>
-
-                <img 
-                  src={tiltProduct.images?.[0] || '/icons/ebna-logo.png'} 
-                  alt={tiltProduct.name} 
-                  className="tilt-image" 
-                  style={{ width: '100%', height: '220px', objectFit: 'cover', borderRadius: '16px', border: '1px solid var(--color-glass-border)' }}
-                />
-
-                <div className="tilt-info" style={{ marginTop: '0.8rem' }}>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 0.3rem 0', color: '#1E293B' }}>{tiltProduct.name}</h3>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.4rem' }}>
-                    <p className="price" style={{ fontSize: '1.3rem', fontWeight: 800, color: '#D81B60', margin: 0 }}>
-                      {formatPrice(tiltProduct.price)}
-                    </p>
-                    <WhatsAppButton product={tiltProduct} size="sm" />
-                  </div>
+                  <h3>{tiltProduct.name}</h3>
+                  <p className="price">{formatPrice(tiltProduct.price)}</p>
+                  <WhatsAppButton product={tiltProduct} size="sm" />
                 </div>
               </div>
             </div>
           )}
 
-          {/* RIGHT: Animated Hero Promo Billboard (Spotlight Advertising) */}
-          <div className="hero-promo-spotlight-card" style={{ width: '100%', maxWidth: '440px', minHeight: '380px', margin: '0 auto', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            {/* Promo Header Badge Bar */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 2 }}>
-              <span style={{ background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', padding: '5px 14px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.05em', boxShadow: '0 4px 12px rgba(216,27,96,0.3)', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                <Sparkles size={14} /> {activePromo.badge}
+          {/* Adjacent Hero Promo Advertising Spotlight Card */}
+          <div className="hero-promo-spotlight-card">
+            {/* Promo Image Container */}
+            <div style={{ position: 'relative', width: '100%', height: '140px', borderRadius: '12px', overflow: 'hidden', marginBottom: '0.6rem' }}>
+              <img
+                src={activePromo.imageUrl || PROMO_IMAGES_PUB[halfHourChunk % PROMO_IMAGES_PUB.length].url}
+                alt={activePromo.title}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span style={{ position: 'absolute', top: '8px', left: '8px', background: 'rgba(216,27,96,0.85)', backdropFilter: 'blur(4px)', color: 'white', padding: '3px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.05em' }}>
+                {activePromo.badge}
               </span>
               {activePromo.discountBadge && (
-                <span style={{ background: 'linear-gradient(135deg, #FFD700, #F59E0B)', color: '#78350F', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 900, boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)' }}>
+                <span style={{ position: 'absolute', top: '8px', right: '8px', background: 'linear-gradient(135deg, #E02868, #B8114E)', color: 'white', padding: '3px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 900, boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
                   {activePromo.discountBadge}
                 </span>
               )}
             </div>
 
-            {/* Promo Showcase Image with Glass Overlay */}
-            <div style={{ position: 'relative', width: '100%', height: '200px', borderRadius: '18px', overflow: 'hidden', margin: '0.6rem 0', border: '1px solid rgba(216, 27, 96, 0.2)', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}>
-              <img
-                src={activePromo.imageUrl || PROMO_IMAGES_PUB[halfHourChunk % PROMO_IMAGES_PUB.length].url}
-                alt={activePromo.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'all 0.5s ease' }}
-              />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.45) 100%)' }}></div>
-              <div style={{ position: 'absolute', bottom: '10px', left: '12px', right: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: 'white', fontSize: '0.72rem', fontWeight: 700, backdropFilter: 'blur(6px)', background: 'rgba(0,0,0,0.4)', padding: '2px 8px', borderRadius: '12px' }}>
-                  🖼️ Anuncio Publicitario VIP
-                </span>
-                <span style={{ color: '#FFD700', fontSize: '0.72rem', fontWeight: 800 }}>
-                  SYNDY LUXURY
-                </span>
-              </div>
-            </div>
-
-            {/* Video-Like Moving Animated Typography Text */}
-            <div style={{ margin: '0.2rem 0' }}>
-              <h3 className="text-promo-video-animated" style={{ fontSize: '1.25rem', lineHeight: 1.35, margin: '0 0 0.4rem 0', textTransform: 'uppercase' }}>
+            <div style={{ margin: '0.2rem 0 0.5rem 0' }}>
+              <h3 className="text-promo-video-animated" style={{ fontSize: '1.1rem', lineHeight: 1.3, margin: '0 0 0.3rem 0' }}>
                 {activePromo.title}
               </h3>
-              <p style={{ fontSize: '0.85rem', color: '#475569', margin: 0, lineHeight: 1.5, fontWeight: 500 }}>
+              <p style={{ fontSize: '0.8rem', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
                 {activePromo.description}
               </p>
             </div>
 
-            {/* Interactive Call to Action */}
             <Link 
               to={activePromo.buttonLink || "/catalogo"} 
               className="btn-primary" 
-              style={{
-                fontSize: '0.9rem',
-                padding: '12px 24px',
-                width: '100%',
-                borderRadius: '999px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                background: 'linear-gradient(135deg, #D81B60, #C2185B)',
-                boxShadow: '0 6px 20px rgba(216, 27, 96, 0.35)',
-                fontWeight: 700,
-                marginTop: '0.6rem'
-              }}
+              style={{ fontSize: '0.82rem', padding: '8px 18px', width: '100%', borderRadius: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
             >
-              <span>{activePromo.buttonText || "Aprovechar Promoción"}</span> <ArrowRight size={18} />
+              <span>{activePromo.buttonText || "Aprovechar Oferta"}</span> <ArrowRight size={16} />
             </Link>
           </div>
         </div>
