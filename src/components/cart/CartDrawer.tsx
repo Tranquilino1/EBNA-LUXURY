@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck, Copy, Check, CreditCard, MapPin } from 'lucide-react';
+import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck, Copy, Check, CreditCard, MapPin, PhoneCall, Zap, Globe, Smartphone, Package } from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
 import './cart.css';
@@ -18,8 +18,6 @@ export const CartDrawer: React.FC = () => {
   if (!isCartOpen) return null;
 
   // Shipping calculation
-  // Envío Normal: 0 FCFA extra (5 días a 1 semana)
-  // Envío Express: 1.000 FCFA extra (entrega en 3 días)
   const shippingCost = shippingType === 'express' ? 1000 : 0;
   const grandTotal = subtotalPrice + shippingCost;
 
@@ -27,6 +25,11 @@ export const CartDrawer: React.FC = () => {
     navigator.clipboard.writeText('555439904');
     setCopiedMuni(true);
     setTimeout(() => setCopiedMuni(false), 2500);
+  };
+
+  const handleMuniUSSD = () => {
+    // Open native dialer on mobile with Muni transfer code: *423*2*1*555439904#
+    window.location.href = 'tel:*423*2*1*555439904%23';
   };
 
   const handleCheckout = () => {
@@ -41,16 +44,16 @@ export const CartDrawer: React.FC = () => {
    • Subtotal: ${formatPrice(itemSubtotal)}\n`;
     });
 
-    const regionText = region === 'insular' ? '🏝️ Región Insular (Malabo / Isla Bioko)' : '🌍 Región Continental (Bata y provincias)';
+    const regionText = region === 'insular' ? 'Región Insular (Malabo / Isla Bioko)' : 'Región Continental (Bata y provincias)';
     const shippingText = shippingType === 'express' 
-      ? '⚡ *Envío Express* (Entrega en 3 días) [+1.000 FCFA]' 
-      : '📦 *Envío Normal* (Entrega de 5 días a 1 semana) [Gratis/Estándar]';
+      ? 'Envío Express (Entrega en 3 días) [+1.000 FCFA]' 
+      : 'Envío Normal (Entrega de 5 días a 1 semana) [Gratis]';
 
     const paymentText = paymentMethod === 'muni' 
-      ? '📲 *PAGO CON MUNI DINERO* (Transferencia realizada o por realizar al 555439904)' 
-      : '💵 *PAGO POR WHATSAPP / EFECTIVO CONTRA ENTREGA*';
+      ? 'PAGO CON MUNI DINERO (USSD *423*2*1*555439904# / Giro al 555439904)' 
+      : 'PAGO POR WHATSAPP / EFECTIVO CONTRA ENTREGA';
 
-    const message = `¡Hola EBNA Luxury! 👋 Deseo confirmar este pedido desde la página web:
+    const message = `¡Hola EBNA Luxury! 👋 Deseo confirmar este pedido desde la boutique web:
 
 ${itemsListText}
 ----------------------------------------
@@ -60,7 +63,7 @@ ${itemsListText}
 💳 Método de Pago: ${paymentText}
 💵 *TOTAL A PAGAR: ${formatPrice(grandTotal)}*
 ----------------------------------------
-${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dinero (+240 555 439 904).' : ''}
+${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439 904).' : ''}
 ¿Me confirman recepción y horario exacto de entrega?`;
 
     const targetPhone = paymentMethod === 'muni' ? MUNI_PHONE : PRIMARY_PHONE;
@@ -93,13 +96,13 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
           {cartItems.length === 0 ? (
             <div className="cart-empty-state">
               <div className="cart-empty-icon">
-                <ShoppingBag size={48} color="#D4A4B8" />
+                <ShoppingBag size={48} color="#D81B60" />
               </div>
-              <p style={{ fontWeight: 700, fontSize: '1.1rem', color: '#23191E', marginBottom: '0.4rem' }}>
+              <p style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1E293B', marginBottom: '0.4rem' }}>
                 Tu carrito está vacío
               </p>
-              <p style={{ fontSize: '0.88rem', color: '#6E5B65', maxWidth: '240px', margin: '0 auto 1.5rem auto' }}>
-                Explora nuestras colecciones exclusivas de ropa, perfumes y cosmética.
+              <p style={{ fontSize: '0.88rem', color: '#64748B', maxWidth: '240px', margin: '0 auto 1.5rem auto' }}>
+                Explora nuestras colecciones exclusivas de ropa, perfumería y cosmética.
               </p>
               <button className="btn-primary" onClick={() => setIsCartOpen(false)} style={{ borderRadius: '30px', padding: '10px 24px' }}>
                 Ver Catálogo EBNA
@@ -170,32 +173,36 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
 
               {/* Region & Shipping Options */}
               <div className="checkout-options-section">
-                <h4 className="options-section-title"><MapPin size={16} /> Región de Entrega</h4>
+                <h4 className="options-section-title"><MapPin size={16} color="#D81B60" /> Región de Entrega</h4>
                 <div className="option-pills-row">
                   <button 
                     type="button" 
                     className={`option-pill-btn ${region === 'insular' ? 'active' : ''}`}
                     onClick={() => setRegion('insular')}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                   >
-                    🏝️ Región Insular (Malabo)
+                    <Globe size={14} /> Región Insular (Malabo)
                   </button>
                   <button 
                     type="button" 
                     className={`option-pill-btn ${region === 'continental' ? 'active' : ''}`}
                     onClick={() => setRegion('continental')}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                   >
-                    🌍 Región Continental (Bata)
+                    <MapPin size={14} /> Región Continental (Bata)
                   </button>
                 </div>
 
-                <h4 className="options-section-title" style={{ marginTop: '1rem' }}><Truck size={16} /> Modalidad de Envío</h4>
+                <h4 className="options-section-title" style={{ marginTop: '1rem' }}><Truck size={16} color="#D81B60" /> Modalidad de Envío</h4>
                 <div className="shipping-cards-grid">
                   <div 
                     className={`shipping-card ${shippingType === 'normal' ? 'selected' : ''}`}
                     onClick={() => setShippingType('normal')}
                   >
                     <div className="shipping-card-header">
-                      <span className="shipping-badge normal">📦 Envío Normal</span>
+                      <span className="shipping-badge normal" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <Package size={14} /> Envío Normal
+                      </span>
                       <span className="shipping-price">Gratis</span>
                     </div>
                     <p className="shipping-desc">Plazo de entrega de <strong>5 días a 1 semana</strong>.</p>
@@ -206,15 +213,17 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
                     onClick={() => setShippingType('express')}
                   >
                     <div className="shipping-card-header">
-                      <span className="shipping-badge express">⚡ Envío Express</span>
+                      <span className="shipping-badge express" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                        <Zap size={14} /> Envío Express
+                      </span>
                       <span className="shipping-price">+1.000 FCFA</span>
                     </div>
-                    <p className="shipping-desc">Entrega rápida en <strong>3 días</strong> (coordinado previa cantidad con proveedor).</p>
+                    <p className="shipping-desc">Entrega rápida en <strong>3 días</strong>.</p>
                   </div>
                 </div>
 
                 {/* Payment Method Selection */}
-                <h4 className="options-section-title" style={{ marginTop: '1rem' }}><CreditCard size={16} /> Método de Pago</h4>
+                <h4 className="options-section-title" style={{ marginTop: '1rem' }}><CreditCard size={16} color="#D81B60" /> Método de Pago</h4>
                 <div className="payment-methods-grid">
                   <div 
                     className={`payment-method-card muni-style ${paymentMethod === 'muni' ? 'selected' : ''}`}
@@ -243,10 +252,10 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
                 {paymentMethod === 'muni' && (
                   <div className="muni-transfer-box glass-panel">
                     <div className="muni-box-header">
-                      <span className="muni-icon">📲</span>
+                      <Smartphone size={20} color="#002060" />
                       <div>
-                        <strong>Instrucciones Muni Dinero</strong>
-                        <p style={{ margin: 0, fontSize: '0.78rem', color: '#666' }}>Transfiere a nuestro número oficial</p>
+                        <strong>Transferencia Muni Dinero Directa</strong>
+                        <p style={{ margin: 0, fontSize: '0.78rem', color: '#64748B' }}>Código USSD rápido: <strong>*423*2*1*555439904#</strong></p>
                       </div>
                     </div>
                     
@@ -261,9 +270,22 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
                         {copiedMuni ? <><Check size={14} /> ¡Copiado!</> : <><Copy size={14} /> Copiar 555439904</>}
                       </button>
                     </div>
+
+                    {/* 3D Navy Blue USSD Execution Button */}
+                    <button 
+                      type="button"
+                      className="btn-muni-navy-3d"
+                      onClick={handleMuniUSSD}
+                      style={{ marginTop: '0.8rem', marginBottom: '0.5rem' }}
+                      title="Ejecutar transferencia directa Muni en tu móvil"
+                    >
+                      <PhoneCall size={20} />
+                      <span>Ejecutar USSD Muni</span>
+                      <span className="ussd-code-badge">*423*2*1*555439904#</span>
+                    </button>
                     
                     <p className="muni-instructions">
-                      Haz el giro al número <strong>555439904</strong> por Muni Dinero y pulsa el botón de abajo para enviar tu pedido y comprobante por WhatsApp.
+                      Haz clic en el botón Azul Marino para procesar el giro directo al <strong>555439904</strong> por la red Muni.
                     </p>
                   </div>
                 )}
@@ -282,7 +304,7 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
               </div>
               <div className="summary-row">
                 <span>Envío ({shippingType === 'express' ? 'Express 3 días' : 'Normal 5-7 días'})</span>
-                <span className="summary-value">{shippingCost > 0 ? formatPrice(shippingCost) : 'Incluido'}</span>
+                <span className="summary-value">{shippingCost > 0 ? formatPrice(shippingCost) : 'Gratis'}</span>
               </div>
               <div className="summary-row grand-total-row">
                 <span>Total Final</span>
@@ -291,17 +313,30 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
             </div>
 
             <div className="cart-value-props">
-              <div><Truck size={14} color="#25D366" /> <span>{shippingType === 'express' ? '⚡ Entrega en 3 Días' : '📦 Entrega 5-7 días'}</span></div>
+              <div><Truck size={14} color="#25D366" /> <span>{shippingType === 'express' ? 'Entrega en 3 Días' : 'Entrega 5-7 días'}</span></div>
               <div><ShieldCheck size={14} color="#D81B60" /> <span>Garantía EBNA Luxury</span></div>
             </div>
 
-            <button 
-              className={`wa-checkout-btn ${paymentMethod === 'muni' ? 'muni-checkout-btn' : ''}`} 
-              onClick={handleCheckout}
-            >
-              <span>{paymentMethod === 'muni' ? 'Pagar con Muni Dinero (+240 555 439 904)' : 'Realizar Pedido por WhatsApp'}</span>
-              <ArrowRight size={18} />
-            </button>
+            {paymentMethod === 'muni' ? (
+              <button 
+                className="btn-muni-navy-3d"
+                onClick={() => {
+                  handleMuniUSSD();
+                  setTimeout(() => handleCheckout(), 1200);
+                }}
+              >
+                <PhoneCall size={20} />
+                <span>Pagar con Muni Dinero (*423*2*1*555439904#)</span>
+              </button>
+            ) : (
+              <button 
+                className="wa-checkout-btn" 
+                onClick={handleCheckout}
+              >
+                <span>Realizar Pedido por WhatsApp</span>
+                <ArrowRight size={18} />
+              </button>
+            )}
 
             <button className="cart-clear-link" onClick={clearCart}>
               Vaciar Carrito
@@ -312,4 +347,5 @@ ${paymentMethod === 'muni' ? '📌 Adjunto mi número o comprobante de Muni Dine
     </div>
   );
 };
+
 

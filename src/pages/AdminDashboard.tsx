@@ -207,8 +207,8 @@ export function AdminDashboard() {
             </div>
           </div>
 
-          {/* Product Table */}
-          <div className="table-container" style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-glass-border)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+          {/* Product List: Table for Desktop, Responsive Cards for Mobile */}
+          <div className="admin-inventory-container" style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-glass-border)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
             {filteredProducts.length === 0 ? (
               <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
                 <Package size={48} style={{ opacity: 0.3, marginBottom: '1rem' }} />
@@ -216,72 +216,156 @@ export function AdminDashboard() {
                 <p style={{ fontSize: '0.9rem', margin: 0 }}>Haz clic en <strong>"Añadir Producto"</strong> para empezar a crear tu inventario.</p>
               </div>
             ) : (
-              <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ background: 'var(--color-bg-secondary)', borderBottom: '1px solid var(--color-glass-border)', textAlign: 'left' }}>
-                    <th style={{ padding: '1rem' }}>Imagen</th>
-                    <th style={{ padding: '1rem' }}>Nombre del Producto</th>
-                    <th style={{ padding: '1rem' }}>Categoría</th>
-                    <th style={{ padding: '1rem' }}>Precio (FCFA)</th>
-                    <th style={{ padding: '1rem' }}>Estado Stock</th>
-                    <th style={{ padding: '1rem' }}>Visibilidad</th>
-                    <th style={{ padding: '1rem', textAlign: 'right' }}>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <>
+                {/* Desktop Table (Hidden on Mobile) */}
+                <div className="table-responsive-wrapper desktop-only">
+                  <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ background: 'var(--color-bg-secondary)', borderBottom: '1px solid var(--color-glass-border)', textAlign: 'left' }}>
+                        <th style={{ padding: '1rem' }}>Imagen</th>
+                        <th style={{ padding: '1rem' }}>Nombre del Producto</th>
+                        <th style={{ padding: '1rem' }}>Categoría</th>
+                        <th style={{ padding: '1rem' }}>Precio (FCFA)</th>
+                        <th style={{ padding: '1rem' }}>Estado Stock</th>
+                        <th style={{ padding: '1rem' }}>Visibilidad</th>
+                        <th style={{ padding: '1rem', textAlign: 'right' }}>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredProducts.map(product => (
+                        <tr key={product.id} style={{ borderBottom: '1px solid var(--color-glass-border)', opacity: product.is_hidden ? 0.6 : 1 }}>
+                          <td style={{ padding: '0.8rem 1rem' }}>
+                            <img src={product.images?.[0] || '/icons/ebna-logo.png'} alt={product.name} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--color-glass-border)' }} />
+                          </td>
+                          <td style={{ padding: '0.8rem 1rem', fontWeight: 600 }}>{product.name}</td>
+                          <td style={{ padding: '0.8rem 1rem' }}>
+                            <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(216, 27, 96, 0.1)', color: '#D81B60' }}>
+                              {product.category}
+                            </span>
+                          </td>
+                          <td style={{ padding: '0.8rem 1rem', fontWeight: 700, color: '#1E293B' }}>
+                            {formatPrice(product.price)}
+                          </td>
+                          <td style={{ padding: '0.8rem 1rem' }}>
+                            <span style={{ padding: '0.25rem 0.7rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: product.in_stock ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: product.in_stock ? '#15803d' : '#b91c1c' }}>
+                              {product.in_stock ? 'En Stock' : 'Agotado'}
+                            </span>
+                          </td>
+                          <td style={{ padding: '0.8rem 1rem' }}>
+                            <button
+                              onClick={() => updateProduct(product.id, { is_hidden: !product.is_hidden })}
+                              style={{
+                                padding: '0.3rem 0.75rem',
+                                borderRadius: '999px',
+                                border: 'none',
+                                fontSize: '0.75rem',
+                                fontWeight: 700,
+                                background: product.is_hidden ? '#f1f5f9' : 'rgba(216, 27, 96, 0.12)',
+                                color: product.is_hidden ? '#64748b' : '#D81B60',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px'
+                              }}
+                            >
+                              {product.is_hidden ? <><EyeOff size={12} /> Oculto</> : <><Eye size={12} /> Público</>}
+                            </button>
+                          </td>
+                          <td style={{ padding: '0.8rem 1rem', textAlign: 'right' }}>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
+                              <button onClick={() => handleEdit(product)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: '#475569', cursor: 'pointer' }} title="Editar">
+                                <Pencil size={18} />
+                              </button>
+                              <button onClick={() => toggleStock(product.id, product.in_stock)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: product.in_stock ? '#15803d' : '#94a3b8', cursor: 'pointer' }} title="Cambiar Estado de Stock">
+                                {product.in_stock ? <EyeOff size={18} /> : <Eye size={18} />}
+                              </button>
+                              <button onClick={() => handleDeleteClick(product)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', cursor: 'pointer' }} title="Eliminar Permanentemente">
+                                <Trash2 size={18} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile Cards Container (Visible on Mobile Screens) */}
+                <div className="mobile-admin-cards-grid" style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '12px' }}>
                   {filteredProducts.map(product => (
-                    <tr key={product.id} style={{ borderBottom: '1px solid var(--color-glass-border)', opacity: product.is_hidden ? 0.6 : 1 }}>
-                      <td style={{ padding: '0.8rem 1rem' }}>
-                        <img src={product.images?.[0] || '/icons/ebna-logo.png'} alt={product.name} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--color-glass-border)' }} />
-                      </td>
-                      <td style={{ padding: '0.8rem 1rem', fontWeight: 600 }}>{product.name}</td>
-                      <td style={{ padding: '0.8rem 1rem' }}>
-                        <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(216, 27, 96, 0.1)', color: 'var(--color-primary-dark)' }}>
-                          {product.category}
-                        </span>
-                      </td>
-                      <td style={{ padding: '0.8rem 1rem', fontWeight: 700, color: 'var(--color-text-main)' }}>
-                        {formatPrice(product.price)}
-                      </td>
-                      <td style={{ padding: '0.8rem 1rem' }}>
-                        <span style={{ padding: '0.25rem 0.7rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: product.in_stock ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: product.in_stock ? '#15803d' : '#b91c1c' }}>
-                          {product.in_stock ? 'En Stock' : 'Agotado'}
-                        </span>
-                      </td>
-                      <td style={{ padding: '0.8rem 1rem' }}>
-                        <button
-                          onClick={() => updateProduct(product.id, { is_hidden: !product.is_hidden })}
-                          style={{
-                            padding: '0.25rem 0.7rem',
-                            borderRadius: '999px',
-                            border: 'none',
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            background: product.is_hidden ? '#f3f4f6' : 'rgba(216, 27, 96, 0.15)',
-                            color: product.is_hidden ? '#6b7280' : '#D81B60',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          {product.is_hidden ? '👁️‍🗨️ OCULTO' : '👁️ PÚBLICO'}
-                        </button>
-                      </td>
-                      <td style={{ padding: '0.8rem 1rem', textAlign: 'right' }}>
-                        <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
-                          <button onClick={() => handleEdit(product)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: '#475569', cursor: 'pointer' }} title="Editar">
-                            <Pencil size={18} />
-                          </button>
-                          <button onClick={() => toggleStock(product.id, product.in_stock)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: product.in_stock ? '#15803d' : '#94a3b8', cursor: 'pointer' }} title="Cambiar Estado de Stock">
-                            {product.in_stock ? <EyeOff size={18} /> : <Eye size={18} />}
-                          </button>
-                          <button onClick={() => handleDeleteClick(product)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', cursor: 'pointer' }} title="Eliminar Permanentemente">
-                            <Trash2 size={18} />
+                    <div 
+                      key={product.id} 
+                      className="glass-card"
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px',
+                        padding: '14px',
+                        borderRadius: '16px',
+                        background: '#FFFFFF',
+                        border: '1px solid rgba(216, 27, 96, 0.15)',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
+                        opacity: product.is_hidden ? 0.65 : 1
+                      }}
+                    >
+                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        <img 
+                          src={product.images?.[0] || '/icons/ebna-logo.png'} 
+                          alt={product.name} 
+                          style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '10px', border: '1px solid var(--color-glass-border)' }} 
+                        />
+                        <div style={{ flex: 1 }}>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1E293B', margin: '0 0 4px 0' }}>{product.name}</h4>
+                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
+                            <span style={{ padding: '2px 8px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, background: 'rgba(216, 27, 96, 0.1)', color: '#D81B60' }}>
+                              {product.category}
+                            </span>
+                            <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1E293B' }}>
+                              {formatPrice(product.price)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
+                        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                          <span style={{ padding: '3px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 700, background: product.in_stock ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: product.in_stock ? '#15803d' : '#b91c1c' }}>
+                            {product.in_stock ? 'En Stock' : 'Agotado'}
+                          </span>
+
+                          <button
+                            onClick={() => updateProduct(product.id, { is_hidden: !product.is_hidden })}
+                            style={{
+                              padding: '3px 8px',
+                              borderRadius: '12px',
+                              border: 'none',
+                              fontSize: '0.72rem',
+                              fontWeight: 700,
+                              background: product.is_hidden ? '#f1f5f9' : 'rgba(216, 27, 96, 0.12)',
+                              color: product.is_hidden ? '#64748b' : '#D81B60',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px'
+                            }}
+                          >
+                            {product.is_hidden ? <><EyeOff size={12} /> Oculto</> : <><Eye size={12} /> Público</>}
                           </button>
                         </div>
-                      </td>
-                    </tr>
+
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <button onClick={() => handleEdit(product)} style={{ padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--color-glass-border)', background: '#F8FAFC', color: '#475569', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <Pencil size={14} /> Editar
+                          </button>
+                          <button onClick={() => handleDeleteClick(product)} style={{ padding: '6px 10px', borderRadius: '10px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </>
             )}
           </div>
         </div>

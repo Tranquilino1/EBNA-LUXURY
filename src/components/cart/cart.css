@@ -544,3 +544,71 @@
   line-height: 1.35;
 }
 
+/* 3D Navy Blue Animated Muni Dinero Button (*423*2*1*555439904#) */
+.btn-muni-navy-3d {
+  position: relative;
+  width: 100%;
+  padding: 1rem 1.4rem;
+  border-radius: 16px;
+  border: 1px solid #1E3A8A;
+  background: linear-gradient(135deg, #002060 0%, #001238 100%);
+  color: #FFFFFF !important;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 6px 0 #000B24, 0 12px 24px rgba(0, 32, 96, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  text-decoration: none !important;
+  user-select: none;
+}
+
+.btn-muni-navy-3d::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 55%
+  );
+  transform: rotate(30deg);
+  animation: shine3d 3.5s infinite;
+}
+
+@keyframes shine3d {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  20%, 100% { transform: translateX(100%) rotate(30deg); }
+}
+
+.btn-muni-navy-3d:hover {
+  background: linear-gradient(135deg, #00297A 0%, #001646 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #000B24, 0 16px 28px rgba(0, 32, 96, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.btn-muni-navy-3d:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #000B24, 0 4px 10px rgba(0, 32, 96, 0.3);
+}
+
+.ussd-code-badge {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  color: #60A5FA;
+}
+
+

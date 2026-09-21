@@ -425,5 +425,15 @@
   .qr-trigger-btn {
     padding: 6px 10px !important;
   }
+  .table-responsive-wrapper.desktop-only {
+    display: none !important;
+  }
 }
+
+@media (min-width: 769px) {
+  .mobile-admin-cards-grid {
+    display: none !important;
+  }
+}
+
 
