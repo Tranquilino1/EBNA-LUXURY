@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 // Auto-purge old browser caches & obsolete localstorage on version bump
-const APP_VERSION = 'v17_force_mobile_supabase_sync';
+const APP_VERSION = 'v18_express_shipping_3000_fcfa';
 try {
   if (typeof window !== 'undefined') {
     if (localStorage.getItem('ebna_app_version') !== APP_VERSION) {
@@ -16,11 +16,16 @@ try {
       });
       localStorage.setItem('ebna_app_version', APP_VERSION);
 
-      // Delete old PWA ServiceWorker CacheStorage
+      // Delete old PWA ServiceWorker CacheStorage and reload once
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(regs => {
+          regs.forEach(r => r.unregister());
+        });
+      }
       if ('caches' in window) {
         caches.keys().then(names => {
-          names.forEach(name => {
-            caches.delete(name);
+          Promise.all(names.map(name => caches.delete(name))).then(() => {
+            window.location.reload();
           });
         });
       }
