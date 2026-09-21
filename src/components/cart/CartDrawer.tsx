@@ -19,7 +19,7 @@ export const CartDrawer: React.FC = () => {
   if (!isCartOpen) return null;
 
   // Shipping calculation
-  const shippingCost = shippingType === 'express' ? 1000 : 0;
+  const shippingCost = shippingType === 'express' ? 3000 : 0;
   const grandTotal = subtotalPrice + shippingCost;
 
   const handleCopyMuni = () => {
@@ -43,7 +43,7 @@ export const CartDrawer: React.FC = () => {
 
     const regionText = region === 'insular' ? 'Región Insular (Malabo / Isla Bioko)' : 'Región Continental (Bata y provincias)';
     const shippingText = shippingType === 'express' 
-      ? 'Envío Express (Entrega en 3 días) [+1.000 FCFA]' 
+      ? 'Envío Express (Entrega en 3 días) [+3.000 FCFA]' 
       : 'Envío Normal (Entrega de 5 días a 1 semana) [Gratis]';
 
     const paymentText = paymentMethod === 'muni' 
@@ -218,7 +218,7 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
                       <span className="shipping-badge express" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                         <Zap size={14} /> Envío Express
                       </span>
-                      <span className="shipping-price">+1.000 FCFA</span>
+                      <span className="shipping-price">+3.000 FCFA</span>
                     </div>
                     <p className="shipping-desc">Entrega rápida en <strong>3 días</strong>.</p>
                   </div>
