@@ -2,9 +2,14 @@ name: Supabase Keep-Alive Cron
 
 on:
   schedule:
-    # Se ejecuta a las 00:00 UTC cada 3 días
+    # Se ejecuta automáticamente a las 00:00 UTC cada 3 días
     - cron: '0 0 */3 * *'
   workflow_dispatch:
+
+env:
+  # Valores por defecto para ejecución automática sin necesidad de configuración manual
+  FALLBACK_SUPABASE_URL: "https://epifjpbwbnphlhhfhigm.supabase.co"
+  FALLBACK_SUPABASE_ANON_KEY: "sb_publishable_e1J-2BHSP9bAUT7IlI3o4w_cqUqSTRQ"
 
 jobs:
   keep-alive:
@@ -15,11 +20,21 @@ jobs:
         run: |
           echo "Iniciando ping a la base de datos Supabase para mantenerla activa..."
           
-          # Realizar petición GET ligera a la tabla products
+          # Asignar Secret o usar valor por defecto de producción automáticamente
+          URL="${{ secrets.SUPABASE_URL }}"
+          if [ -z "$URL" ]; then
+            URL="$FALLBACK_SUPABASE_URL"
+          fi
+
+          KEY="${{ secrets.SUPABASE_ANON_KEY }}"
+          if [ -z "$KEY" ]; then
+            KEY="$FALLBACK_SUPABASE_ANON_KEY"
+          fi
+
           HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
-            -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=id&limit=1" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -X GET "${URL}/rest/v1/products?select=id&limit=1" \
+            -H "apikey: ${KEY}" \
+            -H "Authorization: Bearer ${KEY}" \
             -H "Content-Type: application/json")
 
           echo "Código de estado HTTP devuelto: $HTTP_STATUS"
