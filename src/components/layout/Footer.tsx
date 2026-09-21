@@ -23,6 +23,22 @@ export const Footer: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleShareWhatsApp = () => {
+    const url = window.location.href || 'https://ebna-luxury.vercel.app';
+    const message = `¡Descubre la boutique exclusiva EBNA Luxury! Moda, perfumería y cosmética de lujo en Guinea Ecuatorial: ${url}`;
+    if (navigator.share) {
+      navigator.share({
+        title: 'EBNA Luxury — Moda & Cosmética de Lujo',
+        text: 'Descubre la colección de alta gama de EBNA Luxury.',
+        url: url,
+      }).catch(() => {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, '_blank');
+      });
+    } else {
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`, '_blank');
+    }
+  };
+
   return (
     <div className={`footer-wrapper ${isExpanded ? 'is-expanded' : 'is-collapsed'} ${isNearBottom ? 'is-near-bottom' : ''}`}>
       {/* Floating Toggle Bar Tab */}
@@ -155,10 +171,19 @@ export const Footer: React.FC = () => {
               </a>
 
               <div style={{ display: 'flex', gap: '0.8rem', marginTop: '0.2rem', alignItems: 'center' }}>
-                <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Canal WhatsApp"><MessageCircle size={20} color="#25D366" /></a>
-                <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Lujo"><Sparkles size={20} color="#D81B60" /></a>
-                <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Favoritos"><Heart size={20} color="#D81B60" /></a>
-                <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Compartir"><Share2 size={20} color="#D81B60" /></a>
+                <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Canal WhatsApp" title="Canal Oficial WhatsApp"><MessageCircle size={20} color="#25D366" /></a>
+                <a href="https://wa.me/240222633687?text=Quiero%20información%20sobre%20la%20colección%20de%20lujo" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Consulta Lujo" title="Consulta de Lujo por WhatsApp"><Sparkles size={20} color="#D81B60" /></a>
+                <Link to="/catalogo" className="social-link" aria-label="Catálogo Favoritos" title="Explorar Catálogo Exclusivo"><Heart size={20} color="#D81B60" /></Link>
+                <button 
+                  type="button" 
+                  onClick={handleShareWhatsApp} 
+                  className="social-link" 
+                  aria-label="Compartir en WhatsApp" 
+                  title="Compartir página por WhatsApp"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'inline-flex', alignItems: 'center' }}
+                >
+                  <Share2 size={20} color="#D81B60" />
+                </button>
               </div>
             </div>
           </div>
