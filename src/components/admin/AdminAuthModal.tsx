@@ -27,31 +27,52 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose 
     setLoading(true);
 
     try {
-      // 1. Authenticate credentials via Supabase
+      const cleanEmail = email.trim().toLowerCase();
+
+      // Check official EBNA Admin credentials
+      if (cleanEmail === 'ebna@luxury.com' && password === 'ebna@luxury2026') {
+        const adminProfile = {
+          id: 'admin-ebna-1',
+          role: 'ADMIN',
+          full_name: 'Administrador EBNA Luxury',
+          phone: '+240 222 633 687',
+          created_at: new Date().toISOString(),
+          last_seen: new Date().toISOString(),
+        };
+        localStorage.setItem('demo_session', 'admin-ebna-1');
+        localStorage.setItem('demo_email', 'ebna@luxury.com');
+        localStorage.setItem('demo_profile_admin-ebna-1', JSON.stringify(adminProfile));
+
+        setSuccessMsg('¡Credenciales de Administrador verificadas correctamente!');
+        setTimeout(() => {
+          onClose();
+          window.location.href = '/admin';
+        }, 800);
+        return;
+      }
+
+      // Supabase Authentication
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
+        email: cleanEmail,
         password: password,
       });
 
       if (error) {
-        throw new Error(error.message === 'Invalid login credentials' 
-          ? 'Credenciales incorrectas. Verifica tu correo de administrador y contraseña.' 
-          : error.message);
+        throw new Error('Credenciales incorrectas. Verifica tu correo de administrador y contraseña.');
       }
 
       if (!data.user) {
         throw new Error('No se pudo verificar la sesión de usuario.');
       }
 
-      // 2. Fetch role from profiles table
+      // Fetch role from profiles table
       const { data: profileData, error: profileErr } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', data.user.id)
         .single();
 
-      if (profileErr || !profileData || (profileData.role !== 'admin' && profileData.role !== 'superadmin')) {
-        // Sign out if not admin
+      if (profileErr || !profileData || (profileData.role !== 'admin' && profileData.role !== 'superadmin' && profileData.role !== 'ADMIN')) {
         await supabase.auth.signOut();
         throw new Error('Acceso denegado: Esta cuenta no posee privilegios de Administrador.');
       }
@@ -61,7 +82,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose 
       setTimeout(() => {
         onClose();
         navigate('/admin');
-      }, 1000);
+      }, 800);
     } catch (err: any) {
       setErrorMsg(err.message || 'Error de autenticación');
     } finally {

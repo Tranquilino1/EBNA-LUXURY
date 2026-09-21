@@ -159,7 +159,7 @@ export function LoginPage() {
             ¿No tienes una cuenta? <span style={{ color: '#D81B60', fontWeight: 600 }}>Crear cuenta</span>
           </Link>
           
-          <Link to="/admin/login" style={{ color: '#D97706', textDecoration: 'none', fontSize: '14px', fontWeight: 600 }}>
+          <Link to="/admin/login" style={{ color: '#64748B', textDecoration: 'none', fontSize: '14px', fontWeight: 600 }}>
             👑 ¿Eres Administrador?
           </Link>
         </div>

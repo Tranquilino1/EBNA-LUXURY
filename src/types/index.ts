@@ -7,7 +7,7 @@ export interface Profile {
   last_seen: string;
 }
 
-export type CategoryType = 'MODA' | 'VESTIDOS' | 'CALZADO' | 'COSMETICA' | 'PERFUMES' | 'ACCESORIOS' | 'VASELINAS' | 'JABONES' | 'NIÑOS' | 'POMADAS';
+export type CategoryType = 'MODA' | 'VESTIDOS' | 'CALZADO' | 'COSMETICA' | 'PERFUMES' | 'ACCESORIOS' | 'VASELINAS' | 'JABONES' | 'NIÑOS' | 'POMADAS' | 'HIGIENE' | 'HOMBRES' | 'MUJERES';
 
 export interface Product {
   id: string;

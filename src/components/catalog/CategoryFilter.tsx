@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Shirt, Palette, Gem, Droplet, Sun, Baby, Stethoscope, Footprints, Crown, Flame } from 'lucide-react';
+import { Sparkles, Shirt, Palette, Gem, Droplet, Sun, Baby, UserCheck, HeartHandshake } from 'lucide-react';
 import type { ProductCategory } from '../../types';
 import './catalog.css';
 
@@ -10,16 +10,14 @@ interface CategoryFilterProps {
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, onCategoryChange }) => {
   const categories: { id: ProductCategory; label: string; icon: React.ReactNode }[] = [
-    { id: 'TODOS', label: 'Todos', icon: <Sparkles size={18} /> },
-    { id: 'PERFUMES', label: 'Perfumes & Fragancias', icon: <Flame size={18} /> },
-    { id: 'VESTIDOS', label: 'Vestidos & Robes', icon: <Crown size={18} /> },
-    { id: 'CALZADO', label: 'Calzado & Sneakers', icon: <Footprints size={18} /> },
-    { id: 'MODA', label: 'Moda & Hoodies', icon: <Shirt size={18} /> },
-    { id: 'COSMETICA', label: 'Cosmética & Cremas', icon: <Palette size={18} /> },
+    { id: 'TODOS', label: 'Todos los Productos', icon: <Sparkles size={18} /> },
+    { id: 'MODA', label: 'Moda & Calzado', icon: <Shirt size={18} /> },
+    { id: 'COSMETICA', label: 'Cosmética & Cuidado', icon: <Palette size={18} /> },
+    { id: 'HIGIENE', label: 'Higiene & Baño', icon: <Droplet size={18} /> },
     { id: 'JABONES', label: 'Jabones Artesanales', icon: <Sun size={18} /> },
-    { id: 'VASELINAS', label: 'Vaselinas & Lip Care', icon: <Droplet size={18} /> },
-    { id: 'POMADAS', label: 'Pomadas & Scrubs', icon: <Stethoscope size={18} /> },
     { id: 'ACCESORIOS', label: 'Accesorios & Bonnets', icon: <Gem size={18} /> },
+    { id: 'HOMBRES', label: 'Colección Hombres', icon: <UserCheck size={18} /> },
+    { id: 'MUJERES', label: 'Colección Mujeres', icon: <HeartHandshake size={18} /> },
     { id: 'NIÑOS', label: 'Niños & Bebés', icon: <Baby size={18} /> },
   ];
 

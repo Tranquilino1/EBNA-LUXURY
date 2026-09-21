@@ -56,9 +56,20 @@ export function useProducts(category?: ProductCategory | 'TODOS', searchQuery?: 
       // Filter out hidden items for public view
       localList = localList.filter((p: Product) => !p.is_hidden);
 
-      // Filter by category
+      // Filter by category with intelligent taxonomy mapping
+      const matchesCategory = (p: Product, cat: ProductCategory) => {
+        if (!cat || cat === 'TODOS') return true;
+        if (p.category === cat) return true;
+        if (cat === 'MODA' && (p.category === 'VESTIDOS' || p.category === 'CALZADO' || p.category === 'MODA')) return true;
+        if (cat === 'HIGIENE' && (p.category === 'VASELINAS' || p.category === 'POMADAS' || p.category === 'HIGIENE')) return true;
+        if (cat === 'JABONES' && (p.category === 'JABONES' || p.category === 'VASELINAS' || p.category === 'POMADAS')) return true;
+        if (cat === 'HOMBRES' && (p.name.toLowerCase().includes('men') || p.name.toLowerCase().includes('boy') || p.category === 'CALZADO')) return true;
+        if (cat === 'MUJERES' && (p.name.toLowerCase().includes('women') || p.category === 'VESTIDOS' || p.name.toLowerCase().includes('dress'))) return true;
+        return false;
+      };
+
       if (category && category !== 'TODOS') {
-        localList = localList.filter((p: Product) => p.category === category);
+        localList = localList.filter((p: Product) => matchesCategory(p, category));
       }
 
       // Filter by search query
