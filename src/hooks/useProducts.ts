@@ -81,31 +81,35 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
   useEffect(() => {
     fetchProducts();
 
-    // 1. Local BroadcastChannel for same-device multi-tab sync
+    // 1. Universal Real-Time Subscriber (WebSockets + BroadcastChannel + Postgres CDC)
     const unsubscribe = subscribeToCatalogChanges(() => {
       fetchProducts();
     });
 
-    // 2. Supabase Realtime WebSockets for Instant Cross-Device Sync (Mobile <-> PC)
+    // 2. Direct Supabase Realtime Channel
     const channel = supabase
-      .channel('products-realtime-sync')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'products' },
-        () => {
-          fetchProducts();
-        }
-      )
+      .channel('products-realtime-sync-' + Math.random().toString(36).substring(2, 7))
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        fetchProducts();
+      })
       .subscribe();
 
-    // 3. Window focus listener to re-verify state when user switches back to PC browser
-    const handleFocus = () => fetchProducts();
-    window.addEventListener('focus', handleFocus);
+    // 3. Smart 5-Second Real-Time Polling Safety Net (Works on ALL browsers & battery-saver modes)
+    const pollInterval = setInterval(() => {
+      fetchProducts();
+    }, 5000);
+
+    // 4. Focus & Tab Visibility Listeners
+    const handleActive = () => fetchProducts();
+    window.addEventListener('focus', handleActive);
+    document.addEventListener('visibilitychange', handleActive);
 
     return () => {
       unsubscribe();
       supabase.removeChannel(channel);
-      window.removeEventListener('focus', handleFocus);
+      clearInterval(pollInterval);
+      window.removeEventListener('focus', handleActive);
+      document.removeEventListener('visibilitychange', handleActive);
     };
   }, [fetchProducts]);
 

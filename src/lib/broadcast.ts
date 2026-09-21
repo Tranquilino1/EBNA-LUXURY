@@ -1,13 +1,25 @@
-// Real-time microsecond synchronization across tabs and local storage
+import { supabase } from '../config/supabase';
+
+// Real-time microsecond synchronization across tabs, devices, and browsers
 const CATALOG_CHANNEL_NAME = 'ebna_catalog_realtime_sync';
 
 let broadcastChannel: BroadcastChannel | null = null;
+let supabaseBroadcaster: any = null;
 
-if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+if (typeof window !== 'undefined') {
+  if ('BroadcastChannel' in window) {
+    try {
+      broadcastChannel = new BroadcastChannel(CATALOG_CHANNEL_NAME);
+    } catch (e) {
+      console.warn('BroadcastChannel not supported:', e);
+    }
+  }
+
   try {
-    broadcastChannel = new BroadcastChannel(CATALOG_CHANNEL_NAME);
+    supabaseBroadcaster = supabase.channel('global_ebna_realtime_broadcaster');
+    supabaseBroadcaster.subscribe();
   } catch (e) {
-    console.warn('BroadcastChannel not supported:', e);
+    console.warn('Supabase realtime broadcaster init notice:', e);
   }
 }
 
@@ -17,16 +29,25 @@ export function notifyCatalogChange(action: string, payload?: any) {
   // 1. Dispatch custom window event in current tab (0ms execution)
   window.dispatchEvent(new CustomEvent('ebna-catalog-update', { detail: { action, payload } }));
 
-  // 2. Broadcast to all other open tabs in microseconds
+  // 2. Broadcast to all open tabs on same device
   if (broadcastChannel) {
     try {
       broadcastChannel.postMessage({ action, payload, timestamp: Date.now() });
-    } catch (e) {
-      console.warn('Error posting broadcast message:', e);
-    }
+    } catch (e) {}
   }
 
-  // 3. Fallback localStorage event trigger
+  // 3. UNIVERSAL CROSS-DEVICE BROADCAST via Supabase WebSockets (Mobile <-> PC <-> Tablet across ALL BROWSERS)
+  if (supabaseBroadcaster) {
+    try {
+      supabaseBroadcaster.send({
+        type: 'broadcast',
+        event: 'catalog_change',
+        payload: { action, payload, timestamp: Date.now() },
+      });
+    } catch (e) {}
+  }
+
+  // 4. Fallback localStorage event trigger
   try {
     localStorage.setItem('ebna_last_sync_timestamp', Date.now().toString());
   } catch {}
@@ -58,11 +79,35 @@ export function subscribeToCatalogChanges(callback: (eventData: { action: string
   }
   window.addEventListener('storage', handleStorage);
 
+  // Subscribe to Supabase Global Realtime Broadcast Events (ALL Devices Worldwide)
+  let subChannel: any = null;
+  try {
+    subChannel = supabase
+      .channel('global_ebna_sub_' + Math.random().toString(36).substring(2, 9))
+      .on('broadcast', { event: 'catalog_change' }, (payload) => {
+        if (payload?.payload) {
+          callback(payload.payload);
+        } else {
+          callback({ action: 'update' });
+        }
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        callback({ action: 'postgres_change' });
+      })
+      .subscribe();
+  } catch (e) {
+    console.warn('Supabase realtime subscription notice:', e);
+  }
+
   return () => {
     window.removeEventListener('ebna-catalog-update', handleCustomEvent);
     if (broadcastChannel) {
       broadcastChannel.removeEventListener('message', handleBroadcast);
     }
     window.removeEventListener('storage', handleStorage);
+    if (subChannel) {
+      supabase.removeChannel(subChannel);
+    }
   };
 }
+
