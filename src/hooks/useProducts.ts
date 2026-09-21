@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoGetProducts, getDeletedProductIds, isProductDeleted } from '../lib/demoData';
+import { demoGetProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
