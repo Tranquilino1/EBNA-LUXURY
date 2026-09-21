@@ -1,0 +1,36 @@
+name: Supabase Keep-Alive Cron
+
+on:
+  schedule:
+    # Se ejecuta a las 00:00 UTC cada 3 días
+    - cron: '0 0 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  keep-alive:
+    name: Ping Supabase REST API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ejecutar consulta GET ligera a Supabase
+        run: |
+          echo "Iniciando ping a la base de datos Supabase para mantenerla activa..."
+          
+          # Realizar petición GET ligera a la tabla products
+          HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
+            -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json")
+
+          echo "Código de estado HTTP devuelto: $HTTP_STATUS"
+          echo "Respuesta obtenida de la API:"
+          cat response.json
+          echo ""
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "✅ Consulta ejecutada exitosamente. La base de datos Supabase ha registrado actividad."
+            exit 0
+          else
+            echo "❌ Error al consultar la API de Supabase. Código de estado: $HTTP_STATUS"
+            exit 1
+          fi
