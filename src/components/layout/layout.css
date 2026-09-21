@@ -342,16 +342,20 @@
   pointer-events: auto;
 }
 
-/* Footer Base Frame */
+/* Footer Base Frame — Warm Milky Gray Pearl with Picasso Line-Art Watermarks */
 .footer {
-  padding: 44px 24px 24px;
-  border-radius: 32px 32px 0 0;
+  padding: 48px 24px 28px;
+  border-radius: 36px 36px 0 0;
   transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.78) 0%, rgba(253, 248, 250, 0.6) 100%);
+  background-color: #F5F2EC;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400' fill='none'%3E%3Cpath d='M0 0 Q100 80 200 0 T400 0 M0 100 Q150 180 300 100 T400 200 M50 300 Q200 220 350 350' stroke='rgba(110,100,90,0.05)' stroke-width='1' stroke-dasharray='3,3'/%3E%3Cpath d='M60 80 C70 40 110 50 100 90 C90 130 140 110 120 150 M85 75 C95 95 105 75 115 95' stroke='rgba(110,100,90,0.055)' stroke-width='1.2' stroke-linecap='round' fill='none'/%3E%3Crect x='240' y='50' width='70' height='55' rx='8' stroke='rgba(110,100,90,0.055)' stroke-width='1.2' fill='none'/%3E%3Cpath d='M260 50 C260 30 290 30 290 50 M240 70 L310 70 M255 50 L295 105 M285 50 L245 100' stroke='rgba(110,100,90,0.045)' stroke-width='1' fill='none'/%3E%3Cpath d='M80 260 C110 260 130 240 150 220 C160 210 175 230 185 250 L190 290 M185 250 L185 295' stroke='rgba(110,100,90,0.055)' stroke-width='1.2' stroke-linecap='round' fill='none'/%3E%3Crect x='270' y='240' width='50' height='65' rx='6' stroke='rgba(110,100,90,0.055)' stroke-width='1.2' fill='none'/%3E%3Crect x='285' y='225' width='20' height='15' rx='2' stroke='rgba(110,100,90,0.055)' stroke-width='1.2' fill='none'/%3E%3Ccircle cx='295' cy='272' r='14' stroke='rgba(110,100,90,0.04)' stroke-width='1' fill='none'/%3E%3Ccircle cx='200' cy='200' r='80' stroke='rgba(110,100,90,0.035)' stroke-width='1' stroke-dasharray='4,6' fill='none'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, rgba(248, 245, 239, 0.94) 0%, rgba(240, 235, 228, 0.9) 100%);
+  background-repeat: repeat, no-repeat;
   backdrop-filter: blur(24px) saturate(190%);
   -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 -10px 40px rgba(216, 27, 96, 0.08);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 -12px 48px rgba(216, 27, 96, 0.07), inset 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .footer-content {
