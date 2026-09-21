@@ -223,6 +223,27 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
                     <p className="shipping-desc">Entrega rápida en <strong>3 días</strong>.</p>
                   </div>
                 </div>
+                <div style={{ textAlign: 'right', marginTop: '4px' }}>
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      try {
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        if ('caches' in window) {
+                          caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+                        }
+                        if ('serviceWorker' in navigator) {
+                          navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+                        }
+                      } catch(e){}
+                      window.location.reload();
+                    }}
+                    style={{ background: 'transparent', border: 'none', color: '#D81B60', fontSize: '0.72rem', fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }}
+                  >
+                    🔄 ¿No ves los 3.000 FCFA? Pulsa aquí para actualizar caché
+                  </button>
+                </div>
 
                 {/* Payment Method Selection */}
                 <h4 className="options-section-title" style={{ marginTop: '1rem' }}><CreditCard size={16} color="#D81B60" /> Método de Pago</h4>
