@@ -8,6 +8,7 @@ import { ParticleBackground } from '../effects/ParticleBackground';
 import { AdminCrudProvider } from '../../contexts/AdminCrudContext';
 import { AdminFloatingDock } from '../admin/AdminFloatingDock';
 import { ChristmasSnowOverlay } from '../effects/ChristmasSnowOverlay';
+import { ScrollToTopButton } from '../ui/ScrollToTopButton';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import './layout.css';
 
@@ -27,6 +28,7 @@ export const Layout: React.FC = () => {
         <CartDrawer />
         <PWAInstallBanner />
         <AdminFloatingDock />
+        <ScrollToTopButton />
       </div>
     </AdminCrudProvider>
   );

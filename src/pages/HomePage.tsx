@@ -150,6 +150,9 @@ export function HomePage() {
                   src={tiltProduct.images?.primary || (Array.isArray(tiltProduct.images) ? tiltProduct.images[0] : '/icons/ebna-logo.png')} 
                   alt={tiltProduct.name} 
                   className="tilt-image" 
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                 />
                 <div className="tilt-info">
                   <span className="tilt-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
