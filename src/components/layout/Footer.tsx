@@ -70,13 +70,13 @@ export const Footer: React.FC = () => {
             <div className="footer-brand-row">
               <img src="/icons/ebna-logo.png" alt="EBNA Logo" className="footer-logo-circle" />
               <div>
-                <h2 className="brand-title-uppercase">EBNA</h2>
-                <p className="brand-syndy-tagline">SYNDY LUXURY — Moda & Cosmética</p>
+                <h2 className="brand-title-uppercase">SINDY LUXURY</h2>
+                <p className="brand-syndy-tagline">BY EBNA — Alta Costura & Moda</p>
               </div>
             </div>
             
-            <p style={{ fontSize: '0.82rem', color: '#64748B', margin: '0.6rem 0 1rem 0', lineHeight: 1.4 }}>
-              Boutique exclusiva de alta perfumería, cosmética de tratamiento y ropa de lujo internacional.
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', margin: '0.6rem 0 1rem 0', lineHeight: 1.5 }}>
+              Boutique exclusiva de vestidos de gala, conjuntos de pasarela, calzado joya y cosmética botánica en Guinea Ecuatorial.
             </p>
 
             <div className="footer-app-badges">
@@ -88,7 +88,7 @@ export const Footer: React.FC = () => {
                   style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }} 
                   title="Descargar APK Android"
                 >
-                  <Smartphone size={14} color="#D81B60" /> Android APK
+                  <Smartphone size={14} color="var(--brand-accent)" /> Android APK
                 </a>
                 <a 
                   href="/downloads/ebna-luxury.mobileconfig" 
@@ -97,7 +97,7 @@ export const Footer: React.FC = () => {
                   style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }} 
                   title="Instalar App iOS"
                 >
-                  <Apple size={14} color="#D81B60" /> iOS App
+                  <Apple size={14} color="var(--brand-accent)" /> iOS App
                 </a>
                 <button
                   type="button"
@@ -105,7 +105,7 @@ export const Footer: React.FC = () => {
                   onClick={() => setIsQRModalOpen(true)}
                   style={{ border: 'none', cursor: 'pointer', font: 'inherit', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                 >
-                  <QrCode size={14} color="#D81B60" /> Código QR App
+                  <QrCode size={14} color="var(--brand-accent)" /> Código QR App
                 </button>
               </div>
             </div>
@@ -128,15 +128,15 @@ export const Footer: React.FC = () => {
               <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="contact-link">
                 <MessageCircle size={18} className="text-ebna" />
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#1E293B' }}>+240 222 633 687</span>
-                  <span style={{ fontSize: '0.72rem', color: '#64748B' }}>Atención General WhatsApp</span>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>+240 222 633 687</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Atención General WhatsApp</span>
                 </div>
               </a>
               <a href="https://wa.me/240555439904" target="_blank" rel="noopener noreferrer" className="contact-link">
-                <Phone size={18} color="#64748B" />
+                <Phone size={18} color="var(--text-secondary)" />
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#1E293B' }}>+240 555 439 904</span>
-                  <span style={{ fontSize: '0.72rem', color: '#64748B' }}>Servicio Muni Dinero</span>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>+240 555 439 904</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Servicio Muni Dinero</span>
                 </div>
               </a>
             </div>

@@ -95,18 +95,18 @@ export function ProductPage() {
         ogImage={mainImage} 
         type="product"
       />
-      <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: '#6E5B65', marginBottom: '1rem' }}>
-        <Link to="/" style={{ color: '#D81B60', textDecoration: 'none' }}>Inicio</Link> &gt; 
-        <Link to="/catalogo" style={{ color: '#D81B60', textDecoration: 'none' }}>Catálogo</Link> &gt; 
-        <span style={{ color: '#23191E', fontWeight: 600 }}>{product.name}</span>
+      <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+        <Link to="/" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Inicio</Link> &gt; 
+        <Link to="/catalogo" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Catálogo</Link> &gt; 
+        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{product.name}</span>
       </nav>
 
-      <Link to="/catalogo" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#D81B60', fontWeight: 600, textDecoration: 'none', marginBottom: '2rem' }}>
+      <Link to="/catalogo" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--brand-accent)', fontWeight: 600, textDecoration: 'none', marginBottom: '2rem' }}>
         <ArrowLeft size={18} /> Volver al catálogo
       </Link>
 
       <div className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
-        <div className="product-image-section glass-panel" style={{ padding: '1.25rem', borderRadius: '24px', background: 'radial-gradient(circle at center, #FFFFFF 40%, #F8F2F5 100%)', position: 'relative' }}>
+        <div className="product-image-section glass-panel" style={{ padding: '1.25rem', borderRadius: '24px', background: 'var(--canvas-elevated)', position: 'relative' }}>
           <img 
             src={mainImage} 
             alt={product.name} 
@@ -130,9 +130,9 @@ export function ProductPage() {
           </div>
         </div>
         
-        <div className="product-info-section glass-panel" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <div className="product-info-section glass-panel" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.25rem', background: 'var(--canvas-surface)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span className={`badge badge-${(product.category || '').toLowerCase()}`} style={{ fontSize: '0.8rem', padding: '6px 14px', background: 'rgba(224,90,136,0.12)', color: '#D81B60', borderRadius: '20px', fontWeight: 700 }}>
+            <span className={`badge badge-${(product.category || '').toLowerCase()}`} style={{ fontSize: '0.8rem', padding: '6px 14px', background: 'var(--brand-gold-light)', color: 'var(--brand-accent)', borderRadius: '20px', fontWeight: 700, border: '1px solid var(--border-subtle)' }}>
               {(product.category || '').replace(/_/g, ' ')}
             </span>
             <span style={{ fontSize: '0.8rem', color: '#25D366', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -140,24 +140,24 @@ export function ProductPage() {
             </span>
           </div>
 
-          <h1 className="product-title" style={{ fontFamily: 'Playfair Display, serif', fontSize: '2rem', lineHeight: 1.25, color: '#23191E' }}>
+          <h1 className="product-title" style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', lineHeight: 1.2, color: 'var(--text-primary)' }}>
             {product.name}
           </h1>
 
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#D81B60', letterSpacing: '-0.02em' }}>
+            <span style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--brand-accent)', letterSpacing: '-0.02em' }}>
               {formatPrice(priceVal)}
             </span>
           </div>
           
-          <div className="product-description" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: '#555', background: 'rgba(255,255,255,0.7)', padding: '1.25rem', borderRadius: '16px', border: '1px solid rgba(224,90,136,0.15)' }}>
+          <div className="product-description" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: 'var(--text-secondary)', background: 'var(--canvas-elevated)', padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
             <p>{product.description}</p>
           </div>
 
           {/* Sizes / Formats Selector */}
           {availableSizes.length > 0 && (
             <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#23191E', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {isCosmetic ? 'Presentación / Formato:' : isFootwear ? 'Seleccionar Talla de Calzado (EU):' : isAccessory ? 'Medida:' : 'Seleccionar Talla:'}
               </label>
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -169,9 +169,9 @@ export function ProductPage() {
                     style={{
                       padding: '8px 16px',
                       borderRadius: '12px',
-                      border: selectedSize === size ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
-                      background: selectedSize === size ? 'rgba(224,90,136,0.12)' : 'white',
-                      color: selectedSize === size ? '#D81B60' : '#333',
+                      border: selectedSize === size ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
+                      background: selectedSize === size ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
+                      color: selectedSize === size ? 'var(--brand-accent)' : 'var(--text-primary)',
                       fontWeight: selectedSize === size ? 800 : 600,
                       fontSize: '0.88rem',
                       cursor: 'pointer',
@@ -188,7 +188,7 @@ export function ProductPage() {
           {/* Colors Selector */}
           {availableColors.length > 0 && (
             <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#23191E', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {isCosmetic ? 'Tono / Variante:' : 'Seleccionar Color:'}
               </label>
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -200,9 +200,9 @@ export function ProductPage() {
                     style={{
                       padding: '8px 16px',
                       borderRadius: '12px',
-                      border: selectedColor === color ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
-                      background: selectedColor === color ? 'rgba(224,90,136,0.12)' : 'white',
-                      color: selectedColor === color ? '#D81B60' : '#333',
+                      border: selectedColor === color ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
+                      background: selectedColor === color ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
+                      color: selectedColor === color ? 'var(--brand-accent)' : 'var(--text-primary)',
                       fontWeight: selectedColor === color ? 800 : 600,
                       fontSize: '0.88rem',
                       cursor: 'pointer',
@@ -222,23 +222,23 @@ export function ProductPage() {
 
           {/* Quantity Selector */}
           <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#23191E', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Cantidad (Unidades):
             </label>
-            <div style={{ display: 'inline-flex', alignItems: 'center', background: '#F5ECF0', borderRadius: '14px', padding: '4px', width: 'fit-content' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', background: 'var(--canvas-elevated)', borderRadius: '14px', padding: '4px', width: 'fit-content', border: '1px solid var(--border-light)' }}>
               <button
                 type="button"
                 onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                style={{ width: '36px', height: '36px', borderRadius: '10px', border: 'none', background: 'white', color: '#23191E', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}
+                style={{ width: '36px', height: '36px', borderRadius: '10px', border: 'none', background: 'var(--canvas-surface)', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}
                 aria-label="Disminuir cantidad"
               >
                 <Minus size={16} />
               </button>
-              <span style={{ padding: '0 18px', fontWeight: 800, fontSize: '1.05rem', color: '#23191E' }}>{quantity}</span>
+              <span style={{ padding: '0 18px', fontWeight: 800, fontSize: '1.05rem', color: 'var(--text-primary)' }}>{quantity}</span>
               <button
                 type="button"
                 onClick={() => setQuantity(prev => prev + 1)}
-                style={{ width: '36px', height: '36px', borderRadius: '10px', border: 'none', background: 'white', color: '#23191E', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}
+                style={{ width: '36px', height: '36px', borderRadius: '10px', border: 'none', background: 'var(--canvas-surface)', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}
                 aria-label="Aumentar cantidad"
               >
                 <Plus size={16} />

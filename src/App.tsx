@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AuthProvider } from './contexts/AuthContext';
 import { TrafficProvider } from './contexts/TrafficContext';
 import { CartProvider } from './contexts/CartContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { Layout } from './components/layout/Layout';
 import { AdminGuard } from './components/admin/AdminGuard';
 import { Loader } from './components/ui/Loader';
@@ -108,13 +109,15 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <TrafficProvider>
-          <CartProvider>
-            <RouterProvider router={router} />
-          </CartProvider>
-        </TrafficProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <TrafficProvider>
+            <CartProvider>
+              <RouterProvider router={router} />
+            </CartProvider>
+          </TrafficProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
