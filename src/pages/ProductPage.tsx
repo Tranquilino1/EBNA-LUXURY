@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
@@ -16,12 +16,63 @@ export function ProductPage() {
   
   const product = products.find(p => p.slug === slug);
 
-  const availableSizes = product?.sizes && product.sizes.length > 0 ? product.sizes : ['S', 'M', 'L', 'XL'];
-  const availableColors = product?.colors && product.colors.length > 0 ? product.colors : ['Blanco', 'Negro', 'Rosa', 'Dorado'];
+  const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product?.category || '');
+  const isFootwear = product?.category === 'CALZADO';
+  const isAccessory = product?.category === 'BOLSOS_ACCESORIOS';
 
-  const [selectedSize, setSelectedSize] = useState<string>(availableSizes[0] || 'M');
-  const [selectedColor, setSelectedColor] = useState<string>(availableColors[0] || 'Blanco');
+  // Available formats or sizes based on actual product category
+  const availableSizes = useMemo(() => {
+    if (!product) return [];
+    if (isCosmetic) {
+      if (product.details?.volume) return [product.details.volume];
+      const validFormats = (product.sizes || []).filter(s => !['S', 'M', 'L', 'XL', 'XS'].includes(s));
+      return validFormats;
+    }
+    if (isAccessory) {
+      if (product.sizes && product.sizes.length > 0 && !['S', 'M', 'L', 'XL'].includes(product.sizes[0])) {
+        return product.sizes;
+      }
+      return ['Talla Única'];
+    }
+    if (isFootwear) {
+      if (product.sizes && product.sizes.length > 0) return product.sizes;
+      if (product.details?.size && product.details.size.length > 0) return product.details.size;
+      return ['37', '38', '39', '40'];
+    }
+    // Clothing (Vestidos, Monos, Conjuntos, Tops)
+    if (product.sizes && product.sizes.length > 0) return product.sizes;
+    if (product.details?.size && product.details.size.length > 0) return product.details.size;
+    return ['XS', 'M', 'XL'];
+  }, [product, isCosmetic, isAccessory, isFootwear]);
+
+  const availableColors = useMemo(() => {
+    if (!product) return [];
+    if (isCosmetic) {
+      return product.colors && product.colors.length > 0 ? product.colors : [];
+    }
+    if (product.colors && product.colors.length > 0) return product.colors;
+    return [];
+  }, [product, isCosmetic]);
+
+  const [selectedSize, setSelectedSize] = useState<string>('');
+  const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
+
+  useEffect(() => {
+    if (availableSizes.length > 0) {
+      setSelectedSize(availableSizes[0]);
+    } else {
+      setSelectedSize('');
+    }
+  }, [availableSizes]);
+
+  useEffect(() => {
+    if (availableColors.length > 0) {
+      setSelectedColor(availableColors[0]);
+    } else {
+      setSelectedColor('');
+    }
+  }, [availableColors]);
 
   if (!product) {
     if (loading) return <Loader fullScreen message="Cargando detalles del producto..." />;
@@ -103,67 +154,71 @@ export function ProductPage() {
             <p>{product.description}</p>
           </div>
 
-          {/* Sizes Selector */}
-          <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#23191E', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Seleccionar Talla / Tamaño:
-            </label>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {availableSizes.map(size => (
-                <button
-                  key={size}
-                  type="button"
-                  onClick={() => setSelectedSize(size)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '12px',
-                    border: selectedSize === size ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
-                    background: selectedSize === size ? 'rgba(224,90,136,0.12)' : 'white',
-                    color: selectedSize === size ? '#D81B60' : '#333',
-                    fontWeight: selectedSize === size ? 800 : 600,
-                    fontSize: '0.88rem',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {size}
-                </button>
-              ))}
+          {/* Sizes / Formats Selector */}
+          {availableSizes.length > 0 && (
+            <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#23191E', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                {isCosmetic ? 'Presentación / Formato:' : isFootwear ? 'Seleccionar Talla de Calzado (EU):' : isAccessory ? 'Medida:' : 'Seleccionar Talla:'}
+              </label>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {availableSizes.map(size => (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => setSelectedSize(size)}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '12px',
+                      border: selectedSize === size ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
+                      background: selectedSize === size ? 'rgba(224,90,136,0.12)' : 'white',
+                      color: selectedSize === size ? '#D81B60' : '#333',
+                      fontWeight: selectedSize === size ? 800 : 600,
+                      fontSize: '0.88rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Colors Selector */}
-          <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#23191E', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Seleccionar Color / Tono:
-            </label>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {availableColors.map(color => (
-                <button
-                  key={color}
-                  type="button"
-                  onClick={() => setSelectedColor(color)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '12px',
-                    border: selectedColor === color ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
-                    background: selectedColor === color ? 'rgba(224,90,136,0.12)' : 'white',
-                    color: selectedColor === color ? '#D81B60' : '#333',
-                    fontWeight: selectedColor === color ? 800 : 600,
-                    fontSize: '0.88rem',
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {selectedColor === color && <Check size={14} />}
-                  {color}
-                </button>
-              ))}
+          {availableColors.length > 0 && (
+            <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#23191E', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                {isCosmetic ? 'Tono / Variante:' : 'Seleccionar Color:'}
+              </label>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {availableColors.map(color => (
+                  <button
+                    key={color}
+                    type="button"
+                    onClick={() => setSelectedColor(color)}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '12px',
+                      border: selectedColor === color ? '2px solid #D81B60' : '1px solid rgba(0,0,0,0.15)',
+                      background: selectedColor === color ? 'rgba(224,90,136,0.12)' : 'white',
+                      color: selectedColor === color ? '#D81B60' : '#333',
+                      fontWeight: selectedColor === color ? 800 : 600,
+                      fontSize: '0.88rem',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {selectedColor === color && <Check size={14} />}
+                    {color}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Quantity Selector */}
           <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

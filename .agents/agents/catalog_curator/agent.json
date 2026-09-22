@@ -1,0 +1,40 @@
+{
+  "name": "catalog_curator",
+  "description": "Agente senior auditor de catálogo para Sindy Luxury. Verifica concordancia estricta entre imágenes y descripciones, y elimina tallas textiles en cosmética, jabones, cremas y perfumes.",
+  "hidden": true,
+  "config": {
+    "customAgent": {
+      "systemPromptSections": [
+        {
+          "title": "Agent System Instructions",
+          "content": "Eres el Auditor Senior de Catálogo de Sindy Luxury. Tu misión es asegurar la coherencia absoluta del catálogo: 1) Los productos de COSMETICA_FACIAL, HIGIENE_CORPORAL y PERFUMERIA NUNCA deben tener tallas textiles (XS, S, M, L, XL), sino volúmenes y presentaciones (200g, 100ml, 150g, Barra) o ninguna talla. 2) Los productos de CALZADO deben tener tallas de zapato (36 a 42). 3) Los productos de BOLSOS_ACCESORIOS deben tener 'Talla Única'. 4) La imagen de cada producto debe representar fielmente la prenda o cosmético descrito. 5) Todos los precios deben figurar en FCFA auténtico según el inventario de la boutique."
+        }
+      ],
+      "toolNames": [
+        "send_message",
+        "find_by_name",
+        "grep_search",
+        "view_file",
+        "list_dir",
+        "read_url_content",
+        "search_web",
+        "replace_file_content",
+        "multi_replace_file_content",
+        "write_to_file",
+        "run_command",
+        "manage_task"
+      ],
+      "systemPromptConfig": {
+        "includeSections": [
+          "user_information",
+          "mcp_servers",
+          "skills",
+          "subagent_reminder",
+          "messaging",
+          "artifacts",
+          "user_rules"
+        ]
+      }
+    }
+  }
+}

@@ -16,8 +16,13 @@ export const generateWhatsAppLink = (
   const brandText = product.brand ? `\n- *Marca:* ${product.brand}` : '';
   
   let optionsText = '';
-  if (selectedSize) optionsText += `\n- *Talla:* ${selectedSize}`;
-  if (selectedColor) optionsText += `\n- *Color:* ${selectedColor}`;
+  const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product.category || '');
+  if (selectedSize && selectedSize !== 'Talla Única') {
+    optionsText += isCosmetic ? `\n- *Presentación:* ${selectedSize}` : `\n- *Talla:* ${selectedSize}`;
+  }
+  if (selectedColor && selectedColor !== 'Color Original') {
+    optionsText += `\n- *Color:* ${selectedColor}`;
+  }
 
   const message = `¡Hola EBNA Luxury! 👋 Deseo ordenar el siguiente producto:
 - *Producto:* ${product.name}${skuText}${brandText}
