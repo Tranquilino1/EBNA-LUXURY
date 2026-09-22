@@ -13,6 +13,1107 @@ export interface UserAccount {
 
 export const INITIAL_PRODUCTS: Product[] = [
   {
+    "id": "sindy-1",
+    "sku": "SL-VEST-01",
+    "name": "Vestido Largo Drapeado Soleil Escultural",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "priceFCFA": 25000,
+    "originalPriceFCFA": 30000,
+    "inStock": true,
+    "featured": true,
+    "description": "Espectacular vestido largo de noche en satén de seda drapeado artesanalmente. Escote halter fluido y silueta escultural que realza el movimiento con elegancia regia.",
+    "images": {
+      "primary": "/products/sindy_luxury/vestido_amarillo_drapeado.jpg",
+      "gallery": [
+        "/products/sindy_luxury/vestido_amarillo_drapeado.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M",
+        "XL"
+      ],
+      "material": "Satén de Seda Pesado & Forro Elástico"
+    },
+    "slug": "vestido-largo-drapeado-soleil-escultural-sindy-1",
+    "price": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Amarillo",
+      "Marrón",
+      "Rojo",
+      "Rosa"
+    ],
+    "sizes": [
+      "XS",
+      "M",
+      "XL"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-2",
+    "sku": "SL-MONO-01",
+    "name": "Jumpsuit Silueta Felina Animal Print Luxe",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Monos & Jumpsuits",
+    "priceFCFA": 25000,
+    "originalPriceFCFA": 28000,
+    "inStock": true,
+    "featured": true,
+    "description": "Mono ajustado de alta costura con estampado felino de máxima definición. Tejido elástico premium modelador, escote arquitectónico y mangas estilizadas.",
+    "images": {
+      "primary": "/products/sindy_luxury/jumpsuit_leopardo_luxe.jpg",
+      "gallery": [
+        "/products/sindy_luxury/jumpsuit_leopardo_luxe.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Spandex & Microfibra Modeladora"
+    },
+    "slug": "jumpsuit-silueta-felina-animal-print-luxe-sindy-2",
+    "price": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Leopardo Dorado",
+      "Negro"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-3",
+    "sku": "SL-SET-01",
+    "name": "Conjunto Peplum Vichy Rosa & Shorts Couture",
+    "brand": "Sindy Luxury Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos 2 Piezas",
+    "priceFCFA": 25000,
+    "originalPriceFCFA": 30000,
+    "inStock": true,
+    "featured": true,
+    "description": "Conjunto exclusivo de dos piezas en estampado vichy pastel. Top estructurado corte peplum con hombreras sutiles y shorts sastreados de tiro alto.",
+    "images": {
+      "primary": "/products/sindy_luxury/conjunto_vichy_rosa_peplum.jpg",
+      "gallery": [
+        "/products/sindy_luxury/conjunto_vichy_rosa_peplum.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Tweed Ligero & Algodón Estructurado"
+    },
+    "slug": "conjunto-peplum-vichy-rosa-shorts-couture-sindy-3",
+    "price": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Rosa Vichy",
+      "Blanco"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-4",
+    "sku": "SL-CALZ-01",
+    "name": "Sandalias Tacón Joya Esmeralda con Strass",
+    "brand": "Sindy Luxury Footwear",
+    "category": "CALZADO",
+    "subcategory": "Tacones & Sandalias",
+    "priceFCFA": 25000,
+    "originalPriceFCFA": 32000,
+    "inStock": true,
+    "featured": true,
+    "description": "Sandalias de aguja de fiesta con finas tiras tubulares engastadas en cristales esmeralda y pulsera de tobillo joya. Puntera cuadrada moderna y tacón estilizado.",
+    "images": {
+      "primary": "/products/sindy_luxury/sandalias_joya_esmeralda.jpg",
+      "gallery": [
+        "/products/sindy_luxury/sandalias_joya_esmeralda.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "37",
+        "38",
+        "39",
+        "40"
+      ],
+      "material": "Satén de Seda, Cristales Strass & Suela Cuero"
+    },
+    "slug": "sandalias-tacon-joya-esmeralda-con-strass-sindy-4",
+    "price": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Verde Esmeralda",
+      "Dorado"
+    ],
+    "sizes": [
+      "37",
+      "38",
+      "39",
+      "40"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-5",
+    "sku": "SL-CALZ-02",
+    "name": "Stilettos Degradé Charol Haute Elegance",
+    "brand": "Sindy Luxury Footwear",
+    "category": "CALZADO",
+    "subcategory": "Zapatos de Salón",
+    "priceFCFA": 24000,
+    "originalPriceFCFA": 29000,
+    "inStock": true,
+    "featured": true,
+    "description": "Zapatos de salón de corte clásico con acabado en charol italiano ultrabrillante. Efecto degradé artesanal y tacón de aguja de 10.5 cm para eventos de gala.",
+    "images": {
+      "primary": "/products/sindy_luxury/stilettos_charol_degrade.jpg",
+      "gallery": [
+        "/products/sindy_luxury/stilettos_charol_degrade.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "37",
+        "38",
+        "39",
+        "40"
+      ],
+      "material": "Charol Brillante PU & Forro Piel Acolchado"
+    },
+    "slug": "stilettos-degrade-charol-haute-elegance-sindy-5",
+    "price": 24000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Degradé Negro-Nude",
+      "Negro Charol",
+      "Burdeos"
+    ],
+    "sizes": [
+      "37",
+      "38",
+      "39",
+      "40"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-6",
+    "sku": "SL-TOP-01",
+    "name": "Corset Joya Strass & Perlas Barrocas Crystal",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Tops & Corsets",
+    "priceFCFA": 8000,
+    "originalPriceFCFA": 12000,
+    "inStock": true,
+    "featured": true,
+    "description": "Bustier estructurado con varillaje interior anatómico y copa reforzada, bordado íntegramente con perlas y strass reflectante. La pieza definitiva para la noche.",
+    "images": {
+      "primary": "/products/sindy_luxury/corset_strass_perlas_blanco.jpg",
+      "gallery": [
+        "/products/sindy_luxury/corset_strass_perlas_blanco.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Brocado Satén con Incrustaciones de Pedrería"
+    },
+    "slug": "corset-joya-strass-perlas-barrocas-crystal-sindy-6",
+    "price": 8000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Blanco Nieve",
+      "Rojo Rubí",
+      "Negro",
+      "Gris Plata"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-7",
+    "sku": "SL-SET-02",
+    "name": "Conjunto Flúor Soleil Cárdigan + Falda Lápiz",
+    "brand": "Sindy Luxury Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos 2 Piezas",
+    "priceFCFA": 25000,
+    "originalPriceFCFA": 30000,
+    "inStock": true,
+    "featured": true,
+    "description": "Look coordinado de dos piezas en punto fino texturizado. Cárdigan corto con escote en V y botones joya junto a falda midi ceñida de tiro alto con diadema a juego.",
+    "images": {
+      "primary": "/products/sindy_luxury/conjunto_fluor_soleil.jpg",
+      "gallery": [
+        "/products/sindy_luxury/conjunto_fluor_soleil.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M",
+        "XL"
+      ],
+      "material": "Punto Elástico Canalé Premium"
+    },
+    "slug": "conjunto-fluor-soleil-cardigan-falda-lapiz-sindy-7",
+    "price": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Amarillo Flúor",
+      "Marrón",
+      "Rojo",
+      "Verde",
+      "Rosa"
+    ],
+    "sizes": [
+      "XS",
+      "M",
+      "XL"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-8",
+    "sku": "SL-VEST-02",
+    "name": "Vestido Túnica Caftán Imperial Blanco Puro",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "priceFCFA": 25000,
+    "originalPriceFCFA": 32000,
+    "inStock": true,
+    "featured": true,
+    "description": "Majestuosa túnica de gala con capa abierta alada en satén fluido. Diseño aristocrático con cuello joya y corte imperial pensado para recepciones y alfombras rojas.",
+    "images": {
+      "primary": "/products/sindy_luxury/vestido_tunica_caftan_blanco.jpg",
+      "gallery": [
+        "/products/sindy_luxury/vestido_tunica_caftan_blanco.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Gasa de Seda Doble & Satén Pesado"
+    },
+    "slug": "vestido-tunica-caftan-imperial-blanco-puro-sindy-8",
+    "price": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Blanco Puro"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-9",
+    "sku": "SL-VEST-03",
+    "name": "Vestido Azul Noche Satinado con Abertura Gala",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "priceFCFA": 21000,
+    "originalPriceFCFA": 26000,
+    "inStock": true,
+    "featured": true,
+    "description": "Vestido largo en satén pesado color azul medianoche. Corpiño ceñido drapeado, espalda descubierta y abertura lateral alta con caída impecable.",
+    "images": {
+      "primary": "/products/sindy_luxury/vestido_azul_noche_gala.jpg",
+      "gallery": [
+        "/products/sindy_luxury/vestido_azul_noche_gala.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M",
+        "XL"
+      ],
+      "material": "Satén Duchesse Midnight Blue"
+    },
+    "slug": "vestido-azul-noche-satinado-abertura-gala-sindy-9",
+    "price": 21000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Azul Noche",
+      "Esmeralda",
+      "Negro"
+    ],
+    "sizes": [
+      "XS",
+      "M",
+      "XL"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-10",
+    "sku": "SL-VEST-04",
+    "name": "Vestido Sirena Marrón Chocolate Asimétrico",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "priceFCFA": 25000,
+    "originalPriceFCFA": 30000,
+    "inStock": true,
+    "featured": true,
+    "description": "Silueta sirena escultural que abraza la figura femenina con drapeado diagonal asimétrico. Cola sutil y tejido crepé satinado de caída suntuosa.",
+    "images": {
+      "primary": "/products/sindy_luxury/vestido_sirena_chocolate.jpg",
+      "gallery": [
+        "/products/sindy_luxury/vestido_sirena_chocolate.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Crepé Satén Elástico Chocolate"
+    },
+    "slug": "vestido-sirena-marron-chocolate-asimetrico-sindy-10",
+    "price": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Marrón Chocolate",
+      "Rojo",
+      "Negro",
+      "Rosa"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-11",
+    "sku": "SL-SET-03",
+    "name": "Conjunto Palazzo Celeste & Top Escultural",
+    "brand": "Sindy Luxury Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos 2 Piezas",
+    "priceFCFA": 18000,
+    "originalPriceFCFA": 23000,
+    "inStock": true,
+    "featured": true,
+    "description": "Conjunto de dos piezas de presencia deslumbrante: top arquitectónico con tirante asimétrico y pantalón palazzo de pinzas fluidas de talle alto.",
+    "images": {
+      "primary": "/products/sindy_luxury/conjunto_palazzo_celeste.jpg",
+      "gallery": [
+        "/products/sindy_luxury/conjunto_palazzo_celeste.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M",
+        "XL"
+      ],
+      "material": "Lino Viscosa Suave de Alta Caída"
+    },
+    "slug": "conjunto-palazzo-celeste-top-escultural-sindy-11",
+    "price": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Azul Celeste",
+      "Blanco",
+      "Rojo",
+      "Rosa"
+    ],
+    "sizes": [
+      "XS",
+      "M",
+      "XL"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-12",
+    "sku": "SL-VEST-05",
+    "name": "Vestido Largo Satinado Perla Imperial",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "priceFCFA": 30000,
+    "originalPriceFCFA": 38000,
+    "inStock": true,
+    "featured": true,
+    "description": "La pieza cumbre de la colección: vestido de gala confeccionado en satén perla de densidad pesada con caída escultural, escote lencero y espalda joya.",
+    "images": {
+      "primary": "/products/sindy_luxury/vestido_largo_perla_imperial.jpg",
+      "gallery": [
+        "/products/sindy_luxury/vestido_largo_perla_imperial.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Satén Seda Duchesse Blanco Perla"
+    },
+    "slug": "vestido-largo-satinado-perla-imperial-sindy-12",
+    "price": 30000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Blanco Perla"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-13",
+    "sku": "SL-VEST-06",
+    "name": "Vestido Fiesta Noche Violeta Couture Tul",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "priceFCFA": 27000,
+    "originalPriceFCFA": 34000,
+    "inStock": true,
+    "featured": true,
+    "description": "Vestido de gala en tul bordado y satén violeta royal. Falda vaporosa con volumen editorial y corpiño reforzado con destellos sutiles de pedrería.",
+    "images": {
+      "primary": "/products/sindy_luxury/vestido_violeta_tul_couture.jpg",
+      "gallery": [
+        "/products/sindy_luxury/vestido_violeta_tul_couture.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M",
+        "XL"
+      ],
+      "material": "Tul Francés & Satén de Seda Violeta"
+    },
+    "slug": "vestido-fiesta-noche-violeta-couture-tul-sindy-13",
+    "price": 27000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Violeta Royal",
+      "Negro Noche"
+    ],
+    "sizes": [
+      "XS",
+      "M",
+      "XL"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-14",
+    "sku": "SL-SET-04",
+    "name": "Conjunto Corset + Falda Midi Royal Purple",
+    "brand": "Sindy Luxury Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos 2 Piezas",
+    "priceFCFA": 24000,
+    "originalPriceFCFA": 29000,
+    "inStock": true,
+    "featured": true,
+    "description": "Dúo de noche compuesto por corset entallado de escote corazón y falda lápiz midi con abertura posterior en satén elastizado de alta densidad.",
+    "images": {
+      "primary": "/products/sindy_luxury/conjunto_corset_falda_purple.jpg",
+      "gallery": [
+        "/products/sindy_luxury/conjunto_corset_falda_purple.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M",
+        "XL"
+      ],
+      "material": "Satén Elástico Spandex Morado"
+    },
+    "slug": "conjunto-corset-falda-midi-royal-purple-sindy-14",
+    "price": 24000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Púrpura Imperial",
+      "Negro"
+    ],
+    "sizes": [
+      "XS",
+      "M",
+      "XL"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-15",
+    "sku": "SL-SET-05",
+    "name": "Conjunto Palazzo Pure White Escultural",
+    "brand": "Sindy Luxury Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos 2 Piezas",
+    "priceFCFA": 20000,
+    "originalPriceFCFA": 25000,
+    "inStock": true,
+    "featured": true,
+    "description": "Conjunto sastre monocromático blanco impoluto. Top corto estructurado y pantalón de pernera extra ancha que alarga la silueta con prestancia sofisticada.",
+    "images": {
+      "primary": "/products/sindy_luxury/conjunto_palazzo_pure_white.jpg",
+      "gallery": [
+        "/products/sindy_luxury/conjunto_palazzo_pure_white.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M",
+        "XL"
+      ],
+      "material": "Crepé Sastre Blanco Nieve"
+    },
+    "slug": "conjunto-palazzo-pure-white-escultural-sindy-15",
+    "price": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Blanco Puro"
+    ],
+    "sizes": [
+      "XS",
+      "M",
+      "XL"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-16",
+    "sku": "SL-SET-06",
+    "name": "Conjunto Capa Asimétrica Carmesí Luxe",
+    "brand": "Sindy Luxury Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos 2 Piezas",
+    "priceFCFA": 20000,
+    "originalPriceFCFA": 25000,
+    "inStock": true,
+    "featured": true,
+    "description": "Vanguardista conjunto de dos piezas con top de una manga y capa lateral fluida, combinado con pantalón recto estilizado de corte perfecto.",
+    "images": {
+      "primary": "/products/sindy_luxury/conjunto_capa_rojo_carmesi.jpg",
+      "gallery": [
+        "/products/sindy_luxury/conjunto_capa_rojo_carmesi.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Punto de Seda Carmesí & Poliéster Fino"
+    },
+    "slug": "conjunto-capa-asimetrica-carmesi-luxe-sindy-16",
+    "price": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Rojo Carmesí",
+      "Blanco",
+      "Marrón",
+      "Negro"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-17",
+    "sku": "SL-TOP-02",
+    "name": "Top Escultural Hombro Descubierto Noir",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Tops & Corsets",
+    "priceFCFA": 10000,
+    "originalPriceFCFA": 14000,
+    "inStock": true,
+    "featured": true,
+    "description": "Top palabra de honor asimétrico confeccionado en punto scuba de compresión suave. Moldea el torso con líneas limpias y elegancia contemporánea.",
+    "images": {
+      "primary": "/products/sindy_luxury/top_escultural_offshoulder.jpg",
+      "gallery": [
+        "/products/sindy_luxury/top_escultural_offshoulder.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Punto Scuba Modelador"
+    },
+    "slug": "top-escultural-hombro-descubierto-noir-sindy-17",
+    "price": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Negro",
+      "Blanco",
+      "Rojo",
+      "Marrón",
+      "Verde"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-18",
+    "sku": "SL-BOLS-01",
+    "name": "Bolso Acolchado Clutch Matelassé Noir",
+    "brand": "Sindy Luxury Accessories",
+    "category": "BOLSOS_ACCESORIOS",
+    "subcategory": "Bolsos de Fiesta",
+    "priceFCFA": 10000,
+    "originalPriceFCFA": 15000,
+    "inStock": true,
+    "featured": true,
+    "description": "Clutch de fiesta elaborado en piel sintética acolchada con patrón geométrico de diamantes. Herrajes dorados premium y cadena deslizable para hombro o mano.",
+    "images": {
+      "primary": "/products/sindy_luxury/bolso_clutch_matelasse.jpg",
+      "gallery": [
+        "/products/sindy_luxury/bolso_clutch_matelasse.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "Única"
+      ],
+      "material": "Cuero Sintético PU Acolchado & Cadena Dorada"
+    },
+    "slug": "bolso-acolchado-clutch-matelasse-noir-sindy-18",
+    "price": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Negro Matelassé",
+      "Marrón",
+      "Rojo"
+    ],
+    "sizes": [
+      "Única"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-19",
+    "sku": "SL-BOLS-02",
+    "name": "Bolso Baguette Tachuelas & Cristales Glam",
+    "brand": "Sindy Luxury Accessories",
+    "category": "BOLSOS_ACCESORIOS",
+    "subcategory": "Bolsos de Hombro",
+    "priceFCFA": 10000,
+    "originalPriceFCFA": 15000,
+    "inStock": true,
+    "featured": true,
+    "description": "Bolso de hombro estilo baguette noventero con apliques de micropiedras brillantes y tachuelas doradas. Interior forrado en satén con cierre de cremallera.",
+    "images": {
+      "primary": "/products/sindy_luxury/bolso_baguette_tachuelas.jpg",
+      "gallery": [
+        "/products/sindy_luxury/bolso_baguette_tachuelas.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "Única"
+      ],
+      "material": "Piel Sintética PU & Tachuelas Brillantes"
+    },
+    "slug": "bolso-baguette-tachuelas-cristales-glam-sindy-19",
+    "price": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Rojo Rubí",
+      "Marrón Caramelo",
+      "Negro"
+    ],
+    "sizes": [
+      "Única"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-20",
+    "sku": "SL-CALZ-03",
+    "name": "Sandalias Tacón Plataforma Noir Velvet",
+    "brand": "Sindy Luxury Footwear",
+    "category": "CALZADO",
+    "subcategory": "Plataformas de Noche",
+    "priceFCFA": 20000,
+    "originalPriceFCFA": 25000,
+    "inStock": true,
+    "featured": true,
+    "description": "Sandalias de tacón bloque alto con plataforma delantera reforzada que garantiza máxima comodidad durante toda la velada sin sacrificar altura y estilo.",
+    "images": {
+      "primary": "/products/sindy_luxury/sandalias_plataforma_noir.jpg",
+      "gallery": [
+        "/products/sindy_luxury/sandalias_plataforma_noir.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "36",
+        "37",
+        "38",
+        "39",
+        "40"
+      ],
+      "material": "Terciopelo Noir & Tacón Bloque Estructurado"
+    },
+    "slug": "sandalias-tacon-plataforma-noir-velvet-sindy-20",
+    "price": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Negro"
+    ],
+    "sizes": [
+      "36",
+      "37",
+      "38",
+      "39",
+      "40"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-21",
+    "sku": "SL-CALZ-04",
+    "name": "Bailarinas Mary Jane Charol Rosa Vintage",
+    "brand": "Sindy Luxury Footwear",
+    "category": "CALZADO",
+    "subcategory": "Bailarinas & Flats",
+    "priceFCFA": 20000,
+    "originalPriceFCFA": 24000,
+    "inStock": true,
+    "featured": true,
+    "description": "Zapatos planos estilo Mary Jane en charol suave con pulsera de empeine y hebilla metálica. Tendencia parisina refinada para outfits sofisticados de día.",
+    "images": {
+      "primary": "/products/sindy_luxury/bailarinas_mary_jane_rosa.jpg",
+      "gallery": [
+        "/products/sindy_luxury/bailarinas_mary_jane_rosa.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "36",
+        "37",
+        "38",
+        "39"
+      ],
+      "material": "Charol Flexible Rosa & Suela Confort Antideslizante"
+    },
+    "slug": "bailarinas-mary-jane-charol-rosa-vintage-sindy-21",
+    "price": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Rosa Pastel",
+      "Rojo Carmín"
+    ],
+    "sizes": [
+      "36",
+      "37",
+      "38",
+      "39"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-22",
+    "sku": "SL-FAJA-01",
+    "name": "Body Faja Reductora Silueta Perfecta",
+    "brand": "Sindy Luxury Bodywear",
+    "category": "MODA_MUJER",
+    "subcategory": "Fajas & Body Shapers",
+    "priceFCFA": 10000,
+    "originalPriceFCFA": 14000,
+    "inStock": true,
+    "featured": true,
+    "description": "Body moldeador de alta compresión inteligente con efecto vientre plano y realce natural de glúteos. Tejido transpirable invisible bajo cualquier vestido de fiesta.",
+    "images": {
+      "primary": "/products/sindy_luxury/faja_body_silueta_perfecta.jpg",
+      "gallery": [
+        "/products/sindy_luxury/faja_body_silueta_perfecta.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "XS",
+        "M"
+      ],
+      "material": "Powernet Elástico & Forro Antibacteriano"
+    },
+    "slug": "body-faja-reductora-silueta-perfecta-sindy-22",
+    "price": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Vino",
+      "Negro"
+    ],
+    "sizes": [
+      "XS",
+      "M"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-23",
+    "sku": "SL-COSM-01",
+    "name": "Scrub Cúrcuma Effaceur N°1 Anti-Taches 200g",
+    "brand": "Sindy Luxury Cosmetics",
+    "category": "COSMETICA_FACIAL",
+    "subcategory": "Tratamiento Facial & Corporal",
+    "priceFCFA": 4000,
+    "originalPriceFCFA": 6000,
+    "inStock": true,
+    "featured": true,
+    "description": "Exfoliante dermatológico intensivo a base de extracto concentrado de cúrcuma natural. Diseñado para unificar el tono de la piel, eliminar manchas y aportar luminosidad radiante.",
+    "images": {
+      "primary": "/products/sindy_luxury/scrub_curcuma_effaceur.jpg",
+      "gallery": [
+        "/products/sindy_luxury/scrub_curcuma_effaceur.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "200g"
+      ],
+      "material": "Cúrcuma Pura, Vitamina E & Cristales Microexfoliantes"
+    },
+    "slug": "scrub-curcuma-effaceur-n1-anti-taches-200g-sindy-23",
+    "price": 4000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Dorado Cúrcuma"
+    ],
+    "sizes": [
+      "200g"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-24",
+    "sku": "SL-COSM-02",
+    "name": "Crema Éclaircissante Terminator Soin Intensif",
+    "brand": "Sindy Luxury Cosmetics",
+    "category": "COSMETICA_FACIAL",
+    "subcategory": "Cremas Especializadas",
+    "priceFCFA": 4000,
+    "originalPriceFCFA": 6000,
+    "inStock": true,
+    "featured": true,
+    "description": "Tratamiento despigmentante de choque para zonas rebeldes y codos/rodillas. Fórmula botánica de alta eficacia recomendada en el cuidado estético de la boutique.",
+    "images": {
+      "primary": "/products/sindy_luxury/crema_terminator_eclaircissante.jpg",
+      "gallery": [
+        "/products/sindy_luxury/crema_terminator_eclaircissante.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "100ml"
+      ],
+      "material": "Fórmula Despigmentante Botánica con Ácido Kójico"
+    },
+    "slug": "crema-eclaircissante-terminator-soin-intensif-sindy-24",
+    "price": 4000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "100ml"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-25",
+    "sku": "SL-COSM-03",
+    "name": "Jabón Tónico Cúrcuma & Félicité Artisanal",
+    "brand": "Sindy Luxury Cosmetics",
+    "category": "HIGIENE_CORPORAL",
+    "subcategory": "Jabones Botánicos",
+    "priceFCFA": 2000,
+    "originalPriceFCFA": 3000,
+    "inStock": true,
+    "featured": true,
+    "description": "Jabón artesanal enriquecido con aceites botánicos y cúrcuma pura. Limpia en profundidad sin resecar, dejando la piel suave, tonificada y con un brillo natural.",
+    "images": {
+      "primary": "/products/sindy_luxury/jabon_curcuma_felicite.jpg",
+      "gallery": [
+        "/products/sindy_luxury/jabon_curcuma_felicite.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "150g"
+      ],
+      "material": "Base Glicerina Vegetal & Cúrcuma Concentrada"
+    },
+    "slug": "jabon-tonico-curcuma-felicite-artisanal-sindy-25",
+    "price": 2000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Amarillo Cúrcuma"
+    ],
+    "sizes": [
+      "150g"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+  {
+    "id": "sindy-26",
+    "sku": "SL-ACC-01",
+    "name": "Gafas de Sol & Monturas Elegance Cat-Eye",
+    "brand": "Sindy Luxury Accessories",
+    "category": "BOLSOS_ACCESORIOS",
+    "subcategory": "Gafas & Monturas",
+    "priceFCFA": 3000,
+    "originalPriceFCFA": 5000,
+    "inStock": true,
+    "featured": true,
+    "description": "Monturas de moda de alta resistencia con protección UV400 y bisagras reforzadas. Diseño vanguardista unisex apto para lentes graduadas o accesorio de sol.",
+    "images": {
+      "primary": "/products/sindy_luxury/gafas_sol_monturas_luxe.jpg",
+      "gallery": [
+        "/products/sindy_luxury/gafas_sol_monturas_luxe.jpg"
+      ]
+    },
+    "details": {
+      "size": [
+        "Única"
+      ],
+      "material": "Acetato de Alta Densidad & Lentes Polarizadas UV400"
+    },
+    "slug": "gafas-de-sol-monturas-elegance-cat-eye-sindy-26",
+    "price": 3000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": true,
+    "colors": [
+      "Carey Élite",
+      "Cristal Transparente",
+      "Negro Glacé"
+    ],
+    "sizes": [
+      "Única"
+    ],
+    "created_at": "2026-09-22T08:00:00.000Z",
+    "updated_at": "2026-09-22T08:00:00.000Z"
+  },
+
+  {
     "id": "ebna-1",
     "sku": "EB-CALZ-01",
     "name": "Sneakers Urbanos Bicolor Sports Men's Edition",

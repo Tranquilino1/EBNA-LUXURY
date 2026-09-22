@@ -94,6 +94,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
         
         <p className="product-description-snippet">{product.description}</p>
         
+        {/* Tallas y Colores Badges */}
+        {((product.sizes && product.sizes.length > 0) || (product.details?.size && product.details.size.length > 0)) && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap', margin: '4px 0 6px 0' }}>
+            <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#888', textTransform: 'uppercase' }}>Tallas:</span>
+            {(product.sizes || product.details?.size || []).slice(0, 4).map((sz) => (
+              <span key={sz} style={{ background: 'rgba(197, 168, 128, 0.15)', border: '1px solid rgba(197, 168, 128, 0.4)', color: '#8B6F47', fontSize: '0.66rem', fontWeight: 800, padding: '1px 6px', borderRadius: '4px' }}>
+                {sz}
+              </span>
+            ))}
+            {product.colors && product.colors.length > 0 && (
+              <span style={{ fontSize: '0.66rem', color: '#9E9298', marginLeft: 'auto', fontWeight: 600 }}>
+                {product.colors.length} {product.colors.length === 1 ? 'color' : 'colores'}
+              </span>
+            )}
+          </div>
+        )}
+
         <div className="product-price-row">
           <span className="product-price-label">Precio</span>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>

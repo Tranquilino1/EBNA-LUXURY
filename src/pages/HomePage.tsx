@@ -79,8 +79,8 @@ export function HomePage() {
   return (
     <div className="home-page">
       <SEOHead 
-        title="EBNA Moda y Cosmética — Tienda de Lujo en Guinea Ecuatorial"
-        description="Descubre la boutique de lujo EBNA en Malabo y Bata, Guinea Ecuatorial. Alta perfumería, cosmética de tratamiento y moda de marcas internacionales Zara."
+        title="Sindy Luxury by EBNA — Alta Costura, Vestidos de Gala y Moda en Guinea Ecuatorial"
+        description="Boutique exclusiva de alta costura en Malabo y Bata (Guinea Ecuatorial). Vestidos de gala, conjuntos 2 piezas, calzado de fiesta y cosmética de lujo en FCFA con entrega express vía WhatsApp."
       />
       <section className="hero-section">
         {/* Left Side: 30-Min Rotating Product Showcase Card */}
@@ -113,17 +113,17 @@ export function HomePage() {
 
         {/* Right Side: Hero Text Content & CTA */}
         <div className="hero-content">
-          <span className="text-label-luxury"><Sparkles size={16} /> NUEVA COLECCIÓN EXCLUSIVA</span>
+          <span className="text-label-luxury"><Sparkles size={16} /> SINDY LUXURY • HAUTE COUTURE</span>
           <h1 className="text-hero-display">
-            Elegancia & Estilo,<br/>
-            <i>Hecho para Ti</i>
+            Alta Costura & Estilo,<br/>
+            <i>Exclusivo en Guinea</i>
           </h1>
           <p className="hero-lead">
-            Descubre la esencia del lujo con EBNA. Tu boutique exclusiva de alta perfumería, cosmética de tratamiento y moda de marcas internacionales.
+            Boutique de vestidos de gala, conjuntos 2 piezas de pasarela, calzado de lujo y cosmética botánica. Entregas express inmediatas en Malabo y Bata en FCFA.
           </p>
           <div className="hero-cta-group" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link to="/catalogo" className="btn-primary cta-button">
-              Explorar Catálogo <ArrowRight size={20} />
+              Ver Colección Sindy Luxury <ArrowRight size={20} />
             </Link>
           </div>
         </div>
