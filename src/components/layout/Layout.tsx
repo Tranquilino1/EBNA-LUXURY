@@ -5,19 +5,24 @@ import { Footer } from './Footer';
 import { PWAInstallBanner } from '../ui/PWAInstallBanner';
 import { CartDrawer } from '../cart/CartDrawer';
 import { ParticleBackground } from '../effects/ParticleBackground';
+import { AdminCrudProvider } from '../../contexts/AdminCrudContext';
+import { AdminFloatingDock } from '../admin/AdminFloatingDock';
 import './layout.css';
 
 export const Layout: React.FC = () => {
   return (
-    <div className="luxury-canvas min-h-screen">
-      <ParticleBackground />
-      <Navbar />
-      <main className="main-content">
-        <Outlet />
-      </main>
-      <Footer />
-      <CartDrawer />
-      <PWAInstallBanner />
-    </div>
+    <AdminCrudProvider>
+      <div className="luxury-canvas min-h-screen">
+        <ParticleBackground />
+        <Navbar />
+        <main className="main-content">
+          <Outlet />
+        </main>
+        <Footer />
+        <CartDrawer />
+        <PWAInstallBanner />
+        <AdminFloatingDock />
+      </div>
+    </AdminCrudProvider>
   );
 };

@@ -6,6 +6,7 @@ import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, Ba
 import { notifyCatalogChange } from '../lib/broadcast';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
+import { ProductInspectModal } from '../components/admin/ProductInspectModal';
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
 import type { Product, ProductCategory } from '../types';
@@ -20,6 +21,14 @@ export function AdminDashboard() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isDeleteAllOpen, setIsDeleteAllOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  
+  const [isInspectOpen, setIsInspectOpen] = useState(false);
+  const [inspectProduct, setInspectProduct] = useState<Product | null>(null);
+
+  const handleInspect = (product: Product) => {
+    setInspectProduct(product);
+    setIsInspectOpen(true);
+  };
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'TODOS'>('TODOS');
@@ -301,11 +310,26 @@ export function AdminDashboard() {
                     </thead>
                     <tbody>
                       {filteredProducts.map(product => (
-                        <tr key={product.id} style={{ borderBottom: '1px solid var(--color-glass-border)', opacity: product.is_hidden ? 0.6 : 1 }}>
+                        <tr 
+                          key={product.id} 
+                          onClick={() => handleInspect(product)}
+                          style={{ 
+                            borderBottom: '1px solid var(--color-glass-border)', 
+                            opacity: product.is_hidden ? 0.6 : 1,
+                            cursor: 'pointer',
+                            transition: 'background-color 0.2s'
+                          }}
+                          title="Haz clic para ampliar la información y editar dentro"
+                        >
                           <td style={{ padding: '0.8rem 1rem' }}>
                             <img src={product.images?.[0] || '/icons/ebna-logo.png'} alt={product.name} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--color-glass-border)' }} />
                           </td>
-                          <td style={{ padding: '0.8rem 1rem', fontWeight: 600 }}>{product.name}</td>
+                          <td style={{ padding: '0.8rem 1rem', fontWeight: 600 }}>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                              <span>{product.name}</span>
+                              <span style={{ fontSize: '0.72rem', color: 'var(--brand-accent)', fontWeight: 700 }}>🔍 Clic para ampliar & editar</span>
+                            </div>
+                          </td>
                           <td style={{ padding: '0.8rem 1rem' }}>
                             <span style={{ padding: '0.25rem 0.6rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: 'rgba(216, 27, 96, 0.1)', color: '#D81B60' }}>
                               {product.category}
@@ -321,7 +345,10 @@ export function AdminDashboard() {
                           </td>
                           <td style={{ padding: '0.8rem 1rem' }}>
                             <button
-                              onClick={() => updateProduct(product.id, { is_hidden: !product.is_hidden })}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateProduct(product.id, { is_hidden: !product.is_hidden });
+                              }}
                               style={{
                                 padding: '0.3rem 0.75rem',
                                 borderRadius: '999px',
@@ -341,13 +368,34 @@ export function AdminDashboard() {
                           </td>
                           <td style={{ padding: '0.8rem 1rem', textAlign: 'right' }}>
                             <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
-                              <button onClick={() => handleEdit(product)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: '#475569', cursor: 'pointer' }} title="Editar">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEdit(product);
+                                }} 
+                                style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: '#475569', cursor: 'pointer' }} 
+                                title="Editar"
+                              >
                                 <Pencil size={18} />
                               </button>
-                              <button onClick={() => toggleStock(product.id, product.in_stock)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: product.in_stock ? '#15803d' : '#94a3b8', cursor: 'pointer' }} title="Cambiar Estado de Stock">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleStock(product.id, product.in_stock);
+                                }} 
+                                style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--color-glass-border)', background: 'white', color: product.in_stock ? '#15803d' : '#94a3b8', cursor: 'pointer' }} 
+                                title="Cambiar Estado de Stock"
+                              >
                                 {product.in_stock ? <EyeOff size={18} /> : <Eye size={18} />}
                               </button>
-                              <button onClick={() => handleDeleteClick(product)} style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', cursor: 'pointer' }} title="Eliminar Permanentemente">
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteClick(product);
+                                }} 
+                                style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', cursor: 'pointer' }} 
+                                title="Eliminar Permanentemente"
+                              >
                                 <Trash2 size={18} />
                               </button>
                             </div>
@@ -363,6 +411,7 @@ export function AdminDashboard() {
                   {filteredProducts.map(product => (
                     <div 
                       key={product.id} 
+                      onClick={() => handleInspect(product)}
                       className="glass-card"
                       style={{
                         display: 'flex',
@@ -371,10 +420,12 @@ export function AdminDashboard() {
                         padding: '14px',
                         borderRadius: '16px',
                         background: '#FFFFFF',
-                        border: '1px solid rgba(216, 27, 96, 0.15)',
+                        border: '1.5px solid rgba(216, 27, 96, 0.15)',
                         boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-                        opacity: product.is_hidden ? 0.65 : 1
+                        opacity: product.is_hidden ? 0.65 : 1,
+                        cursor: 'pointer'
                       }}
+                      title="Toca para ampliar y ver toda su información"
                     >
                       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                         <img 
@@ -402,7 +453,10 @@ export function AdminDashboard() {
                           </span>
 
                           <button
-                            onClick={() => updateProduct(product.id, { is_hidden: !product.is_hidden })}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateProduct(product.id, { is_hidden: !product.is_hidden });
+                            }}
                             style={{
                               padding: '3px 8px',
                               borderRadius: '12px',
@@ -422,10 +476,22 @@ export function AdminDashboard() {
                         </div>
 
                         <div style={{ display: 'flex', gap: '6px' }}>
-                          <button onClick={() => handleEdit(product)} style={{ padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--color-glass-border)', background: '#F8FAFC', color: '#475569', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEdit(product);
+                            }} 
+                            style={{ padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--color-glass-border)', background: '#F8FAFC', color: '#475569', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                          >
                             <Pencil size={14} /> Editar
                           </button>
-                          <button onClick={() => handleDeleteClick(product)} style={{ padding: '6px 10px', borderRadius: '10px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteClick(product);
+                            }} 
+                            style={{ padding: '6px 10px', borderRadius: '10px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                          >
                             <Trash2 size={14} />
                           </button>
                         </div>
@@ -490,6 +556,33 @@ export function AdminDashboard() {
         <DeleteConfirmModal
           onConfirm={handleDeleteAll}
           onCancel={() => setIsDeleteAllOpen(false)}
+        />
+      )}
+
+      {/* Expanded Product Inspection & Inside Editing Modal */}
+      {isInspectOpen && inspectProduct && (
+        <ProductInspectModal
+          product={inspectProduct}
+          onClose={() => {
+            setIsInspectOpen(false);
+            setInspectProduct(null);
+          }}
+          onEdit={() => {
+            const prodToEdit = inspectProduct;
+            setIsInspectOpen(false);
+            setInspectProduct(null);
+            handleEdit(prodToEdit);
+          }}
+          onToggleStock={async () => {
+            await toggleStock(inspectProduct.id, inspectProduct.in_stock);
+            setInspectProduct(prev => prev ? { ...prev, in_stock: !prev.in_stock, inStock: !prev.in_stock } : null);
+          }}
+          onDelete={() => {
+            const prodToDelete = inspectProduct;
+            setIsInspectOpen(false);
+            setInspectProduct(null);
+            handleDeleteClick(prodToDelete);
+          }}
         />
       )}
     </div>

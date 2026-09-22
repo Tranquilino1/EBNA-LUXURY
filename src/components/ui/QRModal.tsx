@@ -62,7 +62,7 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
 
   return createPortal(
     <div className="qr-modal-overlay" onClick={onClose}>
-      <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()}>
+      <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()} onMouseLeave={onClose}>
         <button className="qr-modal-close" onClick={onClose} aria-label="Cerrar y salir del escaneo">
           <X size={24} />
         </button>

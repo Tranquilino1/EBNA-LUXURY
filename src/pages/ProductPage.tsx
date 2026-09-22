@@ -1,8 +1,9 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router';
-import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus } from 'lucide-react';
+import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
+import { useAdminCrud } from '../contexts/AdminCrudContext';
 import { SEOHead } from '../components/seo/SEOHead';
 import { buildWhatsAppUrl } from '../lib/whatsapp';
 import { Loader } from '../components/ui/Loader';
@@ -13,8 +14,24 @@ export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
   const { products, loading } = useProducts();
   const { addToCart } = useCart();
+  const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
+  const productDetailRef = useRef<HTMLDivElement>(null);
   
   const product = products.find(p => p.slug === slug);
+
+  // Smoothly center the product details and description in the viewport on navigation
+  useEffect(() => {
+    if (product && productDetailRef.current) {
+      const timer = setTimeout(() => {
+        productDetailRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [product?.id, slug]);
 
   const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product?.category || '');
   const isFootwear = product?.category === 'CALZADO';
@@ -101,11 +118,106 @@ export function ProductPage() {
         <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{product.name}</span>
       </nav>
 
-      <Link to="/catalogo" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--brand-accent)', fontWeight: 600, textDecoration: 'none', marginBottom: '2rem' }}>
+      <Link to="/catalogo" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--brand-accent)', fontWeight: 600, textDecoration: 'none', marginBottom: '1.5rem' }}>
         <ArrowLeft size={18} /> Volver al catálogo
       </Link>
 
-      <div className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
+      {/* Admin Quick Control Bar on Product Page */}
+      {isAdmin && (
+        <div 
+          className="admin-product-bar glass-panel"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '12px 20px',
+            borderRadius: '18px',
+            background: 'linear-gradient(135deg, rgba(216,27,96,0.08), rgba(212,175,55,0.12))',
+            border: '1.5px solid var(--border-brand)',
+            marginBottom: '1.8rem',
+            flexWrap: 'wrap',
+            gap: '10px'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ShieldCheck size={20} color="var(--brand-accent)" />
+            <div>
+              <span style={{ display: 'block', fontWeight: 800, fontSize: '0.88rem', color: 'var(--brand-accent)' }}>
+                Modo Administrador: CRUD Directo
+              </span>
+              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
+                Edita, alterna stock o elimina este producto sin ir al panel
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={() => openEditModal(product)}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '20px',
+                border: 'none',
+                background: 'var(--brand-accent)',
+                color: 'white',
+                fontWeight: 700,
+                fontSize: '0.82rem',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: '0 4px 12px rgba(216,27,96,0.3)'
+              }}
+            >
+              <Pencil size={15} /> Editar Producto
+            </button>
+
+            <button
+              type="button"
+              onClick={() => quickToggleStock(product.id, product.in_stock)}
+              style={{
+                padding: '8px 14px',
+                borderRadius: '20px',
+                border: '1px solid var(--border-subtle)',
+                background: product.in_stock ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)',
+                color: product.in_stock ? '#15803d' : '#b91c1c',
+                fontWeight: 700,
+                fontSize: '0.82rem',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              {product.in_stock ? <EyeOff size={15} /> : <Eye size={15} />}
+              {product.in_stock ? 'Marcar Agotado' : 'Marcar En Stock'}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => openDeleteModal(product)}
+              style={{
+                padding: '8px 14px',
+                borderRadius: '20px',
+                border: '1px solid rgba(239,68,68,0.3)',
+                background: 'rgba(239,68,68,0.08)',
+                color: '#ef4444',
+                fontWeight: 700,
+                fontSize: '0.82rem',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px'
+              }}
+            >
+              <Trash2 size={15} /> Eliminar
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div ref={productDetailRef} className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
         <div className="product-image-section glass-panel" style={{ padding: '1.25rem', borderRadius: '24px', background: 'var(--canvas-elevated)', position: 'relative' }}>
           <img 
             src={mainImage} 

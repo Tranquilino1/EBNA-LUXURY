@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { ShoppingBag, Flame, Tag } from 'lucide-react';
+import { ShoppingBag, Flame, Tag, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 import type { Product } from '../../types';
 import { formatPrice } from '../../lib/utils';
 import { useCart } from '../../contexts/CartContext';
+import { useAdminCrud } from '../../contexts/AdminCrudContext';
 import { WhatsAppButton } from './WhatsAppButton';
 import { getProductOrdersCount } from '../../lib/popularityTracker';
 import './catalog.css';
@@ -19,6 +20,7 @@ const FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000
 export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imgSrc, setImgSrc] = useState<string>(() => {
     return product.images?.primary || (Array.isArray(product.images) ? product.images[0] : '/icons/ebna-logo.png');
@@ -29,8 +31,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const originalPriceVal = product.originalPriceFCFA;
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Prevent navigation if clicking on WhatsApp button or Cart button
-    if ((e.target as HTMLElement).closest('.wa-button-container') || (e.target as HTMLElement).closest('.btn-add-cart-card')) {
+    // Prevent navigation if clicking on Admin buttons, WhatsApp button, or Cart button
+    if (
+      (e.target as HTMLElement).closest('.admin-card-actions') || 
+      (e.target as HTMLElement).closest('.wa-button-container') || 
+      (e.target as HTMLElement).closest('.btn-add-cart-card')
+    ) {
       return;
     }
     navigate(`/producto/${product.slug}`);
@@ -80,6 +86,97 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             <span className="product-stock-badge out-of-stock">AGOTADO</span>
           )}
         </div>
+
+        {/* Admin Inline Actions Overlay */}
+        {isAdmin && (
+          <div 
+            className="admin-card-actions"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              zIndex: 15,
+              display: 'flex',
+              gap: '4px',
+              background: 'rgba(20, 10, 20, 0.88)',
+              backdropFilter: 'blur(8px)',
+              padding: '4px',
+              borderRadius: '12px',
+              border: '1px solid rgba(216, 27, 96, 0.5)',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.4)'
+            }}
+          >
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                openEditModal(product);
+              }}
+              title="Editar Producto (Admin)"
+              style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'rgba(216, 27, 96, 0.3)',
+                color: '#F48FB1',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Pencil size={13} />
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                quickToggleStock(product.id, product.in_stock);
+              }}
+              title={product.in_stock ? 'Cambiar a Agotado' : 'Cambiar a En Stock'}
+              style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '8px',
+                border: 'none',
+                background: product.in_stock ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)',
+                color: product.in_stock ? '#4ADE80' : '#F87171',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {product.in_stock ? <Eye size={13} /> : <EyeOff size={13} />}
+            </button>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                openDeleteModal(product);
+              }}
+              title="Eliminar Producto (Admin)"
+              style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'rgba(239, 68, 68, 0.3)',
+                color: '#F87171',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Trash2 size={13} />
+            </button>
+          </div>
+        )}
 
         <div className="specular-sweep"></div>
       </div>

@@ -7,21 +7,34 @@ import './layout.css';
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.scrollHeight - 450;
+      const threshold = document.documentElement.scrollHeight - 550;
       const nearBottom = scrollPosition >= threshold;
       setIsNearBottom(nearBottom);
+      if (nearBottom) {
+        setIsExpanded(true);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleMouseEnter = () => {
+    setIsExpanded(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (!isNearBottom) {
+      setIsExpanded(false);
+    }
+  };
 
   const handleShareWhatsApp = () => {
     const url = window.location.href || 'https://ebna-luxury.vercel.app';
@@ -40,7 +53,11 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <div className={`footer-wrapper ${isExpanded ? 'is-expanded' : 'is-collapsed'} ${isNearBottom ? 'is-near-bottom' : ''}`}>
+    <div 
+      className={`footer-wrapper ${isExpanded ? 'is-expanded' : 'is-collapsed'} ${isNearBottom ? 'is-near-bottom' : ''}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {/* Floating Toggle Bar Tab */}
       <button 
         type="button"
