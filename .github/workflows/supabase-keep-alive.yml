@@ -2,50 +2,74 @@ name: Supabase Keep-Alive Cron
 
 on:
   schedule:
-    # Se ejecuta automáticamente a las 00:00 UTC cada 3 días
+    # Se ejecuta automáticamente cada 3 días a las 00:00 UTC para prevenir la pausa de Supabase
     - cron: '0 0 */3 * *'
   workflow_dispatch:
 
 env:
-  # Valores por defecto para ejecución automática sin necesidad de configuración manual
-  FALLBACK_SUPABASE_URL: "https://epifjpbwbnphlhhfhigm.supabase.co"
-  FALLBACK_SUPABASE_ANON_KEY: "sb_publishable_e1J-2BHSP9bAUT7IlI3o4w_cqUqSTRQ"
+  DEFAULT_SUPABASE_URL: "https://epifjpbwbnphlhhfhigm.supabase.co"
+  DEFAULT_SUPABASE_KEY: "sb_publishable_e1J-2BHSP9bAUT7IlI3o4w_cqUqSTRQ"
 
 jobs:
   keep-alive:
     name: Ping Supabase REST API
     runs-on: ubuntu-latest
     steps:
-      - name: Ejecutar consulta GET ligera a Supabase
+      - name: Ping y Consulta a la Base de Datos Supabase
         run: |
-          echo "Iniciando ping a la base de datos Supabase para mantenerla activa..."
+          echo "🚀 Ejecutando ping de actividad a la base de datos Supabase..."
           
-          # Asignar Secret o usar valor por defecto de producción automáticamente
+          # Resolver URL
           URL="${{ secrets.SUPABASE_URL }}"
-          if [ -z "$URL" ]; then
-            URL="$FALLBACK_SUPABASE_URL"
+          if [ -z "$URL" ] || [ "$URL" = "null" ]; then
+            URL="$DEFAULT_SUPABASE_URL"
           fi
+          # Eliminar barra final si existe
+          URL="${URL%/}"
 
+          # Resolver KEY
           KEY="${{ secrets.SUPABASE_ANON_KEY }}"
-          if [ -z "$KEY" ]; then
-            KEY="$FALLBACK_SUPABASE_ANON_KEY"
+          if [ -z "$KEY" ] || [ "$KEY" = "null" ]; then
+            KEY="$DEFAULT_SUPABASE_KEY"
           fi
 
+          echo "📡 Conectando a Supabase URL: $URL"
+
+          # Intentar consulta con reintentos
           HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
-            -X GET "${URL}/rest/v1/products?select=id&limit=1" \
+            --retry 3 --retry-delay 3 --max-time 15 \
+            -X GET "${URL}/rest/v1/products?select=id,name&limit=1" \
             -H "apikey: ${KEY}" \
             -H "Authorization: Bearer ${KEY}" \
-            -H "Content-Type: application/json")
+            -H "Content-Type: application/json" || echo "000")
 
-          echo "Código de estado HTTP devuelto: $HTTP_STATUS"
-          echo "Respuesta obtenida de la API:"
-          cat response.json
+          echo "Código HTTP recibido: $HTTP_STATUS"
+          echo "Contenido devuelto:"
+          cat response.json 2>/dev/null || true
           echo ""
 
-          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
-            echo "✅ Consulta ejecutada exitosamente. La base de datos Supabase ha registrado actividad."
+          # Si falló el secret, intentar con la clave de producción por defecto
+          if [ "$HTTP_STATUS" != "200" ] && [ "$HTTP_STATUS" != "201" ]; then
+            echo "⚠️ Primer intento fallido o credenciales inválidas. Reintentando con endpoint de producción principal..."
+            URL="$DEFAULT_SUPABASE_URL"
+            KEY="$DEFAULT_SUPABASE_KEY"
+
+            HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" \
+              --retry 3 --retry-delay 3 --max-time 15 \
+              -X GET "${URL}/rest/v1/products?select=id,name&limit=1" \
+              -H "apikey: ${KEY}" \
+              -H "Authorization: Bearer ${KEY}" \
+              -H "Content-Type: application/json" || echo "000")
+
+            echo "Código HTTP de recuperación: $HTTP_STATUS"
+            cat response.json 2>/dev/null || true
+            echo ""
+          fi
+
+          if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "201" ]; then
+            echo "✅ Ping a la base de datos ejecutado con éxito. Supabase mantiene el proyecto 100% activo."
             exit 0
           else
-            echo "❌ Error al consultar la API de Supabase. Código de estado: $HTTP_STATUS"
+            echo "❌ No se pudo conectar a la base de datos. Código: $HTTP_STATUS"
             exit 1
           fi
