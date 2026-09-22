@@ -11,6 +11,9 @@ import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
 import { getSortedByPopularity } from '../lib/popularityTracker';
 import { SEOHead } from '../components/seo/SEOHead';
+import { FashionFilmModal } from '../components/home/FashionFilmModal';
+import { useCustomization } from '../contexts/CustomizationContext';
+import { InteractiveSantaHat } from '../components/effects/InteractiveSantaHat';
 
 /**
  * Animated Counter Component for Luxury Metrics
@@ -57,7 +60,9 @@ function StatCounter({ target, suffix = '', prefix = '' }: { target: number; suf
 
 export function HomePage() {
   const { products, loading, error } = useProducts();
+  const { settings, isChristmasActive } = useCustomization();
   const [orderTick, setOrderTick] = useState(0);
+  const [isFilmOpen, setIsFilmOpen] = useState(false);
   
   // Dynamic 30-minute rotator index based on current time
   const [halfHourChunk, setHalfHourChunk] = useState(() => Math.floor(Date.now() / (30 * 60 * 1000)));
@@ -169,9 +174,39 @@ export function HomePage() {
 
         {/* Right Side: Hero Text Content & CTAs */}
         <div className="hero-content">
-          <span className="text-label-luxury">
-            <Sparkles size={16} /> SINDY LUXURY • HAUTE COUTURE BY EBNA
-          </span>
+          {/* Main Brand Seal with 3D Interactive Santa Hat */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', position: 'relative', marginBottom: '14px' }}>
+            {isChristmasActive && settings.christmasHats && (
+              <InteractiveSantaHat 
+                size={44} 
+                style={{ 
+                  position: 'absolute', 
+                  top: '-18px', 
+                  left: '-6px', 
+                  zIndex: 20 
+                }} 
+              />
+            )}
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F8 100%)',
+              border: '2px solid rgba(216, 27, 96, 0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 14px rgba(216, 27, 96, 0.15)',
+              marginRight: '12px',
+              flexShrink: 0,
+            }}>
+              <img src="/icons/ebna-logo.png" alt="EBNA Logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
+            </div>
+            <span className="text-label-luxury" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={16} /> SINDY LUXURY • HAUTE COUTURE BY EBNA
+            </span>
+          </div>
+
           <h1 className="text-hero-display">
             Alta Costura & Estilo,<br/>
             <i>Exclusivo en Guinea</i>
@@ -259,9 +294,9 @@ export function HomePage() {
                 <button 
                   type="button"
                   className="film-play-btn" 
-                  title="Reproducir film cinematográfico Sindy Luxury"
-                  onClick={() => alert('Próximamente: Estreno del Fashion Film 2026 de Sindy Luxury by EBNA.')}
-                  aria-label="Reproducir video"
+                  title="Reproducir Fashion Film Sindy Luxury 2026"
+                  onClick={() => setIsFilmOpen(true)}
+                  aria-label="Reproducir Fashion Film"
                 >
                   <Play size={26} fill="currentColor" />
                 </button>
@@ -359,6 +394,9 @@ export function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Editorial Fashion Film Reel Modal */}
+      <FashionFilmModal isOpen={isFilmOpen} onClose={() => setIsFilmOpen(false)} />
     </div>
   );
 }

@@ -19,12 +19,17 @@ const DEFAULT_SETTINGS: SiteCustomizationSettings = {
   christmasSnow: true,
   christmasHats: true,
   christmasBanner: true,
+  christmasLights: true,
+  christmasFlowers: true,
+  christmasBaubles: true,
+  christmasFireworks: true,
   animationType: 'slide-up',
   animationSpeed: 0.5,
   staggerDelay: 0.04,
   hoverScale: 1.04,
   enableSpecularSweep: true,
   cardStyle: 'glass-luxe',
+  animationPreset: 'pasarela-couture',
 };
 
 const STORAGE_KEY = 'ebna_site_customization_v1';

@@ -113,6 +113,10 @@ export interface SiteCustomizationSettings {
   christmasSnow: boolean;
   christmasHats: boolean;
   christmasBanner: boolean;
+  christmasLights?: boolean;
+  christmasFlowers?: boolean;
+  christmasBaubles?: boolean;
+  christmasFireworks?: boolean;
   
   // Product Animations & Presentation
   animationType: AnimationType;
@@ -121,4 +125,5 @@ export interface SiteCustomizationSettings {
   hoverScale: number; // e.g., 1.04
   enableSpecularSweep: boolean;
   cardStyle: CardStyleType;
+  animationPreset?: string;
 }

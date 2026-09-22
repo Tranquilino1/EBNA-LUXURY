@@ -91,16 +91,41 @@ export function ProductPage() {
     }
   }, [availableColors]);
 
+  const defaultMainImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '/icons/ebna-logo.png');
+  const [activeImage, setActiveImage] = useState<string>(defaultMainImg || '/icons/ebna-logo.png');
+
+  useEffect(() => {
+    if (defaultMainImg) {
+      setActiveImage(defaultMainImg);
+    }
+  }, [defaultMainImg]);
+
+  const galleryImages = useMemo(() => {
+    if (!product) return [];
+    const list: string[] = [];
+    if (product.images?.primary) list.push(product.images.primary);
+    if (product.images?.gallery && Array.isArray(product.images.gallery)) {
+      product.images.gallery.forEach(img => {
+        if (img && !list.includes(img)) list.push(img);
+      });
+    }
+    if (Array.isArray(product.images)) {
+      product.images.forEach(img => {
+        if (typeof img === 'string' && img && !list.includes(img)) list.push(img);
+      });
+    }
+    return list.length > 0 ? list : ['/icons/ebna-logo.png'];
+  }, [product]);
+
   if (!product) {
     if (loading) return <Loader fullScreen message="Cargando detalles del producto..." />;
     return <div className="not-found" style={{ padding: '4rem', textAlign: 'center' }}>Producto no encontrado</div>;
   }
 
   const secondaryPhone = '+240 555 439 904';
-  const primaryWaUrl = buildWhatsAppUrl(product, 'primary', selectedSize, selectedColor);
-  const secondaryWaUrl = buildWhatsAppUrl(product, 'secondary', selectedSize, selectedColor);
+  const primaryWaUrl = buildWhatsAppUrl(product, 'primary', selectedSize, selectedColor, quantity);
+  const secondaryWaUrl = buildWhatsAppUrl(product, 'secondary', selectedSize, selectedColor, quantity);
 
-  const mainImage = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : '/icons/ebna-logo.png');
   const priceVal = product.priceFCFA || product.price || 0;
 
   return (
@@ -109,7 +134,7 @@ export function ProductPage() {
         title={`${product.name} — EBNA Luxury`} 
         description={product.description} 
         product={product} 
-        ogImage={mainImage} 
+        ogImage={activeImage} 
         type="product"
       />
       <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
@@ -220,7 +245,7 @@ export function ProductPage() {
       <div ref={productDetailRef} className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
         <div className="product-image-section glass-panel" style={{ padding: '1.25rem', borderRadius: '24px', background: 'var(--canvas-elevated)', position: 'relative' }}>
           <img 
-            src={mainImage} 
+            src={activeImage} 
             alt={product.name} 
             className="main-image" 
             style={{ width: '100%', maxHeight: '480px', objectFit: 'cover', borderRadius: '16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
@@ -228,6 +253,35 @@ export function ProductPage() {
               e.currentTarget.src = '/icons/ebna-logo.png';
             }}
           />
+
+          {/* Interactive Thumbnail Gallery Strip */}
+          {galleryImages.length > 1 && (
+            <div style={{ display: 'flex', gap: '10px', marginTop: '14px', overflowX: 'auto', padding: '4px 0' }}>
+              {galleryImages.map((img, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setActiveImage(img)}
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '12px',
+                    padding: '2px',
+                    border: activeImage === img ? '2px solid var(--brand-accent)' : '1.5px solid var(--border-subtle)',
+                    background: 'var(--canvas-surface)',
+                    cursor: 'pointer',
+                    overflow: 'hidden',
+                    flexShrink: 0,
+                    transition: 'all 0.2s ease',
+                    boxShadow: activeImage === img ? '0 0 12px rgba(216, 27, 96, 0.35)' : 'none',
+                  }}
+                  title={`Ver fotografía ${i + 1}`}
+                >
+                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+                </button>
+              ))}
+            </div>
+          )}
 
           <div style={{ position: 'absolute', top: '24px', left: '24px', display: 'flex', gap: '8px' }}>
             {product.inStock || product.in_stock ? (

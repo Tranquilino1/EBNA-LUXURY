@@ -58,10 +58,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   // Format category badge for display
   const categoryLabel = (product.category || 'MODA').replace(/_/g, ' ');
 
+  const handleMouseEnter = () => {
+    if (typeof window !== 'undefined' && product.images) {
+      const targetSrc = product.images.primary || (Array.isArray(product.images) ? product.images[0] : '');
+      if (targetSrc) {
+        const preload = new Image();
+        preload.src = targetSrc;
+      }
+    }
+  };
+
   return (
     <div 
       className={`product-card ${isSelected ? 'is-admin-selected' : ''}`} 
       onClick={handleCardClick}
+      onMouseEnter={handleMouseEnter}
       style={{ 
         animationDuration: `${settings.animationSpeed}s`,
         animationDelay: `${(index % 10) * settings.staggerDelay}s`,
@@ -77,7 +88,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           src={imgSrc} 
           alt={product.name} 
           className={`product-image ${imageLoaded ? 'is-loaded' : 'is-loading'}`}
-          loading="lazy"
+          loading={index < 4 ? 'eager' : 'lazy'}
+          fetchPriority={index < 4 ? 'high' : 'auto'}
           decoding="async"
           onLoad={() => setImageLoaded(true)}
           onError={() => {

@@ -3,6 +3,7 @@ import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck, Co
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
+import { getAbsoluteImageUrl } from '../../lib/whatsapp';
 import './cart.css';
 
 const PRIMARY_PHONE = '240222633687'; // WhatsApp principal EBNA
@@ -39,10 +40,16 @@ export const CartDrawer: React.FC = () => {
       const isFootwear = item.product.category === 'CALZADO';
       const sizeLabel = isCosmetic ? 'Presentación' : isFootwear ? 'Talla EU' : 'Talla';
       const colorText = isCosmetic || !item.selectedColor || item.selectedColor === 'Original' ? '' : ` | Color: ${item.selectedColor}`;
-      itemsListText += `\n${index + 1}. *${item.product.name}*
+      const rawImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : (item.product.images as any)?.[0]);
+      const photoUrl = getAbsoluteImageUrl(rawImg);
+      const productUrl = `https://ebna-luxury.vercel.app/producto/${item.product.slug}`;
+
+      itemsListText += `\n${index + 1}. 👗 *${item.product.name}*
    • Cantidad: ${item.quantity} unidad(es)
    • ${sizeLabel}: ${item.selectedSize}${colorText}
-   • Subtotal: ${formatPrice(itemSubtotal)}\n`;
+   • Subtotal: ${formatPrice(itemSubtotal)}
+   • 🖼️ Foto: ${photoUrl}
+   • 🔗 Ficha: ${productUrl}\n`;
     });
 
     const regionText = region === 'insular' ? 'Región Insular (Malabo / Isla Bioko)' : 'Región Continental (Bata y provincias)';
@@ -54,16 +61,16 @@ export const CartDrawer: React.FC = () => {
       ? 'PAGO CON MUNI DINERO (USSD *423*2*1*555439904# / Giro al 555439904)' 
       : 'PAGO POR WHATSAPP / EFECTIVO CONTRA ENTREGA';
 
-    const message = `¡Hola EBNA Luxury! 👋 Deseo confirmar este pedido desde la boutique web:
-
+    const message = `✨ *PEDIDO MÚLTIPLE — SINDY LUXURY BY EBNA* ✨
+━━━━━━━━━━━━━━━━━━━━━━
 ${itemsListText}
-----------------------------------------
-💰 Subtotal Productos: ${formatPrice(subtotalPrice)}
+━━━━━━━━━━━━━━━━━━━━━━
+💰 Subtotal Prendas: ${formatPrice(subtotalPrice)}
 📍 Región: ${regionText}
 🚚 Opción de Envío: ${shippingText}
 💳 Método de Pago: ${paymentText}
 💵 *TOTAL A PAGAR: ${formatPrice(grandTotal)}*
-----------------------------------------
+━━━━━━━━━━━━━━━━━━━━━━
 ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439 904).' : ''}
 ¿Me confirman recepción y horario exacto de entrega?`;
 

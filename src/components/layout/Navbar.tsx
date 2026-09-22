@@ -8,7 +8,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { QRModal } from '../ui/QRModal';
 import { AdminAuthModal } from '../admin/AdminAuthModal';
 import { useCustomization } from '../../contexts/CustomizationContext';
-import { ChristmasHat } from '../effects/ChristmasHat';
+import { InteractiveSantaHat } from '../effects/InteractiveSantaHat';
 import './layout.css';
 
 export const Navbar: React.FC = () => {
@@ -102,14 +102,13 @@ export const Navbar: React.FC = () => {
         {/* Logo */}
         <Link to="/" className="navbar-logo" style={{ position: 'relative' }}>
           {isChristmasActive && settings.christmasHats && (
-            <ChristmasHat 
-              size={28} 
+            <InteractiveSantaHat 
+              size={34} 
               style={{ 
                 position: 'absolute', 
-                top: '-12px', 
-                left: '-8px', 
-                transform: 'rotate(-18deg)',
-                zIndex: 20
+                top: '-15px', 
+                left: '-10px', 
+                zIndex: 25
               }} 
             />
           )}
