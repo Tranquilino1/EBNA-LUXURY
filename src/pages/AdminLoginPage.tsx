@@ -102,12 +102,12 @@ export function AdminLoginPage() {
               autoCapitalize="none"
               autoCorrect="off"
               required
-              style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '12px', border: '1px solid rgba(216, 27, 96, 0.3)', fontSize: '0.9rem', color: '#1E293B' }}
+              style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: '14px', border: '1.5px solid rgba(216, 27, 96, 0.25)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF', outline: 'none' }}
             />
           </div>
 
           <div className="form-group">
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 800, color: 'var(--text-secondary)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Contraseña de Seguridad
             </label>
             <input
@@ -119,14 +119,14 @@ export function AdminLoginPage() {
               autoCapitalize="none"
               autoCorrect="off"
               required
-              style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '12px', border: '1px solid rgba(216, 27, 96, 0.3)', fontSize: '0.9rem', color: '#1E293B' }}
+              style={{ width: '100%', padding: '0.85rem 1rem', borderRadius: '14px', border: '1.5px solid rgba(216, 27, 96, 0.25)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF', outline: 'none' }}
             />
           </div>
 
           <button 
             type="submit" 
             className="btn-primary" 
-            style={{ width: '100%', padding: '0.85rem', borderRadius: '14px', border: 'none', background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', fontWeight: 700, fontSize: '0.95rem', cursor: loading ? 'wait' : 'pointer', boxShadow: '0 4px 15px rgba(216, 27, 96, 0.35)', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} 
+            style={{ width: '100%', padding: '0.9rem 1.8rem', borderRadius: '30px', border: 'none', background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', fontWeight: 800, fontSize: '0.95rem', letterSpacing: '0.03em', cursor: loading ? 'wait' : 'pointer', boxShadow: '0 6px 20px rgba(216, 27, 96, 0.35)', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'transform 0.2s ease, box-shadow 0.2s ease' }} 
             disabled={loading}
           >
             <Lock size={18} />

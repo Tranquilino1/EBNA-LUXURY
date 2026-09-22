@@ -67,11 +67,14 @@ export function LoginPage() {
       <div style={{ padding: '0 20px', maxWidth: '400px', margin: '0 auto' }}>
         {error && <div style={{ color: '#ef4444', backgroundColor: '#fee2e2', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>{error}</div>}
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '16px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+          <div className="form-group">
+            <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+              Correo Electrónico
+            </label>
             <input 
               type="email" 
-              placeholder="Correo electrónico"
+              placeholder="tu.correo@ejemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required 
@@ -79,81 +82,97 @@ export function LoginPage() {
               autoCorrect="off"
               style={{
                 width: '100%',
-                border: '1px solid #E2E8F0',
-                borderRadius: '10px',
-                padding: '12px 14px',
-                fontSize: '16px',
+                border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                borderRadius: '14px',
+                padding: '13px 16px',
+                fontSize: '0.95rem',
                 color: '#1E293B',
-                boxSizing: 'border-box'
+                background: '#FFFFFF',
+                boxSizing: 'border-box',
+                outline: 'none',
+                transition: 'border-color 0.2s, box-shadow 0.2s'
               }}
             />
           </div>
           
-          <div style={{ marginBottom: '16px', position: 'relative' }}>
-            <input 
-              type={showPassword ? "text" : "password"} 
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required 
-              autoCapitalize="none"
-              autoCorrect="off"
-              style={{
-                width: '100%',
-                border: '1px solid #E2E8F0',
-                borderRadius: '10px',
-                padding: '12px 14px',
-                fontSize: '16px',
-                color: '#1E293B',
-                boxSizing: 'border-box',
-                paddingRight: '40px'
-              }}
-            />
-            <button 
-              type="button" 
-              onClick={() => setShowPassword(!showPassword)}
-              style={{
-                position: 'absolute',
-                right: '12px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                color: '#64748B',
-                cursor: 'pointer',
-                padding: 0,
-                display: 'flex'
-              }}
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+          <div className="form-group" style={{ position: 'relative' }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+              Contraseña
+            </label>
+            <div style={{ position: 'relative' }}>
+              <input 
+                type={showPassword ? "text" : "password"} 
+                placeholder="••••••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required 
+                autoCapitalize="none"
+                autoCorrect="off"
+                style={{
+                  width: '100%',
+                  border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                  borderRadius: '14px',
+                  padding: '13px 16px',
+                  fontSize: '0.95rem',
+                  color: '#1E293B',
+                  background: '#FFFFFF',
+                  boxSizing: 'border-box',
+                  paddingRight: '44px',
+                  outline: 'none',
+                  transition: 'border-color 0.2s, box-shadow 0.2s'
+                }}
+              />
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '14px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  color: '#94A3B8',
+                  cursor: 'pointer',
+                  padding: 0,
+                  display: 'flex'
+                }}
+              >
+                {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
+              </button>
+            </div>
           </div>
 
-          <div style={{ textAlign: 'right', marginBottom: '24px' }}>
+          <div style={{ textAlign: 'right', marginTop: '-0.3rem', marginBottom: '0.5rem' }}>
             <button type="button" style={{ 
               background: 'none', 
               border: 'none', 
               color: '#64748B', 
               fontSize: '0.82rem',
+              fontWeight: 600,
               cursor: 'pointer' 
             }}>
-              Recuperar contraseña
+              ¿Olvidaste tu contraseña?
             </button>
           </div>
 
           <button type="submit" disabled={loading} style={{
-            background: '#D81B60',
+            background: 'linear-gradient(135deg, #D81B60 0%, #C2185B 100%)',
             color: 'white',
-            borderRadius: '14px',
+            borderRadius: '30px',
             width: '100%',
-            padding: '14px',
-            fontWeight: 700,
+            padding: '14px 24px',
+            fontWeight: 800,
+            letterSpacing: '0.03em',
             border: 'none',
-            fontSize: '16px',
-            cursor: 'pointer',
+            fontSize: '0.98rem',
+            cursor: loading ? 'wait' : 'pointer',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            gap: '8px',
+            boxShadow: '0 6px 20px rgba(216, 27, 96, 0.35)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
           }}>
             {loading ? <Loader size="small" /> : 'Iniciar Sesión'}
           </button>

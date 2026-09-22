@@ -535,8 +535,8 @@ export function AdminDashboard() {
                               {product.is_hidden ? <><EyeOff size={12} /> Oculto</> : <><Eye size={12} /> Público</>}
                             </button>
                           </td>
-                          <td style={{ padding: '0.8rem 1rem', textAlign: 'right' }}>
-                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
+                          <td style={{ padding: '0.8rem 1rem', textAlign: 'right', whiteSpace: 'nowrap', minWidth: '135px' }}>
+                            <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end', alignItems: 'center' }}>
                               <button 
                                 onClick={(e) => {
                                   e.stopPropagation();

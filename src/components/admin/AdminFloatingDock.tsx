@@ -29,12 +29,14 @@ export const AdminFloatingDock: React.FC = () => {
 
   return (
     <aside 
+      className="admin-floating-dock-aside"
       aria-label="Panel de control flotante de Administrador"
       style={{
         position: 'fixed',
         bottom: '24px',
         right: '24px',
         zIndex: 99999,
+        maxWidth: 'calc(100vw - 32px)',
         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
         filter: 'drop-shadow(0 8px 30px rgba(216, 27, 96, 0.35))'
       }}

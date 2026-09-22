@@ -168,9 +168,11 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="product-form space-y-4" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} className="product-form space-y-4" style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
           <div className="form-group">
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>Nombre del Producto *</label>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+              Nombre del Producto *
+            </label>
             <input
               type="text"
               name="name"
@@ -179,19 +181,21 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
               onChange={handleChange}
               placeholder="Ej: Vestido Satinado de Noche Zara Luxe"
               required
-              style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)' }}
+              style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
             />
           </div>
 
-          <div className="form-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>Categoría *</label>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                Categoría *
+              </label>
               <select
                 name="category"
                 className="glass-input"
                 value={formData.category}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)', background: 'white' }}
+                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', background: 'white', fontSize: '0.92rem', color: '#1E293B', cursor: 'pointer' }}
               >
                 <option value="VESTIDOS">VESTIDOS & ROBES</option>
                 <option value="CALZADO">CALZADO & SNEAKERS</option>
@@ -206,7 +210,9 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>Precio (FCFA) *</label>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                Precio (FCFA) *
+              </label>
               <input
                 type="number"
                 name="price"
@@ -216,15 +222,17 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 placeholder="Ej: 15000"
                 required
                 min="0"
-                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)' }}
+                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
               />
             </div>
           </div>
 
           {/* Sizes and Colors Fields */}
-          <div className="form-group" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>Tallas Disponibles (Separadas por comas)</label>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                Tallas Disponibles (Separadas por comas)
+              </label>
               <input
                 type="text"
                 name="sizes"
@@ -232,12 +240,14 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 value={formData.sizes}
                 onChange={handleChange}
                 placeholder="Ej: S, M, L, XL, XXL, 38, 39, 40"
-                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)' }}
+                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>Colores / Tonos (Separados por comas)</label>
+              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                Colores / Tonos (Separados por comas)
+              </label>
               <input
                 type="text"
                 name="colors"
@@ -245,13 +255,15 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 value={formData.colors}
                 onChange={handleChange}
                 placeholder="Ej: Blanco, Negro, Rojo, Azul, Marrón, Mate"
-                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)' }}
+                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
               />
             </div>
           </div>
 
           <div className="form-group">
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.3rem' }}>Descripción Detallada</label>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+              Descripción Detallada
+            </label>
             <textarea
               name="description"
               className="glass-input"
@@ -259,7 +271,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
               value={formData.description}
               onChange={handleChange}
               placeholder="Escribe la descripción del producto, materiales y detalles..."
-              style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)' }}
+              style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF', minHeight: '80px' }}
             />
           </div>
 

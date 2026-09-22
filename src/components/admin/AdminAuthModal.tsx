@@ -223,11 +223,11 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose 
                 onChange={(e) => setEmail(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '0.75rem 1rem 0.75rem 2.6rem',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(216, 27, 96, 0.3)',
+                  padding: '0.85rem 1rem 0.85rem 2.8rem',
+                  borderRadius: '14px',
+                  border: '1.5px solid rgba(216, 27, 96, 0.25)',
                   background: '#FFFFFF',
-                  fontSize: '0.9rem',
+                  fontSize: '0.92rem',
                   color: '#1E293B',
                   outline: 'none',
                 }}
@@ -236,7 +236,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose 
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 800, color: 'var(--text-secondary)', marginBottom: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Contraseña de Seguridad:
             </label>
             <div style={{ position: 'relative' }}>
@@ -249,11 +249,11 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose 
                 onChange={(e) => setPassword(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '0.75rem 1rem 0.75rem 2.6rem',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(216, 27, 96, 0.3)',
+                  padding: '0.85rem 1rem 0.85rem 2.8rem',
+                  borderRadius: '14px',
+                  border: '1.5px solid rgba(216, 27, 96, 0.25)',
                   background: '#FFFFFF',
-                  fontSize: '0.9rem',
+                  fontSize: '0.92rem',
                   color: '#1E293B',
                   outline: 'none',
                 }}
@@ -266,21 +266,22 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose 
             disabled={loading}
             style={{
               width: '100%',
-              padding: '0.85rem',
-              borderRadius: '14px',
+              padding: '0.9rem 1.8rem',
+              borderRadius: '30px',
               border: 'none',
               background: loading ? '#CBD5E1' : 'linear-gradient(135deg, #D81B60, #C2185B)',
               color: '#FFFFFF',
               fontWeight: 800,
               fontSize: '0.95rem',
-              cursor: loading ? 'not-allowed' : 'pointer',
+              letterSpacing: '0.03em',
+              cursor: loading ? 'wait' : 'pointer',
+              boxShadow: '0 6px 20px rgba(216, 27, 96, 0.35)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
               marginTop: '0.5rem',
-              boxShadow: '0 4px 15px rgba(216, 27, 96, 0.35)',
-              transition: 'all 0.2s ease',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
             }}
           >
             <Lock size={18} />

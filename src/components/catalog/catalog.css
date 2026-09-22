@@ -231,31 +231,33 @@
   transform: scale(1.07);
 }
 
-/* Badge Group & Dynamic Badges */
+/* Badge Group & Dynamic Badges - Positioned at bottom of image to NEVER overlap top admin buttons */
 .product-badge-group {
   position: absolute;
-  top: 18px;
-  left: 18px;
-  right: 18px;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   pointer-events: none;
-  z-index: 3;
+  z-index: 8;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .product-category-badge {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.72rem;
   font-weight: 800;
-  color: #E05A88;
+  color: #D81B60;
   letter-spacing: 0.06em;
-  box-shadow: 0 3px 10px rgba(224, 90, 136, 0.15);
-  border: 1px solid rgba(224, 90, 136, 0.15);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(216, 27, 96, 0.15);
 }
 
 .product-stock-badge {
@@ -266,7 +268,7 @@
   letter-spacing: 0.05em;
   color: white;
   backdrop-filter: blur(8px);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
 .product-stock-badge.in-stock {
@@ -275,6 +277,201 @@
 
 .product-stock-badge.out-of-stock {
   background: linear-gradient(135deg, #EF4444, #DC2626);
+}
+
+/* =========================================================
+   LUXURY CATALOG SORT & FILTER TOOLBAR
+   ========================================================= */
+.catalog-sort-bar-wrapper {
+  margin: 18px 0 28px 0;
+  padding: 18px 22px;
+  border-radius: 20px;
+  background: var(--canvas-surface);
+  backdrop-filter: var(--glass-filter);
+  -webkit-backdrop-filter: var(--glass-filter);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+}
+
+.sort-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sort-bar-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sort-bar-icon-pill {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(216, 27, 96, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(216, 27, 96, 0.2);
+  flex-shrink: 0;
+}
+
+.sort-bar-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.sort-bar-counter {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 3px 0 0 0;
+}
+
+.sort-bar-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(216, 27, 96, 0.08);
+  border: 1px solid rgba(216, 27, 96, 0.25);
+  color: var(--brand-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sort-bar-reset-btn:hover {
+  background: var(--brand-accent);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(216, 27, 96, 0.25);
+}
+
+.sort-bar-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: 14px 0;
+}
+
+.sort-bar-controls-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sort-section, .price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sort-section-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sort-pills-row, .price-chips-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sort-pill-btn, .price-chip-btn {
+  padding: 7px 15px;
+  border-radius: 30px;
+  border: 1px solid var(--border-subtle);
+  background: var(--canvas-surface);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.sort-pill-btn:hover, .price-chip-btn:hover {
+  background: var(--canvas-elevated);
+  border-color: var(--brand-accent);
+  color: var(--brand-accent);
+  transform: translateY(-1px);
+}
+
+.sort-pill-btn.is-active, .price-chip-btn.is-active {
+  background: linear-gradient(135deg, #D81B60, #C2185B);
+  color: #FFFFFF;
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(216, 27, 96, 0.35);
+  transform: translateY(-1px);
+}
+
+.stock-toggle-btn {
+  padding: 7px 15px;
+  border-radius: 30px;
+  border: 1.5px solid var(--border-subtle);
+  background: var(--canvas-surface);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.stock-toggle-btn:hover {
+  border-color: #10B981;
+  color: #10B981;
+}
+
+.stock-toggle-btn.is-active {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: #10B981;
+  color: #059669;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.2);
+}
+
+@media (max-width: 768px) {
+  .catalog-sort-bar-wrapper {
+    padding: 14px 16px;
+    margin: 14px 0 20px 0;
+  }
+  .sort-bar-title {
+    font-size: 1rem;
+  }
+  .sort-pills-row, .price-chips-row {
+    gap: 6px;
+  }
+  .sort-pill-btn, .price-chip-btn, .stock-toggle-btn {
+    padding: 6px 12px;
+    font-size: 0.76rem;
+  }
+  .stock-toggle-btn {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* Specular Sweep Shimmer Effect */
