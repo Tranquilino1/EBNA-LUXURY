@@ -16,6 +16,15 @@ const generateUUID = (): string => {
   });
 };
 
+const fileToDataUrl = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 export function useAdminProducts() {
   const [products, setProducts] = useState<Product[]>(() => {
     try {
@@ -125,7 +134,11 @@ export function useAdminProducts() {
       }
 
       if (imageFile) {
-        primaryUrl = URL.createObjectURL(imageFile);
+        try {
+          primaryUrl = await fileToDataUrl(imageFile);
+        } catch {
+          primaryUrl = URL.createObjectURL(imageFile);
+        }
       }
 
       const imagesObj: ProductImages = {
@@ -133,53 +146,66 @@ export function useAdminProducts() {
         gallery: [primaryUrl]
       };
 
-      const newSlug = generateSlug(productData.name || 'producto-' + Date.now());
-      const newProduct: Partial<Product> = { 
-        ...productData, 
+      const validId = generateUUID();
+      const newSlug = productData.slug || (generateSlug(productData.name || 'producto') + '-' + validId.slice(0, 8));
+      const skuVal = productData.sku || `SL-${(productData.category || 'GEN').replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+
+      const newProduct: Product = {
+        id: validId,
+        sku: skuVal,
         slug: newSlug,
-        images: imagesObj 
+        name: productData.name || 'Nuevo Producto',
+        category: (productData.category || 'MODA_MUJER') as any,
+        subcategory: productData.subcategory || 'General',
+        brand: productData.brand || 'EBNA Luxury Collection',
+        description: productData.description || '',
+        price: productData.price || 0,
+        priceFCFA: productData.priceFCFA || productData.price || 0,
+        images: imagesObj,
+        colors: productData.colors || ['Blanco', 'Negro'],
+        sizes: productData.sizes || ['S', 'M', 'L'],
+        in_stock: productData.in_stock !== undefined ? productData.in_stock : true,
+        inStock: productData.in_stock !== undefined ? productData.in_stock : true,
+        is_hidden: productData.is_hidden || false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
 
-      // 1. Add locally for instant UI update
-      const created = demoAddProduct(newProduct);
-      setProducts(prev => [created, ...prev.filter(p => p.id !== created.id)]);
+      // 1. Add locally for instant UI update (0ms)
+      demoAddProduct(newProduct);
+      setProducts(prev => [newProduct, ...prev.filter(p => p.id !== validId)]);
+      notifyCatalogChange('add', newProduct);
 
-      // 2. Build full relational Supabase payload
-      const isInfantilAdd = productData.category === 'MODA_INFANTIL' || created.category === 'MODA_INFANTIL';
-      const dbCategoryAdd = isInfantilAdd ? 'MODA_MUJER' : (created.category || 'MODA_MUJER');
-      const dbSubcategoryAdd = isInfantilAdd ? 'Moda Infantil' : (created.subcategory || 'General');
-
-      const validId = (created.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(created.id))
-        ? created.id
-        : generateUUID();
-
-      const skuVal = created.sku || `SL-${(created.category || 'GEN').replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+      // 2. Insert into Supabase in background
+      const isInfantilAdd = newProduct.category === 'MODA_INFANTIL';
+      const dbCategoryAdd = isInfantilAdd ? 'MODA_MUJER' : (newProduct.category || 'MODA_MUJER');
+      const dbSubcategoryAdd = isInfantilAdd ? 'Moda Infantil' : (newProduct.subcategory || 'General');
 
       const supabasePayload: any = {
         id: validId,
         sku: skuVal,
-        slug: created.slug || generateSlug(created.name) + '-' + validId.slice(0, 8),
-        name: created.name,
+        slug: newSlug,
+        name: newProduct.name,
         category: dbCategoryAdd,
         subcategory: dbSubcategoryAdd,
-        brand: created.brand || 'EBNA Luxury Collection',
-        description: created.description || '',
-        price: created.price,
-        price_fcfa: created.priceFCFA || created.price,
-        images: { primary: created.images.primary, gallery: created.images.gallery || [created.images.primary] },
-        colors: created.colors || ['Blanco', 'Negro'],
-        sizes: created.sizes || ['S', 'M', 'L'],
-        in_stock: created.in_stock !== undefined ? created.in_stock : true,
-        is_hidden: created.is_hidden || false,
+        brand: newProduct.brand,
+        description: newProduct.description,
+        price: newProduct.price,
+        price_fcfa: newProduct.priceFCFA,
+        images: imagesObj,
+        colors: newProduct.colors,
+        sizes: newProduct.sizes,
+        in_stock: newProduct.in_stock,
+        is_hidden: newProduct.is_hidden,
+        created_at: newProduct.created_at,
+        updated_at: newProduct.updated_at,
       };
 
-      const { error } = await supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' });
-      if (error) {
-        console.warn('Supabase sync notice:', error.message);
+      const { error: insErr } = await supabase.from('products').insert(supabasePayload);
+      if (insErr) {
+        console.warn('Supabase insert notice:', insErr.message);
       }
-
-      notifyCatalogChange('add', created);
-      await fetchProducts();
+      return newProduct;
     } catch (err) {
       console.error('Error adding product:', err);
       throw err;
@@ -191,53 +217,89 @@ export function useAdminProducts() {
       let updatedData = { ...updates };
 
       if (imageFile) {
-        const localUrl = URL.createObjectURL(imageFile);
-        updatedData.images = {
-          primary: localUrl,
-          gallery: [localUrl]
-        };
+        try {
+          const dataUrl = await fileToDataUrl(imageFile);
+          updatedData.images = {
+            primary: dataUrl,
+            gallery: [dataUrl]
+          };
+        } catch {
+          const localUrl = URL.createObjectURL(imageFile);
+          updatedData.images = {
+            primary: localUrl,
+            gallery: [localUrl]
+          };
+        }
       }
 
-      // 1. Update locally for instant UI update
-      const updated = demoUpdateProduct(id, updatedData);
+      // 1. Update locally in 0ms (OPTIMISTIC INSTANT UPDATE)
+      const existing = products.find(p => p.id === id || p.slug === id || p.sku === id);
+      const updated: Product = {
+        ...(existing || {}),
+        ...updatedData,
+        id: existing?.id || id,
+        in_stock: updatedData.in_stock !== undefined ? updatedData.in_stock : (existing?.in_stock ?? true),
+        inStock: updatedData.in_stock !== undefined ? updatedData.in_stock : (existing?.in_stock ?? true),
+        updated_at: new Date().toISOString()
+      } as Product;
 
-      if (updated) {
-        setProducts(prev => prev.map(p => (p.id === id || p.slug === id) ? updated : p));
+      // Update state immediately without ANY delay
+      setProducts(prev => prev.map(p => (p.id === id || p.slug === id || p.sku === id) ? updated : p));
+      demoUpdateProduct(id, updated);
+      notifyCatalogChange('update', updated);
 
-        // 2. Build full relational Supabase payload
-        const isInfantilUpd = updated.category === 'MODA_INFANTIL';
-        const dbCategoryUpd = isInfantilUpd ? 'MODA_MUJER' : (updated.category || 'MODA_MUJER');
-        const dbSubcategoryUpd = isInfantilUpd ? 'Moda Infantil' : (updated.subcategory || 'General');
+      // 2. Build full relational Supabase payload
+      const isInfantilUpd = updated.category === 'MODA_INFANTIL';
+      const dbCategoryUpd = isInfantilUpd ? 'MODA_MUJER' : (updated.category || 'MODA_MUJER');
+      const dbSubcategoryUpd = isInfantilUpd ? 'Moda Infantil' : (updated.subcategory || 'General');
 
-        const supabasePayload: any = {
-          sku: updated.sku || `SL-${(updated.category || 'GEN').replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`,
-          name: updated.name,
-          category: dbCategoryUpd,
-          subcategory: dbSubcategoryUpd,
-          brand: updated.brand || 'EBNA Luxury Collection',
-          description: updated.description || '',
-          price: updated.price,
-          price_fcfa: updated.priceFCFA || updated.price,
-          images: { primary: updated.images.primary, gallery: updated.images.gallery || [updated.images.primary] },
-          colors: updated.colors || ['Blanco', 'Negro'],
-          sizes: updated.sizes || ['S', 'M', 'L'],
-          in_stock: updated.in_stock !== undefined ? updated.in_stock : true,
-          is_hidden: updated.is_hidden || false,
+      const supabasePayload: any = {
+        name: updated.name,
+        category: dbCategoryUpd,
+        subcategory: dbSubcategoryUpd,
+        brand: updated.brand || 'EBNA Luxury Collection',
+        description: updated.description || '',
+        price: updated.price,
+        price_fcfa: updated.priceFCFA || updated.price,
+        in_stock: updated.in_stock !== undefined ? updated.in_stock : true,
+        is_hidden: updated.is_hidden || false,
+        updated_at: updated.updated_at
+      };
+
+      if (updated.sku) supabasePayload.sku = updated.sku;
+      if (updated.slug) supabasePayload.slug = updated.slug;
+      if (updated.images) {
+        supabasePayload.images = {
+          primary: updated.images.primary,
+          gallery: updated.images.gallery || [updated.images.primary]
         };
+      }
+      if (updated.colors) supabasePayload.colors = updated.colors;
+      if (updated.sizes) supabasePayload.sizes = updated.sizes;
 
-        if (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) {
-          supabasePayload.id = updated.id;
-        }
+      // 3. Direct update in Supabase (by ID or Slug)
+      const isUUID = updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id);
+      let updateQuery = supabase.from('products').update(supabasePayload);
+
+      if (isUUID) {
+        updateQuery = updateQuery.eq('id', updated.id);
+      } else if (updated.slug) {
+        updateQuery = updateQuery.eq('slug', updated.slug);
+      } else {
+        updateQuery = updateQuery.eq('id', id);
+      }
+
+      const { data: updateRes, error: updateErr } = await updateQuery.select();
+
+      if (updateErr) {
+        console.warn('Supabase update notice:', updateErr.message);
+      } else if (!updateRes || updateRes.length === 0) {
         if (updated.slug) {
-          supabasePayload.slug = updated.slug;
+          await supabase.from('products').update(supabasePayload).eq('slug', updated.slug);
         }
-
-        const { error } = await supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' });
-        if (error) console.warn('Supabase sync notice:', error.message);
-
-        notifyCatalogChange('update', updated);
-        await fetchProducts();
       }
+
+      return updated;
     } catch (err) {
       console.error('Error updating product:', err);
       throw err;

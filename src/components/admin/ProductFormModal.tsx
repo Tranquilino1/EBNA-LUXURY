@@ -105,11 +105,12 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
 
       if (product) {
         productPayload.id = product.id;
+        productPayload.sku = product.sku;
       }
 
-      await onSave(productPayload, imageFile || undefined);
       setIsDirty(false);
       onClose();
+      await onSave(productPayload, imageFile || undefined);
     } catch (err: any) {
       setError(err.message || 'Error al guardar el producto');
     } finally {

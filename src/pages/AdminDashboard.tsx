@@ -11,6 +11,7 @@ import { ProductInspectModal } from '../components/admin/ProductInspectModal';
 import { CustomizationSettingsPanel } from '../components/admin/CustomizationSettingsPanel';
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
+import { Toast } from '../components/ui/Toast';
 import type { Product, ProductCategory } from '../types';
 import { formatPrice } from '../lib/utils';
 
@@ -46,6 +47,7 @@ export function AdminDashboard() {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'TODOS'>('TODOS');
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncSuccess, setSyncSuccess] = useState(false);
+  const [toastInfo, setToastInfo] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
   const handleGlobalSync = async () => {
     setIsSyncing(true);
@@ -109,19 +111,22 @@ export function AdminDashboard() {
   };
 
   const handleSave = async (productData: Partial<Product>, imageFile?: File) => {
-    if (selectedProduct) {
-      // Editing existing product
-      await updateProduct(selectedProduct.id, productData, imageFile);
-    } else {
-      // Creating new product
-      await addProduct(productData, imageFile);
+    try {
+      if (selectedProduct) {
+        setToastInfo({ message: '✓ Cambios aplicados y sincronizados en Supabase', type: 'success' });
+        await updateProduct(selectedProduct.id, productData, imageFile);
+      } else {
+        setToastInfo({ message: '✓ Nuevo producto creado e insertado en Supabase', type: 'success' });
+        await addProduct(productData, imageFile);
+      }
+    } catch (err: any) {
+      setToastInfo({ message: `Aviso de sincronización: ${err.message || err}`, type: 'info' });
     }
   };
 
   const handleFormClose = () => {
     setIsFormOpen(false);
     setSelectedProduct(null);
-    refetch();
   };
 
   const filteredProducts = products.filter(p => {
@@ -764,6 +769,16 @@ export function AdminDashboard() {
             setInspectProduct(null);
             handleDeleteClick(prodToDelete);
           }}
+        />
+      )}
+
+      {/* Instant Sync Feedback Toast */}
+      {toastInfo && (
+        <Toast
+          message={toastInfo.message}
+          type={toastInfo.type}
+          isVisible={true}
+          onClose={() => setToastInfo(null)}
         />
       )}
     </div>

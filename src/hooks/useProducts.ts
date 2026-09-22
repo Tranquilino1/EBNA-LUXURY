@@ -113,9 +113,23 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
   useEffect(() => {
     fetchProducts();
 
-    // 1. Universal Real-Time Subscriber (WebSockets + BroadcastChannel + Postgres CDC)
-    const unsubscribe = subscribeToCatalogChanges(() => {
-      fetchProducts();
+    // 1. Universal Real-Time Subscriber (WebSockets + BroadcastChannel + Postgres CDC) with 0ms Optimistic Sync
+    const unsubscribe = subscribeToCatalogChanges(({ action, payload }) => {
+      if (action === 'update' && payload) {
+        setProducts(prev => prev.map(p => 
+          (p.id === payload.id || p.slug === payload.slug || (payload.sku && p.sku === payload.sku))
+            ? { ...p, ...payload, inStock: payload.in_stock !== undefined ? payload.in_stock : p.inStock }
+            : p
+        ));
+      } else if (action === 'delete' && payload?.id) {
+        setProducts(prev => prev.filter(p => p.id !== payload.id && p.slug !== payload.slug && p.sku !== payload.id));
+      } else if (action === 'add' && payload) {
+        setProducts(prev => [payload, ...prev.filter(p => p.id !== payload.id)]);
+      } else if (action === 'toggleStock' && payload?.id) {
+        setProducts(prev => prev.map(p => (p.id === payload.id || p.slug === payload.id) ? { ...p, in_stock: payload.in_stock, inStock: payload.in_stock } : p));
+      } else {
+        fetchProducts(true);
+      }
     });
 
     // 2. Direct Supabase Realtime Channel
