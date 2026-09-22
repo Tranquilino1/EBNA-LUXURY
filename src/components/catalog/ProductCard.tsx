@@ -5,6 +5,8 @@ import type { Product } from '../../types';
 import { formatPrice } from '../../lib/utils';
 import { useCart } from '../../contexts/CartContext';
 import { useAdminCrud } from '../../contexts/AdminCrudContext';
+import { useCustomization } from '../../contexts/CustomizationContext';
+import { ChristmasHat } from '../effects/ChristmasHat';
 import { WhatsAppButton } from './WhatsAppButton';
 import { getProductOrdersCount } from '../../lib/popularityTracker';
 import './catalog.css';
@@ -20,7 +22,17 @@ const FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000
 export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
+  const { 
+    isAdmin, 
+    openEditModal, 
+    openDeleteModal, 
+    quickToggleStock,
+    selectedIds,
+    toggleSelect
+  } = useAdminCrud();
+  const { settings, isChristmasActive } = useCustomization();
+  const isSelected = selectedIds.has(product.id);
+
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imgSrc, setImgSrc] = useState<string>(() => {
     return product.images?.primary || (Array.isArray(product.images) ? product.images[0] : '/icons/ebna-logo.png');
@@ -31,8 +43,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const originalPriceVal = product.originalPriceFCFA;
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Prevent navigation if clicking on Admin buttons, WhatsApp button, or Cart button
+    // Prevent navigation if clicking on Admin buttons, checkbox, WhatsApp button, or Cart button
     if (
+      (e.target as HTMLElement).closest('.admin-checkbox-container') ||
       (e.target as HTMLElement).closest('.admin-card-actions') || 
       (e.target as HTMLElement).closest('.wa-button-container') || 
       (e.target as HTMLElement).closest('.btn-add-cart-card')
@@ -47,9 +60,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
 
   return (
     <div 
-      className="product-card" 
+      className={`product-card ${isSelected ? 'is-admin-selected' : ''}`} 
       onClick={handleCardClick}
-      style={{ animationDelay: `${(index % 10) * 0.04}s` }}
+      style={{ 
+        animationDuration: `${settings.animationSpeed}s`,
+        animationDelay: `${(index % 10) * settings.staggerDelay}s`,
+        border: isSelected ? '2px solid #D81B60' : undefined,
+        boxShadow: isSelected ? '0 0 20px rgba(216, 27, 96, 0.45)' : undefined
+      }}
     >
       <div className="product-card-glow-border"></div>
 
@@ -86,6 +104,62 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             <span className="product-stock-badge out-of-stock">AGOTADO</span>
           )}
         </div>
+
+        {/* Admin Checkbox Casilla para selección masiva */}
+        {isAdmin && (
+          <div
+            className="admin-checkbox-container"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleSelect(product.id);
+            }}
+            title={isSelected ? 'Desmarcar producto' : 'Marcar casilla para eliminación o CRUD masivo'}
+            style={{
+              position: 'absolute',
+              top: '8px',
+              left: '8px',
+              zIndex: 20,
+              background: isSelected ? '#D81B60' : 'rgba(20, 10, 20, 0.85)',
+              border: isSelected ? '2px solid #FFFFFF' : '1.5px solid rgba(255, 255, 255, 0.7)',
+              borderRadius: '8px',
+              width: '26px',
+              height: '26px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={isSelected}
+              onChange={() => toggleSelect(product.id)}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                width: '16px',
+                height: '16px',
+                accentColor: '#D81B60',
+                cursor: 'pointer'
+              }}
+            />
+          </div>
+        )}
+
+        {/* 3D Animated Christmas Hat on Product */}
+        {isChristmasActive && settings.christmasHats && (
+          <ChristmasHat 
+            size={32} 
+            style={{ 
+              position: 'absolute', 
+              top: '-10px', 
+              left: isAdmin ? '38px' : '8px', 
+              zIndex: 18,
+              filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.3))' 
+            }} 
+          />
+        )}
 
         {/* Admin Inline Actions Overlay */}
         {isAdmin && (

@@ -7,13 +7,18 @@ import { CartDrawer } from '../cart/CartDrawer';
 import { ParticleBackground } from '../effects/ParticleBackground';
 import { AdminCrudProvider } from '../../contexts/AdminCrudContext';
 import { AdminFloatingDock } from '../admin/AdminFloatingDock';
+import { ChristmasSnowOverlay } from '../effects/ChristmasSnowOverlay';
+import { useCustomization } from '../../contexts/CustomizationContext';
 import './layout.css';
 
 export const Layout: React.FC = () => {
+  const { isChristmasActive, settings } = useCustomization();
+
   return (
     <AdminCrudProvider>
       <div className="luxury-canvas min-h-screen">
         <ParticleBackground />
+        {isChristmasActive && settings.christmasSnow && <ChristmasSnowOverlay />}
         <Navbar />
         <main className="main-content">
           <Outlet />

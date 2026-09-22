@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, Apple, ChevronUp, ChevronDown } from 'lucide-react';
 import { QRModal } from '../ui/QRModal';
+import { useCustomization } from '../../contexts/CustomizationContext';
+import { ChristmasHat } from '../effects/ChristmasHat';
 import './layout.css';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const { settings, isChristmasActive } = useCustomization();
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
@@ -84,7 +87,19 @@ export const Footer: React.FC = () => {
         <div className="footer-content">
           {/* Brand & App Download */}
           <div className="footer-brand">
-            <div className="footer-brand-row">
+            <div className="footer-brand-row" style={{ position: 'relative' }}>
+              {isChristmasActive && settings.christmasHats && (
+                <ChristmasHat 
+                  size={28} 
+                  style={{ 
+                    position: 'absolute', 
+                    top: '-12px', 
+                    left: '-8px', 
+                    transform: 'rotate(-18deg)',
+                    zIndex: 10
+                  }} 
+                />
+              )}
               <img src="/icons/ebna-logo.png" alt="EBNA Logo" className="footer-logo-circle" />
               <div>
                 <h2 className="brand-title-uppercase">SINDY LUXURY</h2>

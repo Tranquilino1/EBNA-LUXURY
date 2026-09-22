@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import { useAdminCrud } from '../../contexts/AdminCrudContext';
-import { ShieldCheck, Plus, LayoutDashboard, ChevronDown, ChevronUp } from 'lucide-react';
+import { useProducts } from '../../hooks/useProducts';
+import { ShieldCheck, Plus, LayoutDashboard, ChevronDown, ChevronUp, Trash2, Eye, EyeOff, X, CheckSquare } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 
 export const AdminFloatingDock: React.FC = () => {
-  const { isAdmin, openCreateModal } = useAdminCrud();
+  const { 
+    isAdmin, 
+    openCreateModal, 
+    selectedIds, 
+    clearSelection, 
+    bulkUpdateStock, 
+    openBulkDeleteModal 
+  } = useAdminCrud();
+  const { products } = useProducts();
   const [isMinimized, setIsMinimized] = useState(false);
   const location = useLocation();
 
-  // If not admin, or already on the admin dashboard route, we can hide or show minimal
   if (!isAdmin) return null;
 
   const isOnAdminDashboard = location.pathname.startsWith('/admin');
+  const hasSelection = selectedIds.size > 0;
+
+  const handleBulkDeleteTrigger = () => {
+    const selectedProds = products.filter(p => selectedIds.has(p.id));
+    openBulkDeleteModal(selectedProds);
+  };
 
   return (
     <aside 
@@ -46,10 +60,125 @@ export const AdminFloatingDock: React.FC = () => {
           title="Restaurar barra de administrador"
         >
           <ShieldCheck size={16} />
-          <span>Modo Admin</span>
+          <span>{hasSelection ? `(${selectedIds.size}) Marcados` : 'Modo Admin'}</span>
           <ChevronUp size={14} />
         </button>
+      ) : hasSelection ? (
+        /* BULK SELECTION ACTIONS BAR */
+        <div
+          style={{
+            background: 'rgba(20, 10, 20, 0.95)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '2px solid #D81B60',
+            borderRadius: '24px',
+            padding: '10px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            color: 'white',
+            boxShadow: '0 12px 36px rgba(216, 27, 96, 0.5)',
+            animation: 'fadeIn 0.2s ease-out'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingRight: '6px', borderRight: '1px solid rgba(255,255,255,0.2)' }}>
+            <CheckSquare size={18} color="#F48FB1" />
+            <span style={{ fontSize: '0.84rem', fontWeight: 800, color: '#F48FB1', whiteSpace: 'nowrap' }}>
+              {selectedIds.size} {selectedIds.size === 1 ? 'marcado' : 'marcados'}
+            </span>
+          </div>
+
+          {/* Bulk In Stock */}
+          <button
+            type="button"
+            onClick={() => bulkUpdateStock(true)}
+            style={{
+              background: 'rgba(34, 197, 94, 0.2)',
+              border: '1px solid rgba(34, 197, 94, 0.5)',
+              borderRadius: '14px',
+              color: '#4ADE80',
+              padding: '6px 12px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+            title="Marcar todos los seleccionados como En Stock"
+          >
+            <Eye size={14} /> En Stock
+          </button>
+
+          {/* Bulk Out of Stock */}
+          <button
+            type="button"
+            onClick={() => bulkUpdateStock(false)}
+            style={{
+              background: 'rgba(239, 68, 68, 0.2)',
+              border: '1px solid rgba(239, 68, 68, 0.5)',
+              borderRadius: '14px',
+              color: '#F87171',
+              padding: '6px 12px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+            title="Marcar todos los seleccionados como Agotados"
+          >
+            <EyeOff size={14} /> Agotado
+          </button>
+
+          {/* Bulk Delete */}
+          <button
+            type="button"
+            onClick={handleBulkDeleteTrigger}
+            style={{
+              background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+              border: 'none',
+              borderRadius: '14px',
+              color: 'white',
+              padding: '6px 12px',
+              fontSize: '0.78rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)'
+            }}
+            title="Eliminar todos los seleccionados"
+          >
+            <Trash2 size={14} /> Eliminar ({selectedIds.size})
+          </button>
+
+          {/* Clear Selection */}
+          <button
+            type="button"
+            onClick={clearSelection}
+            style={{
+              background: 'rgba(255, 255, 255, 0.12)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '28px',
+              height: '28px',
+              color: '#CBD5E1',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: '4px'
+            }}
+            title="Desmarcar todos"
+          >
+            <X size={15} />
+          </button>
+        </div>
       ) : (
+        /* STANDARD DOCK */
         <div
           style={{
             background: 'rgba(25, 15, 25, 0.92)',

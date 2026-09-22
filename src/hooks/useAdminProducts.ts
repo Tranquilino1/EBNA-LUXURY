@@ -257,6 +257,65 @@ export function useAdminProducts() {
     await fetchProducts();
   };
 
+  const bulkDelete = async (ids: string[]) => {
+    try {
+      const idSet = new Set(ids);
+      setProducts(prev => prev.filter(p => !idSet.has(p.id) && !idSet.has(p.slug) && !idSet.has(p.sku)));
+      
+      for (const id of ids) {
+        demoDeleteProduct(id);
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+        if (isUUID) {
+          await supabase.from('products').delete().eq('id', id);
+        } else {
+          await supabase.from('products').delete().eq('slug', id);
+        }
+      }
+      notifyCatalogChange('bulk_delete', { count: ids.length });
+      await fetchProducts();
+    } catch (err) {
+      console.error('Error in bulkDelete:', err);
+    }
+  };
+
+  const bulkUpdateStock = async (ids: string[], inStock: boolean) => {
+    try {
+      const idSet = new Set(ids);
+      setProducts(prev => prev.map(p => idSet.has(p.id) ? { ...p, in_stock: inStock, inStock } : p));
+      
+      for (const id of ids) {
+        demoUpdateProduct(id, { in_stock: inStock, inStock });
+        const prod = products.find(p => p.id === id);
+        if (prod) {
+          await supabase.from('products').update({ in_stock: inStock }).eq('slug', prod.slug);
+        }
+      }
+      notifyCatalogChange('bulk_stock', { count: ids.length, inStock });
+      await fetchProducts();
+    } catch (err) {
+      console.error('Error in bulkUpdateStock:', err);
+    }
+  };
+
+  const bulkUpdateVisibility = async (ids: string[], isHidden: boolean) => {
+    try {
+      const idSet = new Set(ids);
+      setProducts(prev => prev.map(p => idSet.has(p.id) ? { ...p, is_hidden: isHidden } : p));
+      
+      for (const id of ids) {
+        demoUpdateProduct(id, { is_hidden: isHidden });
+        const prod = products.find(p => p.id === id);
+        if (prod) {
+          await supabase.from('products').update({ is_hidden: isHidden }).eq('slug', prod.slug);
+        }
+      }
+      notifyCatalogChange('bulk_visibility', { count: ids.length, isHidden });
+      await fetchProducts();
+    } catch (err) {
+      console.error('Error in bulkUpdateVisibility:', err);
+    }
+  };
+
   return {
     products,
     loading,
@@ -264,6 +323,9 @@ export function useAdminProducts() {
     updateProduct,
     deleteProduct,
     toggleStock,
+    bulkDelete,
+    bulkUpdateStock,
+    bulkUpdateVisibility,
     refetch: fetchProducts,
   };
 }

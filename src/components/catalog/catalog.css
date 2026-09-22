@@ -74,13 +74,86 @@
   -webkit-backdrop-filter: var(--glass-filter);
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-sm);
-  animation: fadeUpIn 0.45s ease backwards;
+  animation: animSlideUp var(--anim-duration, 0.5s) cubic-bezier(0.16, 1, 0.3, 1) backwards;
   will-change: transform, box-shadow;
   transform: translateZ(0);
 }
 
 [data-theme="dark"] .product-card {
   border-color: var(--border-subtle);
+}
+
+/* Dynamic Card Style Overrides */
+[data-card-style="bordered-gold"] .product-card {
+  border: 1.5px solid rgba(212, 175, 55, 0.5) !important;
+  box-shadow: 0 6px 24px rgba(212, 175, 55, 0.15) !important;
+}
+
+[data-card-style="editorial-minimal"] .product-card {
+  border-radius: 12px !important;
+  border: 1px solid rgba(0, 0, 0, 0.09) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
+  background: #FFFFFF !important;
+}
+
+/* Dynamic Animation Types */
+[data-anim-type="slide-up"] .product-card {
+  animation: animSlideUp var(--anim-duration, 0.5s) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+[data-anim-type="fade-in"] .product-card {
+  animation: animFadeIn var(--anim-duration, 0.5s) ease backwards;
+}
+
+[data-anim-type="scale-in"] .product-card {
+  animation: animScaleIn var(--anim-duration, 0.5s) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+[data-anim-type="flip-3d"] .product-card {
+  perspective: 1000px;
+  animation: animFlip3d var(--anim-duration, 0.6s) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes animSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+@keyframes animFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes animScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+}
+
+@keyframes animFlip3d {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateY(16deg) translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateY(0deg) translateY(0);
+  }
 }
 
 /* Animated Border Mirror Glow Effect on Hover */
@@ -100,7 +173,7 @@
 }
 
 .product-card:hover {
-  transform: translateY(-8px) translateZ(0);
+  transform: translateY(-8px) scale(var(--card-hover-scale, 1.04)) translateZ(0);
   box-shadow: var(--shadow-lg);
   border-color: var(--border-brand);
 }

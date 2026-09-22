@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
+import { useAdminCrud } from '../contexts/AdminCrudContext';
 import { Loader } from '../components/ui/Loader';
-import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2 } from 'lucide-react';
+import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2, Sliders, CheckSquare } from 'lucide-react';
 import { notifyCatalogChange } from '../lib/broadcast';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
 import { ProductInspectModal } from '../components/admin/ProductInspectModal';
+import { CustomizationSettingsPanel } from '../components/admin/CustomizationSettingsPanel';
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
 import type { Product, ProductCategory } from '../types';
@@ -15,7 +17,17 @@ import { formatPrice } from '../lib/utils';
 export function AdminDashboard() {
   const { user, profile, signOut } = useAuth();
   const { products, loading, addProduct, updateProduct, deleteProduct, toggleStock, refetch } = useAdminProducts();
-  const [activeTab, setActiveTab] = useState<'inventory' | 'users' | 'security' | 'analytics'>('inventory');
+  const { 
+    selectedIds, 
+    toggleSelect, 
+    selectAll, 
+    clearSelection, 
+    bulkUpdateStock, 
+    bulkUpdateVisibility,
+    openBulkDeleteModal 
+  } = useAdminCrud();
+
+  const [activeTab, setActiveTab] = useState<'inventory' | 'customization' | 'users' | 'security' | 'analytics'>('inventory');
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -148,6 +160,7 @@ export function AdminDashboard() {
       <nav style={{ display: 'flex', gap: '0.8rem', marginBottom: '2rem', borderBottom: '1px solid var(--color-glass-border)', paddingBottom: '0.5rem', overflowX: 'auto' }}>
         {[
           { id: 'inventory' as const, label: `Inventario (${products.length})`, icon: <Package size={18} /> },
+          { id: 'customization' as const, label: 'Personalización & UI', icon: <Sliders size={18} /> },
           { id: 'users' as const, label: 'Usuarios & Roles', icon: <Users size={18} /> },
           { id: 'security' as const, label: 'Mi Cuenta & Seguridad', icon: <KeyRound size={18} /> },
           { id: 'analytics' as const, label: 'Analítica', icon: <BarChart3 size={18} /> },
@@ -284,6 +297,138 @@ export function AdminDashboard() {
             </div>
           </div>
 
+          {/* BULK ACTIONS TOOLBAR (Marcar casitas para CRUD masivo) */}
+          {selectedIds.size > 0 && (
+            <div 
+              className="bulk-actions-toolbar glass-panel"
+              style={{
+                background: 'linear-gradient(135deg, rgba(20, 10, 20, 0.96), rgba(40, 15, 30, 0.94))',
+                border: '1.5px solid #D81B60',
+                borderRadius: '16px',
+                padding: '12px 20px',
+                marginBottom: '1.2rem',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '12px',
+                color: 'white',
+                boxShadow: '0 8px 24px rgba(216, 27, 96, 0.35)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <CheckSquare size={20} color="#F48FB1" />
+                <span style={{ fontSize: '0.92rem', fontWeight: 800, color: '#FFFFFF' }}>
+                  {selectedIds.size} {selectedIds.size === 1 ? 'producto marcado' : 'productos marcados'}
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={() => bulkUpdateStock(true)}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(34,197,94,0.4)',
+                    background: 'rgba(34,197,94,0.15)',
+                    color: '#4ADE80',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px'
+                  }}
+                  title="Poner todos los seleccionados en stock"
+                >
+                  <Eye size={14} /> Poner En Stock
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => bulkUpdateStock(false)}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(239,68,68,0.4)',
+                    background: 'rgba(239,68,68,0.15)',
+                    color: '#F87171',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px'
+                  }}
+                  title="Poner todos los seleccionados como agotados"
+                >
+                  <EyeOff size={14} /> Poner Agotado
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => bulkUpdateVisibility(false)}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: '#FFFFFF',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                  title="Hacer públicos en el catálogo"
+                >
+                  Hacer Públicos
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const toDelete = products.filter(p => selectedIds.has(p.id));
+                    openBulkDeleteModal(toDelete);
+                  }}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+                    color: 'white',
+                    fontSize: '0.82rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)'
+                  }}
+                  title="Eliminar permanentemente todos los seleccionados"
+                >
+                  <Trash2 size={15} /> Eliminar Seleccionados ({selectedIds.size})
+                </button>
+
+                <button
+                  type="button"
+                  onClick={clearSelection}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'transparent',
+                    color: '#CBD5E1',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Desmarcar Todos
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Product List: Table for Desktop, Responsive Cards for Mobile */}
           <div className="admin-inventory-container" style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-glass-border)', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
             {filteredProducts.length === 0 ? (
@@ -299,6 +444,21 @@ export function AdminDashboard() {
                   <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                       <tr style={{ background: 'var(--color-bg-secondary)', borderBottom: '1px solid var(--color-glass-border)', textAlign: 'left' }}>
+                        <th style={{ padding: '1rem', width: '44px' }}>
+                          <input
+                            type="checkbox"
+                            checked={filteredProducts.length > 0 && filteredProducts.every(p => selectedIds.has(p.id))}
+                            onChange={() => {
+                              if (filteredProducts.every(p => selectedIds.has(p.id))) {
+                                clearSelection();
+                              } else {
+                                selectAll(filteredProducts.map(p => p.id));
+                              }
+                            }}
+                            title="Seleccionar o desmarcar todos los productos filtrados"
+                            style={{ width: '18px', height: '18px', accentColor: '#D81B60', cursor: 'pointer' }}
+                          />
+                        </th>
                         <th style={{ padding: '1rem' }}>Imagen</th>
                         <th style={{ padding: '1rem' }}>Nombre del Producto</th>
                         <th style={{ padding: '1rem' }}>Categoría</th>
@@ -315,12 +475,21 @@ export function AdminDashboard() {
                           onClick={() => handleInspect(product)}
                           style={{ 
                             borderBottom: '1px solid var(--color-glass-border)', 
+                            background: selectedIds.has(product.id) ? 'rgba(216, 27, 96, 0.06)' : undefined,
                             opacity: product.is_hidden ? 0.6 : 1,
                             cursor: 'pointer',
                             transition: 'background-color 0.2s'
                           }}
                           title="Haz clic para ampliar la información y editar dentro"
                         >
+                          <td style={{ padding: '0.8rem 1rem' }} onClick={(e) => e.stopPropagation()}>
+                            <input
+                              type="checkbox"
+                              checked={selectedIds.has(product.id)}
+                              onChange={() => toggleSelect(product.id)}
+                              style={{ width: '18px', height: '18px', accentColor: '#D81B60', cursor: 'pointer' }}
+                            />
+                          </td>
                           <td style={{ padding: '0.8rem 1rem' }}>
                             <img src={product.images?.[0] || '/icons/ebna-logo.png'} alt={product.name} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--color-glass-border)' }} />
                           </td>
@@ -419,15 +588,23 @@ export function AdminDashboard() {
                         gap: '10px',
                         padding: '14px',
                         borderRadius: '16px',
-                        background: '#FFFFFF',
-                        border: '1.5px solid rgba(216, 27, 96, 0.15)',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
+                        background: selectedIds.has(product.id) ? 'rgba(255, 240, 245, 0.95)' : '#FFFFFF',
+                        border: selectedIds.has(product.id) ? '2px solid #D81B60' : '1.5px solid rgba(216, 27, 96, 0.15)',
+                        boxShadow: selectedIds.has(product.id) ? '0 4px 16px rgba(216, 27, 96, 0.25)' : '0 4px 12px rgba(0,0,0,0.03)',
                         opacity: product.is_hidden ? 0.65 : 1,
                         cursor: 'pointer'
                       }}
                       title="Toca para ampliar y ver toda su información"
                     >
                       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center' }}>
+                          <input
+                            type="checkbox"
+                            checked={selectedIds.has(product.id)}
+                            onChange={() => toggleSelect(product.id)}
+                            style={{ width: '20px', height: '20px', accentColor: '#D81B60', cursor: 'pointer' }}
+                          />
+                        </div>
                         <img 
                           src={product.images?.[0] || '/icons/ebna-logo.png'} 
                           alt={product.name} 
@@ -503,6 +680,11 @@ export function AdminDashboard() {
             )}
           </div>
         </div>
+      )}
+
+      {/* TAB: PERSONALIZACIÓN & UI */}
+      {activeTab === 'customization' && (
+        <CustomizationSettingsPanel />
       )}
 
       {/* TAB 2: USERS & ROLES */}

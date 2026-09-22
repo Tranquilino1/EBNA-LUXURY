@@ -7,6 +7,8 @@ import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { QRModal } from '../ui/QRModal';
 import { AdminAuthModal } from '../admin/AdminAuthModal';
+import { useCustomization } from '../../contexts/CustomizationContext';
+import { ChristmasHat } from '../effects/ChristmasHat';
 import './layout.css';
 
 export const Navbar: React.FC = () => {
@@ -20,6 +22,7 @@ export const Navbar: React.FC = () => {
   const { onlineCount } = useTraffic();
   const { setIsCartOpen, totalItemsCount } = useCart();
   const { theme, toggleTheme } = useTheme();
+  const { settings, isChristmasActive } = useCustomization();
   
   const navigate = useNavigate();
 
@@ -54,6 +57,38 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className={`navbar-wrapper ${isScrolled ? 'scrolled' : ''}`}>
+      {/* 3D Christmas Holiday Promotional Banner */}
+      {isChristmasActive && settings.christmasBanner && (
+        <div 
+          className="christmas-promo-banner"
+          style={{
+            background: 'linear-gradient(90deg, #991B1B, #DC2626, #B91C1C, #991B1B)',
+            backgroundSize: '200% 100%',
+            color: '#FEF3C7',
+            textAlign: 'center',
+            padding: '5px 12px',
+            fontSize: '0.78rem',
+            fontWeight: 700,
+            letterSpacing: '0.03em',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            borderBottom: '1px solid rgba(254, 243, 199, 0.25)',
+            boxShadow: '0 2px 10px rgba(153, 27, 27, 0.35)',
+            position: 'relative',
+            zIndex: 1002,
+          }}
+        >
+          <span>🎄</span>
+          <span>¡Colección Especial Fiestas Navideñas EBNA! Pedidos directos y envíos inmediatos por WhatsApp</span>
+          <span style={{ background: 'rgba(254, 243, 199, 0.2)', padding: '2px 8px', borderRadius: '999px', fontSize: '0.7rem', border: '1px solid rgba(254, 243, 199, 0.35)' }}>
+            1 Dic - 6 Ene
+          </span>
+          <span>✨</span>
+        </div>
+      )}
+
       <nav className="navbar glass-panel">
         {/* Mobile Menu Toggle */}
         <button 
@@ -65,7 +100,19 @@ export const Navbar: React.FC = () => {
         </button>
 
         {/* Logo */}
-        <Link to="/" className="navbar-logo">
+        <Link to="/" className="navbar-logo" style={{ position: 'relative' }}>
+          {isChristmasActive && settings.christmasHats && (
+            <ChristmasHat 
+              size={28} 
+              style={{ 
+                position: 'absolute', 
+                top: '-12px', 
+                left: '-8px', 
+                transform: 'rotate(-18deg)',
+                zIndex: 20
+              }} 
+            />
+          )}
           <img src="/icons/ebna-logo.png" alt="EBNA" className="logo-img" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
           <div className="logo-text-brand">
             <span className="brand-name-uppercase">SINDY LUXURY</span>

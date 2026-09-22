@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { TrafficProvider } from './contexts/TrafficContext';
 import { CartProvider } from './contexts/CartContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { CustomizationProvider } from './contexts/CustomizationContext';
 import { Layout } from './components/layout/Layout';
 import { AdminGuard } from './components/admin/AdminGuard';
 import { Loader } from './components/ui/Loader';
@@ -114,13 +115,15 @@ export default function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <AuthProvider>
-          <TrafficProvider>
-            <CartProvider>
-              <RouterProvider router={router} />
-            </CartProvider>
-          </TrafficProvider>
-        </AuthProvider>
+        <CustomizationProvider>
+          <AuthProvider>
+            <TrafficProvider>
+              <CartProvider>
+                <RouterProvider router={router} />
+              </CartProvider>
+            </TrafficProvider>
+          </AuthProvider>
+        </CustomizationProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

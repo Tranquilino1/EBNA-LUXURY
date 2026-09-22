@@ -5,14 +5,22 @@ import { useAdminProducts } from '../hooks/useAdminProducts';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
 import { ProductInspectModal } from '../components/admin/ProductInspectModal';
+import { BulkDeleteModal } from '../components/admin/BulkDeleteModal';
 
 interface AdminCrudContextType {
   isAdmin: boolean;
+  selectedIds: Set<string>;
+  toggleSelect: (id: string) => void;
+  selectAll: (ids: string[]) => void;
+  clearSelection: () => void;
   openCreateModal: () => void;
   openEditModal: (product: Product) => void;
   openDeleteModal: (product: Product) => void;
   openInspectModal: (product: Product) => void;
+  openBulkDeleteModal: (products: Product[]) => void;
   quickToggleStock: (productId: string, currentStatus: boolean) => Promise<void>;
+  bulkUpdateStock: (inStock: boolean) => Promise<void>;
+  bulkUpdateVisibility: (isHidden: boolean) => Promise<void>;
   closeAllModals: () => void;
   refetchCatalog: () => Promise<void>;
 }
@@ -21,12 +29,44 @@ const AdminCrudContext = createContext<AdminCrudContextType | undefined>(undefin
 
 export const AdminCrudProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAdmin } = useAuth();
-  const { addProduct, updateProduct, deleteProduct, toggleStock, refetch } = useAdminProducts();
+  const { 
+    addProduct, 
+    updateProduct, 
+    deleteProduct, 
+    toggleStock, 
+    bulkDelete,
+    bulkUpdateStock: bulkUpdateStockHook,
+    bulkUpdateVisibility: bulkUpdateVisibilityHook,
+    refetch 
+  } = useAdminProducts();
 
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isBulkDeleteOpen, setIsBulkDeleteOpen] = useState(false);
+  const [bulkDeleteProductsList, setBulkDeleteProductsList] = useState<Product[]>([]);
   const [isInspectOpen, setIsInspectOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const selectAll = (ids: string[]) => {
+    setSelectedIds(new Set(ids));
+  };
+
+  const clearSelection = () => {
+    setSelectedIds(new Set());
+  };
 
   const openCreateModal = () => {
     setSelectedProduct(null);
@@ -50,15 +90,35 @@ export const AdminCrudProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setIsInspectOpen(true);
   };
 
+  const openBulkDeleteModal = (products: Product[]) => {
+    setBulkDeleteProductsList(products);
+    setIsBulkDeleteOpen(true);
+  };
+
   const closeAllModals = () => {
     setIsFormOpen(false);
     setIsDeleteOpen(false);
+    setIsBulkDeleteOpen(false);
     setIsInspectOpen(false);
     setSelectedProduct(null);
   };
 
   const quickToggleStock = async (productId: string, currentStatus: boolean) => {
     await toggleStock(productId, currentStatus);
+  };
+
+  const bulkUpdateStock = async (inStock: boolean) => {
+    if (selectedIds.size === 0) return;
+    const ids = Array.from(selectedIds);
+    await bulkUpdateStockHook(ids, inStock);
+    clearSelection();
+  };
+
+  const bulkUpdateVisibility = async (isHidden: boolean) => {
+    if (selectedIds.size === 0) return;
+    const ids = Array.from(selectedIds);
+    await bulkUpdateVisibilityHook(ids, isHidden);
+    clearSelection();
   };
 
   const handleSaveProduct = async (productData: Partial<Product>, imageFile?: File) => {
@@ -79,22 +139,36 @@ export const AdminCrudProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
+  const handleConfirmBulkDelete = async () => {
+    const ids = bulkDeleteProductsList.map(p => p.id);
+    await bulkDelete(ids);
+    clearSelection();
+    closeAllModals();
+  };
+
   return (
     <AdminCrudContext.Provider
       value={{
         isAdmin,
+        selectedIds,
+        toggleSelect,
+        selectAll,
+        clearSelection,
         openCreateModal,
         openEditModal,
         openDeleteModal,
         openInspectModal,
+        openBulkDeleteModal,
         quickToggleStock,
+        bulkUpdateStock,
+        bulkUpdateVisibility,
         closeAllModals,
         refetchCatalog: refetch,
       }}
     >
       {children}
 
-      {/* Global Modals for Admin CRUD anywhere on the site */}
+      {/* Global Modals for Admin CRUD */}
       {isAdmin && isFormOpen && (
         <ProductFormModal
           product={selectedProduct}
@@ -106,6 +180,15 @@ export const AdminCrudProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       {isAdmin && isDeleteOpen && selectedProduct && (
         <DeleteConfirmModal
           onConfirm={handleConfirmDelete}
+          onCancel={closeAllModals}
+        />
+      )}
+
+      {isAdmin && isBulkDeleteOpen && (
+        <BulkDeleteModal
+          isOpen={isBulkDeleteOpen}
+          selectedProducts={bulkDeleteProductsList}
+          onConfirm={handleConfirmBulkDelete}
           onCancel={closeAllModals}
         />
       )}

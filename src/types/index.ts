@@ -102,3 +102,23 @@ export interface AuthContextType {
 export interface TrafficContextType {
   onlineCount: number;
 }
+
+export type AnimationType = 'fade-in' | 'slide-up' | 'scale-in' | 'flip-3d';
+export type ChristmasMode = 'auto' | 'enabled' | 'disabled';
+export type CardStyleType = 'glass-luxe' | 'editorial-minimal' | 'bordered-gold';
+
+export interface SiteCustomizationSettings {
+  // Christmas Holiday Theme
+  christmasMode: ChristmasMode;
+  christmasSnow: boolean;
+  christmasHats: boolean;
+  christmasBanner: boolean;
+  
+  // Product Animations & Presentation
+  animationType: AnimationType;
+  animationSpeed: number; // e.g., 0.5s
+  staggerDelay: number; // e.g., 0.05s
+  hoverScale: number; // e.g., 1.04
+  enableSpecularSweep: boolean;
+  cardStyle: CardStyleType;
+}
