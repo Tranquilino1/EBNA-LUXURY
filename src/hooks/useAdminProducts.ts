@@ -123,6 +123,7 @@ export function useAdminProducts() {
 
       // 2. Build full relational Supabase payload
       const supabasePayload: any = {
+        sku: created.sku || `EB-GEN-${Date.now().toString().slice(-4)}`,
         name: created.name,
         category: created.category,
         subcategory: created.subcategory || 'General',
@@ -175,6 +176,7 @@ export function useAdminProducts() {
 
         // 2. Build full relational Supabase payload
         const supabasePayload: any = {
+          sku: updated.sku || `EB-GEN-${Date.now().toString().slice(-4)}`,
           name: updated.name,
           category: updated.category,
           subcategory: updated.subcategory || 'General',
