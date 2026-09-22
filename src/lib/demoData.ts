@@ -1,6 +1,7 @@
 import type { Product, Profile } from '../types';
 import { generateUUID } from './utils';
 import { notifyCatalogChange } from './broadcast';
+import { HD_PRODUCTS } from '../data/hdProducts';
 
 export interface UserAccount {
   id: string;
@@ -12,6 +13,7 @@ export interface UserAccount {
 }
 
 export const INITIAL_PRODUCTS: Product[] = [
+  ...HD_PRODUCTS,
   {
     "id": "sindy-vest-01",
     "sku": "SL-VEST-01",

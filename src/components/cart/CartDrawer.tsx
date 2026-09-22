@@ -1,16 +1,41 @@
 import React, { useState } from 'react';
-import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck, Copy, Check, CreditCard, MapPin, PhoneCall, Zap, Globe, Smartphone, Package } from 'lucide-react';
+import { 
+  ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck, Copy, 
+  Check, CreditCard, MapPin, PhoneCall, Zap, Globe, Smartphone, Package, 
+  User, Phone, AlertCircle 
+} from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
 import { getAbsoluteImageUrl } from '../../lib/whatsapp';
 import './cart.css';
 
-const PRIMARY_PHONE = '240222633687'; // WhatsApp principal EBNA
+const PRIMARY_PHONE = '240222633687'; // WhatsApp principal EBNA (+240 222 633 687)
 const MUNI_PHONE = '240555439904';    // Número oficial Muni Dinero (+240 555 439 904)
 
 export const CartDrawer: React.FC = () => {
-  const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, clearCart, totalItemsCount, subtotalPrice } = useCart();
+  const { 
+    cartItems, 
+    isCartOpen, 
+    setIsCartOpen, 
+    removeFromCart, 
+    updateQuantity, 
+    clearCart, 
+    totalItemsCount, 
+    subtotalPrice 
+  } = useCart();
+
+  // Delivery & Customer Form State (persisted in localStorage for convenience)
+  const [customerName, setCustomerName] = useState(() => {
+    try { return localStorage.getItem('ebna_client_name') || ''; } catch { return ''; }
+  });
+  const [customerPhone, setCustomerPhone] = useState(() => {
+    try { return localStorage.getItem('ebna_client_phone') || ''; } catch { return ''; }
+  });
+  const [customerAddress, setCustomerAddress] = useState(() => {
+    try { return localStorage.getItem('ebna_client_address') || ''; } catch { return ''; }
+  });
+  const [validationError, setValidationError] = useState('');
 
   const [paymentMethod, setPaymentMethod] = useState<'whatsapp' | 'muni'>('muni');
   const [region, setRegion] = useState<'insular' | 'continental'>('insular');
@@ -23,6 +48,24 @@ export const CartDrawer: React.FC = () => {
   const shippingCost = shippingType === 'express' ? 3000 : 0;
   const grandTotal = subtotalPrice + shippingCost;
 
+  const handleNameChange = (val: string) => {
+    setCustomerName(val);
+    setValidationError('');
+    try { localStorage.setItem('ebna_client_name', val); } catch {}
+  };
+
+  const handlePhoneChange = (val: string) => {
+    setCustomerPhone(val);
+    setValidationError('');
+    try { localStorage.setItem('ebna_client_phone', val); } catch {}
+  };
+
+  const handleAddressChange = (val: string) => {
+    setCustomerAddress(val);
+    setValidationError('');
+    try { localStorage.setItem('ebna_client_address', val); } catch {}
+  };
+
   const handleCopyMuni = () => {
     navigator.clipboard.writeText('555439904');
     setCopiedMuni(true);
@@ -31,6 +74,17 @@ export const CartDrawer: React.FC = () => {
 
   const handleCheckout = () => {
     if (cartItems.length === 0) return;
+
+    if (!customerName.trim()) {
+      setValidationError('Por favor ingresa tu Nombre y Apellidos para preparar la entrega.');
+      return;
+    }
+    if (!customerAddress.trim()) {
+      setValidationError('Por favor ingresa tu Dirección, Barrio o Referencia de entrega.');
+      return;
+    }
+
+    setValidationError('');
 
     let itemsListText = '';
     cartItems.forEach((item, index) => {
@@ -45,34 +99,43 @@ export const CartDrawer: React.FC = () => {
       const productUrl = `https://ebna-luxury.vercel.app/producto/${item.product.slug}`;
 
       itemsListText += `\n${index + 1}. 👗 *${item.product.name}*
-   • Cantidad: ${item.quantity} unidad(es)
+   • Cantidad: ${item.quantity} ud.
    • ${sizeLabel}: ${item.selectedSize}${colorText}
    • Subtotal: ${formatPrice(itemSubtotal)}
    • 🖼️ Foto: ${photoUrl}
    • 🔗 Ficha: ${productUrl}\n`;
     });
 
-    const regionText = region === 'insular' ? 'Región Insular (Malabo / Isla Bioko)' : 'Región Continental (Bata y provincias)';
+    const regionText = region === 'insular' 
+      ? '🏝️ Región Insular (Bioko / Malabo)' 
+      : '🌍 Región Continental (Litoral / Bata y provincias)';
+
     const shippingText = shippingType === 'express' 
-      ? 'Envío Express (Entrega en 3 días) [+3.000 FCFA]' 
-      : 'Envío Normal (Entrega de 5 días a 1 semana) [Gratis]';
+      ? '⚡ Envío Express 3 Días (+3.000 FCFA)' 
+      : '📦 Envío Estándar 5 a 7 Días (Gratis)';
 
     const paymentText = paymentMethod === 'muni' 
-      ? 'PAGO CON MUNI DINERO (USSD *423*2*1*555439904# / Giro al 555439904)' 
-      : 'PAGO POR WHATSAPP / EFECTIVO CONTRA ENTREGA';
+      ? '📲 MUNI DINERO (USSD *423*2*1*555439904# / Giro al 555439904)' 
+      : '💬 WHATSAPP / EFECTIVO CONTRA ENTREGA';
 
-    const message = `✨ *PEDIDO MÚLTIPLE — SINDY LUXURY BY EBNA* ✨
+    const message = `✨ *PEDIDO OFICIAL — SINDY LUXURY BY EBNA* ✨
 ━━━━━━━━━━━━━━━━━━━━━━
+👤 *INFORMACIÓN DE ENTREGA:*
+• Destinatario: *${customerName.trim()}*
+• Teléfono/WhatsApp: *${customerPhone.trim() || 'No especificado'}*
+• Dirección / Barrio: *${customerAddress.trim()}*
+• Región: *${regionText}*
+━━━━━━━━━━━━━━━━━━━━━━
+🛍️ *PRENDAS SELECCIONADAS (${totalItemsCount} uds):*
 ${itemsListText}
 ━━━━━━━━━━━━━━━━━━━━━━
 💰 Subtotal Prendas: ${formatPrice(subtotalPrice)}
-📍 Región: ${regionText}
-🚚 Opción de Envío: ${shippingText}
+🚚 Modalidad de Envío: ${shippingText}
 💳 Método de Pago: ${paymentText}
 💵 *TOTAL A PAGAR: ${formatPrice(grandTotal)}*
 ━━━━━━━━━━━━━━━━━━━━━━
-${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439 904).' : ''}
-¿Me confirman recepción y horario exacto de entrega?`;
+${paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He procesado el giro directo al 555439904 (o ejecutaré *423*2*1*555439904#).' : ''}
+¿Me confirman recepción del pedido y horario estimado de entrega?`;
 
     const targetPhone = paymentMethod === 'muni' ? MUNI_PHONE : PRIMARY_PHONE;
     const encoded = encodeURIComponent(message);
@@ -85,13 +148,13 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
       <div className="cart-drawer-panel glass-panel" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="cart-drawer-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div className="cart-icon-wrapper">
               <ShoppingBag size={20} color="#D81B60" />
             </div>
             <div>
-              <h3 className="cart-title">Tu Carrito de Compras</h3>
-              <p className="cart-subtitle">{totalItemsCount} {totalItemsCount === 1 ? 'producto' : 'productos'} seleccionados</p>
+              <h3 className="cart-title">Tu Carrito de Lujo</h3>
+              <p className="cart-subtitle">{totalItemsCount} {totalItemsCount === 1 ? 'artículo exclusivo' : 'artículos exclusivos'}</p>
             </div>
           </div>
           <button className="cart-close-btn" onClick={() => setIsCartOpen(false)} aria-label="Cerrar Carrito">
@@ -99,25 +162,26 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
           </button>
         </div>
 
-        {/* Items List & Options */}
+        {/* Items List & Delivery Form */}
         <div className="cart-drawer-body">
           {cartItems.length === 0 ? (
             <div className="cart-empty-state">
               <div className="cart-empty-icon">
                 <ShoppingBag size={48} color="#D81B60" />
               </div>
-              <p style={{ fontWeight: 700, fontSize: '1.1rem', color: '#1E293B', marginBottom: '0.4rem' }}>
+              <p style={{ fontWeight: 700, fontSize: '1.15rem', color: '#1E293B', marginBottom: '0.4rem' }}>
                 Tu carrito está vacío
               </p>
-              <p style={{ fontSize: '0.88rem', color: '#64748B', maxWidth: '240px', margin: '0 auto 1.5rem auto' }}>
-                Explora nuestras colecciones exclusivas de ropa, perfumería y cosmética.
+              <p style={{ fontSize: '0.88rem', color: '#64748B', maxWidth: '250px', margin: '0 auto 1.5rem auto' }}>
+                Explora las nuevas colecciones en alta definición de vestidos, calzado y moda exclusiva.
               </p>
               <button className="btn-primary" onClick={() => setIsCartOpen(false)} style={{ borderRadius: '30px', padding: '10px 24px' }}>
-                Ver Catálogo EBNA
+                Explorar Catálogo EBNA
               </button>
             </div>
           ) : (
             <>
+              {/* Product Items List */}
               <div className="cart-items-list">
                 {cartItems.map((item) => {
                   const priceVal = item.product.priceFCFA || item.product.price || 0;
@@ -195,145 +259,213 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
                 })}
               </div>
 
-              {/* Region & Shipping Options */}
-              <div className="checkout-options-section">
-                <h4 className="options-section-title"><MapPin size={16} color="#D81B60" /> Región de Entrega</h4>
-                <div className="option-pills-row">
-                  <button 
-                    type="button" 
-                    className={`option-pill-btn ${region === 'insular' ? 'active' : ''}`}
-                    onClick={() => setRegion('insular')}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                  >
-                    <Globe size={14} /> Región Insular (Malabo)
-                  </button>
-                  <button 
-                    type="button" 
-                    className={`option-pill-btn ${region === 'continental' ? 'active' : ''}`}
-                    onClick={() => setRegion('continental')}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                  >
-                    <MapPin size={14} /> Región Continental (Bata)
-                  </button>
-                </div>
-
-                <h4 className="options-section-title" style={{ marginTop: '1rem' }}><Truck size={16} color="#D81B60" /> Modalidad de Envío</h4>
-                <div className="shipping-cards-grid">
-                  <div 
-                    className={`shipping-card ${shippingType === 'normal' ? 'selected' : ''}`}
-                    onClick={() => setShippingType('normal')}
-                  >
-                    <div className="shipping-card-header">
-                      <span className="shipping-badge normal" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <Package size={14} /> Envío Normal
-                      </span>
-                      <span className="shipping-price">Gratis</span>
+              {/* FUTURISTIC ORDER & DELIVERY INFORMATION FORM */}
+              <div className="futuristic-checkout-section">
+                
+                {/* 1. Datos del Destinatario Card */}
+                <div className="futuristic-card delivery-info-box">
+                  <div className="futuristic-card-header">
+                    <div className="header-icon-box">
+                      <User size={16} color="#D81B60" />
                     </div>
-                    <p className="shipping-desc">Plazo de entrega de <strong>5 días a 1 semana</strong>.</p>
-                  </div>
-
-                  <div 
-                    className={`shipping-card ${shippingType === 'express' ? 'selected' : ''}`}
-                    onClick={() => setShippingType('express')}
-                  >
-                    <div className="shipping-card-header">
-                      <span className="shipping-badge express" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                        <Zap size={14} /> Envío Express
-                      </span>
-                      <span className="shipping-price">+3.000 FCFA</span>
-                    </div>
-                    <p className="shipping-desc">Entrega rápida en <strong>3 días</strong>.</p>
-                  </div>
-                </div>
-                <div style={{ textAlign: 'right', marginTop: '4px' }}>
-                  <button 
-                    type="button" 
-                    onClick={() => {
-                      try {
-                        localStorage.clear();
-                        sessionStorage.clear();
-                        if ('caches' in window) {
-                          caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
-                        }
-                        if ('serviceWorker' in navigator) {
-                          navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
-                        }
-                      } catch(e){}
-                      window.location.reload();
-                    }}
-                    style={{ background: 'transparent', border: 'none', color: '#D81B60', fontSize: '0.72rem', fontWeight: 600, textDecoration: 'underline', cursor: 'pointer' }}
-                  >
-                    🔄 ¿No ves los 3.000 FCFA? Pulsa aquí para actualizar caché
-                  </button>
-                </div>
-
-                {/* Payment Method Selection */}
-                <h4 className="options-section-title" style={{ marginTop: '1rem' }}><CreditCard size={16} color="#D81B60" /> Método de Pago</h4>
-                <div className="payment-methods-grid">
-                  <div 
-                    className={`payment-method-card muni-style ${paymentMethod === 'muni' ? 'selected' : ''}`}
-                    onClick={() => setPaymentMethod('muni')}
-                  >
-                    <div className="payment-card-badge">MUNI DINERO</div>
-                    <div className="payment-card-content">
-                      <div className="payment-title">Pagar con Muni Dinero</div>
-                      <div className="payment-subtitle">+240 555 439 904</div>
+                    <div>
+                      <h4 className="futuristic-card-title">Información de Entrega</h4>
+                      <p className="futuristic-card-subtitle">Datos del destinatario para entrega oficial</p>
                     </div>
                   </div>
 
-                  <div 
-                    className={`payment-method-card wa-style ${paymentMethod === 'whatsapp' ? 'selected' : ''}`}
-                    onClick={() => setPaymentMethod('whatsapp')}
-                  >
-                    <div className="payment-card-badge wa">WHATSAPP / CASH</div>
-                    <div className="payment-card-content">
-                      <div className="payment-title">WhatsApp / Efectivo</div>
-                      <div className="payment-subtitle">+240 222 633 687</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Muni Dinero Transfer Box Instructions */}
-                {paymentMethod === 'muni' && (
-                  <div className="muni-transfer-box glass-panel">
-                    <div className="muni-box-header">
-                      <Smartphone size={20} color="#002060" />
-                      <div>
-                        <strong>Transferencia Muni Dinero Directa</strong>
-                        <p style={{ margin: 0, fontSize: '0.78rem', color: '#64748B' }}>Código USSD rápido: <strong>*423*2*1*555439904#</strong></p>
+                  <div className="futuristic-inputs-grid">
+                    <div className="futuristic-input-field">
+                      <label className="futuristic-label">Nombre y Apellidos *</label>
+                      <div className="futuristic-input-wrap">
+                        <User size={15} className="input-icon" />
+                        <input 
+                          type="text" 
+                          value={customerName} 
+                          onChange={(e) => handleNameChange(e.target.value)}
+                          placeholder="Ej. Sindy Eyenga"
+                          className="futuristic-input"
+                        />
                       </div>
                     </div>
-                    
-                    <div className="muni-number-row">
-                      <span className="muni-number-text">+240 555 439 904</span>
+
+                    <div className="futuristic-input-field">
+                      <label className="futuristic-label">Teléfono / WhatsApp *</label>
+                      <div className="futuristic-input-wrap">
+                        <Phone size={15} className="input-icon" />
+                        <input 
+                          type="tel" 
+                          value={customerPhone} 
+                          onChange={(e) => handlePhoneChange(e.target.value)}
+                          placeholder="+240 222 633 687"
+                          className="futuristic-input"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="futuristic-input-field full-width">
+                      <label className="futuristic-label">Dirección / Barrio / Referencia *</label>
+                      <div className="futuristic-input-wrap">
+                        <MapPin size={15} className="input-icon" />
+                        <input 
+                          type="text" 
+                          value={customerAddress} 
+                          onChange={(e) => handleAddressChange(e.target.value)}
+                          placeholder="Ej. Malabo II, frente a los Ministerios / Ela Nguema"
+                          className="futuristic-input"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {validationError && (
+                    <div className="futuristic-alert-banner">
+                      <AlertCircle size={15} color="#EF4444" />
+                      <span>{validationError}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. Región de Entrega Cards */}
+                <div className="futuristic-group">
+                  <div className="futuristic-group-title">
+                    <Globe size={15} color="#D81B60" />
+                    <span>Región de Entrega</span>
+                  </div>
+
+                  <div className="futuristic-cards-2col">
+                    <div 
+                      className={`futuristic-interactive-card ${region === 'insular' ? 'active-border' : ''}`}
+                      onClick={() => setRegion('insular')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="card-badge-glow">Bioko</span>
+                        {region === 'insular' && <Check size={14} className="check-glow" />}
+                      </div>
+                      <div className="interactive-card-title">Región Insular</div>
+                      <div className="interactive-card-detail">Malabo y alrededores</div>
+                    </div>
+
+                    <div 
+                      className={`futuristic-interactive-card ${region === 'continental' ? 'active-border' : ''}`}
+                      onClick={() => setRegion('continental')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="card-badge-glow">Litoral</span>
+                        {region === 'continental' && <Check size={14} className="check-glow" />}
+                      </div>
+                      <div className="interactive-card-title">Región Continental</div>
+                      <div className="interactive-card-detail">Bata y provincias</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Modalidad de Envío Cards */}
+                <div className="futuristic-group">
+                  <div className="futuristic-group-title">
+                    <Truck size={15} color="#D81B60" />
+                    <span>Modalidad de Envío</span>
+                  </div>
+
+                  <div className="futuristic-cards-2col">
+                    <div 
+                      className={`futuristic-interactive-card ${shippingType === 'normal' ? 'active-border' : ''}`}
+                      onClick={() => setShippingType('normal')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="shipping-type-badge normal">
+                          <Package size={13} /> Estándar
+                        </span>
+                        <span className="shipping-tag-price gratis">Gratis</span>
+                      </div>
+                      <div className="interactive-card-title">Envío Normal</div>
+                      <div className="interactive-card-detail">Plazo: 5 a 7 días hábiles</div>
+                    </div>
+
+                    <div 
+                      className={`futuristic-interactive-card ${shippingType === 'express' ? 'active-border-gold' : ''}`}
+                      onClick={() => setShippingType('express')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="shipping-type-badge express">
+                          <Zap size={13} /> Express 3D
+                        </span>
+                        <span className="shipping-tag-price express">+3.000 FCFA</span>
+                      </div>
+                      <div className="interactive-card-title">Envío Express</div>
+                      <div className="interactive-card-detail">Entrega en 3 días garantizada</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. Método de Pago Cards */}
+                <div className="futuristic-group">
+                  <div className="futuristic-group-title">
+                    <CreditCard size={15} color="#D81B60" />
+                    <span>Método de Pago</span>
+                  </div>
+
+                  <div className="futuristic-cards-2col">
+                    <div 
+                      className={`futuristic-interactive-card muni-card ${paymentMethod === 'muni' ? 'active-border-muni' : ''}`}
+                      onClick={() => setPaymentMethod('muni')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="payment-brand-badge muni">MUNI DINERO</span>
+                        {paymentMethod === 'muni' && <Check size={14} className="check-glow" />}
+                      </div>
+                      <div className="interactive-card-title">Muni Dinero</div>
+                      <div className="interactive-card-detail">+240 555 439 904</div>
+                    </div>
+
+                    <div 
+                      className={`futuristic-interactive-card wa-card ${paymentMethod === 'whatsapp' ? 'active-border-wa' : ''}`}
+                      onClick={() => setPaymentMethod('whatsapp')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="payment-brand-badge wa">WHATSAPP / CASH</span>
+                        {paymentMethod === 'whatsapp' && <Check size={14} className="check-glow" />}
+                      </div>
+                      <div className="interactive-card-title">WhatsApp / Efectivo</div>
+                      <div className="interactive-card-detail">+240 222 633 687</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Muni Dinero Direct USSD Execution Panel */}
+                {paymentMethod === 'muni' && (
+                  <div className="futuristic-muni-card glass-panel">
+                    <div className="muni-header-row">
+                      <Smartphone size={18} color="#002060" />
+                      <div>
+                        <strong style={{ fontSize: '0.86rem', color: '#002060' }}>Giro Directo Muni Dinero</strong>
+                        <p style={{ margin: 0, fontSize: '0.76rem', color: '#64748B' }}>Código USSD rápido: <strong>*423*2*1*555439904#</strong></p>
+                      </div>
+                    </div>
+
+                    <div className="muni-number-box">
+                      <span className="muni-number-val">+240 555 439 904</span>
                       <button 
                         type="button" 
-                        className="btn-copy-muni" 
+                        className="btn-copy-muni"
                         onClick={handleCopyMuni}
-                        title="Copiar número para Muni Dinero"
                       >
-                        {copiedMuni ? <><Check size={14} /> ¡Copiado!</> : <><Copy size={14} /> Copiar 555439904</>}
+                        {copiedMuni ? <><Check size={13} /> ¡Copiado!</> : <><Copy size={13} /> Copiar 555439904</>}
                       </button>
                     </div>
 
-                    {/* 3D Navy Blue USSD Execution Link */}
                     <a 
                       href="tel:*423*2*1*555439904%23"
                       className="btn-muni-navy-3d"
                       onClick={() => {
                         try { navigator.clipboard.writeText('*423*2*1*555439904#'); } catch(e){}
                       }}
-                      style={{ marginTop: '0.8rem', marginBottom: '0.5rem', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                      title="Ejecutar transferencia directa Muni en tu móvil"
+                      title="Ejecutar transferencia rápida Muni en tu móvil"
                     >
-                      <PhoneCall size={20} />
+                      <PhoneCall size={18} />
                       <span>Ejecutar USSD Muni</span>
                       <span className="ussd-code-badge">*423*2*1*555439904#</span>
                     </a>
-                    
-                    <p className="muni-instructions">
-                      Haz clic en el botón Azul Marino para procesar el giro directo al <strong>555439904</strong> por la red Muni.
-                    </p>
                   </div>
                 )}
               </div>
@@ -341,27 +473,27 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
           )}
         </div>
 
-        {/* Footer Summary & Checkout */}
+        {/* Footer Summary & Checkout Button */}
         {cartItems.length > 0 && (
           <div className="cart-drawer-footer">
             <div className="cart-summary-details">
               <div className="summary-row">
-                <span>Subtotal Productos</span>
+                <span>Subtotal ({totalItemsCount} prendas)</span>
                 <span className="summary-value">{formatPrice(subtotalPrice)}</span>
               </div>
               <div className="summary-row">
-                <span>Envío ({shippingType === 'express' ? 'Express 3 días' : 'Normal 5-7 días'})</span>
+                <span>Envío ({shippingType === 'express' ? 'Express 3 días' : 'Estándar 5-7 días'})</span>
                 <span className="summary-value">{shippingCost > 0 ? formatPrice(shippingCost) : 'Gratis'}</span>
               </div>
               <div className="summary-row grand-total-row">
-                <span>Total Final</span>
+                <span>Total a Pagar</span>
                 <span className="grand-total-price">{formatPrice(grandTotal)}</span>
               </div>
             </div>
 
             <div className="cart-value-props">
-              <div><Truck size={14} color="#25D366" /> <span>{shippingType === 'express' ? 'Entrega en 3 Días' : 'Entrega 5-7 días'}</span></div>
-              <div><ShieldCheck size={14} color="#D81B60" /> <span>Garantía EBNA Luxury</span></div>
+              <div><Truck size={14} color="#25D366" /> <span>{shippingType === 'express' ? 'Entrega Garantizada en 3 Días' : 'Entrega en 5-7 días'}</span></div>
+              <div><ShieldCheck size={14} color="#D81B60" /> <span>Garantía de Calidad EBNA</span></div>
             </div>
 
             {paymentMethod === 'muni' ? (
@@ -370,19 +502,19 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
                 className="btn-muni-navy-3d"
                 onClick={() => {
                   try { navigator.clipboard.writeText('*423*2*1*555439904#'); } catch(e){}
-                  setTimeout(() => handleCheckout(), 1500);
+                  setTimeout(() => handleCheckout(), 1200);
                 }}
                 style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <PhoneCall size={20} />
-                <span>Pagar con Muni Dinero (*423*2*1*555439904#)</span>
+                <span>Pagar con Muni Dinero ({formatPrice(grandTotal)})</span>
               </a>
             ) : (
               <button 
                 className="wa-checkout-btn" 
                 onClick={handleCheckout}
               >
-                <span>Realizar Pedido por WhatsApp</span>
+                <span>Confirmar Pedido por WhatsApp</span>
                 <ArrowRight size={18} />
               </button>
             )}
@@ -396,5 +528,3 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
     </div>
   );
 };
-
-

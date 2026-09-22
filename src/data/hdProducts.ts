@@ -1,0 +1,2583 @@
+import type { Product } from '../types';
+
+export const HD_PRODUCTS: Product[] = [
+  {
+    "id": "1c27f91d-aca9-44d9-82e8-034554353e9f",
+    "sku": "EB-HD-01",
+    "slug": "vestido-largo-de-fiesta-palabra-de-honor-blanco-con-lazos-laterales-hd-01",
+    "name": "Vestido largo de fiesta palabra de honor blanco con lazos laterales",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 25000,
+    "price_fcfa": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_01.jpg",
+      "primary": "/products/hd/hd_ebna_01.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_01.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.647Z",
+    "updated_at": "2026-09-22T22:58:59.649Z",
+    "priceFCFA": 25000,
+    "inStock": true
+  },
+  {
+    "id": "215b3dbd-016b-45cc-a019-3ab143cdf7e3",
+    "sku": "EB-HD-02",
+    "slug": "coleccion-de-vestidos-cortos-drapeados-de-tirantes-en-10-colores-hd-02",
+    "name": "Colección de vestidos cortos drapeados de tirantes en 10 colores",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 15000,
+    "price_fcfa": 15000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_02.jpg",
+      "primary": "/products/hd/hd_ebna_02.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_02.jpg"
+      ]
+    },
+    "colors": [
+      "Marrón",
+      "Blanco",
+      "Negro",
+      "Rojo",
+      "Burdeos",
+      "Azul Marino",
+      "Celeste",
+      "Amarillo",
+      "Rosa",
+      "Morado"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.653Z",
+    "updated_at": "2026-09-22T22:58:59.653Z",
+    "priceFCFA": 15000,
+    "inStock": true
+  },
+  {
+    "id": "b8e99ffd-dc0c-43d6-a8ec-049143ebe71e",
+    "sku": "EB-HD-03",
+    "slug": "mono-enterizo-ajustado-manga-larga-con-estampado-animal-abstracto-hd-03",
+    "name": "Mono enterizo ajustado manga larga con estampado animal abstracto",
+    "brand": "EBNA Runway Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Monos & Enterizos",
+    "price": 28000,
+    "price_fcfa": 28000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Runway Collection. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_03.jpg",
+      "primary": "/products/hd/hd_ebna_03.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_03.jpg"
+      ]
+    },
+    "colors": [
+      "Estampado Cebra Blanco y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.656Z",
+    "updated_at": "2026-09-22T22:58:59.656Z",
+    "priceFCFA": 28000,
+    "inStock": true
+  },
+  {
+    "id": "7d88240f-54ba-4838-870a-ebd5fd4dcc0b",
+    "sku": "EB-HD-04",
+    "slug": "conjunto-casual-de-2-piezas-top-corto-y-pantalon-palazzo-fluido-azul-celeste-hd-04",
+    "name": "Conjunto casual de 2 piezas top corto y pantalón palazzo fluido azul celeste",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_04.jpg",
+      "primary": "/products/hd/hd_ebna_04.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_04.jpg"
+      ]
+    },
+    "colors": [
+      "Azul Celeste"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.658Z",
+    "updated_at": "2026-09-22T22:58:59.658Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "eaa90b43-cfb7-411d-9a66-06ce6dcee325",
+    "sku": "EB-HD-05",
+    "slug": "conjunto-festival-lentejuelas-estampado-leopardo-top-corto-y-shorts-hd-05",
+    "name": "Conjunto festival lentejuelas estampado leopardo top corto y shorts",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_05.jpg",
+      "primary": "/products/hd/hd_ebna_05.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_05.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa Leopardo",
+      "Marrón Leopardo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.661Z",
+    "updated_at": "2026-09-22T22:58:59.661Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "a8093556-1e66-448e-a13f-ee52c91b158b",
+    "sku": "EB-HD-06",
+    "slug": "top-halter-plisado-espalda-al-aire-con-bajo-de-volantes-y-lazada-hd-06",
+    "name": "Top halter plisado espalda al aire con bajo de volantes y lazada",
+    "brand": "EBNA Luxury Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Tops, Corsés & Blusas",
+    "price": 12000,
+    "price_fcfa": 12000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Luxury Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_06.jpg",
+      "primary": "/products/hd/hd_ebna_06.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_06.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco",
+      "Beige",
+      "Negro",
+      "Rosa",
+      "Rojo",
+      "Azul"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.662Z",
+    "updated_at": "2026-09-22T22:58:59.663Z",
+    "priceFCFA": 12000,
+    "inStock": true
+  },
+  {
+    "id": "cb56e9ce-3c2d-4c37-9433-efb50848d672",
+    "sku": "EB-HD-08",
+    "slug": "conjunto-homewear-2-piezas-camiseta-entallada-y-pantalon-ancho-burdeos-hd-08",
+    "name": "Conjunto homewear 2 piezas camiseta entallada y pantalón ancho burdeos",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_08.jpg",
+      "primary": "/products/hd/hd_ebna_08.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_08.jpg"
+      ]
+    },
+    "colors": [
+      "Burdeos / Vino"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.664Z",
+    "updated_at": "2026-09-22T22:58:59.664Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "61210113-b534-4f19-adfc-ef98c0a57954",
+    "sku": "EB-HD-09",
+    "slug": "top-asimetrico-blanco-con-lazada-al-hombro-y-pantalon-vaquero-hd-09",
+    "name": "Top asimétrico blanco con lazada al hombro y pantalón vaquero",
+    "brand": "EBNA Luxury Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Tops, Corsés & Blusas",
+    "price": 10000,
+    "price_fcfa": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Luxury Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_09.jpg",
+      "primary": "/products/hd/hd_ebna_09.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_09.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.666Z",
+    "updated_at": "2026-09-22T22:58:59.666Z",
+    "priceFCFA": 10000,
+    "inStock": true
+  },
+  {
+    "id": "0b6f5770-eb86-4f4c-bace-4e6982f5a190",
+    "sku": "EB-HD-10",
+    "slug": "vestido-corto-de-fiesta-tutu-palabra-de-honor-en-tul-plisado-lila-con-lazo-hd-10",
+    "name": "Vestido corto de fiesta tutú palabra de honor en tul plisado lila con lazo",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_10.jpg",
+      "primary": "/products/hd/hd_ebna_10.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_10.jpg"
+      ]
+    },
+    "colors": [
+      "Lila",
+      "Rosa Palo",
+      "Rojo",
+      "Negro",
+      "Fucsia",
+      "Burdeos",
+      "Blanco",
+      "Azul Real"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.667Z",
+    "updated_at": "2026-09-22T22:58:59.667Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "086625d6-ea12-4d1f-b009-247591fffa2d",
+    "sku": "EB-HD-11",
+    "slug": "conjunto-verano-top-canale-loewe-anagrama-blanco-y-falda-midi-cuadros-vichy-rojo-hd-11",
+    "name": "Conjunto verano top canalé Loewe anagrama blanco y falda midi cuadros vichy rojo",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_11.jpg",
+      "primary": "/products/hd/hd_ebna_11.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_11.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco y Rojo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.668Z",
+    "updated_at": "2026-09-22T22:58:59.668Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "a093b587-d06c-43e5-b7d0-e3dc14fb9472",
+    "sku": "EB-HD-12",
+    "slug": "vestido-largo-de-fiesta-palabra-de-honor-blanco-con-lazos-laterales-hd-12",
+    "name": "Vestido largo de fiesta palabra de honor blanco con lazos laterales",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 25000,
+    "price_fcfa": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_12.jpg",
+      "primary": "/products/hd/hd_ebna_12.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_12.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.670Z",
+    "updated_at": "2026-09-22T22:58:59.670Z",
+    "priceFCFA": 25000,
+    "inStock": true
+  },
+  {
+    "id": "8f602d84-7318-4415-828e-32d117a1af9c",
+    "sku": "EB-HD-13",
+    "slug": "mono-enterizo-ajustado-manga-larga-con-estampado-animal-abstracto-hd-13",
+    "name": "Mono enterizo ajustado manga larga con estampado animal abstracto",
+    "brand": "EBNA Runway Collection",
+    "category": "MODA_MUJER",
+    "subcategory": "Monos & Enterizos",
+    "price": 28000,
+    "price_fcfa": 28000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Runway Collection. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_13.jpg",
+      "primary": "/products/hd/hd_ebna_13.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_13.jpg"
+      ]
+    },
+    "colors": [
+      "Estampado Cebra Blanco y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.671Z",
+    "updated_at": "2026-09-22T22:58:59.671Z",
+    "priceFCFA": 28000,
+    "inStock": true
+  },
+  {
+    "id": "1548b60a-b17c-4c44-83f9-4667b91b6af6",
+    "sku": "EB-HD-15",
+    "slug": "set-de-3-piezas-body-casual-de-cuello-redondo-sin-mangas-blanco-celeste-negro-hd-15",
+    "name": "Set de 3 piezas body casual de cuello redondo sin mangas blanco celeste negro",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_15.jpg",
+      "primary": "/products/hd/hd_ebna_15.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_15.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco",
+      "Celeste",
+      "Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.672Z",
+    "updated_at": "2026-09-22T22:58:59.672Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "6a2bba6b-652c-423b-bc0a-525007a1a253",
+    "sku": "EB-HD-16",
+    "slug": "vestido-maxi-peplum-y-falda-con-volantes-cuadros-vichy-rojo-y-blanco-hd-16",
+    "name": "Vestido maxi peplum y falda con volantes cuadros vichy rojo y blanco",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos Exclusivos",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_16.jpg",
+      "primary": "/products/hd/hd_ebna_16.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_16.jpg"
+      ]
+    },
+    "colors": [
+      "Rojo y Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.673Z",
+    "updated_at": "2026-09-22T22:58:59.673Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "53cbe321-4d09-4478-b563-807ba19f1cb7",
+    "sku": "EB-HD-17",
+    "slug": "vestido-casual-y-elegante-para-mujer-top-palabra-de-honor-negro-falda-leopardo-hd-17",
+    "name": "Vestido casual y elegante para mujer top palabra de honor negro falda leopardo",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos Exclusivos",
+    "price": 12000,
+    "price_fcfa": 12000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_17.jpg",
+      "primary": "/products/hd/hd_ebna_17.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_17.jpg"
+      ]
+    },
+    "colors": [
+      "Negro y Leopardo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.675Z",
+    "updated_at": "2026-09-22T22:58:59.675Z",
+    "priceFCFA": 12000,
+    "inStock": true
+  },
+  {
+    "id": "7e2b55c6-1aaf-4dad-938a-cbf696e80a22",
+    "sku": "EB-HD-18",
+    "slug": "inawly-solva-vestido-largo-y-sin-espalda-de-mujer-color-oxido-marron-hd-18",
+    "name": "INAWLY Solva Vestido Largo Y Sin Espalda De Mujer color óxido marrón",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 15000,
+    "price_fcfa": 15000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_18.jpg",
+      "primary": "/products/hd/hd_ebna_18.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_18.jpg"
+      ]
+    },
+    "colors": [
+      "Óxido Marrón"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.676Z",
+    "updated_at": "2026-09-22T22:58:59.676Z",
+    "priceFCFA": 15000,
+    "inStock": true
+  },
+  {
+    "id": "12f6c87a-0180-49bb-a3f5-a6af81e3bdeb",
+    "sku": "EB-HD-19",
+    "slug": "conjunto-festival-lentejuelas-estampado-leopardo-top-corto-y-shorts-hd-19",
+    "name": "Conjunto festival lentejuelas estampado leopardo top corto y shorts",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_19.jpg",
+      "primary": "/products/hd/hd_ebna_19.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_19.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa Leopardo",
+      "Marrón Leopardo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.677Z",
+    "updated_at": "2026-09-22T22:58:59.677Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "df69afe5-4bf3-474f-b4fb-c364ae3eb702",
+    "sku": "EB-HD-20",
+    "slug": "conjunto-corse-escote-fruncido-manga-corta-y-falda-midi-marron-chocolate-hd-20",
+    "name": "Conjunto corsé escote fruncido manga corta y falda midi marrón chocolate",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 25000,
+    "price_fcfa": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_20.jpg",
+      "primary": "/products/hd/hd_ebna_20.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_20.jpg"
+      ]
+    },
+    "colors": [
+      "Marrón Chocolate"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.678Z",
+    "updated_at": "2026-09-22T22:58:59.678Z",
+    "priceFCFA": 25000,
+    "inStock": true
+  },
+  {
+    "id": "b9c015d0-0e38-42a9-88a6-5a9011ce6562",
+    "sku": "EB-HD-21",
+    "slug": "set-de-2-piezas-top-ajustado-cuello-asimetrico-y-leggings-3-4-rojo-hd-21",
+    "name": "Set de 2 piezas top ajustado cuello asimétrico y leggings 3/4 rojo",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 16000,
+    "price_fcfa": 16000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_21.jpg",
+      "primary": "/products/hd/hd_ebna_21.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_21.jpg"
+      ]
+    },
+    "colors": [
+      "Rojo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.679Z",
+    "updated_at": "2026-09-22T22:58:59.680Z",
+    "priceFCFA": 16000,
+    "inStock": true
+  },
+  {
+    "id": "22225017-22d2-40eb-93be-d20412b73fb8",
+    "sku": "EB-HD-22",
+    "slug": "camiseta-de-tirantes-corta-acanalada-con-diseno-de-diamantes-blanco-hd-22",
+    "name": "Camiseta de tirantes corta acanalada con diseño de diamantes blanco",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 10000,
+    "price_fcfa": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_22.jpg",
+      "primary": "/products/hd/hd_ebna_22.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_22.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco con pedrería"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.681Z",
+    "updated_at": "2026-09-22T22:58:59.681Z",
+    "priceFCFA": 10000,
+    "inStock": true
+  },
+  {
+    "id": "fee9edbf-22aa-43b1-a7a8-0cdf0e21a31f",
+    "sku": "EB-HD-23",
+    "slug": "conjunto-informal-2-piezas-top-sin-mangas-hombro-asimetrico-y-pantalon-con-lazo-celeste-hd-23",
+    "name": "Conjunto informal 2 piezas top sin mangas hombro asimétrico y pantalón con lazo celeste",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 16000,
+    "price_fcfa": 16000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_23.jpg",
+      "primary": "/products/hd/hd_ebna_23.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_23.jpg"
+      ]
+    },
+    "colors": [
+      "Celeste"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.682Z",
+    "updated_at": "2026-09-22T22:58:59.682Z",
+    "priceFCFA": 16000,
+    "inStock": true
+  },
+  {
+    "id": "7478bd82-b44f-410a-87a4-4e2d4c999877",
+    "sku": "EB-HD-24",
+    "slug": "maingrl-set-de-camisa-y-pantalones-cortos-a-cuadros-vichy-tejidos-rojo-y-blanco-hd-24",
+    "name": "MainGRL Set de camisa y pantalones cortos a cuadros vichy tejidos rojo y blanco",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_24.jpg",
+      "primary": "/products/hd/hd_ebna_24.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_24.jpg"
+      ]
+    },
+    "colors": [
+      "Rojo y Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.683Z",
+    "updated_at": "2026-09-22T22:58:59.683Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "0d3be920-22d8-42c0-a9bc-19e77eaafec1",
+    "sku": "EB-HD-25",
+    "slug": "shapora-body-moldeador-elegante-con-diseno-de-copa-control-de-barriga-vino-hd-25",
+    "name": "SHAPORA Body moldeador elegante con diseño de copa control de barriga vino",
+    "brand": "EBNA Luxury Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Tops, Corsés & Blusas",
+    "price": 14000,
+    "price_fcfa": 14000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Luxury Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_25.jpg",
+      "primary": "/products/hd/hd_ebna_25.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_25.jpg"
+      ]
+    },
+    "colors": [
+      "Vino / Burdeos"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.684Z",
+    "updated_at": "2026-09-22T22:58:59.684Z",
+    "priceFCFA": 14000,
+    "inStock": true
+  },
+  {
+    "id": "235d53ef-7e38-4455-b176-aa498388592b",
+    "sku": "EB-HD-26",
+    "slug": "soleia-conjunto-de-3-piezas-talla-grande-top-asimetrico-panuelo-negro-blanco-leopardo-hd-26",
+    "name": "Soleia Conjunto de 3 piezas talla grande top asimétrico pañuelo negro blanco leopardo",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_26.jpg",
+      "primary": "/products/hd/hd_ebna_26.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_26.jpg"
+      ]
+    },
+    "colors": [
+      "Negro",
+      "Blanco",
+      "Leopardo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.686Z",
+    "updated_at": "2026-09-22T22:58:59.686Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "90fe7895-7720-42ad-9de4-11245b4d2446",
+    "sku": "EB-HD-27",
+    "slug": "shein-sxy-conjunto-informal-de-top-asimetrico-con-nudo-y-pantalon-capri-estampado-leopardo-hd-27",
+    "name": "SHEIN SXY Conjunto informal de top asimétrico con nudo y pantalón capri estampado leopardo",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_27.jpg",
+      "primary": "/products/hd/hd_ebna_27.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_27.jpg"
+      ]
+    },
+    "colors": [
+      "Estampado Leopardo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.688Z",
+    "updated_at": "2026-09-22T22:58:59.688Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "1c6ea87c-816e-48a9-a6b4-bdb4a4488cd1",
+    "sku": "EB-HD-28",
+    "slug": "vestido-largo-palabra-de-honor-bicolor-top-negro-y-falda-globo-marfil-hd-28",
+    "name": "Vestido largo palabra de honor bicolor top negro y falda globo marfil",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 16000,
+    "price_fcfa": 16000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_28.jpg",
+      "primary": "/products/hd/hd_ebna_28.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_28.jpg"
+      ]
+    },
+    "colors": [
+      "Negro y Marfil"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.689Z",
+    "updated_at": "2026-09-22T22:58:59.689Z",
+    "priceFCFA": 16000,
+    "inStock": true
+  },
+  {
+    "id": "f68a0172-6ff1-47d3-a0af-f42448cb048f",
+    "sku": "EB-HD-29",
+    "slug": "conjunto-casual-2-piezas-top-tirantes-escote-redondo-y-pantalon-palazzo-amarillo-pastel-hd-29",
+    "name": "Conjunto casual 2 piezas top tirantes escote redondo y pantalón palazzo amarillo pastel",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_29.jpg",
+      "primary": "/products/hd/hd_ebna_29.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_29.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo Pastel"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.691Z",
+    "updated_at": "2026-09-22T22:58:59.691Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "e47f1720-72f8-4ad2-9b4b-20f00afc8fd3",
+    "sku": "EB-HD-30",
+    "slug": "conjunto-estilo-corse-con-bajo-en-pico-y-pantalon-pitillo-cuadros-vichy-beige-hd-30",
+    "name": "Conjunto estilo corsé con bajo en pico y pantalón pitillo cuadros vichy beige",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_30.jpg",
+      "primary": "/products/hd/hd_ebna_30.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_30.jpg"
+      ]
+    },
+    "colors": [
+      "Beige y Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.692Z",
+    "updated_at": "2026-09-22T22:58:59.692Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "2829a094-dfa3-4c7c-a17d-3aa75ccdd63e",
+    "sku": "EB-HD-31",
+    "slug": "shein-sxy-blusa-de-tela-de-red-albaricoque-con-pliegues-cuello-halter-para-mujer-hd-31",
+    "name": "SHEIN SXY Blusa de tela de red albaricoque con pliegues cuello halter para mujer",
+    "brand": "EBNA Luxury Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Tops, Corsés & Blusas",
+    "price": 12000,
+    "price_fcfa": 12000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Luxury Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_31.jpg",
+      "primary": "/products/hd/hd_ebna_31.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_31.jpg"
+      ]
+    },
+    "colors": [
+      "Albaricoque / Marfil"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.693Z",
+    "updated_at": "2026-09-22T22:58:59.693Z",
+    "priceFCFA": 12000,
+    "inStock": true
+  },
+  {
+    "id": "b93942b9-d0f3-482c-a224-d0f956112522",
+    "sku": "EB-HD-32",
+    "slug": "vestido-blanco-largo-fluido-con-capa-y-cuello-alto-tallas-m-l-xl-hd-32",
+    "name": "Vestido blanco largo fluido con capa y cuello alto Tallas M L XL",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_32.jpg",
+      "primary": "/products/hd/hd_ebna_32.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_32.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.694Z",
+    "updated_at": "2026-09-22T22:58:59.694Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "cfa6e013-7188-4178-a66d-82d4c539da4b",
+    "sku": "EB-HD-33",
+    "slug": "top-negro-cruzado-al-cuello-con-hebilla-metalica-dorada-y-bolso-bandolera-hd-33",
+    "name": "Top negro cruzado al cuello con hebilla metálica dorada y bolso bandolera",
+    "brand": "EBNA Atelier",
+    "category": "BOLSOS_ACCESORIOS",
+    "subcategory": "Bolsos & Carteras",
+    "price": 12000,
+    "price_fcfa": 12000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Atelier. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_33.jpg",
+      "primary": "/products/hd/hd_ebna_33.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_33.jpg"
+      ]
+    },
+    "colors": [
+      "Negro"
+    ],
+    "sizes": [
+      "Talla Única"
+    ],
+    "created_at": "2026-09-22T22:58:59.695Z",
+    "updated_at": "2026-09-22T22:58:59.695Z",
+    "priceFCFA": 12000,
+    "inStock": true
+  },
+  {
+    "id": "74c0447e-00d7-4cb6-8b78-be813b3bafcf",
+    "sku": "EB-HD-34",
+    "slug": "vestido-largo-de-gala-asimetrico-con-drapeado-en-hombro-blanco-roto-hd-34",
+    "name": "Vestido largo de gala asimétrico con drapeado en hombro blanco roto",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 28000,
+    "price_fcfa": 28000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_34.jpg",
+      "primary": "/products/hd/hd_ebna_34.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_34.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco Roto / Crema"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.696Z",
+    "updated_at": "2026-09-22T22:58:59.696Z",
+    "priceFCFA": 28000,
+    "inStock": true
+  },
+  {
+    "id": "175d9a78-75fc-40e3-a213-e562c6b74e7d",
+    "sku": "EB-HD-35",
+    "slug": "inawly-vestido-de-ballet-para-mujer-con-cuello-halter-y-falda-de-volantes-blanco-hd-35",
+    "name": "INAWLY Vestido de ballet para mujer con cuello halter y falda de volantes blanco",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos Exclusivos",
+    "price": 16000,
+    "price_fcfa": 16000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_35.jpg",
+      "primary": "/products/hd/hd_ebna_35.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_35.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.697Z",
+    "updated_at": "2026-09-22T22:58:59.697Z",
+    "priceFCFA": 16000,
+    "inStock": true
+  },
+  {
+    "id": "470449a0-06af-43f6-9a72-aa0a953b45de",
+    "sku": "EB-HD-36",
+    "slug": "vestido-largo-bodycon-palabra-de-honor-con-estampado-trampantojo-de-silueta-femenina-hd-36",
+    "name": "Vestido largo bodycon palabra de honor con estampado trampantojo de silueta femenina",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_36.jpg",
+      "primary": "/products/hd/hd_ebna_36.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_36.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.698Z",
+    "updated_at": "2026-09-22T22:58:59.698Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "c5d78a4a-e739-4c5b-ba8a-87a4683ec7f8",
+    "sku": "EB-HD-37",
+    "slug": "vestido-mini-palabra-de-honor-rosa-fucsia-con-falda-de-volantes-escalonados-hd-37",
+    "name": "Vestido mini palabra de honor rosa fucsia con falda de volantes escalonados",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_37.jpg",
+      "primary": "/products/hd/hd_ebna_37.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_37.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa Fucsia"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.700Z",
+    "updated_at": "2026-09-22T22:58:59.700Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "4b73c067-d281-4686-a071-2f6f5ebf8ad0",
+    "sku": "EB-HD-38",
+    "slug": "shein-sxy-conjunto-de-2-piezas-top-halter-con-lazos-frontales-y-falda-blanca-hd-38",
+    "name": "SHEIN SXY Conjunto de 2 piezas top halter con lazos frontales y falda blanca",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_38.jpg",
+      "primary": "/products/hd/hd_ebna_38.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_38.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.701Z",
+    "updated_at": "2026-09-22T22:58:59.701Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "cf2af844-8139-42d2-82fd-6c870d89d218",
+    "sku": "EB-HD-39",
+    "slug": "vestido-lencero-corto-entallado-con-encaje-y-estampado-floral-naranja-hd-39",
+    "name": "Vestido lencero corto entallado con encaje y estampado floral naranja",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 14000,
+    "price_fcfa": 14000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_39.jpg",
+      "primary": "/products/hd/hd_ebna_39.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_39.jpg"
+      ]
+    },
+    "colors": [
+      "Naranja Floral"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.702Z",
+    "updated_at": "2026-09-22T22:58:59.702Z",
+    "priceFCFA": 14000,
+    "inStock": true
+  },
+  {
+    "id": "8efc3bed-15b2-4719-bc09-19116f2fec9c",
+    "sku": "EB-HD-40",
+    "slug": "zara-vestido-corto-palabra-de-honor-azul-cielo-con-maxi-lazada-escultural-hd-40",
+    "name": "Zara Vestido corto palabra de honor azul cielo con maxi lazada escultural",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 22000,
+    "price_fcfa": 22000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_40.jpg",
+      "primary": "/products/hd/hd_ebna_40.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_40.jpg"
+      ]
+    },
+    "colors": [
+      "Azul Cielo"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.704Z",
+    "updated_at": "2026-09-22T22:58:59.704Z",
+    "priceFCFA": 22000,
+    "inStock": true
+  },
+  {
+    "id": "73cf86cf-e1d2-46c9-8fa9-72e4a94433fd",
+    "sku": "EB-HD-41",
+    "slug": "vestido-midi-corse-escote-recto-y-falda-de-vuelo-cuadros-vichy-rosa-y-amarillo-pastel-hd-41",
+    "name": "Vestido midi corsé escote recto y falda de vuelo cuadros vichy rosa y amarillo pastel",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos Exclusivos",
+    "price": 28000,
+    "price_fcfa": 28000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_41.jpg",
+      "primary": "/products/hd/hd_ebna_41.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_41.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa Pastel",
+      "Amarillo Pastel"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.705Z",
+    "updated_at": "2026-09-22T22:58:59.705Z",
+    "priceFCFA": 28000,
+    "inStock": true
+  },
+  {
+    "id": "a968ccc9-bc1c-4b14-9f32-b46945c6a8ad",
+    "sku": "EB-HD-42",
+    "slug": "conjunto-deportivo-camiseta-entallada-y-shorts-ciclista-de-tiro-alto-amarillo-pastel-hd-42",
+    "name": "Conjunto deportivo camiseta entallada y shorts ciclista de tiro alto amarillo pastel",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 12000,
+    "price_fcfa": 12000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_42.jpg",
+      "primary": "/products/hd/hd_ebna_42.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_42.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo Pastel"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.706Z",
+    "updated_at": "2026-09-22T22:58:59.706Z",
+    "priceFCFA": 12000,
+    "inStock": true
+  },
+  {
+    "id": "9ba9bbf6-19e5-4e25-a2e9-de9e4e259f41",
+    "sku": "EB-HD-43",
+    "slug": "editorial-moda-conjunto-acanalado-camiseta-y-pantalon-acampanado-con-cinta-pelo-pastel-hd-43",
+    "name": "Editorial moda conjunto acanalado camiseta y pantalón acampanado con cinta pelo pastel",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_43.jpg",
+      "primary": "/products/hd/hd_ebna_43.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_43.jpg"
+      ]
+    },
+    "colors": [
+      "Celeste",
+      "Verde Menta",
+      "Rosa Claro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.707Z",
+    "updated_at": "2026-09-22T22:58:59.707Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "39e34dce-6007-47df-8d67-7ae9fcc09a91",
+    "sku": "EB-HD-44",
+    "slug": "vestido-mini-camisero-estilo-tenista-blanco-escote-halter-con-cuello-y-cinturon-marron-hd-44",
+    "name": "Vestido mini camisero estilo tenista blanco escote halter con cuello y cinturón marrón",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_44.jpg",
+      "primary": "/products/hd/hd_ebna_44.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_44.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.708Z",
+    "updated_at": "2026-09-22T22:58:59.709Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "cbcef8fb-0724-4578-bec8-29aca73bd399",
+    "sku": "EB-HD-45",
+    "slug": "conjunto-deportivo-camiseta-entallada-y-shorts-ciclista-de-tiro-alto-amarillo-pastel-hd-45",
+    "name": "Conjunto deportivo camiseta entallada y shorts ciclista de tiro alto amarillo pastel",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 12000,
+    "price_fcfa": 12000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_45.jpg",
+      "primary": "/products/hd/hd_ebna_45.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_45.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo Pastel"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.710Z",
+    "updated_at": "2026-09-22T22:58:59.710Z",
+    "priceFCFA": 12000,
+    "inStock": true
+  },
+  {
+    "id": "550f1bc8-0264-4cbe-abec-7a20ec005d62",
+    "sku": "EB-HD-46",
+    "slug": "conjunto-casual-camiseta-entallada-y-pantalon-yoga-con-cintura-drapeada-rosa-pastel-hd-46",
+    "name": "Conjunto casual camiseta entallada y pantalón yoga con cintura drapeada rosa pastel",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 15000,
+    "price_fcfa": 15000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_46.jpg",
+      "primary": "/products/hd/hd_ebna_46.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_46.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa Pastel"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.710Z",
+    "updated_at": "2026-09-22T22:58:59.710Z",
+    "priceFCFA": 15000,
+    "inStock": true
+  },
+  {
+    "id": "93d4e6a8-46c7-47c4-b763-e319b2d98c51",
+    "sku": "EB-HD-47",
+    "slug": "conjunto-yoga-termico-de-compresion-camiseta-cuello-redondo-y-leggings-morado-ciruela-hd-47",
+    "name": "Conjunto yoga térmico de compresión camiseta cuello redondo y leggings morado ciruela",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_47.jpg",
+      "primary": "/products/hd/hd_ebna_47.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_47.jpg"
+      ]
+    },
+    "colors": [
+      "Morado Ciruela"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.711Z",
+    "updated_at": "2026-09-22T22:58:59.711Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "d003235e-d51b-4164-b927-f1ea5e54241a",
+    "sku": "EB-HD-48",
+    "slug": "bolso-cilindro-baguette-con-estampado-de-lunares-y-charm-corazon-marron-rojo-negro-crema-hd-48",
+    "name": "Bolso cilindro baguette con estampado de lunares y charm corazón marrón rojo negro crema",
+    "brand": "EBNA Atelier",
+    "category": "BOLSOS_ACCESORIOS",
+    "subcategory": "Bolsos & Carteras",
+    "price": 2000,
+    "price_fcfa": 2000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Atelier. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_48.jpg",
+      "primary": "/products/hd/hd_ebna_48.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_48.jpg"
+      ]
+    },
+    "colors": [
+      "Marrón",
+      "Rojo",
+      "Negro",
+      "Crema"
+    ],
+    "sizes": [
+      "Talla Única"
+    ],
+    "created_at": "2026-09-22T22:58:59.713Z",
+    "updated_at": "2026-09-22T22:58:59.713Z",
+    "priceFCFA": 2000,
+    "inStock": true
+  },
+  {
+    "id": "1c0a9860-9a59-4510-9060-65555c3714e4",
+    "sku": "EB-HD-49",
+    "slug": "conjunto-2-piezas-top-sin-mangas-y-pantalon-capri-estampado-lunares-amarillo-y-negro-hd-49",
+    "name": "Conjunto 2 piezas top sin mangas y pantalón capri estampado lunares amarillo y negro",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_49.jpg",
+      "primary": "/products/hd/hd_ebna_49.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_49.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.714Z",
+    "updated_at": "2026-09-22T22:58:59.714Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "5b7beffd-039b-4296-b290-026629e5d1cc",
+    "sku": "EB-HD-50",
+    "slug": "vestido-midi-verano-nido-de-abeja-tirantes-cuadros-vichy-rojo-y-blanco-studio-hd-50",
+    "name": "Vestido midi verano nido de abeja tirantes cuadros vichy rojo y blanco studio",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos Exclusivos",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_50.jpg",
+      "primary": "/products/hd/hd_ebna_50.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_50.jpg"
+      ]
+    },
+    "colors": [
+      "Rojo y Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.716Z",
+    "updated_at": "2026-09-22T22:58:59.716Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "64f52aa4-5ffd-4497-abf5-7b509a928bb1",
+    "sku": "EB-HD-51",
+    "slug": "conjunto-casual-top-manga-larga-cuello-redondo-y-minishort-amarillo-pastel-con-diadema-hd-51",
+    "name": "Conjunto casual top manga larga cuello redondo y minishort amarillo pastel con diadema",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 16000,
+    "price_fcfa": 16000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_51.jpg",
+      "primary": "/products/hd/hd_ebna_51.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_51.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo Pastel"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.718Z",
+    "updated_at": "2026-09-22T22:58:59.718Z",
+    "priceFCFA": 16000,
+    "inStock": true
+  },
+  {
+    "id": "0dddc0fa-99ec-44eb-b911-92d9d291d87e",
+    "sku": "EB-HD-52",
+    "slug": "conjunto-2-piezas-top-sin-mangas-y-pantalon-capri-estampado-lunares-amarillo-y-negro-hd-52",
+    "name": "Conjunto 2 piezas top sin mangas y pantalón capri estampado lunares amarillo y negro",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_52.jpg",
+      "primary": "/products/hd/hd_ebna_52.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_52.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.719Z",
+    "updated_at": "2026-09-22T22:58:59.719Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "57fc6262-501e-4739-b5fc-479b673692e5",
+    "sku": "EB-HD-53",
+    "slug": "vestido-largo-playero-acuarela-escote-halter-con-fajin-de-ganchillo-marron-y-abertura-hd-53",
+    "name": "Vestido largo playero acuarela escote halter con fajín de ganchillo marrón y abertura",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 4500,
+    "price_fcfa": 4500,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_53.jpg",
+      "primary": "/products/hd/hd_ebna_53.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_53.jpg"
+      ]
+    },
+    "colors": [
+      "Multicolor Acuarela y Marrón"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.721Z",
+    "updated_at": "2026-09-22T22:58:59.721Z",
+    "priceFCFA": 4500,
+    "inStock": true
+  },
+  {
+    "id": "0408d0b5-13a8-4dd1-a6d9-ab729e6a7648",
+    "sku": "EB-HD-54",
+    "slug": "vestido-corto-manga-murcielago-con-escote-cowl-drapeado-y-espalda-abierta-hd-54",
+    "name": "Vestido corto manga murciélago con escote cowl drapeado y espalda abierta",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 5500,
+    "price_fcfa": 5500,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_54.jpg",
+      "primary": "/products/hd/hd_ebna_54.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_54.jpg"
+      ]
+    },
+    "colors": [
+      "Rojo Lunares",
+      "Leopardo Marrón"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.722Z",
+    "updated_at": "2026-09-22T22:58:59.722Z",
+    "priceFCFA": 5500,
+    "inStock": true
+  },
+  {
+    "id": "8879aee4-9f78-485a-93f7-7da126521213",
+    "sku": "EB-HD-55",
+    "slug": "vestido-midi-manga-murcielago-con-cintura-drapeada-fruncida-hd-55",
+    "name": "Vestido midi manga murciélago con cintura drapeada fruncida",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos Exclusivos",
+    "price": 6000,
+    "price_fcfa": 6000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_55.jpg",
+      "primary": "/products/hd/hd_ebna_55.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_55.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco",
+      "Crema",
+      "Verde Manzana",
+      "Gris Azulado"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.725Z",
+    "updated_at": "2026-09-22T22:58:59.725Z",
+    "priceFCFA": 6000,
+    "inStock": true
+  },
+  {
+    "id": "0646d8d3-25eb-41a8-9414-5df9df0687c4",
+    "sku": "EB-HD-56",
+    "slug": "cartera-de-mano-sobre-trenzada-con-broche-dorado-de-lujo-hd-56",
+    "name": "Cartera de mano sobre trenzada con broche dorado de lujo",
+    "brand": "EBNA Atelier",
+    "category": "BOLSOS_ACCESORIOS",
+    "subcategory": "Bolsos & Carteras",
+    "price": 2000,
+    "price_fcfa": 2000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Atelier. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_56.jpg",
+      "primary": "/products/hd/hd_ebna_56.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_56.jpg"
+      ]
+    },
+    "colors": [
+      "Negro",
+      "Blanco",
+      "Burdeos",
+      "Camel",
+      "Marrón"
+    ],
+    "sizes": [
+      "Talla Única"
+    ],
+    "created_at": "2026-09-22T22:58:59.726Z",
+    "updated_at": "2026-09-22T22:58:59.726Z",
+    "priceFCFA": 2000,
+    "inStock": true
+  },
+  {
+    "id": "9cad7deb-9004-4f22-963f-a4e86adf780b",
+    "sku": "EB-HD-57",
+    "slug": "vestido-de-gala-palabra-de-honor-marron-chocolate-con-fular-y-abertura-en-falda-hd-57",
+    "name": "Vestido de gala palabra de honor marrón chocolate con fular y abertura en falda",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 35000,
+    "price_fcfa": 35000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_57.jpg",
+      "primary": "/products/hd/hd_ebna_57.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_57.jpg"
+      ]
+    },
+    "colors": [
+      "Marrón Chocolate"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.727Z",
+    "updated_at": "2026-09-22T22:58:59.727Z",
+    "priceFCFA": 35000,
+    "inStock": true
+  },
+  {
+    "id": "02bab4ba-7f25-488f-aacb-8c5a94142045",
+    "sku": "EB-HD-58",
+    "slug": "conjunto-2-piezas-top-sin-mangas-y-pantalon-capri-estampado-lunares-amarillo-y-negro-hd-58",
+    "name": "Conjunto 2 piezas top sin mangas y pantalón capri estampado lunares amarillo y negro",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_58.jpg",
+      "primary": "/products/hd/hd_ebna_58.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_58.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.728Z",
+    "updated_at": "2026-09-22T22:58:59.728Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "4795ef43-a42a-4fcf-83b1-0446a78afb02",
+    "sku": "EB-HD-59",
+    "slug": "bailarinas-de-rejilla-mary-jane-con-tira-ajustable-y-lazo-frontal-hd-59",
+    "name": "Bailarinas de rejilla Mary Jane con tira ajustable y lazo frontal",
+    "brand": "EBNA Footwear Couture",
+    "category": "CALZADO",
+    "subcategory": "Bailarinas & Flats",
+    "price": 3500,
+    "price_fcfa": 3500,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Footwear Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_59.jpg",
+      "primary": "/products/hd/hd_ebna_59.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_59.jpg"
+      ]
+    },
+    "colors": [
+      "Rojo",
+      "Negro",
+      "Nude Camel"
+    ],
+    "sizes": [
+      "36 EU",
+      "37 EU",
+      "38 EU",
+      "39 EU",
+      "40 EU",
+      "41 EU"
+    ],
+    "created_at": "2026-09-22T22:58:59.730Z",
+    "updated_at": "2026-09-22T22:58:59.730Z",
+    "priceFCFA": 3500,
+    "inStock": true
+  },
+  {
+    "id": "68251977-6f81-4d6d-bc56-8ec06e8989c9",
+    "sku": "EB-HD-60",
+    "slug": "conjunto-2-piezas-top-sin-mangas-y-pantalon-capri-estampado-lunares-amarillo-y-negro-hd-60",
+    "name": "Conjunto 2 piezas top sin mangas y pantalón capri estampado lunares amarillo y negro",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_60.jpg",
+      "primary": "/products/hd/hd_ebna_60.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_60.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.731Z",
+    "updated_at": "2026-09-22T22:58:59.731Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "8f012a6e-70f3-4e6a-a8bd-cc5810257765",
+    "sku": "EB-HD-61",
+    "slug": "vestido-largo-de-tirantes-a-rayas-con-escote-pronunciado-y-espalda-abierta-hd-61",
+    "name": "Vestido largo de tirantes a rayas con escote pronunciado y espalda abierta",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Gala",
+    "price": 4000,
+    "price_fcfa": 4000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_61.jpg",
+      "primary": "/products/hd/hd_ebna_61.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_61.jpg"
+      ]
+    },
+    "colors": [
+      "Negro Rayas",
+      "Rosa Rayas",
+      "Celeste Rayas"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.732Z",
+    "updated_at": "2026-09-22T22:58:59.732Z",
+    "priceFCFA": 4000,
+    "inStock": true
+  },
+  {
+    "id": "e2df788a-d74d-47ba-a8d4-ac311cea77a8",
+    "sku": "EB-HD-62",
+    "slug": "conjunto-2-piezas-top-sin-mangas-y-pantalon-capri-estampado-lunares-amarillo-y-negro-hd-62",
+    "name": "Conjunto 2 piezas top sin mangas y pantalón capri estampado lunares amarillo y negro",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 18000,
+    "price_fcfa": 18000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_62.jpg",
+      "primary": "/products/hd/hd_ebna_62.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_62.jpg"
+      ]
+    },
+    "colors": [
+      "Amarillo y Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.733Z",
+    "updated_at": "2026-09-22T22:58:59.733Z",
+    "priceFCFA": 18000,
+    "inStock": true
+  },
+  {
+    "id": "0f848426-3a85-4c4d-911f-c7cea4056005",
+    "sku": "EB-HD-63",
+    "slug": "vestido-camisero-polo-de-punto-a-rayas-con-falda-plisada-evase-fucsia-y-gris-hd-63",
+    "name": "Vestido camisero polo de punto a rayas con falda plisada evasé fucsia y gris",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos Exclusivos",
+    "price": 4000,
+    "price_fcfa": 4000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_63.jpg",
+      "primary": "/products/hd/hd_ebna_63.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_63.jpg"
+      ]
+    },
+    "colors": [
+      "Fucsia y Blanco",
+      "Gris y Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.735Z",
+    "updated_at": "2026-09-22T22:58:59.735Z",
+    "priceFCFA": 4000,
+    "inStock": true
+  },
+  {
+    "id": "5085f9f1-c022-4aaf-b82a-0173509897f2",
+    "sku": "EB-HD-64",
+    "slug": "sandalias-tacon-fino-verde-esmeralda-punta-cuadrada-con-tiras-joya-de-cristales-hd-64",
+    "name": "Sandalias tacón fino verde esmeralda punta cuadrada con tiras joya de cristales",
+    "brand": "EBNA Footwear Couture",
+    "category": "CALZADO",
+    "subcategory": "Sandalias de Lujo",
+    "price": 25000,
+    "price_fcfa": 25000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Footwear Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_64.jpg",
+      "primary": "/products/hd/hd_ebna_64.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_64.jpg"
+      ]
+    },
+    "colors": [
+      "Verde Esmeralda"
+    ],
+    "sizes": [
+      "36 EU",
+      "37 EU",
+      "38 EU",
+      "39 EU",
+      "40 EU",
+      "41 EU"
+    ],
+    "created_at": "2026-09-22T22:58:59.736Z",
+    "updated_at": "2026-09-22T22:58:59.736Z",
+    "priceFCFA": 25000,
+    "inStock": true
+  },
+  {
+    "id": "d8594dc0-5eb4-4ed5-bdd4-9d213a1b2cfd",
+    "sku": "EB-HD-65",
+    "slug": "camisetas-deportivas-running-compresion-secado-rapido-alice-run-en-4-colores-pastel-hd-65",
+    "name": "Camisetas deportivas running compresión secado rápido Alice Run en 4 colores pastel",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 10000,
+    "price_fcfa": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_65.jpg",
+      "primary": "/products/hd/hd_ebna_65.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_65.jpg"
+      ]
+    },
+    "colors": [
+      "Azul Perla",
+      "Blanco",
+      "Verde Menta",
+      "Amarillo Pastel"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.737Z",
+    "updated_at": "2026-09-22T22:58:59.737Z",
+    "priceFCFA": 10000,
+    "inStock": true
+  },
+  {
+    "id": "6424a7fe-601c-4978-b13c-7e571c46bd3e",
+    "sku": "EB-HD-66",
+    "slug": "vestido-corto-corte-evase-cuello-halter-con-lazada-y-abertura-lagrima-hd-66",
+    "name": "Vestido corto corte evasé cuello halter con lazada y abertura lágrima",
+    "brand": "Sindy Luxury Haute Couture",
+    "category": "MODA_MUJER",
+    "subcategory": "Vestidos de Fiesta & Cóctel",
+    "price": 6500,
+    "price_fcfa": 6500,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD Sindy Luxury Haute Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_66.jpg",
+      "primary": "/products/hd/hd_ebna_66.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_66.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa",
+      "Blanco con Lunares",
+      "Negro"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.738Z",
+    "updated_at": "2026-09-22T22:58:59.738Z",
+    "priceFCFA": 6500,
+    "inStock": true
+  },
+  {
+    "id": "2c385ef8-5a0a-47c6-a5b3-bfd884626d55",
+    "sku": "EB-HD-67",
+    "slug": "shein-girlism-camiseta-corta-blanca-con-estampado-floral-lirio-fucsia-hd-67",
+    "name": "SHEIN Girlism Camiseta corta blanca con estampado floral lirio fucsia",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 10000,
+    "price_fcfa": 10000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_67.jpg",
+      "primary": "/products/hd/hd_ebna_67.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_67.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.740Z",
+    "updated_at": "2026-09-22T22:58:59.740Z",
+    "priceFCFA": 10000,
+    "inStock": true
+  },
+  {
+    "id": "31c5b09c-fdbe-495b-a798-f1c44e1fa876",
+    "sku": "EB-HD-68",
+    "slug": "sandalias-planas-de-piel-negra-con-tira-en-el-dedo-y-aplique-dorado-mng-hd-68",
+    "name": "Sandalias planas de piel negra con tira en el dedo y aplique dorado MNG",
+    "brand": "EBNA Footwear Couture",
+    "category": "CALZADO",
+    "subcategory": "Sandalias de Lujo",
+    "price": 20000,
+    "price_fcfa": 20000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Footwear Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_68.jpg",
+      "primary": "/products/hd/hd_ebna_68.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_68.jpg"
+      ]
+    },
+    "colors": [
+      "Negro"
+    ],
+    "sizes": [
+      "36 EU",
+      "37 EU",
+      "38 EU",
+      "39 EU",
+      "40 EU",
+      "41 EU"
+    ],
+    "created_at": "2026-09-22T22:58:59.741Z",
+    "updated_at": "2026-09-22T22:58:59.741Z",
+    "priceFCFA": 20000,
+    "inStock": true
+  },
+  {
+    "id": "048cfba0-f7c4-43a1-bdd8-33f9e8ddc840",
+    "sku": "EB-HD-69",
+    "slug": "conjunto-2-piezas-lino-blanco-roto-con-topos-negros-top-palabra-de-honor-y-pantalon-ancho-hd-69",
+    "name": "Conjunto 2 piezas lino blanco roto con topos negros top palabra de honor y pantalón ancho",
+    "brand": "EBNA Fashion Studio",
+    "category": "MODA_MUJER",
+    "subcategory": "Conjuntos Dos Piezas",
+    "price": 24000,
+    "price_fcfa": 24000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Fashion Studio. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_69.jpg",
+      "primary": "/products/hd/hd_ebna_69.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_69.jpg"
+      ]
+    },
+    "colors": [
+      "Blanco Roto con Lunares"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "created_at": "2026-09-22T22:58:59.742Z",
+    "updated_at": "2026-09-22T22:58:59.742Z",
+    "priceFCFA": 24000,
+    "inStock": true
+  },
+  {
+    "id": "355a7663-9502-4081-959e-fa84d1f1613c",
+    "sku": "EB-HD-70",
+    "slug": "sandalias-cuna-plataforma-alta-en-piel-negra-con-tiras-finas-cruzadas-diana-cantillo-hd-70",
+    "name": "Sandalias cuña plataforma alta en piel negra con tiras finas cruzadas Diana Cantillo",
+    "brand": "EBNA Footwear Couture",
+    "category": "CALZADO",
+    "subcategory": "Sandalias de Lujo",
+    "price": 28000,
+    "price_fcfa": 28000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Footwear Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_70.jpg",
+      "primary": "/products/hd/hd_ebna_70.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_70.jpg"
+      ]
+    },
+    "colors": [
+      "Negro"
+    ],
+    "sizes": [
+      "36 EU",
+      "37 EU",
+      "38 EU",
+      "39 EU",
+      "40 EU",
+      "41 EU"
+    ],
+    "created_at": "2026-09-22T22:58:59.743Z",
+    "updated_at": "2026-09-22T22:58:59.743Z",
+    "priceFCFA": 28000,
+    "inStock": true
+  },
+  {
+    "id": "7cdb6327-9164-48a6-9ba3-c3869493ead9",
+    "sku": "EB-HD-71",
+    "slug": "nike-air-rift-zapatillas-sandalias-tabi-con-puntera-dividida-en-neopreno-rosa-hd-71",
+    "name": "Nike Air Rift zapatillas sandalias tabi con puntera dividida en neopreno rosa",
+    "brand": "EBNA Footwear Couture",
+    "category": "CALZADO",
+    "subcategory": "Sandalias de Lujo",
+    "price": 35000,
+    "price_fcfa": 35000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Footwear Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_71.jpg",
+      "primary": "/products/hd/hd_ebna_71.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_71.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa"
+    ],
+    "sizes": [
+      "36 EU",
+      "37 EU",
+      "38 EU",
+      "39 EU",
+      "40 EU",
+      "41 EU"
+    ],
+    "created_at": "2026-09-22T22:58:59.745Z",
+    "updated_at": "2026-09-22T22:58:59.745Z",
+    "priceFCFA": 35000,
+    "inStock": true
+  },
+  {
+    "id": "5ed938dd-7f0a-40a3-8b86-65e84ce75862",
+    "sku": "EB-HD-72",
+    "slug": "zuecos-con-plataforma-ugg-venture-daze-tazz-platform-ante-rosa-pastel-y-beige-hd-72",
+    "name": "Zuecos con plataforma UGG Venture Daze Tazz Platform ante rosa pastel y beige",
+    "brand": "EBNA Footwear Couture",
+    "category": "CALZADO",
+    "subcategory": "Calzado Exclusivo",
+    "price": 38000,
+    "price_fcfa": 38000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Footwear Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_72.jpg",
+      "primary": "/products/hd/hd_ebna_72.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_72.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa Pastel",
+      "Beige"
+    ],
+    "sizes": [
+      "36 EU",
+      "37 EU",
+      "38 EU",
+      "39 EU",
+      "40 EU",
+      "41 EU"
+    ],
+    "created_at": "2026-09-22T22:58:59.746Z",
+    "updated_at": "2026-09-22T22:58:59.746Z",
+    "priceFCFA": 38000,
+    "inStock": true
+  },
+  {
+    "id": "7384587e-e63b-4b95-9435-7d9001604427",
+    "sku": "EB-HD-74",
+    "slug": "adidas-originals-samba-jane-taekwondo-estilo-bailarina-de-ante-rosa-con-tres-bandas-blancas-hd-74",
+    "name": "Adidas Originals Samba Jane Taekwondo estilo bailarina de ante rosa con tres bandas blancas",
+    "brand": "EBNA Footwear Couture",
+    "category": "CALZADO",
+    "subcategory": "Bailarinas & Flats",
+    "price": 35000,
+    "price_fcfa": 35000,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Footwear Couture. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_74.jpg",
+      "primary": "/products/hd/hd_ebna_74.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_74.jpg"
+      ]
+    },
+    "colors": [
+      "Rosa"
+    ],
+    "sizes": [
+      "36 EU",
+      "37 EU",
+      "38 EU",
+      "39 EU",
+      "40 EU",
+      "41 EU"
+    ],
+    "created_at": "2026-09-22T22:58:59.747Z",
+    "updated_at": "2026-09-22T22:58:59.747Z",
+    "priceFCFA": 35000,
+    "inStock": true
+  },
+  {
+    "id": "41ec472e-ec7d-45bf-9c57-52c0e4dd51e5",
+    "sku": "EB-HD-77",
+    "slug": "conflass-gorro-de-dormir-de-saten-con-estampado-floral-y-ala-ancha-multicolor-hd-77",
+    "name": "CONFLASS Gorro de dormir de satén con estampado floral y ala ancha multicolor",
+    "brand": "EBNA Atelier",
+    "category": "BOLSOS_ACCESORIOS",
+    "subcategory": "Accesorios de Lujo",
+    "price": 3500,
+    "price_fcfa": 3500,
+    "in_stock": true,
+    "is_hidden": false,
+    "is_featured": false,
+    "description": "Prenda exclusiva de alta costura de la colección HD EBNA Atelier. Confeccionada con telas premium de textura suave y caída impecable, pensada para lucir distinción y comodidad en cualquier evento de gala o cóctel en Guinea Ecuatorial.",
+    "images": {
+      "0": "/products/hd/hd_ebna_77.jpg",
+      "primary": "/products/hd/hd_ebna_77.jpg",
+      "gallery": [
+        "/products/hd/hd_ebna_77.jpg"
+      ]
+    },
+    "colors": [
+      "Multicolor floral",
+      "Negro",
+      "Rosa",
+      "Dorado",
+      "Azul",
+      "Vino"
+    ],
+    "sizes": [
+      "Talla Única"
+    ],
+    "created_at": "2026-09-22T22:58:59.748Z",
+    "updated_at": "2026-09-22T22:58:59.748Z",
+    "priceFCFA": 3500,
+    "inStock": true
+  }
+];

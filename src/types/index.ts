@@ -47,6 +47,7 @@ export interface Product {
   // Backwards compatibility properties for zero regression across UI components
   slug: string;
   price: number;
+  price_fcfa?: number;
   in_stock: boolean;
   is_hidden?: boolean;
   is_featured?: boolean;
