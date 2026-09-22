@@ -11,7 +11,7 @@ import { recordProductOrder } from '../lib/popularityTracker';
 
 export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
-  const { products, loading, error } = useProducts();
+  const { products, loading } = useProducts();
   const { addToCart } = useCart();
   
   const product = products.find(p => p.slug === slug);
@@ -23,9 +23,10 @@ export function ProductPage() {
   const [selectedColor, setSelectedColor] = useState<string>(availableColors[0] || 'Blanco');
   const [quantity, setQuantity] = useState<number>(1);
 
-  if (loading) return <Loader fullScreen message="Cargando detalles del producto..." />;
-  if (error) return <div className="error-message">{error.message || 'Error al cargar el producto'}</div>;
-  if (!product) return <div className="not-found" style={{ padding: '4rem', textAlign: 'center' }}>Producto no encontrado</div>;
+  if (!product) {
+    if (loading) return <Loader fullScreen message="Cargando detalles del producto..." />;
+    return <div className="not-found" style={{ padding: '4rem', textAlign: 'center' }}>Producto no encontrado</div>;
+  }
 
   const secondaryPhone = '+240 555 439 904';
   const primaryWaUrl = buildWhatsAppUrl(product, 'primary', selectedSize, selectedColor);

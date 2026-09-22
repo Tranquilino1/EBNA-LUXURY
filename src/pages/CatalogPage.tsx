@@ -59,9 +59,9 @@ export function CatalogPage() {
         </div>
       </div>
 
-      {loading ? (
+      {loading && sortedList.length === 0 ? (
         <Loader />
-      ) : error ? (
+      ) : error && sortedList.length === 0 ? (
         <div className="error-message">{error.message || 'Error al cargar productos'}</div>
       ) : (
         <ProductGrid products={sortedList} />

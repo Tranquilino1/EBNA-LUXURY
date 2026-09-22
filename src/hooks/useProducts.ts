@@ -5,14 +5,23 @@ import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
 
 export function useProducts(category?: FilterCategoryType, searchQuery?: string) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Instant 0ms initial state from memory cache so UI paints immediately
+  const [products, setProducts] = useState<Product[]>(() => {
+    try {
+      return demoGetProducts();
+    } catch {
+      return [];
+    }
+  });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (isSilent = true) => {
     try {
-      setLoading(true);
-      // Fetch from Supabase
+      if (!isSilent) {
+        setLoading(true);
+      }
+      // Fetch live updates from Supabase
       const { data: remoteProducts, error: dbError } = await supabase
         .from('products')
         .select('*')

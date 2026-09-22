@@ -73,8 +73,8 @@ export function HomePage() {
     });
   };
 
-  if (loading) return <Loader message="Cargando catálogo de lujo..." fullScreen />;
-  if (error) return <div className="error-message">{error.message || 'Error al cargar productos'}</div>;
+  if (loading && products.length === 0) return <Loader message="Cargando catálogo de lujo..." fullScreen />;
+  if (error && products.length === 0) return <div className="error-message">{error.message || 'Error al cargar productos'}</div>;
 
   return (
     <div className="home-page">

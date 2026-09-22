@@ -6,11 +6,19 @@ import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
 
 export function useAdminProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>(() => {
+    try {
+      return demoGetProducts();
+    } catch {
+      return [];
+    }
+  });
+  const [loading, setLoading] = useState(false);
 
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
+  const fetchProducts = useCallback(async (isSilent = true) => {
+    if (!isSilent) {
+      setLoading(true);
+    }
     try {
       // Fetch from Supabase
       const { data: dbProducts, error } = await supabase
