@@ -1,0 +1,273 @@
+/* Contact Support Modal Styles */
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 5, 12, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeInModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.contact-modal-card {
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--canvas-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), 0 0 40px rgba(216, 27, 96, 0.15);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.contact-modal-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.contact-modal-card::-webkit-scrollbar-thumb {
+  background: var(--brand-accent);
+  border-radius: 10px;
+}
+
+.contact-modal-header {
+  padding: 22px 24px 16px 24px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(216, 27, 96, 0.06), rgba(197, 168, 128, 0.08));
+  border-radius: 28px 28px 0 0;
+}
+
+.contact-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #D81B60, #C5A880);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 14px rgba(216, 27, 96, 0.3);
+}
+
+.contact-header-titles h2 {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.contact-header-titles p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 2px 0 0 0;
+}
+
+.contact-close-btn {
+  background: var(--canvas-base);
+  border: 1px solid var(--border-light);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.contact-close-btn:hover {
+  background: var(--brand-accent);
+  color: white;
+  transform: rotate(90deg);
+}
+
+.contact-modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Startup AiDA Highlight Banner */
+.aida-startup-banner {
+  background: linear-gradient(135deg, rgba(18, 13, 20, 0.03), rgba(216, 27, 96, 0.05));
+  border: 1px solid var(--border-brand);
+  border-radius: 18px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.aida-startup-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-accent);
+  margin-bottom: 2px;
+}
+
+.aida-startup-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.aida-startup-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.contact-channels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.channel-card-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background: var(--canvas-base);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.channel-card-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-accent);
+  box-shadow: 0 8px 24px rgba(216, 27, 96, 0.15);
+}
+
+.channel-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.channel-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-card-label {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.channel-card-val {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Quick Ticket Form */
+.contact-ticket-section {
+  background: var(--canvas-base);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 18px 20px;
+}
+
+.ticket-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ticket-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.ticket-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.ticket-input, .ticket-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  background: var(--canvas-surface);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.ticket-input:focus, .ticket-textarea:focus {
+  border-color: var(--brand-accent);
+}
+
+.ticket-submit-btn {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #D81B60, #C5A880);
+  color: white;
+  border: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(216, 27, 96, 0.3);
+}
+
+.ticket-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(216, 27, 96, 0.45);
+}

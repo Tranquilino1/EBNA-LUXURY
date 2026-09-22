@@ -105,24 +105,42 @@
   border-radius: 12px;
 }
 
-.platform-badges {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1.25rem;
+.universal-devices-container {
+  margin: 1rem 0;
+  text-align: center;
 }
 
-.platform-badge {
+.universal-devices-label {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(216, 27, 96, 0.12);
-  border: 1px solid rgba(216, 27, 96, 0.25);
-  color: #AD1457;
-  padding: 0.4rem 0.75rem;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #1E293B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.universal-badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.universal-device-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
   border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  background: rgba(216, 27, 96, 0.08);
+  border: 1px solid rgba(216, 27, 96, 0.22);
+  color: #B8114E;
+  font-size: 0.74rem;
+  font-weight: 700;
 }
 
 .app-status-badge {

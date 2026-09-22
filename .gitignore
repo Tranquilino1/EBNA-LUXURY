@@ -26,3 +26,5 @@ yarn-error.log*
 *.zip
 scratch/
 data/
+response.json
+productos_descargados_hd/

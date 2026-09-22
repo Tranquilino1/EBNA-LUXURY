@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, Apple, ChevronUp, ChevronDown } from 'lucide-react';
+import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, ChevronUp, ChevronDown, Headphones } from 'lucide-react';
 import { QRModal } from '../ui/QRModal';
+import { ContactSupportModal } from '../ui/ContactSupportModal';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import { ChristmasHat } from '../effects/ChristmasHat';
 import './layout.css';
@@ -10,6 +11,7 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const { settings, isChristmasActive } = useCustomization();
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isNearBottom, setIsNearBottom] = useState(false);
 
@@ -113,31 +115,52 @@ export const Footer: React.FC = () => {
 
             <div className="footer-app-badges">
               <div className="platform-badges" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <a 
-                  href="/downloads/ebna-luxury.apk" 
-                  download="EBNA-Luxury.apk" 
-                  className="platform-badge" 
-                  style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }} 
-                  title="Descargar APK Android"
-                >
-                  <Smartphone size={14} color="var(--brand-accent)" /> Android APK
-                </a>
-                <a 
-                  href="/downloads/ebna-luxury.mobileconfig" 
-                  download="EBNA-Luxury.mobileconfig" 
-                  className="platform-badge" 
-                  style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }} 
-                  title="Instalar App iOS"
-                >
-                  <Apple size={14} color="var(--brand-accent)" /> iOS App
-                </a>
                 <button
                   type="button"
                   className="platform-badge qr-trigger-badge"
                   onClick={() => setIsQRModalOpen(true)}
-                  style={{ border: 'none', cursor: 'pointer', font: 'inherit', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                  style={{
+                    border: '1px solid var(--border-brand)',
+                    background: 'rgba(216, 27, 96, 0.1)',
+                    cursor: 'pointer',
+                    font: 'inherit',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '8px 14px',
+                    borderRadius: '16px',
+                    color: 'var(--brand-accent)',
+                    fontWeight: 700,
+                    fontSize: '0.82rem'
+                  }}
+                  title="Instalar App PWA Universal (iOS, Android, Windows, Mac, Linux, Chromebook)"
                 >
-                  <QrCode size={14} color="var(--brand-accent)" /> Código QR App
+                  <Smartphone size={15} color="var(--brand-accent)" />
+                  <span>Instalar PWA Universal</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="platform-badge"
+                  onClick={() => setIsQRModalOpen(true)}
+                  style={{
+                    border: '1px solid var(--border-subtle)',
+                    background: 'var(--canvas-base)',
+                    cursor: 'pointer',
+                    font: 'inherit',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '8px 14px',
+                    borderRadius: '16px',
+                    color: 'var(--text-primary)',
+                    fontWeight: 600,
+                    fontSize: '0.82rem'
+                  }}
+                  title="Escanear Código QR"
+                >
+                  <QrCode size={15} color="var(--brand-gold)" />
+                  <span>Código QR</span>
                 </button>
               </div>
             </div>
@@ -145,11 +168,31 @@ export const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div className="footer-links">
-            <h3>Navegación</h3>
+            <h3>Navegación & Soporte</h3>
             <nav className="quick-links">
               <Link to="/">Inicio</Link>
               <Link to="/catalogo">Catálogo Completo</Link>
               <Link to="/login">Iniciar Sesión Cliente</Link>
+              <button
+                type="button"
+                onClick={() => setIsSupportModalOpen(true)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  font: 'inherit',
+                  color: 'var(--brand-accent)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  textAlign: 'left'
+                }}
+              >
+                <Headphones size={15} /> Soporte Técnico AiDA
+              </button>
             </nav>
           </div>
 
@@ -171,6 +214,18 @@ export const Footer: React.FC = () => {
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Servicio Muni Dinero</span>
                 </div>
               </a>
+              <button
+                type="button"
+                onClick={() => setIsSupportModalOpen(true)}
+                className="contact-link"
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', width: '100%' }}
+              >
+                <Headphones size={18} color="var(--brand-accent)" />
+                <div>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--brand-accent)' }}>Startup AiDA Soporte</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>thetrapkinzofafrica@gmail.com</span>
+                </div>
+              </button>
             </div>
           </div>
 
@@ -221,13 +276,42 @@ export const Footer: React.FC = () => {
           </div>
         </div>
         
-        <div className="footer-bottom">
-          <p>&copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados. | Aplicación PWA compatible con Android, iOS y PC.</p>
+        <div className="footer-bottom" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', textAlign: 'center', paddingTop: '16px' }}>
+          <p style={{ margin: 0 }}>
+            &copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados. | PWA Universal compatible con iOS, Android, Windows, Mac, Chromebook y Linux.
+          </p>
+          <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <span>Arquitectura & Desarrollo por <strong>Startup AiDA</strong></span>
+            <span>•</span>
+            <a href="mailto:thetrapkinzofafrica@gmail.com" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>thetrapkinzofafrica@gmail.com</a>
+            <span>•</span>
+            <a href="tel:+240222075662" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>+240 222 07 56 62</a>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={() => setIsSupportModalOpen(true)}
+              style={{
+                background: 'rgba(216, 27, 96, 0.1)',
+                border: '1px solid var(--border-brand)',
+                borderRadius: '12px',
+                padding: '3px 10px',
+                color: 'var(--brand-accent)',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+            >
+              Contactar Soporte Técnico AiDA
+            </button>
+          </div>
         </div>
       </footer>
 
       {/* QR Code Modal */}
       <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
+
+      {/* Support & Contact Modal */}
+      <ContactSupportModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />
     </div>
   );
 };

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Menu, X, User, LogOut, ShieldCheck, QrCode, ShoppingBag, ShoppingCart, Circle, Sun, Moon } from 'lucide-react';
+import { Menu, X, User, LogOut, ShieldCheck, QrCode, ShoppingBag, ShoppingCart, Circle, Sun, Moon, Headphones } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTraffic } from '../../contexts/TrafficContext';
 import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { QRModal } from '../ui/QRModal';
 import { AdminAuthModal } from '../admin/AdminAuthModal';
+import { ContactSupportModal } from '../ui/ContactSupportModal';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import { InteractiveSantaHat } from '../effects/InteractiveSantaHat';
 import './layout.css';
@@ -17,6 +18,7 @@ export const Navbar: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isAdminAuthModalOpen, setIsAdminAuthModalOpen] = useState(false);
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
   
   const { user, profile, isAdmin, signOut } = useAuth();
   const { onlineCount } = useTraffic();
@@ -204,6 +206,13 @@ export const Navbar: React.FC = () => {
                     <ShieldCheck size={16} color="var(--brand-accent)" /> Panel Administrador
                   </button>
 
+                  <button
+                    className="dropdown-item"
+                    onClick={() => { setIsProfileOpen(false); setIsSupportModalOpen(true); }}
+                  >
+                    <Headphones size={16} color="var(--brand-accent)" /> Soporte & Contacto AiDA
+                  </button>
+
                   {user ? (
                     <button className="dropdown-item logout" onClick={handleLogout}>
                       <LogOut size={16} /> Cerrar Sesión
@@ -249,11 +258,22 @@ export const Navbar: React.FC = () => {
           >
             <ShieldCheck size={18} color="var(--brand-accent)" /> Acceso Panel Administrador
           </button>
+
+          <button
+            onClick={() => { setIsMobileMenuOpen(false); setIsSupportModalOpen(true); }}
+            className="mobile-nav-link"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-accent)', fontWeight: 700 }}
+          >
+            <Headphones size={18} /> Soporte Técnico AiDA
+          </button>
         </div>
       )}
 
       {/* QR Modal */}
       <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
+
+      {/* Contact & Support Modal */}
+      <ContactSupportModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />
 
       {/* Admin Auth Modal (Strict Credential Verification) */}
       <AdminAuthModal isOpen={isAdminAuthModalOpen} onClose={() => setIsAdminAuthModalOpen(false)} />

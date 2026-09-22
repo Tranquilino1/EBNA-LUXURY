@@ -272,15 +272,14 @@ export function AdminDashboard() {
                 style={{ padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem', background: 'white', cursor: 'pointer' }}
               >
                 <option value="TODOS">Todas las Categorías</option>
-                <option value="VESTIDOS">Vestidos & Robes</option>
+                <option value="MODA_MUJER">Moda Femenina & Vestidos</option>
+                <option value="MODA_INFANTIL">Moda Infantil & Bebés</option>
+                <option value="MODA_HOMBRE">Moda Masculina</option>
                 <option value="CALZADO">Calzado & Sneakers</option>
-                <option value="MODA">Moda & Hoodies</option>
-                <option value="COSMETICA">Cosmética / Cremas</option>
-                <option value="JABONES">Jabones</option>
-                <option value="VASELINAS">Vaselinas</option>
-                <option value="POMADAS">Pomadas</option>
-                <option value="ACCESORIOS">Accesorios</option>
-                <option value="NIÑOS">Niños / Bebés</option>
+                <option value="BOLSOS_ACCESORIOS">Bolsos & Accesorios</option>
+                <option value="PERFUMERIA">Perfumería de Lujo</option>
+                <option value="COSMETICA_FACIAL">Cosmética Facial</option>
+                <option value="HIGIENE_CORPORAL">Higiene Corporal & Jabones</option>
               </select>
             </div>
 

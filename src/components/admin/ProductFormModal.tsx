@@ -197,15 +197,14 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 onChange={handleChange}
                 style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', background: 'white', fontSize: '0.92rem', color: '#1E293B', cursor: 'pointer' }}
               >
-                <option value="VESTIDOS">VESTIDOS & ROBES</option>
+                <option value="MODA_MUJER">MODA FEMENINA & VESTIDOS</option>
+                <option value="MODA_INFANTIL">MODA INFANTIL & BEBÉS</option>
+                <option value="MODA_HOMBRE">MODA MASCULINA</option>
                 <option value="CALZADO">CALZADO & SNEAKERS</option>
-                <option value="MODA">MODA (ROPA / ZARA / SHEIN)</option>
-                <option value="COSMETICA">COSMÉTICA & PERFUMES</option>
-                <option value="JABONES">JABONES ARTESANALES</option>
-                <option value="VASELINAS">VASELINAS & LIP CARE</option>
-                <option value="POMADAS">POMADAS & SCRUBS</option>
-                <option value="ACCESORIOS">ACCESORIOS & BONNETS</option>
-                <option value="NIÑOS">NIÑOS & BEBÉS</option>
+                <option value="BOLSOS_ACCESORIOS">BOLSOS & ACCESORIOS</option>
+                <option value="PERFUMERIA">PERFUMERÍA DE LUJO</option>
+                <option value="COSMETICA_FACIAL">COSMÉTICA FACIAL</option>
+                <option value="HIGIENE_CORPORAL">HIGIENE CORPORAL & JABONES</option>
               </select>
             </div>
 

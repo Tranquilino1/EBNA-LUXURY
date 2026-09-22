@@ -17,9 +17,8 @@ export const AdminFloatingDock: React.FC = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const location = useLocation();
 
-  if (!isAdmin) return null;
-
   const isOnAdminDashboard = location.pathname.startsWith('/admin');
+  if (!isAdmin || isOnAdminDashboard) return null;
   const hasSelection = selectedIds.size > 0;
 
   const handleBulkDeleteTrigger = () => {

@@ -9,6 +9,7 @@ export interface Profile {
 
 export type ProductCategory = 
   | 'MODA_MUJER'
+  | 'MODA_INFANTIL'
   | 'MODA_HOMBRE'
   | 'CALZADO'
   | 'BOLSOS_ACCESORIOS'
@@ -126,4 +127,12 @@ export interface SiteCustomizationSettings {
   enableSpecularSweep: boolean;
   cardStyle: CardStyleType;
   animationPreset?: string;
+
+  // Fashion Cinema & Promotional Video Settings
+  videoUrl?: string;
+  videoPoster?: string;
+  videoQuality?: '4K' | '1080p' | '720p' | 'auto';
+  videoAudioDefault?: boolean;
+  videoTitle?: string;
+  videoSubtitle?: string;
 }

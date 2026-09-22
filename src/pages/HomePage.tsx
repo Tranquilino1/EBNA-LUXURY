@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useMemo, type MouseEvent } from 'react';
 import { Link } from 'react-router';
 import { 
   ArrowRight, Sparkles, ShieldCheck, Truck, Clock, Flame, 
-  Play, Volume2, MessageCircle, CreditCard, Compass
+  MessageCircle, CreditCard, Compass
 } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/catalog/ProductCard';
@@ -12,6 +12,7 @@ import { formatPrice } from '../lib/utils';
 import { getSortedByPopularity } from '../lib/popularityTracker';
 import { SEOHead } from '../components/seo/SEOHead';
 import { FashionFilmModal } from '../components/home/FashionFilmModal';
+import { FashionCinemaPlayer } from '../components/home/FashionCinemaPlayer';
 import { useCustomization } from '../contexts/CustomizationContext';
 import { InteractiveSantaHat } from '../components/effects/InteractiveSantaHat';
 
@@ -264,61 +265,9 @@ export function HomePage() {
       </section>
 
       {/* ==========================================================================
-          Editorial Fashion Film Container (Reserved Showcase)
+          Fashion Cinema Showcase (YouTube-Style 4K/1080p Player with Admin Controls)
           ========================================================================== */}
-      <section className="editorial-film-section">
-        <div className="editorial-film-card glass-panel">
-          <div className="film-backdrop-gradient"></div>
-          <div className="film-watermark">HAUTE COUTURE</div>
-          
-          <div className="film-inner-content">
-            <div className="film-badge-row">
-              <span className="film-badge">
-                <Sparkles size={13} /> FASHION FILM • COLECCIÓN 2026
-              </span>
-              <span className="film-badge-duration">
-                <Volume2 size={13} /> 4K CINEMATIC AUDIO
-              </span>
-            </div>
-
-            <h2 className="film-headline">
-              Sindy Luxury: La Esencia de la Pasarela en Guinea Ecuatorial
-            </h2>
-            <p className="film-subtext">
-              Espacio cinematográfico reservado para la campaña audiovisual de alta costura, vestidos de gala y estilo internacional en Malabo y Bata.
-            </p>
-
-            {/* Interactive Reserved Play Button */}
-            <div className="film-player-placeholder">
-              <div className="film-play-ring">
-                <button 
-                  type="button"
-                  className="film-play-btn" 
-                  title="Reproducir Fashion Film Sindy Luxury 2026"
-                  onClick={() => setIsFilmOpen(true)}
-                  aria-label="Reproducir Fashion Film"
-                >
-                  <Play size={26} fill="currentColor" />
-                </button>
-              </div>
-              <div className="film-soundwaves">
-                <span className="wave-bar w-1"></span>
-                <span className="wave-bar w-2"></span>
-                <span className="wave-bar w-3"></span>
-                <span className="wave-bar w-4"></span>
-                <span className="wave-bar w-5"></span>
-              </div>
-            </div>
-
-            <div className="film-footer-meta">
-              <span>Producción Editorial • Edición Limitada</span>
-              <Link to="/catalogo" className="film-cta-link">
-                Explorar el Catálogo de Moda <ArrowRight size={14} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FashionCinemaPlayer />
 
       {/* ==========================================================================
           Curated Luxury Value Pillars

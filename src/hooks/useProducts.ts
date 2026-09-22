@@ -32,13 +32,17 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
       if (!dbError && remoteProducts && remoteProducts.length > 0) {
         finalList = remoteProducts.map((item: any) => {
           const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
+          const resolvedCategory = (item.subcategory === 'Moda Infantil' || item.category === 'MODA_INFANTIL')
+            ? 'MODA_INFANTIL'
+            : (item.category || 'MODA_MUJER');
+
           return {
             id: item.id,
             sku: item.sku,
             slug: item.slug,
             name: item.name,
             brand: item.brand || 'EBNA Luxury Collection',
-            category: item.category || 'MODA_MUJER',
+            category: resolvedCategory,
             subcategory: item.subcategory || 'General',
             priceFCFA: item.price_fcfa || item.price,
             price: item.price,
@@ -54,7 +58,7 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
           };
         });
       } else {
-        // Resilient fallback to 142 catalog products if Supabase table is empty or RLS-restricted
+        // Resilient fallback to catalog products if Supabase table is empty or RLS-restricted
         finalList = demoGetProducts();
       }
 
@@ -63,7 +67,15 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
       // Filter by category
       if (category && category !== 'TODOS') {
-        finalList = finalList.filter((p: Product) => p.category === category);
+        finalList = finalList.filter((p: Product) => {
+          if (category === 'MODA_INFANTIL') {
+            return p.category === 'MODA_INFANTIL' || p.subcategory === 'Moda Infantil';
+          }
+          if (category === 'MODA_MUJER') {
+            return p.category === 'MODA_MUJER' && p.subcategory !== 'Moda Infantil';
+          }
+          return p.category === category;
+        });
       }
 
       // Filter by search query

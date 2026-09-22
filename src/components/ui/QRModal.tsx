@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { QrCode, Smartphone, Monitor, Apple, Download, X, ExternalLink, CheckCircle } from 'lucide-react';
+import { 
+  Smartphone, Monitor, Apple, Download, X, 
+  CheckCircle, Sparkles, Laptop, ShieldCheck 
+} from 'lucide-react';
 import './qrModal.css';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -15,14 +18,12 @@ interface QRModalProps {
 
 export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [isAndroid, setIsAndroid] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
-  const [showIOSGuide, setShowIOSGuide] = useState(false);
+  const [showGuide, setShowGuide] = useState(false);
   const [installedSuccess, setInstalledSuccess] = useState(false);
 
   useEffect(() => {
     const userAgent = window.navigator.userAgent.toLowerCase();
-    setIsAndroid(/android/.test(userAgent));
     setIsIOS(/iphone|ipad|ipod/.test(userAgent));
 
     const handleBeforeInstall = (e: Event) => {
@@ -36,130 +37,117 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleInstallAndroid = async () => {
+  const handleInstallUniversalPWA = async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const choice = await deferredPrompt.userChoice;
       if (choice.outcome === 'accepted') {
         setInstalledSuccess(true);
-        setTimeout(() => onClose(), 2000);
+        setTimeout(() => onClose(), 2200);
       }
       setDeferredPrompt(null);
     } else {
-      // Fallback direct APK download link trigger
-      const link = document.createElement('a');
-      link.href = '/downloads/ebna-luxury.apk';
-      link.download = 'EBNA-Luxury.apk';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Toggle device specific installation guide
+      setShowGuide(true);
     }
   };
 
-  const handleInstallIOS = () => {
-    setShowIOSGuide(true);
-  };
+  const devices = [
+    { label: 'iOS (iPhone/iPad)', icon: <Apple size={14} /> },
+    { label: 'Android', icon: <Smartphone size={14} /> },
+    { label: 'Windows', icon: <Monitor size={14} /> },
+    { label: 'macOS', icon: <Laptop size={14} /> },
+    { label: 'Chromebook', icon: <Laptop size={14} /> },
+    { label: 'Linux', icon: <Monitor size={14} /> },
+  ];
 
   return createPortal(
     <div className="qr-modal-overlay" onClick={onClose}>
-      <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()} onMouseLeave={onClose}>
-        <button className="qr-modal-close" onClick={onClose} aria-label="Cerrar y salir del escaneo">
-          <X size={24} />
+      <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()}>
+        <button className="qr-modal-close" onClick={onClose} aria-label="Cerrar modal de aplicación">
+          <X size={20} />
         </button>
 
         <div className="qr-modal-header">
           <div className="qr-icon-badge">
-            <QrCode size={28} color="#D81B60" />
+            <Sparkles size={24} color="#D81B60" />
           </div>
-          <h2>Acceso Móvil & Aplicación</h2>
-          <p className="qr-subtitle">Escanea el QR o instala la aplicación oficial directamente en tu teléfono</p>
+          <h2>Aplicación Oficial EBNA Luxury</h2>
+          <p className="qr-subtitle">
+            Tecnología PWA Universal: descarga e instalación directa y ligera para cualquier tipo de dispositivo sin ocupar espacio de almacenamiento.
+          </p>
         </div>
 
+        {/* Scannable Luxury QR */}
         <div className="qr-image-container">
           <img 
             src="/icons/ebna-scannable-qr.png" 
-            alt="Código QR EBNA Luxury" 
+            alt="Código QR Oficial EBNA Luxury" 
             className="qr-code-img"
           />
           <div className="qr-glow-ring"></div>
         </div>
 
-        {installedSuccess && (
-          <div style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', color: '#15803D', padding: '10px 14px', borderRadius: '14px', marginBottom: '1rem', fontSize: '0.85rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-            <CheckCircle size={18} /> ¡Instalación iniciada correctamente en tu teléfono!
+        {/* Universal Compatibility Badges */}
+        <div className="universal-devices-container">
+          <div className="universal-devices-label">
+            <ShieldCheck size={14} color="#10B981" />
+            <span>Disponible e Instalable en Todos los Dispositivos:</span>
+          </div>
+          <div className="universal-badges-grid">
+            {devices.map(d => (
+              <span key={d.label} className="universal-device-chip">
+                {d.icon}
+                <span>{d.label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {installedSuccess ? (
+          <div style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', color: '#15803D', padding: '12px 16px', borderRadius: '16px', margin: '1rem 0', fontSize: '0.88rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+            <CheckCircle size={18} /> ¡Aplicación instalada con éxito en tu pantalla de inicio!
+          </div>
+        ) : (
+          /* Single Unified Universal PWA Download / Install Action */
+          <div className="qr-modal-actions" style={{ marginTop: '1.2rem' }}>
+            <button 
+              type="button"
+              onClick={handleInstallUniversalPWA} 
+              className="btn-qr-download"
+              style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', borderRadius: '16px', fontSize: '0.92rem', fontWeight: 800, background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: '#FFFFFF', boxShadow: '0 4px 16px rgba(216, 27, 96, 0.4)' }}
+            >
+              <Download size={19} />
+              <span>Instalar Aplicación Oficial PWA</span>
+            </button>
           </div>
         )}
 
-        {/* Platform Badges with direct downloads */}
-        <div className="platform-badges" style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '1.2rem', flexWrap: 'wrap' }}>
-          <button 
-            onClick={handleInstallAndroid}
-            className="platform-badge"
-            style={{ border: '1px solid rgba(216, 27, 96, 0.3)', background: 'rgba(216, 27, 96, 0.12)', color: '#D81B60', padding: '6px 12px', borderRadius: '20px', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
-            title="Instalar App APK en Android"
-          >
-            <Smartphone size={16} />
-            <span>Instalar Android APK</span>
-          </button>
-
-          <button 
-            onClick={handleInstallIOS}
-            className="platform-badge"
-            style={{ border: '1px solid rgba(216, 27, 96, 0.3)', background: 'rgba(216, 27, 96, 0.12)', color: '#D81B60', padding: '6px 12px', borderRadius: '20px', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
-            title="Instalar App en iPhone/iPad"
-          >
-            <Apple size={16} />
-            <span>{isIOS ? 'App para iPhone' : 'App iOS'}</span>
-          </button>
-
-          <a 
-            href="https://ebna-luxury.vercel.app" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="platform-badge"
-            style={{ textDecoration: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(216, 27, 96, 0.12)', border: '1px solid rgba(216, 27, 96, 0.3)', color: '#D81B60', padding: '6px 12px', borderRadius: '20px', fontWeight: 700, fontSize: '0.8rem' }}
-            title="Abrir en PC / Escritorio"
-          >
-            <Monitor size={16} />
-            <span>PC Web</span>
-          </a>
-        </div>
-
-        <div className="qr-modal-info">
-          <p className="app-status-badge">✨ Aplicación Nativa Con Icono & Pantalla de Carga</p>
-          <p className="url-text">https://ebna-luxury.vercel.app</p>
-        </div>
-
-        <div className="qr-modal-actions">
-          <button 
-            onClick={handleInstallAndroid} 
-            className="btn-qr-download"
-            style={{ cursor: 'pointer', border: 'none' }}
-          >
-            <Download size={18} /> {isAndroid ? 'Instalar App en Android' : 'Descargar APK Android'}
-          </button>
-          <a 
-            href="https://ebna-luxury.vercel.app" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="btn-qr-open"
-            style={{ textDecoration: 'none' }}
-          >
-            <ExternalLink size={18} /> Abrir Web
-          </a>
-        </div>
-
-        {/* Modal Guiado iOS */}
-        {showIOSGuide && (
-          <div style={{ marginTop: '1.2rem', padding: '1rem', background: '#FFFFFF', borderRadius: '16px', border: '1px solid rgba(216,27,96,0.3)', textAlign: 'left' }}>
-            <h4 style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1E293B', marginBottom: '0.6rem' }}>📱 Cómo instalar en iPhone / iPad:</h4>
-            <ol style={{ fontSize: '0.82rem', color: '#64748B', paddingLeft: '1.2rem', lineHeight: 1.5, margin: 0 }}>
-              <li>Toca el botón <strong>Compartir</strong> en la barra inferior de Safari.</li>
-              <li>Selecciona <strong>"Añadir a la pantalla de inicio"</strong>.</li>
-              <li>Pulsa <strong>Añadir</strong> arriba a la derecha. ¡Listo!</li>
-            </ol>
+        {/* Universal 1-Step Guide Accordion */}
+        {showGuide && (
+          <div style={{ marginTop: '1.2rem', padding: '1.1rem', background: '#FFFFFF', borderRadius: '16px', border: '1.5px solid rgba(216,27,96,0.25)', textAlign: 'left', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
+            <h4 style={{ fontSize: '0.88rem', fontWeight: 800, color: '#1E293B', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>📲 Instrucciones de Instalación Inmediata:</span>
+            </h4>
+            {isIOS ? (
+              <ol style={{ fontSize: '0.82rem', color: '#475569', paddingLeft: '1.2rem', lineHeight: 1.6, margin: 0 }}>
+                <li>En Safari, toca el icono <strong>Compartir</strong> (rectángulo con flecha hacia arriba).</li>
+                <li>Desliza hacia abajo y selecciona <strong>"Añadir a pantalla de inicio"</strong>.</li>
+                <li>Pulsa <strong>Añadir</strong> en la esquina superior derecha.</li>
+              </ol>
+            ) : (
+              <ol style={{ fontSize: '0.82rem', color: '#475569', paddingLeft: '1.2rem', lineHeight: 1.6, margin: 0 }}>
+                <li>En Chrome o Edge, pulsa los <strong>tres puntos</strong> arriba a la derecha o el icono <strong>Instalar</strong> en la barra de direcciones.</li>
+                <li>Selecciona <strong>"Instalar Sindy Luxury by EBNA"</strong>.</li>
+                <li>¡Listo! La tienda se abrirá como una aplicación nativa ultra-rápida.</li>
+              </ol>
+            )}
           </div>
         )}
+
+        <div className="qr-modal-footer-note" style={{ marginTop: '1rem', fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
+          https://ebna-luxury.vercel.app • Actualizaciones automáticas y funcionamiento sin conexión
+        </div>
       </div>
     </div>,
     document.body

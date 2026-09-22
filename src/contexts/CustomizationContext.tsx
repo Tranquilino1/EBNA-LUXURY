@@ -30,6 +30,12 @@ const DEFAULT_SETTINGS: SiteCustomizationSettings = {
   enableSpecularSweep: true,
   cardStyle: 'glass-luxe',
   animationPreset: 'pasarela-couture',
+  videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+  videoPoster: '/products/sindy_luxury/vestido_amarillo_drapeado.jpg',
+  videoQuality: '1080p',
+  videoAudioDefault: false,
+  videoTitle: 'Sindy Luxury: La Esencia de la Pasarela en Guinea Ecuatorial',
+  videoSubtitle: 'Espacio cinematográfico de alta costura, vestidos de gala y estilo internacional en Malabo y Bata.',
 };
 
 const STORAGE_KEY = 'ebna_site_customization_v1';

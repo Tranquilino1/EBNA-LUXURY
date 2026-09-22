@@ -5,6 +5,17 @@ import { supabase } from '../config/supabase';
 import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
 
+const generateUUID = (): string => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
 export function useAdminProducts() {
   const [products, setProducts] = useState<Product[]>(() => {
     try {
@@ -29,11 +40,15 @@ export function useAdminProducts() {
       if (!error && dbProducts && dbProducts.length > 0) {
         const mappedRemote: Product[] = dbProducts.map((item: any) => {
           const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
+          const resolvedCategory = (item.subcategory === 'Moda Infantil' || item.category === 'MODA_INFANTIL')
+            ? 'MODA_INFANTIL'
+            : (item.category || 'MODA_MUJER');
+
           return {
             id: item.id,
             sku: item.sku,
             name: item.name,
-            category: item.category,
+            category: resolvedCategory as any,
             subcategory: item.subcategory || 'General',
             brand: item.brand || 'EBNA Luxury Collection',
             priceFCFA: item.price_fcfa || item.price,
@@ -130,11 +145,23 @@ export function useAdminProducts() {
       setProducts(prev => [created, ...prev.filter(p => p.id !== created.id)]);
 
       // 2. Build full relational Supabase payload
+      const isInfantilAdd = productData.category === 'MODA_INFANTIL' || created.category === 'MODA_INFANTIL';
+      const dbCategoryAdd = isInfantilAdd ? 'MODA_MUJER' : (created.category || 'MODA_MUJER');
+      const dbSubcategoryAdd = isInfantilAdd ? 'Moda Infantil' : (created.subcategory || 'General');
+
+      const validId = (created.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(created.id))
+        ? created.id
+        : generateUUID();
+
+      const skuVal = created.sku || `SL-${(created.category || 'GEN').replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+
       const supabasePayload: any = {
-        sku: created.sku || `EB-GEN-${Date.now().toString().slice(-4)}`,
+        id: validId,
+        sku: skuVal,
+        slug: created.slug || generateSlug(created.name) + '-' + validId.slice(0, 8),
         name: created.name,
-        category: created.category,
-        subcategory: created.subcategory || 'General',
+        category: dbCategoryAdd,
+        subcategory: dbSubcategoryAdd,
         brand: created.brand || 'EBNA Luxury Collection',
         description: created.description || '',
         price: created.price,
@@ -146,15 +173,10 @@ export function useAdminProducts() {
         is_hidden: created.is_hidden || false,
       };
 
-      if (created.id && created.id.length === 36) {
-        supabasePayload.id = created.id;
-      }
-      if (created.slug) {
-        supabasePayload.slug = created.slug;
-      }
-
       const { error } = await supabase.from('products').upsert(supabasePayload, { onConflict: 'slug' });
-      if (error) console.warn('Supabase sync notice:', error.message);
+      if (error) {
+        console.warn('Supabase sync notice:', error.message);
+      }
 
       notifyCatalogChange('add', created);
       await fetchProducts();
@@ -183,11 +205,15 @@ export function useAdminProducts() {
         setProducts(prev => prev.map(p => (p.id === id || p.slug === id) ? updated : p));
 
         // 2. Build full relational Supabase payload
+        const isInfantilUpd = updated.category === 'MODA_INFANTIL';
+        const dbCategoryUpd = isInfantilUpd ? 'MODA_MUJER' : (updated.category || 'MODA_MUJER');
+        const dbSubcategoryUpd = isInfantilUpd ? 'Moda Infantil' : (updated.subcategory || 'General');
+
         const supabasePayload: any = {
-          sku: updated.sku || `EB-GEN-${Date.now().toString().slice(-4)}`,
+          sku: updated.sku || `SL-${(updated.category || 'GEN').replace(/[^a-zA-Z]/g, '').slice(0, 3).toUpperCase()}-${Date.now().toString().slice(-4)}`,
           name: updated.name,
-          category: updated.category,
-          subcategory: updated.subcategory || 'General',
+          category: dbCategoryUpd,
+          subcategory: dbSubcategoryUpd,
           brand: updated.brand || 'EBNA Luxury Collection',
           description: updated.description || '',
           price: updated.price,
@@ -199,7 +225,7 @@ export function useAdminProducts() {
           is_hidden: updated.is_hidden || false,
         };
 
-        if (updated.id && updated.id.length === 36) {
+        if (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) {
           supabasePayload.id = updated.id;
         }
         if (updated.slug) {

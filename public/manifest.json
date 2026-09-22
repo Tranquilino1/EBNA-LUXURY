@@ -1,0 +1,41 @@
+{
+  "name": "Sindy Luxury by EBNA — Alta Costura y Moda de Lujo",
+  "short_name": "Sindy Luxury",
+  "description": "Boutique exclusiva de alta costura, vestidos de gala, conjuntos de pasarela, calzado joya y cosmética botánica en Guinea Ecuatorial con entrega en FCFA vía WhatsApp.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FAF7F2",
+  "theme_color": "#D81B60",
+  "categories": ["shopping", "lifestyle"],
+  "lang": "es",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
