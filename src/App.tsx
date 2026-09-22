@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router';
 import { AuthProvider } from './contexts/AuthContext';
 import { TrafficProvider } from './contexts/TrafficContext';
 import { CartProvider } from './contexts/CartContext';
@@ -101,6 +101,10 @@ const router = createBrowserRouter([
             ) 
           },
         ],
+      },
+      {
+        path: '*',
+        element: <Navigate to="/" replace />
       },
     ],
   },
