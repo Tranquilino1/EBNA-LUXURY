@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, getDeletedProductIds, markProductAsDeleted, isProductDeleted } from '../lib/demoData';
+import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, demoGetProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, ProductImages } from '../types';
@@ -215,32 +215,27 @@ export function useAdminProducts() {
       const prod = products.find(p => p.id === id || p.slug === id || p.sku === id);
       const targetSlug = prod?.slug || id;
 
-      // 1. Mark as deleted in persistent local tracking
-      if (prod) {
-        markProductAsDeleted(prod);
-      } else {
-        markProductAsDeleted(id);
-      }
+      // 1. Immediate local state update for instant UI feedback
+      setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug && p.sku !== id));
       demoDeleteProduct(id);
 
-      // 2. Immediate local state update
-      const deletedIds = getDeletedProductIds();
-      setProducts(prev => prev.filter(p => !isProductDeleted(p, deletedIds)));
-
-      // 3. Delete from Supabase
+      // 2. Delete from Supabase safely (only query UUID column if valid UUID format)
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+      if (isUUID) {
+        await supabase.from('products').delete().eq('id', id);
+      }
       if (targetSlug) {
         await supabase.from('products').delete().eq('slug', targetSlug);
       }
-      if (id) {
-        await supabase.from('products').delete().eq('id', id);
-      }
 
+      // 3. Notify all devices and tabs
       notifyCatalogChange('delete', { id, slug: targetSlug });
       await fetchProducts();
     } catch (err) {
       console.error('Error deleting product:', err);
-      const deletedIds = getDeletedProductIds();
-      setProducts(prev => prev.filter(p => !isProductDeleted(p, deletedIds)));
+      const prod = products.find(p => p.id === id || p.slug === id || p.sku === id);
+      const targetSlug = prod?.slug || id;
+      setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug && p.sku !== id));
     }
   };
 

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
 import { Loader } from '../components/ui/Loader';
-import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck } from 'lucide-react';
+import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2 } from 'lucide-react';
+import { notifyCatalogChange } from '../lib/broadcast';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
@@ -22,6 +23,33 @@ export function AdminDashboard() {
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'TODOS'>('TODOS');
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncSuccess, setSyncSuccess] = useState(false);
+
+  const handleGlobalSync = async () => {
+    setIsSyncing(true);
+    try {
+      notifyCatalogChange('sync_all');
+      await refetch();
+      setSyncSuccess(true);
+      setTimeout(() => setSyncSuccess(false), 3000);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handlePurgeLocalCache = () => {
+    if (confirm('¿Deseas purgar la memoria local de este navegador y forzar actualización?')) {
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+        if ('caches' in window) {
+          caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+        }
+      } catch (e) {}
+      window.location.reload();
+    }
+  };
 
   const activeProducts = products.filter(p => p.in_stock).length;
   const totalInventoryValue = products.reduce((acc, p) => acc + (p.in_stock ? p.price : 0), 0);
@@ -142,6 +170,46 @@ export function AdminDashboard() {
       {/* TAB 1: INVENTORY MANAGEMENT */}
       {activeTab === 'inventory' && (
         <div>
+          {/* Universal Real-Time Sync & Database Health Card */}
+          <div style={{ background: 'linear-gradient(135deg, rgba(216, 27, 96, 0.05), rgba(37, 99, 235, 0.05))', border: '1px solid var(--color-glass-border)', borderRadius: '18px', padding: '1.2rem 1.6rem', marginBottom: '1.8rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ background: '#10b981', color: 'white', padding: '8px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Database size={20} />
+              </div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <h4 style={{ margin: 0, fontSize: '0.98rem', fontWeight: 700, color: '#1e293b' }}>Base de Datos Nube (Supabase Real-Time)</h4>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(16, 185, 129, 0.12)', color: '#059669', fontSize: '0.72rem', fontWeight: 700, padding: '2px 8px', borderRadius: '999px' }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span> En Vivo
+                  </span>
+                </div>
+                <p style={{ margin: '3px 0 0 0', fontSize: '0.82rem', color: '#64748b' }}>
+                  {products.length} productos activos en tiempo real para todos los clientes (Móvil & PC).
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={handleGlobalSync}
+                disabled={isSyncing}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.55rem 1.1rem', borderRadius: '12px', background: '#D81B60', color: 'white', border: 'none', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease', opacity: isSyncing ? 0.7 : 1 }}
+              >
+                {syncSuccess ? <><CheckCircle2 size={16} /> ¡Sincronizado!</> : <><RefreshCw size={16} className={isSyncing ? 'animate-spin' : ''} /> Forzar Sincronización Global</>}
+              </button>
+
+              <button
+                type="button"
+                onClick={handlePurgeLocalCache}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '0.55rem 1rem', borderRadius: '12px', background: 'white', color: '#64748b', border: '1px solid #cbd5e1', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer' }}
+                title="Borrar memoria local y recargar"
+              >
+                Purgar Caché Local
+              </button>
+            </div>
+          </div>
+
           {/* Quick Metrics Bar */}
           <div className="admin-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.2rem', marginBottom: '2rem' }}>
             <div className="stat-card glass-panel" style={{ background: 'white', padding: '1.2rem 1.5rem', borderRadius: '16px', border: '1px solid var(--color-glass-border)' }}>
