@@ -38,8 +38,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     selectedSize?: string,
     selectedColor?: string
   ) => {
-    const size = selectedSize || product.sizes?.[0] || 'Standard';
-    const color = selectedColor || product.colors?.[0] || 'Original';
+    const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product.category || '');
+    const isAccessory = product.category === 'BOLSOS_ACCESORIOS';
+    const defaultSize = isCosmetic 
+      ? (product.details?.volume || product.sizes?.[0] || 'Formato Estándar')
+      : isAccessory
+      ? (product.sizes?.[0] || 'Talla Única')
+      : (product.sizes?.[0] || 'M');
+    const size = selectedSize || defaultSize;
+    const color = selectedColor || product.colors?.[0] || (isCosmetic ? 'Fórmula Original' : 'Tono Único');
     const cartItemId = `${product.id}-${size}-${color}`;
 
     setCartItems(prev => {

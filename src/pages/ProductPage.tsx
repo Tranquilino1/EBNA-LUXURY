@@ -26,7 +26,7 @@ export function ProductPage() {
     if (isCosmetic) {
       if (product.details?.volume) return [product.details.volume];
       const validFormats = (product.sizes || []).filter(s => !['S', 'M', 'L', 'XL', 'XS'].includes(s));
-      return validFormats;
+      return validFormats.length > 0 ? validFormats : ['Formato Estándar'];
     }
     if (isAccessory) {
       if (product.sizes && product.sizes.length > 0 && !['S', 'M', 'L', 'XL'].includes(product.sizes[0])) {

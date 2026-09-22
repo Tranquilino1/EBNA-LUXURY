@@ -35,9 +35,13 @@ export const CartDrawer: React.FC = () => {
     cartItems.forEach((item, index) => {
       recordProductOrder(item.product.id);
       const itemSubtotal = (item.product.priceFCFA || item.product.price || 0) * item.quantity;
+      const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(item.product.category || '');
+      const isFootwear = item.product.category === 'CALZADO';
+      const sizeLabel = isCosmetic ? 'Presentación' : isFootwear ? 'Talla EU' : 'Talla';
+      const colorText = isCosmetic || !item.selectedColor || item.selectedColor === 'Original' ? '' : ` | Color: ${item.selectedColor}`;
       itemsListText += `\n${index + 1}. *${item.product.name}*
    • Cantidad: ${item.quantity} unidad(es)
-   • Talla: ${item.selectedSize} | Color: ${item.selectedColor}
+   • ${sizeLabel}: ${item.selectedSize}${colorText}
    • Subtotal: ${formatPrice(itemSubtotal)}\n`;
     });
 
@@ -125,11 +129,22 @@ ${paymentMethod === 'muni' ? '📌 Comprobante/Giro de Muni Dinero (+240 555 439
                       <div className="cart-item-details">
                         <h4 className="cart-item-name" title={item.product.name}>{item.product.name}</h4>
                         
-                        <div className="cart-item-options">
-                          <span>Talla: <strong>{item.selectedSize}</strong></span>
-                          <span>•</span>
-                          <span>Color: <strong>{item.selectedColor}</strong></span>
-                        </div>
+                        {(() => {
+                          const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(item.product.category || '');
+                          const isFootwear = item.product.category === 'CALZADO';
+                          const sizeLabel = isCosmetic ? 'Formato' : isFootwear ? 'Talla EU' : 'Talla';
+                          return (
+                            <div className="cart-item-options">
+                              <span>{sizeLabel}: <strong>{item.selectedSize}</strong></span>
+                              {!isCosmetic && item.selectedColor && item.selectedColor !== 'Original' && (
+                                <>
+                                  <span>•</span>
+                                  <span>Color: <strong>{item.selectedColor}</strong></span>
+                                </>
+                              )}
+                            </div>
+                          );
+                        })()}
 
                         <div className="cart-item-price-row">
                           <span className="cart-item-unit-price">{formatPrice(priceVal)} c/u</span>
