@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { ShoppingBag, Flame, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 import type { Product } from '../../types';
@@ -16,8 +16,8 @@ interface ProductCardProps {
   index?: number;
 }
 
-// Inline fallback SVG placeholder when image fails to load
-const FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" fill="none"><rect width="400" height="400" fill="%23FDF2F4"/><circle cx="200" cy="180" r="60" fill="%23D81B60" opacity="0.15"/><path d="M170 170L230 230M230 170L170 230" stroke="%23D81B60" stroke-width="6" stroke-linecap="round"/><text x="50%" y="310" text-anchor="middle" fill="%23D81B60" font-family="sans-serif" font-size="20" font-weight="bold">EBNA LUXURY</text></svg>`;
+// Inline luxury SVG placeholder when image is loading or unavailable
+const FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" fill="none"><defs><linearGradient id="bg" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse"><stop stop-color="%23FFF7F9"/><stop offset="1" stop-color="%23FCE4EC"/></linearGradient><linearGradient id="gold" x1="160" y1="140" x2="240" y2="240" gradientUnits="userSpaceOnUse"><stop stop-color="%23D81B60"/><stop offset="1" stop-color="%23C2185B"/></linearGradient></defs><rect width="400" height="400" fill="url(%23bg)"/><circle cx="200" cy="180" r="64" fill="%23D81B60" fill-opacity="0.08"/><path d="M165 205L175 160L200 185L225 160L235 205H165Z" fill="url(%23gold)"/><circle cx="175" cy="155" r="4" fill="%23D81B60"/><circle cx="200" cy="180" r="4" fill="%23D81B60"/><circle cx="225" cy="155" r="4" fill="%23D81B60"/><text x="50%" y="268" text-anchor="middle" fill="%231E293B" font-family="serif" font-size="15" letter-spacing="3" font-weight="600">SINDY LUXURY</text><text x="50%" y="292" text-anchor="middle" fill="%23D81B60" font-family="sans-serif" font-size="11" letter-spacing="2" font-weight="700">HAUTE COUTURE</text></svg>`;
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
   const navigate = useNavigate();
@@ -34,9 +34,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const isSelected = selectedIds.has(product.id);
 
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imgSrc, setImgSrc] = useState<string>(() => {
-    return product.images?.primary || (Array.isArray(product.images) ? product.images[0] : '/icons/ebna-logo.png');
-  });
+  const resolveInitialImg = () => {
+    return product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : '/icons/ebna-logo.png'));
+  };
+  const [imgSrc, setImgSrc] = useState<string>(resolveInitialImg);
+
+  useEffect(() => {
+    const nextImg = resolveInitialImg();
+    setImgSrc(nextImg || '/icons/ebna-logo.png');
+    setImageLoaded(false);
+  }, [product.images]);
 
   const ordersCount = getProductOrdersCount(product);
   const priceVal = product.priceFCFA || product.price || 0;
@@ -93,7 +100,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           decoding="async"
           onLoad={() => setImageLoaded(true)}
           onError={() => {
-            setImgSrc(FALLBACK_SVG);
+            const gallery = product.images?.gallery;
+            if (Array.isArray(gallery) && gallery.length > 1 && imgSrc !== gallery[1] && gallery[1]) {
+              setImgSrc(gallery[1]);
+            } else if (imgSrc !== FALLBACK_SVG) {
+              setImgSrc(FALLBACK_SVG);
+            }
             setImageLoaded(true);
           }}
         />

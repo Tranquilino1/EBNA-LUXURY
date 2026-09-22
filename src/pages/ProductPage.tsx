@@ -17,7 +17,18 @@ export function ProductPage() {
   const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
   const productDetailRef = useRef<HTMLDivElement>(null);
   
-  const product = products.find(p => p.slug === slug);
+  const product = useMemo(() => {
+    if (!slug) return undefined;
+    const clean = slug.trim().toLowerCase();
+    return products.find(p => 
+      p.slug === slug || 
+      p.id === slug || 
+      p.sku === slug || 
+      p.slug?.toLowerCase() === clean ||
+      p.id?.toLowerCase() === clean ||
+      p.sku?.toLowerCase() === clean
+    );
+  }, [products, slug]);
 
   // Smoothly center the product details and description in the viewport on navigation
   useEffect(() => {
@@ -119,7 +130,59 @@ export function ProductPage() {
 
   if (!product) {
     if (loading) return <Loader fullScreen message="Cargando detalles del producto..." />;
-    return <div className="not-found" style={{ padding: '4rem', textAlign: 'center' }}>Producto no encontrado</div>;
+    return (
+      <div className="product-not-found-page luxury-container" style={{ paddingTop: '9rem', paddingBottom: '6rem', textAlign: 'center' }}>
+        <div className="glass-panel" style={{ maxWidth: '560px', margin: '0 auto', padding: '3rem 2rem', borderRadius: '24px', border: '1px solid var(--border-subtle)', background: 'var(--canvas-elevated)' }}>
+          <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'rgba(216, 27, 96, 0.1)', color: 'var(--brand-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
+            <ShoppingBag size={32} />
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.8rem', color: 'var(--text-primary)', marginBottom: '0.8rem' }}>
+            Prenda o Artículo No Disponible
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+            El producto solicitado no se encuentra en el catálogo activo o su enlace ha sido actualizado. Puedes explorar todas nuestras colecciones de gala o consultarnos directamente.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link 
+              to="/" 
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '0.85rem 1.8rem',
+                borderRadius: '999px',
+                background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+                color: 'white',
+                fontWeight: 700,
+                textDecoration: 'none',
+                boxShadow: '0 4px 15px rgba(216, 27, 96, 0.3)'
+              }}
+            >
+              <ArrowLeft size={18} /> Volver a la Boutique
+            </Link>
+            <a 
+              href="https://wa.me/240222633687?text=Hola%20Sindy%20Luxury,%20busco%20informaci%C3%B3n%20sobre%20un%20producto"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '0.85rem 1.6rem',
+                borderRadius: '999px',
+                background: 'rgba(37, 211, 102, 0.12)',
+                color: '#16a34a',
+                border: '1.5px solid rgba(37, 211, 102, 0.4)',
+                fontWeight: 700,
+                textDecoration: 'none'
+              }}
+            >
+              <Phone size={18} /> Consultar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const secondaryPhone = '+240 555 439 904';
@@ -277,7 +340,12 @@ export function ProductPage() {
                   }}
                   title={`Ver fotografía ${i + 1}`}
                 >
-                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+                  <img 
+                    src={img} 
+                    alt="" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} 
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo.png'; }}
+                  />
                 </button>
               ))}
             </div>

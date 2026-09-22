@@ -5610,12 +5610,49 @@ export function demoAddProduct(productData: Partial<Product>): Product {
 
 export function demoUpdateProduct(id: string, updates: Partial<Product>): Product | null {
   const list = demoGetProducts();
-  const index = list.findIndex(p => p.id === id || p.slug === id);
-  if (index === -1) return null;
+  const cleanId = (id || '').trim().toLowerCase();
+  const index = list.findIndex(p => 
+    p.id === id || 
+    p.slug === id || 
+    (p.sku && p.sku === id) ||
+    (p.id && p.id.toLowerCase() === cleanId) ||
+    (p.slug && p.slug.toLowerCase() === cleanId) ||
+    (updates.id && p.id === updates.id) ||
+    (updates.slug && p.slug === updates.slug) ||
+    (updates.sku && p.sku && p.sku === updates.sku)
+  );
+
+  if (index === -1) {
+    const fallbackProduct: Product = {
+      id: updates.id || id,
+      sku: updates.sku || `SL-MOD-${Date.now().toString().slice(-4)}`,
+      slug: updates.slug || (updates.name ? updates.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : id),
+      name: updates.name || 'Producto Actualizado',
+      category: updates.category || 'MODA_MUJER',
+      description: updates.description || '',
+      price: updates.price || updates.priceFCFA || 0,
+      priceFCFA: updates.priceFCFA || updates.price || 0,
+      in_stock: updates.in_stock !== undefined ? updates.in_stock : true,
+      inStock: updates.in_stock !== undefined ? updates.in_stock : true,
+      is_hidden: updates.is_hidden || false,
+      images: updates.images || { primary: '/icons/ebna-logo.png', gallery: ['/icons/ebna-logo.png'] },
+      colors: updates.colors || ['Blanco', 'Negro'],
+      sizes: updates.sizes || ['S', 'M', 'L'],
+      updated_at: new Date().toISOString(),
+      ...updates
+    } as Product;
+    const updatedList = [fallbackProduct, ...list];
+    demoSaveProducts(updatedList);
+    notifyCatalogChange('update', fallbackProduct);
+    return fallbackProduct;
+  }
 
   const updatedProduct = {
     ...list[index],
     ...updates,
+    id: list[index].id || updates.id || id,
+    in_stock: updates.in_stock !== undefined ? updates.in_stock : (list[index].in_stock ?? true),
+    inStock: updates.in_stock !== undefined ? updates.in_stock : (list[index].inStock ?? true),
     updated_at: new Date().toISOString(),
   };
 

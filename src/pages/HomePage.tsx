@@ -159,6 +159,7 @@ export function HomePage() {
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo.png'; }}
                 />
                 <div className="tilt-info">
                   <span className="tilt-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>

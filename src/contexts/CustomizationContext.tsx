@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { SiteCustomizationSettings } from '../types';
+import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
 
 export const isDateInChristmasSeason = (): boolean => {
   const now = new Date();
@@ -80,12 +81,28 @@ export const CustomizationProvider: React.FC<{ children: React.ReactNode }> = ({
     root.setAttribute('data-christmas', isChristmasActive ? 'true' : 'false');
   }, [settings, isChristmasActive]);
 
+  // Synchronize across tabs in real-time
+  useEffect(() => {
+    const unsub = subscribeToCatalogChanges((event) => {
+      if (event.action === 'customization_update' || event.action === 'storage_change') {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(saved) });
+          }
+        } catch (e) {}
+      }
+    });
+    return unsub;
+  }, []);
+
   const updateSettings = (newSettings: Partial<SiteCustomizationSettings>) => {
     setSettings(prev => {
       const updated = { ...prev, ...newSettings };
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       } catch (e) {}
+      notifyCatalogChange('customization_update', updated);
       return updated;
     });
   };

@@ -12,15 +12,12 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    // 1. Check localStorage
+    // 1. Check explicit user preference in localStorage
     const saved = localStorage.getItem('ebna_theme');
-    if (saved === 'light' || saved === 'dark') {
-      return saved;
-    }
-    // 2. Check system preference
-    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (saved === 'dark') {
       return 'dark';
     }
+    // 2. Default is strictly LIGHT theme (dark is secondary)
     return 'light';
   });
 

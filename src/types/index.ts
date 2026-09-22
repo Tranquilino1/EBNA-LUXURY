@@ -130,10 +130,12 @@ export interface SiteCustomizationSettings {
   animationPreset?: string;
 
   // Fashion Cinema & Promotional Video Settings
+  videoType?: 'youtube' | 'mp4' | 'svg_animated';
   videoUrl?: string;
   videoPoster?: string;
   videoQuality?: '4K' | '1080p' | '720p' | 'auto';
   videoAudioDefault?: boolean;
   videoTitle?: string;
   videoSubtitle?: string;
+  videoSvgPreset?: 'luxury_runway' | 'golden_glamour' | 'haute_couture_neon';
 }

@@ -37,8 +37,12 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
     // 3. Standard Meta Tags
     setMeta('description', description);
-    setMeta('keywords', 'EBNA Luxury, EBNA, Moda, Perfumes, Cosmética, Guinea Ecuatorial, Malabo, Bata, FCFA, XAF');
-    setMeta('robots', 'index, follow');
+    setMeta('keywords', 'Sindy Luxury, EBNA Luxury, Moda Guinea Ecuatorial, Vestidos de fiesta Malabo, Ropa Bata, Alta Costura Malabo, Cosmética Malabo, FCFA, XAF');
+    setMeta('robots', 'index, follow, max-image-preview:large');
+    setMeta('geo.region', 'GQ');
+    setMeta('geo.placename', 'Malabo, Guinea Ecuatorial');
+    setMeta('geo.position', '3.7504;8.7371');
+    setMeta('ICBM', '3.7504, 8.7371');
 
     // 4. OpenGraph Tags
     const primaryImg = product ? (product.images?.primary || (Array.isArray(product.images) ? product.images[0] : ogImage)) : ogImage;
