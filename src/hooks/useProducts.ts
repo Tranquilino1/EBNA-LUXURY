@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoGetProducts } from '../lib/demoData';
+import { demoGetProducts, demoSaveProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
@@ -31,7 +31,7 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
       if (!dbError && remoteProducts && remoteProducts.length > 0) {
         finalList = remoteProducts.map((item: any) => {
-          const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
+          const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : (typeof item.images === 'string' ? item.images : '/icons/ebna-logo.png'));
           const resolvedCategory = (item.subcategory === 'Moda Infantil' || item.category === 'MODA_INFANTIL')
             ? 'MODA_INFANTIL'
             : (item.category || 'MODA_MUJER');
@@ -45,18 +45,19 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
             category: resolvedCategory,
             subcategory: item.subcategory || 'General',
             priceFCFA: item.price_fcfa || item.price,
-            price: item.price,
+            price: item.price_fcfa || item.price,
             inStock: item.in_stock !== undefined ? item.in_stock : true,
             in_stock: item.in_stock !== undefined ? item.in_stock : true,
             is_hidden: item.is_hidden || false,
             description: item.description || '',
-            images: { primary: primaryImg, gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]) },
+            images: { primary: primaryImg, gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]), 0: primaryImg },
             colors: item.colors || ['Blanco', 'Negro'],
             sizes: item.sizes || ['S', 'M', 'L'],
             created_at: item.created_at,
             updated_at: item.updated_at,
           };
         });
+        demoSaveProducts(finalList);
       } else {
         // Resilient fallback to catalog products if Supabase table is empty or RLS-restricted
         finalList = demoGetProducts();

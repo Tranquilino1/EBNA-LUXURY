@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, demoGetProducts } from '../lib/demoData';
+import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, demoGetProducts, demoSaveProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
 import type { Product, ProductImages } from '../types';
@@ -48,7 +48,7 @@ export function useAdminProducts() {
 
       if (!error && dbProducts && dbProducts.length > 0) {
         const mappedRemote: Product[] = dbProducts.map((item: any) => {
-          const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : '/icons/ebna-logo.png');
+          const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : (typeof item.images === 'string' ? item.images : '/icons/ebna-logo.png'));
           const resolvedCategory = (item.subcategory === 'Moda Infantil' || item.category === 'MODA_INFANTIL')
             ? 'MODA_INFANTIL'
             : (item.category || 'MODA_MUJER');
@@ -61,14 +61,15 @@ export function useAdminProducts() {
             subcategory: item.subcategory || 'General',
             brand: item.brand || 'EBNA Luxury Collection',
             priceFCFA: item.price_fcfa || item.price,
-            price: item.price,
+            price: item.price_fcfa || item.price,
             inStock: item.in_stock !== undefined ? item.in_stock : true,
             in_stock: item.in_stock !== undefined ? item.in_stock : true,
             is_hidden: item.is_hidden || false,
             description: item.description || '',
             images: {
               primary: primaryImg,
-              gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg])
+              gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]),
+              0: primaryImg
             },
             colors: item.colors || ['Blanco', 'Negro'],
             sizes: item.sizes || ['S', 'M', 'L'],
@@ -77,6 +78,7 @@ export function useAdminProducts() {
             updated_at: item.updated_at,
           };
         });
+        demoSaveProducts(mappedRemote);
         setProducts(mappedRemote);
       } else {
         setProducts(demoGetProducts());
@@ -269,24 +271,30 @@ export function useAdminProducts() {
       if (updated.sku) supabasePayload.sku = updated.sku;
       if (updated.slug) supabasePayload.slug = updated.slug;
       if (updated.images) {
-        supabasePayload.images = {
-          primary: updated.images.primary,
-          gallery: updated.images.gallery || [updated.images.primary]
-        };
+        const prim = updated.images.primary || (Array.isArray(updated.images) ? updated.images[0] : (typeof updated.images === 'string' ? updated.images : undefined));
+        if (prim) {
+          supabasePayload.images = {
+            primary: prim,
+            gallery: (Array.isArray(updated.images.gallery) && updated.images.gallery.length > 0) ? updated.images.gallery : [prim]
+          };
+        }
       }
       if (updated.colors) supabasePayload.colors = updated.colors;
       if (updated.sizes) supabasePayload.sizes = updated.sizes;
 
       // 3. Direct update in Supabase (by ID or Slug)
-      const isUUID = updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id);
+      const isUUID = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ||
+                     (id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id));
+      const targetIdToUse = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ? updated.id : id;
+
       let updateQuery = supabase.from('products').update(supabasePayload);
 
       if (isUUID) {
-        updateQuery = updateQuery.eq('id', updated.id);
+        updateQuery = updateQuery.eq('id', targetIdToUse);
       } else if (updated.slug) {
         updateQuery = updateQuery.eq('slug', updated.slug);
       } else {
-        updateQuery = updateQuery.eq('id', id);
+        updateQuery = updateQuery.eq('id', targetIdToUse);
       }
 
       const { data: updateRes, error: updateErr } = await updateQuery.select();

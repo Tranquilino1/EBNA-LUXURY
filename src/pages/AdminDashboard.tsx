@@ -111,16 +111,20 @@ export function AdminDashboard() {
   };
 
   const handleSave = async (productData: Partial<Product>, imageFile?: File) => {
+    const targetId = productData.id || selectedProduct?.id;
     try {
-      if (selectedProduct) {
+      if (targetId) {
         setToastInfo({ message: '✓ Cambios aplicados y sincronizados en Supabase', type: 'success' });
-        await updateProduct(selectedProduct.id, productData, imageFile);
+        await updateProduct(targetId, productData, imageFile);
       } else {
         setToastInfo({ message: '✓ Nuevo producto creado e insertado en Supabase', type: 'success' });
         await addProduct(productData, imageFile);
       }
+      setIsFormOpen(false);
+      setSelectedProduct(null);
     } catch (err: any) {
       setToastInfo({ message: `Aviso de sincronización: ${err.message || err}`, type: 'info' });
+      throw err;
     }
   };
 
@@ -495,7 +499,12 @@ export function AdminDashboard() {
                             />
                           </td>
                           <td style={{ padding: '0.8rem 1rem' }}>
-                            <img src={product.images?.[0] || '/icons/ebna-logo.png'} alt={product.name} style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--color-glass-border)' }} />
+                            <img 
+                              src={product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (typeof product.images === 'string' ? product.images : '/icons/ebna-logo.png'))} 
+                              alt={product.name} 
+                              style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--color-glass-border)' }} 
+                              onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo.png'; }}
+                            />
                           </td>
                           <td style={{ padding: '0.8rem 1rem', fontWeight: 600 }}>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -610,9 +619,10 @@ export function AdminDashboard() {
                           />
                         </div>
                         <img 
-                          src={product.images?.[0] || '/icons/ebna-logo.png'} 
+                          src={product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (typeof product.images === 'string' ? product.images : '/icons/ebna-logo.png'))} 
                           alt={product.name} 
                           style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '10px', border: '1px solid var(--color-glass-border)' }} 
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo.png'; }}
                         />
                         <div style={{ flex: 1 }}>
                           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#1E293B', margin: '0 0 4px 0' }}>{product.name}</h4>

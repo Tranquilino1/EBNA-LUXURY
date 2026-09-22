@@ -25,7 +25,8 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
   
   const [imageTab, setImageTab] = useState<'pinterest' | 'file' | 'url'>('pinterest');
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>(product?.images?.[0] || '');
+  const initialImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : (typeof product?.images === 'string' ? product.images : ''));
+  const [imagePreview, setImagePreview] = useState<string>(initialImg || '');
   const [customUrl, setCustomUrl] = useState<string>('');
   
   const [loading, setLoading] = useState(false);
@@ -81,7 +82,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
 
       const generatedSlug = formData.slug.trim() || formData.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
-      const finalImageUrl = imagePreview || '/icons/ebna-logo.png';
+      const finalImageUrl = imagePreview || initialImg || product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '') || '/icons/ebna-logo.png';
 
       const parsedSizes = formData.sizes.split(',').map(s => s.trim()).filter(Boolean);
       const parsedColors = formData.colors.split(',').map(c => c.trim()).filter(Boolean);
@@ -92,14 +93,15 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
         category: formData.category as any,
         description: formData.description.trim(),
         price: finalPrice,
+        priceFCFA: finalPrice,
         in_stock: formData.in_stock,
+        inStock: formData.in_stock,
         is_hidden: formData.is_hidden,
         sizes: parsedSizes.length > 0 ? parsedSizes : ['S', 'M', 'L', 'XL'],
         colors: parsedColors.length > 0 ? parsedColors : ['Blanco', 'Negro', 'Rojo'],
         images: {
           primary: finalImageUrl,
           gallery: [finalImageUrl],
-          0: finalImageUrl,
         },
       };
 
@@ -109,8 +111,8 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
       }
 
       setIsDirty(false);
-      onClose();
       await onSave(productPayload, imageFile || undefined);
+      onClose();
     } catch (err: any) {
       setError(err.message || 'Error al guardar el producto');
     } finally {
