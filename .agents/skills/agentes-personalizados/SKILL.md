@@ -4,7 +4,7 @@ description: >-
   Guía completa y generador de agentes personalizados (subagentes) a nivel de proyecto en Antigravity.
   Enseña dónde se almacenan (.agents/agents/<nombre>/agent.json), la especificación de campos JSON
   (systemPromptSections, toolNames, systemPromptConfig), cómo se invocan vía invoke_subagent o define_subagent,
-  y cómo orquestar equipos de agentes senior especializados para auditoría de catálogo, UI/UX, SEO y curación de imágenes.
+  y cómo orquestar equipos de desarrollo web estructurados (Orquestador, Frontend, Backend y QA).
 ---
 
 # Habilidad: Agentes Personalizados (Custom Agents) en Antigravity
@@ -13,62 +13,88 @@ Esta habilidad documenta y estandariza la creación, configuración, almacenamie
 
 ---
 
-## 1. Arquitectura y Ubicación de Archivos
+## 1. Arquitectura del Equipo de Desarrollo Web
 
-Los agentes personalizados se definen de manera modular y se almacenan exclusivamente a nivel de proyecto dentro del directorio `.agents/` en la raíz del repositorio:
+Para proyectos de desarrollo web sin código y flujos de trabajo profesionales, el proyecto cuenta con un equipo de 4 agentes especializados con responsabilidades estrictamente delimitadas:
 
-```text
-<project_root>/
-└── .agents/
-    ├── skills/
-    │   └── agentes-personalizados/
-    │       ├── SKILL.md                     # Esta guía maestra
-    │       ├── references/                  # Documentación extendida
-    │       └── templates/                   # Plantillas JSON reutilizables
-    └── agents/
-        ├── <nombre_agente_1>/
-        │   └── agent.json                   # Definición del agente 1
-        ├── <nombre_agente_2>/
-        │   └── agent.json                   # Definición del agente 2
-        └── catalog_curator/
-            └── agent.json                   # Auditor de catálogo y concordancia
+```mermaid
+flowchart TD
+    User["Usuario / Petición"] --> Orquestador["1. ORQUESTADOR (Lead & Delegador)"]
+    Orquestador -->|"1. Estructuras & APIs"| Backend["3. BACKEND (Lógica & Datos)"]
+    Orquestador -->|"2. Maquetación & UI"| Frontend["2. FRONTEND (Visual & Estilos)"]
+    Backend -.->|"Contratos de Datos"| Frontend
+    Frontend -->|"Código listo"| QA["4. QA (Pruebas & Auditoría)"]
+    Backend -->|"Lógica lista"| QA
+    QA -->|"Lista de Errores / Aprobación"| Orquestador
+    Orquestador -->|"Resumen Ejecutivo Consolidado"| User
 ```
 
-> [!IMPORTANT]
-> **Ámbito de Proyecto vs. Global:** Al crearse dentro de `.agents/` en la raíz del proyecto, los agentes son versionados por Git y compartidos con el equipo, sin contaminar la configuración global de la máquina (`~/.gemini/config/`).
+### Roles y Responsabilidades:
+
+| Agente | Nombre en Archivo | Misión Principal | Regla Estricta | Herramientas Clave |
+| :--- | :--- | :--- | :--- | :--- |
+| **Orquestador** | `orquestador` | Recibe la petición, la descompone en tareas, decide el orden, delega y valida. Al finalizar, resume el trabajo de todos. | **NO programa código**: solo planifica, delega y valida. | `invoke_subagent`, `send_message`, `manage_subagents`, `view_file` |
+| **Frontend** | `frontend` | Toda la interfaz y la parte visual: maquetación, estilos CSS/Tailwind, componentes React/HTML, diseño responsive y modo claro/oscuro. | **NO toca la lógica de datos**, persistencia ni APIs. | `view_file`, `replace_file_content`, `write_to_file` |
+| **Backend** | `backend` | La lógica invisible: estructura y modelos de datos, persistencia en base de datos (Supabase/PostgreSQL/localStorage), validaciones de negocio y sincronización. | **NO toca el diseño visual**, CSS ni estilos. | `view_file`, `replace_file_content`, `write_to_file`, `run_command` |
+| **QA** | `qa` | Prueba lo que hacen Frontend y Backend, ejecuta builds y linters, prueba cada funcionalidad, busca errores y devuelve la lista de fallos al Orquestador. | **NO implementa correcciones**: solo prueba y reporta. | `run_command`, `view_file`, `grep_search`, `read_url_content` |
 
 ---
 
-## 2. Estructura y Campos Obligatorios de `agent.json`
+## 2. Ubicación de Archivos en el Proyecto
 
-Cada subagente personalizado se define mediante un archivo `agent.json` con el siguiente esquema:
+Todos los agentes se almacenan exclusivamente a nivel local del proyecto dentro del directorio `.agents/` en la raíz del repositorio:
+
+```text
+c:\Users\RYESA\Documents\sindy luxury\
+└── .agents/
+    ├── skills/
+    │   └── agentes-personalizados/
+    │       ├── SKILL.md                     # Este documento maestro
+    │       ├── references/
+    │       │   └── agent_schema.md          # Especificación formal JSON Schema
+    │       └── templates/
+    │           └── agent_template.json      # Plantilla JSON base
+    └── agents/
+        ├── orquestador/
+        │   └── agent.json                   # Definición del Orquestador
+        ├── frontend/
+        │   └── agent.json                   # Definición del Frontend UI/UX
+        ├── backend/
+        │   └── agent.json                   # Definición del Backend & Datos
+        ├── qa/
+        │   └── agent.json                   # Definición de QA & Pruebas
+        └── catalog_curator/
+            └── agent.json                   # Auditor de catálogo y coherencia de productos
+```
+
+> [!IMPORTANT]
+> **Aislamiento de Proyecto:** Al residir en `.agents/` dentro del repositorio del proyecto, estos agentes quedan versionados por Git, son portables y no interfieren con la configuración global del sistema (`~/.gemini/config/`).
+
+---
+
+## 3. Esquema y Formato de `agent.json`
+
+Cada agente se define mediante un archivo `agent.json` con la siguiente estructura:
 
 ```json
 {
-  "name": "catalog_curator",
-  "description": "Agente senior especializado en auditoría y verificación de catálogo e-commerce: coherencia visual, correspondencia de fotos con descripciones y eliminación de tallas espurias en cosméticos.",
-  "hidden": true,
+  "name": "identificador_unico",
+  "description": "Descripción clara del rol y cuándo debe invocarse.",
+  "hidden": false,
   "config": {
     "customAgent": {
       "systemPromptSections": [
         {
-          "title": "Agent System Instructions",
-          "content": "Instrucciones de comportamiento, directivas de alta precisión, restricciones y estándares que el agente debe seguir obligatoriamente."
+          "title": "Título de Instrucciones",
+          "content": "Instrucciones de comportamiento, directivas y restricciones."
         }
       ],
       "toolNames": [
         "send_message",
-        "find_by_name",
-        "grep_search",
         "view_file",
-        "list_dir",
-        "read_url_content",
-        "search_web",
         "replace_file_content",
-        "multi_replace_file_content",
         "write_to_file",
-        "run_command",
-        "manage_task"
+        "run_command"
       ],
       "systemPromptConfig": {
         "includeSections": [
@@ -86,31 +112,55 @@ Cada subagente personalizado se define mediante un archivo `agent.json` con el s
 }
 ```
 
-### Detalle de Campos:
+---
 
-| Campo | Tipo | Requerido | Descripción |
-| :--- | :--- | :--- | :--- |
-| `name` | `string` | **Sí** | Identificador único del agente (solo letras minúsculas, números, guiones y guiones bajos). |
-| `description` | `string` | **Sí** | Resumen conciso del propósito del agente y cuándo debe ser seleccionado. |
-| `hidden` | `boolean` | Opcional | Si es `true`, el agente no se muestra en menús estáticos y se invoca programáticamente. |
-| `config.customAgent.systemPromptSections` | `array` | **Sí** | Lista de secciones que forman el prompt del sistema del agente (`title` y `content`). |
-| `config.customAgent.toolNames` | `array` | **Sí** | Lista explícita de herramientas a las que tiene acceso el agente (lectura, edición, comandos, mensajes). |
-| `config.customAgent.systemPromptConfig.includeSections` | `array` | **Sí** | Secciones del entorno a inyectar en el contexto del agente (`artifacts`, `skills`, `user_rules`, etc.). |
+## 4. Protocolo de Ejecución del Orquestador
+
+Cuando el usuario envía una solicitud, el **Orquestador** sigue este procedimiento riguroso:
+
+### Paso 1: Análisis y División de Tareas
+El Orquestador analiza la necesidad del usuario y la divide en tareas atómicas para Backend y Frontend.
+* *Ejemplo:* "Añadir un sistema de cupones de descuento".
+  * **Tarea Backend:** Definir interfaz `Coupon`, lista de cupones válidos y función de validación `applyCoupon(code, subtotal)`.
+  * **Tarea Frontend:** Diseñar el input de cupón en el drawer del carrito, badge de descuento aplicado y animación de feedback.
+
+### Paso 2: Delegación Secuencial
+El Orquestador invoca a los subagentes vía `invoke_subagent`:
+1. Primero invoca a **`backend`** para que cree los modelos de datos y funciones de negocio.
+2. Una vez que Backend termina, invoca a **`frontend`** pasándole el contrato de datos para que construya la UI.
+
+### Paso 3: Control de Calidad con QA
+El Orquestador invoca a **`qa`** para ejecutar:
+- `npm.cmd run build` (verificación de tipos y compilación).
+- Comprobación funcional del flujo.
+- Detección de posibles inconsistencias (ej. tallas en cremas, precios negativos o enlaces rotos).
+
+### Paso 4: Bucle de Corrección (Feedback Loop)
+Si QA reporta fallos, el Orquestador:
+1. Lee la lista de errores.
+2. Reenvía los fallos específicos a **`frontend`** o a **`backend`** vía `send_message`.
+3. Vuelve a pedir validación a **`qa`** hasta que no queden errores.
+
+### Paso 5: Resumen Ejecutivo al Usuario
+El Orquestador presenta un informe consolidado al usuario:
+- Qué planificó.
+- Qué implementó Backend.
+- Qué diseñó Frontend.
+- Qué validó QA (con confirmación del build).
+- Enlace al resultado final.
 
 ---
 
-## 3. Métodos de Invocación y Comunicación
+## 5. Ejemplos de Invocación con `invoke_subagent`
 
-### A. Invocación Estática (`invoke_subagent`)
-Cuando el agente ya está registrado o definido:
-
+### Invocar al Orquestador:
 ```json
 {
   "Subagents": [
     {
-      "TypeName": "catalog_curator",
-      "Role": "Catalog & Category Auditor",
-      "Prompt": "Audita todos los productos de las categorías COSMETICA_FACIAL, HIGIENE_CORPORAL y PERFUMERIA en src/lib/demoData.ts. Asegura que ninguna crema o jabón tenga tallas textiles (S, M, L, XL), sino volúmenes (200g, 100ml) y que las fotos concuerden con los títulos.",
+      "TypeName": "orquestador",
+      "Role": "Lead Project Orchestrator",
+      "Prompt": "Coordina al equipo (Backend, Frontend y QA) para implementar un filtro por rangos de precio en el catálogo de Sindy Luxury.",
       "Model": "inherit",
       "Workspace": "inherit"
     }
@@ -118,46 +168,47 @@ Cuando el agente ya está registrado o definido:
 }
 ```
 
-### B. Declaración Dinámica en Tiempo de Ejecución (`define_subagent`)
-Para instanciar un agente especializado al vuelo durante una conversación:
-
+### Invocar a Frontend:
 ```json
 {
-  "name": "fashion_image_scraper",
-  "description": "Agente para investigar y descargar imágenes de alta resolución de Shein, Pinterest y Zara.",
-  "system_prompt": "Eres un especialista en adquisición de activos de moda de alta resolución...",
-  "enable_write_tools": true,
-  "enable_subagent_tools": false,
-  "enable_mcp_tools": false
+  "Subagents": [
+    {
+      "TypeName": "frontend",
+      "Role": "UI Designer & Developer",
+      "Prompt": "Crea el componente visual PriceRangeSlider.tsx con estilo luxury en tonos dorados y diseño responsive para móviles. No toques la lógica de base de datos.",
+      "Model": "inherit",
+      "Workspace": "inherit"
+    }
+  ]
 }
 ```
 
-### C. Mensajería Bidireccional (`send_message`)
-Permite dialogar con el subagente mientras realiza su tarea:
-
+### Invocar a Backend:
 ```json
 {
-  "Recipient": "<conversationId_del_subagente>",
-  "Message": "Por favor prioriza los productos de belleza y cremas corporales."
+  "Subagents": [
+    {
+      "TypeName": "backend",
+      "Role": "Data & Logic Architect",
+      "Prompt": "Implementa la función de filtrado por rango de precio filterProductsByPriceRange(products, min, max) con validación de límites en src/lib/filters.ts.",
+      "Model": "inherit",
+      "Workspace": "inherit"
+    }
+  ]
 }
 ```
 
-### D. Monitoreo y Ciclo de Vida (`manage_subagents`)
-* `Action: "list"`: Comprueba el estado (`running`, `idle`, `errored`) de todos los subagentes activos.
-* `Action: "kill"`: Termina la ejecución de un subagente y libera sus recursos.
-
----
-
-## 4. Agentes Especializados para Sindy Luxury
-
-Este proyecto cuenta con los siguientes agentes diseñados para resolver los problemas del catálogo:
-
-1. **`catalog_curator`**:
-   - **Misión:** Auditar la concordancia estricta entre imagen, nombre, descripción, precio y tallas.
-   - **Regla de Oro:** **CERO tallas textiles en cosmética, jabones, cremas y perfumes**. Las cremas usan `details.volume` (`200g`, `100ml`), los calzados usan tallas europeas (`37-40`), los accesorios usan `Talla Única`, y solo la ropa usa `XS`, `M`, `XL`.
-2. **`page_builder`**:
-   - **Misión:** Refactorizar y maquetar componentes React/TSX responsivos y limpios.
-3. **`css_transformer`**:
-   - **Misión:** Aplicar el sistema de diseño de lujo (Obsidian Noir, Gold Imperial, Haute Rose).
-4. **`seo_architect`**:
-   - **Misión:** Mantener actualizados los microdatos Schema.org (`ClothingStore`, `Product`, `Offer`) para Guinea Ecuatorial.
+### Invocar a QA:
+```json
+{
+  "Subagents": [
+    {
+      "TypeName": "qa",
+      "Role": "Quality Assurance Tester",
+      "Prompt": "Ejecuta npm.cmd run build, prueba el funcionamiento del filtro de precios con valores extremos y devuelve la lista de errores encontrados si alguno falla.",
+      "Model": "inherit",
+      "Workspace": "inherit"
+    }
+  ]
+}
+```
