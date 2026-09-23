@@ -26,7 +26,8 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
   const [imageTab, setImageTab] = useState<'pinterest' | 'file' | 'url'>('pinterest');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const initialImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : (typeof product?.images === 'string' ? product.images : ''));
-  const [imagePreview, setImagePreview] = useState<string>(initialImg || '');
+  const cleanInitialImg = typeof initialImg === 'string' ? initialImg.replace(/\.jfif$/i, '.jpg') : '';
+  const [imagePreview, setImagePreview] = useState<string>(cleanInitialImg || '');
   const [customUrl, setCustomUrl] = useState<string>('');
   
   const [loading, setLoading] = useState(false);

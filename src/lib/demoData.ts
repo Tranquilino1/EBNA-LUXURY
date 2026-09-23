@@ -2287,9 +2287,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": true,
     "description": "Zapatillas deportivas con paneles de malla transpirable y suela amortiguada. Ideales para combinar con jeans o ropa deportiva urbana.",
     "images": {
-      "primary": "/products/product_1.jfif",
+      "primary": "/products/product_1.jpg",
       "gallery": [
-        "/products/product_1.jfif"
+        "/products/product_1.jpg"
       ]
     },
     "details": {
@@ -2335,9 +2335,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": true,
     "description": "Organizador protector de viaje elaborado en cuero sintético de alta resistencia con grabado de mapa mundi. Incluye ranuras para tarjetas e ID.",
     "images": {
-      "primary": "/products/product_2.jfif",
+      "primary": "/products/product_2.jpg",
       "gallery": [
-        "/products/product_2.jfif"
+        "/products/product_2.jpg"
       ]
     },
     "details": {
@@ -2377,9 +2377,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": true,
     "description": "Set de 2 piezas compuesto por top corto con capucha ajustables y pantalón acampanado elástico. Confort athleisure de alta calidad.",
     "images": {
-      "primary": "/products/product_3.jfif",
+      "primary": "/products/product_3.jpg",
       "gallery": [
-        "/products/product_3.jfif"
+        "/products/product_3.jpg"
       ]
     },
     "details": {
@@ -2424,9 +2424,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Pack familiar de jabones enriquecidos con extractos herbales purificantes y aceites vegetales. Aroma fresco y limpieza suave diaria.",
     "images": {
-      "primary": "/products/product_12.jfif",
+      "primary": "/products/product_12.jpg",
       "gallery": [
-        "/products/product_12.jfif"
+        "/products/product_12.jpg"
       ]
     },
     "details": {
@@ -2464,9 +2464,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Pack de 2 mallas de premamá con pretina alta sobre la barriga en tejido elástico transpirable. Soporte suave sin oprimir.",
     "images": {
-      "primary": "/products/product_18.jfif",
+      "primary": "/products/product_18.jpg",
       "gallery": [
-        "/products/product_18.jfif"
+        "/products/product_18.jpg"
       ]
     },
     "details": {
@@ -2509,9 +2509,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Pack de 3 gafas unisex con montura cuadrada negra ultraligera y lentes con filtro protector de luz azul para ordenadores y móviles.",
     "images": {
-      "primary": "/products/product_21.jfif",
+      "primary": "/products/product_21.jpg",
       "gallery": [
-        "/products/product_21.jfif"
+        "/products/product_21.jpg"
       ]
     },
     "details": {
@@ -2548,9 +2548,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Blazer estructurado con solapa clásica y botones carey de inspiración europea. Prenda sastre versátil para elevar cualquier atuendo.",
     "images": {
-      "primary": "/products/product_26.jfif",
+      "primary": "/products/product_26.jpg",
       "gallery": [
-        "/products/product_26.jfif"
+        "/products/product_26.jpg"
       ]
     },
     "details": {
@@ -2642,9 +2642,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Loción corporal de formato familiar formulada con extracto de avena 100% natural. 24 horas de hidratación para toda la familia.",
     "images": {
-      "primary": "/products/product_49.jfif",
+      "primary": "/products/product_49.jpg",
       "gallery": [
-        "/products/product_49.jfif"
+        "/products/product_49.jpg"
       ]
     },
     "details": {
@@ -2682,9 +2682,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Pintalabios líquido mate de alta cobertura e intensidad de color. Fórmula intransferible de larga duración hasta 16 horas de fijación.",
     "images": {
-      "primary": "/products/product_50.jfif",
+      "primary": "/products/product_50.jpg",
       "gallery": [
-        "/products/product_50.jfif"
+        "/products/product_50.jpg"
       ]
     },
     "details": {
@@ -2723,9 +2723,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Concentrado iluminador facial con vitamina C estabilizada y ácido hialurónico. Revitaliza la piel y aporta luminosidad natural todo el día.",
     "images": {
-      "primary": "/products/product_51.jfif",
+      "primary": "/products/product_51.jpg",
       "gallery": [
-        "/products/product_51.jfif"
+        "/products/product_51.jpg"
       ]
     },
     "details": {
@@ -2763,9 +2763,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón medicinal con 10% de azufre coloidal formulado para pieles con tendencia acneica. Controla el exceso de grasa y desobstruye poros.",
     "images": {
-      "primary": "/products/product_52.jfif",
+      "primary": "/products/product_52.jpg",
       "gallery": [
-        "/products/product_52.jfif"
+        "/products/product_52.jpg"
       ]
     },
     "details": {
@@ -2847,9 +2847,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Mini vestido entallado con cuello halter y espalda descubierta. Tejido satinado elástico que moldea la silueta con elegancia nocturna.",
     "images": {
-      "primary": "/products/product_54.jfif",
+      "primary": "/products/product_54.jpg",
       "gallery": [
-        "/products/product_54.jfif"
+        "/products/product_54.jpg"
       ]
     },
     "details": {
@@ -2893,9 +2893,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón aclarante corporal con aceite de zanahoria y complejo iluminador. Limpieza profunda que elimina impurezas y unifica el tono.",
     "images": {
-      "primary": "/products/product_55.jfif",
+      "primary": "/products/product_55.jpg",
       "gallery": [
-        "/products/product_55.jfif"
+        "/products/product_55.jpg"
       ]
     },
     "details": {
@@ -2933,9 +2933,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Falda larga de punto jersey suave con cintura elástica alta y drapeado fluido. Caída elegante para combinar con tops y camisas.",
     "images": {
-      "primary": "/products/product_56.jfif",
+      "primary": "/products/product_56.jpg",
       "gallery": [
-        "/products/product_56.jfif"
+        "/products/product_56.jpg"
       ]
     },
     "details": {
@@ -2978,9 +2978,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Blazer estructurado con solapa clásica y botones carey de inspiración europea. Prenda sastre versátil para elevar cualquier atuendo.",
     "images": {
-      "primary": "/products/product_58.jfif",
+      "primary": "/products/product_58.jpg",
       "gallery": [
-        "/products/product_58.jfif"
+        "/products/product_58.jpg"
       ]
     },
     "details": {
@@ -3024,9 +3024,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Vestido largo de gala confeccionado en fluido tejido satinado verde esmeralda o rojo pasión. Escote cruzado y vuelo de alta costura.",
     "images": {
-      "primary": "/products/product_60.jfif",
+      "primary": "/products/product_60.jpg",
       "gallery": [
-        "/products/product_60.jfif"
+        "/products/product_60.jpg"
       ]
     },
     "details": {
@@ -3070,9 +3070,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Zapatos de tacón alto con tiras finas cruzadas y cierre de hebilla en el tobillo. Estilo glamuroso para vestidos de fiesta y cóctel.",
     "images": {
-      "primary": "/products/product_61.jfif",
+      "primary": "/products/product_61.jpg",
       "gallery": [
-        "/products/product_61.jfif"
+        "/products/product_61.jpg"
       ]
     },
     "details": {
@@ -3118,9 +3118,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Bálsamo exfoliante de labios enriquecido con microcristales de azúcar natural y aceite de coco. Elimina pieles muertas dejando labios suaves.",
     "images": {
-      "primary": "/products/product_62.jfif",
+      "primary": "/products/product_62.jpg",
       "gallery": [
-        "/products/product_62.jfif"
+        "/products/product_62.jpg"
       ]
     },
     "details": {
@@ -3158,9 +3158,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Bálsamo exfoliante de labios enriquecido con microcristales de azúcar natural y aceite de coco. Elimina pieles muertas dejando labios suaves.",
     "images": {
-      "primary": "/products/product_63.jfif",
+      "primary": "/products/product_63.jpg",
       "gallery": [
-        "/products/product_63.jfif"
+        "/products/product_63.jpg"
       ]
     },
     "details": {
@@ -3198,9 +3198,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Bálsamo exfoliante de labios enriquecido con microcristales de azúcar natural y aceite de coco. Elimina pieles muertas dejando labios suaves.",
     "images": {
-      "primary": "/products/product_64.jfif",
+      "primary": "/products/product_64.jpg",
       "gallery": [
-        "/products/product_64.jfif"
+        "/products/product_64.jpg"
       ]
     },
     "details": {
@@ -3238,9 +3238,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Mallas de tiro alto con tecnología de modelado en glúteos y pretina ancha. Tejido elástico denso no transparente.",
     "images": {
-      "primary": "/products/product_67.jfif",
+      "primary": "/products/product_67.jpg",
       "gallery": [
-        "/products/product_67.jfif"
+        "/products/product_67.jpg"
       ]
     },
     "details": {
@@ -3283,9 +3283,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Gel de baño dermoprotector enriquecido con proteínas de leche e ingredientes hidratantes. Sensación de limpieza y confort diario.",
     "images": {
-      "primary": "/products/product_68.jfif",
+      "primary": "/products/product_68.jpg",
       "gallery": [
-        "/products/product_68.jfif"
+        "/products/product_68.jpg"
       ]
     },
     "details": {
@@ -3323,9 +3323,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Vaqueros anchos de corte holgado streetwear estilo Y2K con estampado gráfico sutil. Confeccionados en mezclilla rígida de alta calidad.",
     "images": {
-      "primary": "/products/product_69.jfif",
+      "primary": "/products/product_69.jpg",
       "gallery": [
-        "/products/product_69.jfif"
+        "/products/product_69.jpg"
       ]
     },
     "details": {
@@ -3368,9 +3368,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Sudadera de franela térmica con bolsillo canguro y capucha ajustable. Confort absoluto y aislamiento térmico suave.",
     "images": {
-      "primary": "/products/product_70.jfif",
+      "primary": "/products/product_70.jpg",
       "gallery": [
-        "/products/product_70.jfif"
+        "/products/product_70.jpg"
       ]
     },
     "details": {
@@ -3415,9 +3415,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Set de 2 piezas compuesto por top corto con capucha ajustables y pantalón acampanado elástico. Confort athleisure de alta calidad.",
     "images": {
-      "primary": "/products/product_71.jfif",
+      "primary": "/products/product_71.jpg",
       "gallery": [
-        "/products/product_71.jfif"
+        "/products/product_71.jpg"
       ]
     },
     "details": {
@@ -3462,9 +3462,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Champú dermo-protector especial para cueros cabelludos sensibles o con tendencia atópica. Limpieza ultrasuave sin sulfatos agresivos.",
     "images": {
-      "primary": "/products/product_72.jfif",
+      "primary": "/products/product_72.jpg",
       "gallery": [
-        "/products/product_72.jfif"
+        "/products/product_72.jpg"
       ]
     },
     "details": {
@@ -3502,9 +3502,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón aclarante para rostro y cuerpo con ácido kójico concentrado y cúrcuma. Ayuda a homogeneizar el tono cutáneo y combatir manchas.",
     "images": {
-      "primary": "/products/product_74.jfif",
+      "primary": "/products/product_74.jpg",
       "gallery": [
-        "/products/product_74.jfif"
+        "/products/product_74.jpg"
       ]
     },
     "details": {
@@ -3542,9 +3542,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Botines estilo Chelsea con paneles elásticos laterales y tirador posterior. Cuero sintético resistente y suela dentada antideslizante.",
     "images": {
-      "primary": "/products/product_75.jfif",
+      "primary": "/products/product_75.jpg",
       "gallery": [
-        "/products/product_75.jfif"
+        "/products/product_75.jpg"
       ]
     },
     "details": {
@@ -3589,9 +3589,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Loción corporal de formato familiar formulada con extracto de avena 100% natural. 24 horas de hidratación para toda la familia.",
     "images": {
-      "primary": "/products/product_76.jfif",
+      "primary": "/products/product_76.jpg",
       "gallery": [
-        "/products/product_76.jfif"
+        "/products/product_76.jpg"
       ]
     },
     "details": {
@@ -3629,9 +3629,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Gorro nocturno de satén de seda de doble capa con banda elástica regulable. Protege peinados, evita el encrespamiento y conserva la hidratación.",
     "images": {
-      "primary": "/products/product_78.jfif",
+      "primary": "/products/product_78.jpg",
       "gallery": [
-        "/products/product_78.jfif"
+        "/products/product_78.jpg"
       ]
     },
     "details": {
@@ -3708,9 +3708,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Pack de desodorantes en roll-on con protección antitranspirante 48h. Fórmula antimanchas blancas en ropa negra y antimanchas amarillas en ropa blanca.",
     "images": {
-      "primary": "/products/product_81.jfif",
+      "primary": "/products/product_81.jpg",
       "gallery": [
-        "/products/product_81.jfif"
+        "/products/product_81.jpg"
       ]
     },
     "details": {
@@ -3748,9 +3748,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Bermuda de algodón ligero con cintura elástica y cordón ajustable. Bolsillos laterales para un look relajado de verano.",
     "images": {
-      "primary": "/products/product_82.jfif",
+      "primary": "/products/product_82.jpg",
       "gallery": [
-        "/products/product_82.jfif"
+        "/products/product_82.jpg"
       ]
     },
     "details": {
@@ -3794,9 +3794,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Traje formal de corte sastre compuesto por chaqueta, chaleco y pantalón en tejido estructurado con raya diplomática. Elegancia pura.",
     "images": {
-      "primary": "/products/product_84.jfif",
+      "primary": "/products/product_84.jpg",
       "gallery": [
-        "/products/product_84.jfif"
+        "/products/product_84.jpg"
       ]
     },
     "details": {
@@ -3840,9 +3840,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Zapatillas deportivas urbanas icónicas en combinación bicolor rojo vino y blanco. Suela de goma amortiguada y cuero sintético de alta durabilidad.",
     "images": {
-      "primary": "/products/product_85.jfif",
+      "primary": "/products/product_85.jpg",
       "gallery": [
-        "/products/product_85.jfif"
+        "/products/product_85.jpg"
       ]
     },
     "details": {
@@ -3889,9 +3889,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón aclarante para rostro y cuerpo con ácido kójico concentrado y cúrcuma. Ayuda a homogeneizar el tono cutáneo y combatir manchas.",
     "images": {
-      "primary": "/products/product_86.jfif",
+      "primary": "/products/product_86.jpg",
       "gallery": [
-        "/products/product_86.jfif"
+        "/products/product_86.jpg"
       ]
     },
     "details": {
@@ -3929,9 +3929,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón cremoso con extracto natural de oliva e infusiones humectantes. Mantiene la piel suave e hidratada tras cada baño.",
     "images": {
-      "primary": "/products/product_90.jfif",
+      "primary": "/products/product_90.jpg",
       "gallery": [
-        "/products/product_90.jfif"
+        "/products/product_90.jpg"
       ]
     },
     "details": {
@@ -3969,9 +3969,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón cremoso con extracto natural de oliva e infusiones humectantes. Mantiene la piel suave e hidratada tras cada baño.",
     "images": {
-      "primary": "/products/product_92.jfif",
+      "primary": "/products/product_92.jpg",
       "gallery": [
-        "/products/product_92.jfif"
+        "/products/product_92.jpg"
       ]
     },
     "details": {
@@ -4009,9 +4009,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón cremoso con extracto natural de oliva e infusiones humectantes. Mantiene la piel suave e hidratada tras cada baño.",
     "images": {
-      "primary": "/products/product_93.jfif",
+      "primary": "/products/product_93.jpg",
       "gallery": [
-        "/products/product_93.jfif"
+        "/products/product_93.jpg"
       ]
     },
     "details": {
@@ -4049,9 +4049,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Gel de baño dermoprotector enriquecido con proteínas de leche e ingredientes hidratantes. Sensación de limpieza y confort diario.",
     "images": {
-      "primary": "/products/product_94.jfif",
+      "primary": "/products/product_94.jpg",
       "gallery": [
-        "/products/product_94.jfif"
+        "/products/product_94.jpg"
       ]
     },
     "details": {
@@ -4089,9 +4089,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón de lujo en forma de huevo cristalino elaborado con aceites esenciales relajantes e higienizantes. Suavidad y aroma refinado.",
     "images": {
-      "primary": "/products/product_95.jfif",
+      "primary": "/products/product_95.jpg",
       "gallery": [
-        "/products/product_95.jfif"
+        "/products/product_95.jpg"
       ]
     },
     "details": {
@@ -4129,9 +4129,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Zuecos ultraligeros de espuma Croslite con correa pivoteada en el talón. Máxima ventilación y comodidad resistente al agua para interiores y exteriores.",
     "images": {
-      "primary": "/products/product_96.jfif",
+      "primary": "/products/product_96.jpg",
       "gallery": [
-        "/products/product_96.jfif"
+        "/products/product_96.jpg"
       ]
     },
     "details": {
@@ -4179,9 +4179,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Set de 2 piezas compuesto por top corto con capucha ajustables y pantalón acampanado elástico. Confort athleisure de alta calidad.",
     "images": {
-      "primary": "/products/product_97.jfif",
+      "primary": "/products/product_97.jpg",
       "gallery": [
-        "/products/product_97.jfif"
+        "/products/product_97.jpg"
       ]
     },
     "details": {
@@ -4268,9 +4268,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Diseño clásico de motorsport en ante suave con la emblemática ola de Puma. Ajuste perfilado y suela de perfil bajo de máximo confort.",
     "images": {
-      "primary": "/products/product_100.jfif",
+      "primary": "/products/product_100.jpg",
       "gallery": [
-        "/products/product_100.jfif"
+        "/products/product_100.jpg"
       ]
     },
     "details": {
@@ -4317,9 +4317,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón aclarante para rostro y cuerpo con ácido kójico concentrado y cúrcuma. Ayuda a homogeneizar el tono cutáneo y combatir manchas.",
     "images": {
-      "primary": "/products/product_101.jfif",
+      "primary": "/products/product_101.jpg",
       "gallery": [
-        "/products/product_101.jfif"
+        "/products/product_101.jpg"
       ]
     },
     "details": {
@@ -4357,9 +4357,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón aclarante para rostro y cuerpo con ácido kójico concentrado y cúrcuma. Ayuda a homogeneizar el tono cutáneo y combatir manchas.",
     "images": {
-      "primary": "/products/product_102.jfif",
+      "primary": "/products/product_102.jpg",
       "gallery": [
-        "/products/product_102.jfif"
+        "/products/product_102.jpg"
       ]
     },
     "details": {
@@ -4476,9 +4476,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Bermuda de algodón ligero con cintura elástica y cordón ajustable. Bolsillos laterales para un look relajado de verano.",
     "images": {
-      "primary": "/products/product_107.jfif",
+      "primary": "/products/product_107.jpg",
       "gallery": [
-        "/products/product_107.jfif"
+        "/products/product_107.jpg"
       ]
     },
     "details": {
@@ -4522,9 +4522,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Crema hidratante enriquecida con extracto de cúrcuma orgánica y niacinamida. Atenúa hiperpigmentación y restaura la frescura del rostro.",
     "images": {
-      "primary": "/products/product_111.jfif",
+      "primary": "/products/product_111.jpg",
       "gallery": [
-        "/products/product_111.jfif"
+        "/products/product_111.jpg"
       ]
     },
     "details": {
@@ -4562,9 +4562,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Chaqueta ajustada deportiva de microfibra moldeadora con cremallera frontal completa y capucha. Tejido suave de efecto segunda piel.",
     "images": {
-      "primary": "/products/product_112.jfif",
+      "primary": "/products/product_112.jpg",
       "gallery": [
-        "/products/product_112.jfif"
+        "/products/product_112.jpg"
       ]
     },
     "details": {
@@ -4608,9 +4608,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Chaqueta ajustada deportiva de microfibra moldeadora con cremallera frontal completa y capucha. Tejido suave de efecto segunda piel.",
     "images": {
-      "primary": "/products/product_113.jfif",
+      "primary": "/products/product_113.jpg",
       "gallery": [
-        "/products/product_113.jfif"
+        "/products/product_113.jpg"
       ]
     },
     "details": {
@@ -4654,9 +4654,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Vestido midi de estilo vintage con estampado de lunares y escote con hombros descubiertos. Falda de vuelo ligera y fresca.",
     "images": {
-      "primary": "/products/product_115.jfif",
+      "primary": "/products/product_115.jpg",
       "gallery": [
-        "/products/product_115.jfif"
+        "/products/product_115.jpg"
       ]
     },
     "details": {
@@ -4701,9 +4701,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Tratamiento dermatológico despigmentante de alta eficacia. Aclara manchas oscuras y protege contra la radiación solar con filtro SPF50+.",
     "images": {
-      "primary": "/products/product_117.jfif",
+      "primary": "/products/product_117.jpg",
       "gallery": [
-        "/products/product_117.jfif"
+        "/products/product_117.jpg"
       ]
     },
     "details": {
@@ -4740,9 +4740,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Tratamiento dermatológico despigmentante de alta eficacia. Aclara manchas oscuras y protege contra la radiación solar con filtro SPF50+.",
     "images": {
-      "primary": "/products/product_118.jfif",
+      "primary": "/products/product_118.jpg",
       "gallery": [
-        "/products/product_118.jfif"
+        "/products/product_118.jpg"
       ]
     },
     "details": {
@@ -4779,9 +4779,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Jabón aclarante para rostro y cuerpo con ácido kójico concentrado y cúrcuma. Ayuda a homogeneizar el tono cutáneo y combatir manchas.",
     "images": {
-      "primary": "/products/product_119.jfif",
+      "primary": "/products/product_119.jpg",
       "gallery": [
-        "/products/product_119.jfif"
+        "/products/product_119.jpg"
       ]
     },
     "details": {
@@ -4819,9 +4819,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Scrub corporal regenerador con sal marina, extracto de cúrcuma y vitamina E. Remueve células muertas dejando la piel sedosa e hidratada.",
     "images": {
-      "primary": "/products/product_120.jfif",
+      "primary": "/products/product_120.jpg",
       "gallery": [
-        "/products/product_120.jfif"
+        "/products/product_120.jpg"
       ]
     },
     "details": {
@@ -4859,9 +4859,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Pastillas de jabón enriquecidas con Niacinamida (Vitamina B3) y microgotas de Vaselina Pura. Aportan brillo y nutrición profunda.",
     "images": {
-      "primary": "/products/product_121.jfif",
+      "primary": "/products/product_121.jpg",
       "gallery": [
-        "/products/product_121.jfif"
+        "/products/product_121.jpg"
       ]
     },
     "details": {
@@ -4899,9 +4899,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Pastillas de jabón enriquecidas con Niacinamida (Vitamina B3) y microgotas de Vaselina Pura. Aportan brillo y nutrición profunda.",
     "images": {
-      "primary": "/products/product_122.jfif",
+      "primary": "/products/product_122.jpg",
       "gallery": [
-        "/products/product_122.jfif"
+        "/products/product_122.jpg"
       ]
     },
     "details": {
@@ -4939,9 +4939,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Protector labial de vaselina pura no grasa. Alivia labios secos o agrietados proporcionando una barrera humectante inmediata.",
     "images": {
-      "primary": "/products/product_123.jfif",
+      "primary": "/products/product_123.jpg",
       "gallery": [
-        "/products/product_123.jfif"
+        "/products/product_123.jpg"
       ]
     },
     "details": {
@@ -5020,9 +5020,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Vestido largo de gala confeccionado en fluido tejido satinado verde esmeralda o rojo pasión. Escote cruzado y vuelo de alta costura.",
     "images": {
-      "primary": "/products/product_126.jfif",
+      "primary": "/products/product_126.jpg",
       "gallery": [
-        "/products/product_126.jfif"
+        "/products/product_126.jpg"
       ]
     },
     "details": {
@@ -5066,9 +5066,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Vestido largo de gala confeccionado en fluido tejido satinado verde esmeralda o rojo pasión. Escote cruzado y vuelo de alta costura.",
     "images": {
-      "primary": "/products/product_127.jfif",
+      "primary": "/products/product_127.jpg",
       "gallery": [
-        "/products/product_127.jfif"
+        "/products/product_127.jpg"
       ]
     },
     "details": {
@@ -5112,9 +5112,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Scrub corporal regenerador con sal marina, extracto de cúrcuma y vitamina E. Remueve células muertas dejando la piel sedosa e hidratada.",
     "images": {
-      "primary": "/products/product_128.jfif",
+      "primary": "/products/product_128.jpg",
       "gallery": [
-        "/products/product_128.jfif"
+        "/products/product_128.jpg"
       ]
     },
     "details": {
@@ -5152,9 +5152,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Calzado plano de malla calada con hebilla ajustable sobre el empeine. Diseño fresco, flexible y transpirable para clima cálido.",
     "images": {
-      "primary": "/products/product_130.jfif",
+      "primary": "/products/product_130.jpg",
       "gallery": [
-        "/products/product_130.jfif"
+        "/products/product_130.jpg"
       ]
     },
     "details": {
@@ -5200,9 +5200,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Zapatos planos estilo bailarina confeccionados en encaje floral transpirable. Plantilla acolchada suave ideal para eventos y oficina.",
     "images": {
-      "primary": "/products/product_131.jfif",
+      "primary": "/products/product_131.jpg",
       "gallery": [
-        "/products/product_131.jfif"
+        "/products/product_131.jpg"
       ]
     },
     "details": {
@@ -5248,9 +5248,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Calzado plano de malla calada con hebilla ajustable sobre el empeine. Diseño fresco, flexible y transpirable para clima cálido.",
     "images": {
-      "primary": "/products/product_133.jfif",
+      "primary": "/products/product_133.jpg",
       "gallery": [
-        "/products/product_133.jfif"
+        "/products/product_133.jpg"
       ]
     },
     "details": {
@@ -5296,9 +5296,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Zapatos de tacón alto con tiras finas cruzadas y cierre de hebilla en el tobillo. Estilo glamuroso para vestidos de fiesta y cóctel.",
     "images": {
-      "primary": "/products/product_134.jfif",
+      "primary": "/products/product_134.jpg",
       "gallery": [
-        "/products/product_134.jfif"
+        "/products/product_134.jpg"
       ]
     },
     "details": {
@@ -5384,9 +5384,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Fragancia femenina icónica de la colección Zara. Notas cálidas de vainilla, flor de peonía y pera dulce. Elegancia sofisticada de larga duración.",
     "images": {
-      "primary": "/products/product_137.jfif",
+      "primary": "/products/product_137.jpg",
       "gallery": [
-        "/products/product_137.jfif"
+        "/products/product_137.jpg"
       ]
     },
     "details": {
@@ -5424,9 +5424,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     "featured": false,
     "description": "Sudadera de franela térmica con bolsillo canguro y capucha ajustable. Confort absoluto y aislamiento térmico suave.",
     "images": {
-      "primary": "/products/product_141.jfif",
+      "primary": "/products/product_141.jpg",
       "gallery": [
-        "/products/product_141.jfif"
+        "/products/product_141.jpg"
       ]
     },
     "details": {

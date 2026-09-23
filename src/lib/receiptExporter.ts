@@ -13,9 +13,11 @@ export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
 
   const itemsText = order.items.map((item, idx) => {
     const itemSubtotal = item.price * item.quantity;
-    const sizeInfo = item.selectedSize ? ` | ${item.selectedSize}` : '';
-    const colorInfo = item.selectedColor && item.selectedColor !== 'Original' ? ` (${item.selectedColor})` : '';
-    return `${idx + 1}. 👗 *${item.name}* [x${item.quantity}]${sizeInfo}${colorInfo}\n   💰 Subtotal: ${formatPrice(itemSubtotal)}`;
+    const sizeInfo = item.selectedSize ? ` | Talla: ${item.selectedSize}` : '';
+    const colorInfo = item.selectedColor && item.selectedColor !== 'Original' ? ` | Color: ${item.selectedColor}` : '';
+    const rawImg = (item.image || '/icons/ebna-logo.png').replace(/\.jfif$/i, '.jpg');
+    const photoUrl = rawImg.startsWith('http') ? rawImg : `${baseUrl}${rawImg.startsWith('/') ? rawImg : '/' + rawImg}`;
+    return `${idx + 1}. 👗 *${item.name}* [x${item.quantity}]${sizeInfo}${colorInfo}\n   💰 Subtotal: ${formatPrice(itemSubtotal)}\n   🖼️ Ver Foto: ${photoUrl}`;
   }).join('\n\n');
 
   const regionLabel = order.region === 'insular' 
@@ -28,11 +30,11 @@ export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
 
   const paymentLabel = order.paymentMethod === 'muni'
     ? '📲 MUNI DINERO (*423*2*1*555439904# / Giro al 555439904)'
-    : '💬 WHATSAPP / EFECTIVO CONTRA ENTREGA';
+    : '🟠 ORANGE MONEY / WHATSAPP (+240 222 633 687)';
 
   const message = `✨ *SOLICITUD DE PEDIDO — SINDY LUXURY BY EBNA* ✨
 ━━━━━━━━━━━━━━━━━━━━━━
-🎫 *TARJETA DIGITAL DE PEDIDO (HAZ CLIC PARA VER CON FOTOS):*
+🎫 *TARJETA DIGITAL CON FOTOS EN ALTA DEFINICIÓN:*
 👉 ${receiptCardUrl}
 ━━━━━━━━━━━━━━━━━━━━━━
 🎫 *FOLIO:* #${order.orderNumber}
@@ -60,7 +62,7 @@ ${order.paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He solicita
 
 ¿Me confirman recepción del pedido para empaque y despacho?`;
 
-  // Always route order receipt submissions strictly to the official business WhatsApp: +240 222 633 687 (starting with 222 63)
+  // Always route order receipt submissions strictly to the official business WhatsApp: +240 222 633 687 (Orange/Getesa)
   const targetPhone = PRIMARY_PHONE;
   return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
 }
@@ -310,7 +312,8 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
       // Try loading image
       if (item.image) {
         try {
-          const img = await loadImage(item.image);
+          const cleanImg = item.image.replace(/\.jfif$/i, '.jpg');
+          const img = await loadImage(cleanImg);
           if (img) {
             ctx.save();
             ctx.beginPath();

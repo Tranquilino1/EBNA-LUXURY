@@ -9,6 +9,7 @@ import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
 import { OrderReceiptModal } from '../receipt/OrderReceiptModal';
 import { saveOrderRequest } from '../../lib/orderStorage';
+import { buildReceiptWhatsAppUrl } from '../../lib/receiptExporter';
 import type { OrderReceiptData, ReceiptItem } from '../../types';
 import './cart.css';
 
@@ -36,7 +37,7 @@ export const CartDrawer: React.FC = () => {
   });
   const [validationError, setValidationError] = useState('');
 
-  const [paymentMethod, setPaymentMethod] = useState<'whatsapp' | 'muni'>('muni');
+  const [paymentMethod, setPaymentMethod] = useState<'whatsapp' | 'muni'>('whatsapp');
   const [region, setRegion] = useState<'insular' | 'continental'>('insular');
   const [shippingType, setShippingType] = useState<'normal' | 'express'>('normal');
   const [copiedMuni, setCopiedMuni] = useState(false);
@@ -105,7 +106,8 @@ export const CartDrawer: React.FC = () => {
 
     const receiptItems: ReceiptItem[] = cartItems.map(item => {
       recordProductOrder(item.product.id);
-      const rawImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : (item.product.images as any)?.[0]);
+      const imgCandidate = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : (item.product.images as any)?.[0]);
+      const rawImg = typeof imgCandidate === 'string' ? imgCandidate.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
       return {
         id: item.cartItemId,
         name: item.product.name,
@@ -143,6 +145,17 @@ export const CartDrawer: React.FC = () => {
     saveOrderRequest(orderData);
     setReceiptOrder(orderData);
     setIsReceiptOpen(true);
+
+    // Direct routing per customer payment method selection
+    if (paymentMethod === 'whatsapp') {
+      const waUrl = buildReceiptWhatsAppUrl(orderData);
+      window.open(waUrl, '_blank');
+    } else if (paymentMethod === 'muni') {
+      try {
+        navigator.clipboard.writeText('*423*2*1*555439904#');
+      } catch {}
+      window.location.href = 'tel:*423*2*1*555439904%23';
+    }
   };
 
   return (
@@ -188,7 +201,8 @@ export const CartDrawer: React.FC = () => {
                 {cartItems.map((item) => {
                   const priceVal = item.product.priceFCFA || item.product.price || 0;
                   const itemTotal = priceVal * item.quantity;
-                  const itemImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : '/icons/ebna-logo.png');
+                  const rawItemImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : '/icons/ebna-logo.png');
+                  const itemImg = typeof rawItemImg === 'string' ? rawItemImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
                   return (
                     <div key={item.cartItemId} className="cart-item-card glass-card">
                       <img 
@@ -409,6 +423,18 @@ export const CartDrawer: React.FC = () => {
 
                   <div className="futuristic-cards-2col">
                     <div 
+                      className={`futuristic-interactive-card wa-card ${paymentMethod === 'whatsapp' ? 'active-border-wa' : ''}`}
+                      onClick={() => setPaymentMethod('whatsapp')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="payment-brand-badge wa">ORANGE / WHATSAPP</span>
+                        {paymentMethod === 'whatsapp' && <Check size={14} className="check-glow" />}
+                      </div>
+                      <div className="interactive-card-title">Orange Money / WhatsApp</div>
+                      <div className="interactive-card-detail">+240 222 633 687 (Envío Inmediato)</div>
+                    </div>
+
+                    <div 
                       className={`futuristic-interactive-card muni-card ${paymentMethod === 'muni' ? 'active-border-muni' : ''}`}
                       onClick={() => setPaymentMethod('muni')}
                     >
@@ -417,19 +443,7 @@ export const CartDrawer: React.FC = () => {
                         {paymentMethod === 'muni' && <Check size={14} className="check-glow" />}
                       </div>
                       <div className="interactive-card-title">Muni Dinero</div>
-                      <div className="interactive-card-detail">+240 555 439 904</div>
-                    </div>
-
-                    <div 
-                      className={`futuristic-interactive-card wa-card ${paymentMethod === 'whatsapp' ? 'active-border-wa' : ''}`}
-                      onClick={() => setPaymentMethod('whatsapp')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="payment-brand-badge wa">WHATSAPP / CASH</span>
-                        {paymentMethod === 'whatsapp' && <Check size={14} className="check-glow" />}
-                      </div>
-                      <div className="interactive-card-title">WhatsApp / Efectivo</div>
-                      <div className="interactive-card-detail">+240 222 633 687</div>
+                      <div className="interactive-card-detail">+240 555 439 904 (*423*2*1*555439904#)</div>
                     </div>
                   </div>
                 </div>
@@ -506,7 +520,7 @@ export const CartDrawer: React.FC = () => {
                 style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <PhoneCall size={20} />
-                <span>Pagar con Muni & Generar Tarjeta ({formatPrice(grandTotal)})</span>
+                <span>Pagar con Muni Dinero ({formatPrice(grandTotal)})</span>
               </button>
             ) : (
               <button 
@@ -514,7 +528,7 @@ export const CartDrawer: React.FC = () => {
                 className="wa-checkout-btn" 
                 onClick={handleCheckout}
               >
-                <span>Generar Tarjeta Oficial & Pedir (+240 222 633 687)</span>
+                <span>Pagar con Orange Money & WhatsApp (+240 222 633 687)</span>
                 <ArrowRight size={18} />
               </button>
             )}

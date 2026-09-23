@@ -24,7 +24,8 @@ export const ProductInspectModal: React.FC<ProductInspectModalProps> = ({
   const isFootwear = product.category === 'CALZADO';
   const isAccessory = product.category === 'BOLSOS_ACCESORIOS';
 
-  const mainImage = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : '/icons/ebna-logo.png');
+  const rawMainImage = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : '/icons/ebna-logo.png');
+  const mainImage = typeof rawMainImage === 'string' ? rawMainImage.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
   const priceVal = product.priceFCFA || product.price || 0;
 
   return (

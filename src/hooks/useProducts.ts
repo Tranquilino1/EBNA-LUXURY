@@ -32,7 +32,10 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
       if (!dbError && remoteProducts && remoteProducts.length > 0) {
         finalList = remoteProducts.map((item: any) => {
-          const primaryImg = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : (typeof item.images === 'string' ? item.images : '/icons/ebna-logo.png'));
+          const rawPrimary = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : (typeof item.images === 'string' ? item.images : '/icons/ebna-logo.png'));
+          const primaryImg = typeof rawPrimary === 'string' ? rawPrimary.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
+          const rawGallery = Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]);
+          const gallery = rawGallery.map((g: any) => typeof g === 'string' ? g.replace(/\.jfif$/i, '.jpg') : g);
           const resolvedCategory = (item.subcategory === 'Moda Infantil' || item.category === 'MODA_INFANTIL')
             ? 'MODA_INFANTIL'
             : (item.category || 'MODA_MUJER');
@@ -51,7 +54,7 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
             in_stock: item.in_stock !== undefined ? item.in_stock : true,
             is_hidden: item.is_hidden || false,
             description: item.description || '',
-            images: { primary: primaryImg, gallery: Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]), 0: primaryImg },
+            images: { primary: primaryImg, gallery, 0: primaryImg },
             colors: item.colors || ['Blanco', 'Negro'],
             sizes: item.sizes || ['S', 'M', 'L'],
             created_at: item.created_at,

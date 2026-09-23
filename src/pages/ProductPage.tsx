@@ -11,6 +11,7 @@ import { formatPrice } from '../lib/utils';
 import { recordProductOrder } from '../lib/popularityTracker';
 import { OrderReceiptModal } from '../components/receipt/OrderReceiptModal';
 import { saveOrderRequest } from '../lib/orderStorage';
+import { buildReceiptWhatsAppUrl } from '../lib/receiptExporter';
 import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
@@ -108,6 +109,7 @@ export function ProductPage() {
     }
 
     const rawImg = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (product.images as any)?.[0]);
+    const cleanImg = typeof rawImg === 'string' ? rawImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
     const priceVal = product.priceFCFA || product.price || 0;
     const now = new Date();
     const formattedDate = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
@@ -131,7 +133,7 @@ export function ProductPage() {
         quantity,
         selectedSize: selectedSize || availableSizes[0] || 'M',
         selectedColor: selectedColor || availableColors[0] || 'Original',
-        image: rawImg || '/icons/ebna-logo.png',
+        image: cleanImg,
         slug: product.slug
       }],
       subtotal: priceVal * quantity,
@@ -143,6 +145,9 @@ export function ProductPage() {
     saveOrderRequest(orderData);
     setReceiptOrder(orderData);
     setIsReceiptOpen(true);
+
+    const waUrl = buildReceiptWhatsAppUrl(orderData);
+    window.open(waUrl, '_blank');
   };
 
   useEffect(() => {
@@ -161,7 +166,8 @@ export function ProductPage() {
     }
   }, [availableColors]);
 
-  const defaultMainImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '/icons/ebna-logo.png');
+  const rawDefaultMainImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '/icons/ebna-logo.png');
+  const defaultMainImg = typeof rawDefaultMainImg === 'string' ? rawDefaultMainImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
   const [activeImage, setActiveImage] = useState<string>(defaultMainImg || '/icons/ebna-logo.png');
 
   useEffect(() => {
@@ -173,15 +179,20 @@ export function ProductPage() {
   const galleryImages = useMemo(() => {
     if (!product) return [];
     const list: string[] = [];
-    if (product.images?.primary) list.push(product.images.primary);
+    if (product.images?.primary) {
+      const clean = product.images.primary.replace(/\.jfif$/i, '.jpg');
+      list.push(clean);
+    }
     if (product.images?.gallery && Array.isArray(product.images.gallery)) {
       product.images.gallery.forEach(img => {
-        if (img && !list.includes(img)) list.push(img);
+        const clean = typeof img === 'string' ? img.replace(/\.jfif$/i, '.jpg') : img;
+        if (clean && !list.includes(clean)) list.push(clean);
       });
     }
     if (Array.isArray(product.images)) {
       product.images.forEach(img => {
-        if (typeof img === 'string' && img && !list.includes(img)) list.push(img);
+        const clean = typeof img === 'string' ? img.replace(/\.jfif$/i, '.jpg') : img;
+        if (clean && !list.includes(clean)) list.push(clean);
       });
     }
     return list.length > 0 ? list : ['/icons/ebna-logo.png'];

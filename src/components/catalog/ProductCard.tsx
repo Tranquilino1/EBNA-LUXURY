@@ -35,7 +35,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
 
   const imgRef = useRef<HTMLImageElement>(null);
   const resolveInitialImg = () => {
-    return product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : '/icons/ebna-logo.png'));
+    const raw = product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : '/icons/ebna-logo.png'));
+    if (typeof raw === 'string' && raw.endsWith('.jfif')) {
+      return raw.replace(/\.jfif$/i, '.jpg');
+    }
+    return raw;
   };
   const [imgSrc, setImgSrc] = useState<string>(resolveInitialImg);
   const [imageLoaded, setImageLoaded] = useState(() => {

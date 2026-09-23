@@ -71,7 +71,7 @@ export const EditorialVogueTemplate: React.FC<EditorialVogueTemplateProps> = ({ 
           <div className="dossier-item">
             <span className="dossier-label">Règlement Choisi</span>
             <span className="dossier-val">
-              {order.paymentMethod === 'muni' ? 'Muni Dinero (+240 555 439 904)' : 'WhatsApp / Espèces à la livraison (+240 222 633 687)'}
+              {order.paymentMethod === 'muni' ? 'Muni Dinero (*423*2*1*555439904#)' : 'Orange Money / WhatsApp (+240 222 633 687)'}
             </span>
           </div>
         </div>
@@ -91,11 +91,12 @@ export const EditorialVogueTemplate: React.FC<EditorialVogueTemplateProps> = ({ 
         <div className="receipt-items-list">
           {order.items.map((item) => {
             const itemTotal = item.price * item.quantity;
+            const itemImgSrc = item.image ? item.image.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
             return (
               <div key={item.id} className="receipt-item-row" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <div style={{ position: 'relative', width: '60px', height: '60px', flexShrink: 0, border: '1px solid #000000', overflow: 'hidden' }}>
                   <img 
-                    src={item.image} 
+                    src={itemImgSrc} 
                     alt={item.name} 
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     onError={(e) => {

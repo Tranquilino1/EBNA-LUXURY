@@ -1,21 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
 import { useAdminCrud } from '../contexts/AdminCrudContext';
 import { Loader } from '../components/ui/Loader';
-import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2, Sliders, CheckSquare, Film, Ticket, ShoppingBag } from 'lucide-react';
+import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2, Sliders, CheckSquare, Film } from 'lucide-react';
 import { notifyCatalogChange } from '../lib/broadcast';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
 import { ProductInspectModal } from '../components/admin/ProductInspectModal';
 import { CustomizationSettingsPanel } from '../components/admin/CustomizationSettingsPanel';
 import { AdvertisingVideoPanel } from '../components/admin/AdvertisingVideoPanel';
-import { ReceiptTemplatesStudio } from '../components/admin/ReceiptTemplatesStudio';
-import { ReceivedOrdersPanel } from '../components/admin/ReceivedOrdersPanel';
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
 import { Toast } from '../components/ui/Toast';
-import { getReceivedOrders, subscribeToOrders } from '../lib/orderStorage';
 import type { Product, ProductCategory } from '../types';
 import { formatPrice } from '../lib/utils';
 
@@ -32,17 +29,7 @@ export function AdminDashboard() {
     openBulkDeleteModal 
   } = useAdminCrud();
 
-  const [activeTab, setActiveTab] = useState<'orders' | 'inventory' | 'advertising' | 'receipts' | 'customization' | 'users' | 'security' | 'analytics'>('orders');
-  const [ordersCount, setOrdersCount] = useState<number>(() => {
-    try { return getReceivedOrders().length; } catch { return 0; }
-  });
-
-  useEffect(() => {
-    const unsub = subscribeToOrders(() => {
-      setOrdersCount(getReceivedOrders().length);
-    });
-    return () => unsub();
-  }, []);
+  const [activeTab, setActiveTab] = useState<'inventory' | 'advertising' | 'customization' | 'users' | 'security' | 'analytics'>('inventory');
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -181,10 +168,8 @@ export function AdminDashboard() {
       {/* Navigation Tabs Bar */}
       <nav style={{ display: 'flex', gap: '0.8rem', marginBottom: '2rem', borderBottom: '1px solid var(--color-glass-border)', paddingBottom: '0.5rem', overflowX: 'auto' }}>
         {[
-          { id: 'orders' as const, label: `Solicitudes de Pedidos (${ordersCount})`, icon: <ShoppingBag size={18} /> },
           { id: 'inventory' as const, label: `Inventario (${products.length})`, icon: <Package size={18} /> },
           { id: 'advertising' as const, label: 'Publicidad & Video', icon: <Film size={18} /> },
-          { id: 'receipts' as const, label: 'Tarjetas & Recibos UX', icon: <Ticket size={18} /> },
           { id: 'customization' as const, label: 'Personalización & UI', icon: <Sliders size={18} /> },
           { id: 'users' as const, label: 'Usuarios & Roles', icon: <Users size={18} /> },
           { id: 'security' as const, label: 'Mi Cuenta & Seguridad', icon: <KeyRound size={18} /> },
@@ -213,11 +198,6 @@ export function AdminDashboard() {
           </button>
         ))}
       </nav>
-
-      {/* TAB 0: SOLICITUDES DE PEDIDOS RECIBIDAS */}
-      {activeTab === 'orders' && (
-        <ReceivedOrdersPanel />
-      )}
 
       {/* TAB 1: INVENTORY MANAGEMENT */}
       {activeTab === 'inventory' && (
@@ -758,13 +738,7 @@ export function AdminDashboard() {
         </div>
       )}
 
-      {/* TAB: RECEIPT TEMPLATES STUDIO */}
-      {activeTab === 'receipts' && (
-        <div style={{ background: 'white', borderRadius: '24px', border: '1px solid var(--color-glass-border)', padding: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
-          <ReceiptTemplatesStudio />
-        </div>
-      )}
-
+      {/* MODALS */}
       {isFormOpen && (
         <ProductFormModal 
           product={selectedProduct} 

@@ -81,7 +81,7 @@ export const ObsidianGoldTemplate: React.FC<ObsidianGoldTemplateProps> = ({ orde
           <div className="dossier-item">
             <span className="dossier-label" style={{ color: '#94A3B8' }}>Método de Pago</span>
             <span className="dossier-val">
-              {order.paymentMethod === 'muni' ? '📲 Muni Dinero (*423*2*1*555439904#)' : '💬 WhatsApp / Efectivo (+240 222 633 687)'}
+              {order.paymentMethod === 'muni' ? '📲 Muni Dinero (*423*2*1*555439904#)' : '🟠 Orange Money / WhatsApp (+240 222 633 687)'}
             </span>
           </div>
         </div>
@@ -101,11 +101,12 @@ export const ObsidianGoldTemplate: React.FC<ObsidianGoldTemplateProps> = ({ orde
         <div className="receipt-items-list">
           {order.items.map((item) => {
             const itemTotal = item.price * item.quantity;
+            const itemImgSrc = item.image ? item.image.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
             return (
               <div key={item.id} className="receipt-item-row">
                 <div className="receipt-item-thumb-wrapper" style={{ borderColor: 'rgba(212, 175, 55, 0.4)', background: '#1E293B' }}>
                   <img 
-                    src={item.image} 
+                    src={itemImgSrc} 
                     alt={item.name} 
                     className="receipt-item-thumb-img"
                     onError={(e) => {
