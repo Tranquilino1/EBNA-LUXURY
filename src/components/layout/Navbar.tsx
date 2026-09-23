@@ -118,7 +118,6 @@ export const Navbar: React.FC = () => {
           <div className="logo-text-brand">
             <span className="brand-name-uppercase">SINDY LUXURY</span>
             <span className="brand-sub-syndy">BY EBNA</span>
-            <div className="brand-logo-underline"></div>
           </div>
         </Link>
 
@@ -211,7 +210,7 @@ export const Navbar: React.FC = () => {
                     className="dropdown-item"
                     onClick={() => { setIsProfileOpen(false); setIsSupportModalOpen(true); }}
                   >
-                    <Headphones size={16} color="var(--brand-accent)" /> Soporte & Contacto AiDA
+                    <Headphones size={16} color="#184266" /> Soporte & Contacto <span className="aida-highlight-blue" style={{ fontSize: '0.96rem' }}>AiDA</span>
                   </button>
 
                   {user ? (
@@ -263,9 +262,9 @@ export const Navbar: React.FC = () => {
           <button
             onClick={() => { setIsMobileMenuOpen(false); setIsSupportModalOpen(true); }}
             className="mobile-nav-link"
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--brand-accent)', fontWeight: 700 }}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#184266', fontWeight: 800 }}
           >
-            <Headphones size={18} /> Soporte Técnico AiDA
+            <Headphones size={18} color="#184266" /> Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '1.05rem' }}>AiDA</span>
           </button>
         </div>
       )}

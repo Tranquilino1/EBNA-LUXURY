@@ -73,13 +73,15 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
           <div className="aida-startup-banner">
             <div>
               <div className="aida-startup-tag">Desarrollo & Arquitectura Digital</div>
-              <div className="aida-startup-name">Startup AiDA</div>
+              <div className="aida-startup-name">
+                Startup <span className="aida-logo-text" style={{ fontSize: '1.5rem', color: '#184266' }}>AiDA</span>
+              </div>
               <div className="aida-startup-desc">Soluciones tecnológicas de alto rendimiento e ingeniería e-commerce de lujo.</div>
             </div>
             <img 
               src="/icons/aida-logo.jpg" 
               alt="AiDA Logo" 
-              style={{ width: '75px', height: 'auto', borderRadius: '8px', border: '1px solid rgba(24, 66, 102, 0.25)', boxShadow: '0 3px 12px rgba(24, 66, 102, 0.15)', background: 'white', padding: '3px' }} 
+              style={{ width: '85px', height: 'auto', borderRadius: '10px', border: '1.5px solid rgba(24, 66, 102, 0.3)', boxShadow: '0 4px 16px rgba(24, 66, 102, 0.18)', background: 'white', padding: '4px' }} 
             />
           </div>
 
@@ -89,7 +91,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
             <a 
               href="https://wa.me/240555320017?text=Hola%20AiDA,%20necesito%20soporte%20t%C3%A9cnico%20sobre%20la%20plataforma%20EBNA%20Luxury" 
               target="_blank" 
-              rel="noopener noreferrer"
+              rel="noopener noreferrer" 
               className="channel-card-link"
               title="Abrir WhatsApp AiDA"
             >
@@ -97,7 +99,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
                 <MessageSquare size={20} />
               </div>
               <div className="channel-card-text">
-                <span className="channel-card-label">WhatsApp Soporte</span>
+                <span className="channel-card-label">WhatsApp Soporte <span className="aida-highlight-blue" style={{ fontSize: '0.85rem' }}>AiDA</span></span>
                 <span className="channel-card-val">+240 555 32 00 17</span>
               </div>
             </a>
@@ -108,11 +110,11 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
               className="channel-card-link"
               title="Llamar a Asistencia Técnica"
             >
-              <div className="channel-card-icon" style={{ background: 'rgba(216, 27, 96, 0.15)', color: '#D81B60' }}>
+              <div className="channel-card-icon" style={{ background: 'rgba(24, 66, 102, 0.12)', color: '#184266' }}>
                 <Phone size={20} />
               </div>
               <div className="channel-card-text">
-                <span className="channel-card-label">Teléfono AiDA</span>
+                <span className="channel-card-label" style={{ color: '#184266', fontWeight: 800 }}>Teléfono <span className="aida-highlight-blue">AiDA</span></span>
                 <span className="channel-card-val">+240 222 07 56 62</span>
               </div>
             </a>
@@ -124,11 +126,11 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
               style={{ gridColumn: '1 / -1' }}
               title="Enviar Correo Electrónico"
             >
-              <div className="channel-card-icon" style={{ background: 'rgba(197, 168, 128, 0.2)', color: '#C5A880' }}>
+              <div className="channel-card-icon" style={{ background: 'rgba(24, 66, 102, 0.12)', color: '#184266' }}>
                 <Mail size={20} />
               </div>
               <div className="channel-card-text" style={{ overflow: 'hidden' }}>
-                <span className="channel-card-label">Email Oficial de Ingeniería AiDA</span>
+                <span className="channel-card-label" style={{ color: '#184266', fontWeight: 800 }}>Email Oficial de Ingeniería <span className="aida-highlight-blue">AiDA</span></span>
                 <span className="channel-card-val" style={{ wordBreak: 'break-all', fontSize: '0.85rem' }}>
                   thetrapkinzofafrica@gmail.com
                 </span>
@@ -150,7 +152,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
                   ¡Consulta Enviada con Éxito!
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                  El equipo de ingeniería de AiDA atenderá su requerimiento a la mayor brevedad posible.
+                  El equipo de ingeniería de <strong style={{ color: '#184266', fontWeight: 900 }}>AiDA</strong> atenderá su requerimiento a la mayor brevedad posible.
                 </p>
                 <button 
                   type="button" 
@@ -223,7 +225,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
 
                 <button type="submit" className="ticket-submit-btn">
                   <Send size={16} />
-                  <span>Transmitir Consulta a Soporte AiDA</span>
+                  <span>Transmitir Consulta a Soporte <strong style={{ color: 'white', letterSpacing: '0.04em' }}>AiDA</strong></span>
                 </button>
               </form>
             )}

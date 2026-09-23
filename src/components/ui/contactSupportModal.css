@@ -118,34 +118,42 @@
 
 /* Startup AiDA Highlight Banner */
 .aida-startup-banner {
-  background: linear-gradient(135deg, rgba(18, 13, 20, 0.03), rgba(216, 27, 96, 0.05));
-  border: 1px solid var(--border-brand);
+  background: linear-gradient(135deg, rgba(24, 66, 102, 0.05), rgba(24, 66, 102, 0.12));
+  border: 1.5px solid rgba(24, 66, 102, 0.28);
   border-radius: 18px;
-  padding: 16px 20px;
+  padding: 18px 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(24, 66, 102, 0.08);
 }
 
 .aida-startup-tag {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brand-accent);
-  margin-bottom: 2px;
+  color: #184266;
+  margin-bottom: 4px;
 }
 
 .aida-startup-name {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--text-primary);
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #184266;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9), 0 2px 8px rgba(24, 66, 102, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .aida-startup-desc {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  font-size: 0.84rem;
+  color: #245780;
+  margin-top: 4px;
+  line-height: 1.4;
 }
 
 .contact-channels-grid {
@@ -253,21 +261,22 @@
   width: 100%;
   padding: 12px 18px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #D81B60, #C5A880);
+  background: linear-gradient(135deg, #184266, #245780);
   color: white;
   border: none;
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: 800;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 14px rgba(216, 27, 96, 0.3);
+  box-shadow: 0 4px 14px rgba(24, 66, 102, 0.3);
 }
 
 .ticket-submit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(216, 27, 96, 0.45);
+  box-shadow: 0 8px 22px rgba(24, 66, 102, 0.45);
 }

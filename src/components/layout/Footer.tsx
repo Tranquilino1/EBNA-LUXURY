@@ -106,7 +106,6 @@ export const Footer: React.FC = () => {
               <div>
                 <h2 className="brand-title-uppercase">SINDY LUXURY</h2>
                 <p className="brand-syndy-tagline">BY EBNA — Alta Costura & Moda</p>
-                <div className="brand-logo-underline"></div>
               </div>
             </div>
             
@@ -192,7 +191,7 @@ export const Footer: React.FC = () => {
                   textAlign: 'left'
                 }}
               >
-                <Headphones size={15} /> Soporte Técnico AiDA
+                <Headphones size={15} color="#184266" /> Soporte Técnico <span className="aida-highlight-blue">AiDA</span>
               </button>
             </nav>
           </div>
@@ -221,9 +220,9 @@ export const Footer: React.FC = () => {
                 className="contact-link"
                 style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left', width: '100%' }}
               >
-                <Headphones size={18} color="var(--brand-accent)" />
+                <Headphones size={18} color="#184266" />
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--brand-accent)' }}>Startup AiDA Soporte</span>
+                  <span style={{ display: 'block', fontSize: '0.9rem', fontWeight: 800, color: '#184266' }}>Startup <span className="aida-highlight-blue" style={{ fontSize: '1rem' }}>AiDA</span> Soporte</span>
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>thetrapkinzofafrica@gmail.com</span>
                 </div>
               </button>
@@ -282,7 +281,7 @@ export const Footer: React.FC = () => {
             &copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados. | PWA Universal compatible con iOS, Android, Windows, Mac, Chromebook y Linux.
           </p>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <span>Arquitectura & Desarrollo por <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><img src="/icons/aida-logo.jpg" alt="AiDA" style={{ height: '16px', borderRadius: '3px', objectFit: 'contain' }} /> Startup AiDA</strong></span>
+            <span>Arquitectura & Desarrollo por <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#184266', fontSize: '0.92rem' }}><img src="/icons/aida-logo.jpg" alt="AiDA" style={{ height: '20px', borderRadius: '4px', objectFit: 'contain', border: '1px solid rgba(24, 66, 102, 0.25)', boxShadow: '0 1px 4px rgba(24, 66, 102, 0.15)' }} /> Startup <span className="aida-logo-text" style={{ fontSize: '1.02rem', color: '#184266' }}>AiDA</span></strong></span>
             <span>•</span>
             <a href="mailto:thetrapkinzofafrica@gmail.com" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>thetrapkinzofafrica@gmail.com</a>
             <span>•</span>
@@ -292,17 +291,21 @@ export const Footer: React.FC = () => {
               type="button"
               onClick={() => setIsSupportModalOpen(true)}
               style={{
-                background: 'rgba(216, 27, 96, 0.1)',
-                border: '1px solid var(--border-brand)',
-                borderRadius: '12px',
-                padding: '3px 10px',
-                color: 'var(--brand-accent)',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                cursor: 'pointer'
+                background: 'rgba(24, 66, 102, 0.08)',
+                border: '1.5px solid rgba(24, 66, 102, 0.3)',
+                borderRadius: '14px',
+                padding: '4px 12px',
+                color: '#184266',
+                fontSize: '0.78rem',
+                fontWeight: 800,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                boxShadow: '0 2px 8px rgba(24, 66, 102, 0.12)'
               }}
             >
-              Contactar Soporte Técnico AiDA
+              Contactar Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '0.85rem' }}>AiDA</span>
             </button>
           </div>
         </div>
