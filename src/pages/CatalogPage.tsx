@@ -7,7 +7,7 @@ import { CatalogSortBar, type SortOptionType, type PriceRangeType } from '../com
 import { Loader } from '../components/ui/Loader';
 import type { FilterCategoryType } from '../types';
 import { getSortedByPopularity } from '../lib/popularityTracker';
-import { matchesUniversalSearch } from '../lib/searchUtils';
+import { filterProductsBySearch } from '../lib/searchUtils';
 import { SEOHead } from '../components/seo/SEOHead';
 import { Sparkles, X, Search } from 'lucide-react';
 
@@ -27,9 +27,9 @@ export function CatalogPage() {
   const processedProducts = useMemo(() => {
     let list = [...products];
 
-    // 1. Universal Search (Real-Time 0ms Keystroke Matching across Entire Catalog)
+    // 1. Universal Search (Initials-first professional ecommerce matching)
     if (isSearchActive) {
-      list = list.filter(p => matchesUniversalSearch(p, searchQuery));
+      list = filterProductsBySearch(list, searchQuery);
     } else {
       // 2. Category Filter (only applies when not actively searching universally)
       if (activeCategory && activeCategory !== 'TODOS') {
@@ -63,7 +63,9 @@ export function CatalogPage() {
     }
 
     // 5. Sorting
-    if (sortBy === 'popularity') {
+    if (isSearchActive && sortBy === 'popularity') {
+      // Preserve search relevance order: items whose initials match query come first!
+    } else if (sortBy === 'popularity') {
       list = getSortedByPopularity(list);
     } else if (sortBy === 'price-asc') {
       list.sort((a, b) => (a.priceFCFA || a.price || 0) - (b.priceFCFA || b.price || 0));

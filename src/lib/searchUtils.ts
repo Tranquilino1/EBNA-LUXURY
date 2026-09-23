@@ -1,13 +1,13 @@
 import type { Product } from '../types';
 
 /**
- * Normalizes text for universal fuzzy searching:
+ * Normalizes text for professional ecommerce search:
  * - Lowercase
- * - Removes diacritics/accents (á -> a, é -> e, etc.)
- * - Normalizes ñ -> n
- * - Replaces punctuation and special chars with space
+ * - Removes accents / diacritics (á -> a, é -> e, etc.)
+ * - Replaces ñ with n
+ * - Trims excess whitespace
  */
-export function normalizeSearchText(text: string): string {
+export function normalizeSearch(text: string): string {
   if (!text) return '';
   return text
     .toLowerCase()
@@ -20,95 +20,96 @@ export function normalizeSearchText(text: string): string {
 }
 
 /**
- * Calculates fast Levenshtein similarity distance between two words
+ * Professional ecommerce scoring algorithm:
+ * - Checks initials first (words in title starting with query)
+ * - Checks title containing query
+ * - Checks category, subcategory and description
+ * Returns 0 if no match, or a score >= 20 based on match relevance.
  */
-function isSimilarWord(a: string, b: string): boolean {
-  if (a === b) return true;
-  if (Math.abs(a.length - b.length) > 2) return false;
+export function getProductSearchScore(product: Product, rawQuery: string): number {
+  const clean = normalizeSearch(rawQuery);
+  if (!clean) return 1;
 
-  // Substring or prefix match
-  if (a.startsWith(b) || b.startsWith(a) || a.includes(b) || b.includes(a)) {
-    return true;
-  }
+  const tokens = clean.split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return 1;
 
-  // Maximum allowed character differences: 1 for words 4-6 chars, 2 for longer
-  const maxDiff = a.length >= 7 || b.length >= 7 ? 2 : 1;
+  const name = normalizeSearch(product.name);
+  const nameWords = name.split(/\s+/).filter(Boolean);
+  const category = normalizeSearch((product.category || '').replace(/_/g, ' '));
+  const subcategory = normalizeSearch(product.subcategory || '');
+  const brand = normalizeSearch(product.brand || '');
+  const sku = normalizeSearch(product.sku || '');
+  const desc = normalizeSearch(product.description || '');
+  const colors = Array.isArray(product.colors) 
+    ? product.colors.map(c => normalizeSearch(c)).filter(Boolean) 
+    : [];
 
-  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    let curr = [i];
-    for (let j = 1; j <= b.length; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      curr[j] = Math.min(
-        curr[j - 1] + 1,
-        prev[j] + 1,
-        prev[j - 1] + cost
-      );
+  let totalScore = 0;
+
+  for (const token of tokens) {
+    let tokenScore = 0;
+
+    // 1. Initial match: Title begins with this token (Highest Priority)
+    if (name.startsWith(token)) {
+      tokenScore = Math.max(tokenScore, 100);
     }
-    prev = curr;
+    // 2. Initial match: Any word in the title starts with this token (e.g. "sirena", "drapeado", "soleil")
+    else if (nameWords.some(w => w.startsWith(token))) {
+      tokenScore = Math.max(tokenScore, 85);
+    }
+    // 3. Title contains the token
+    else if (name.includes(token)) {
+      tokenScore = Math.max(tokenScore, 70);
+    }
+    // 4. SKU or Brand starts with or contains token
+    else if (sku.startsWith(token) || brand.startsWith(token)) {
+      tokenScore = Math.max(tokenScore, 60);
+    }
+    // 5. Category or Subcategory starts with token
+    else if (category.startsWith(token) || subcategory.startsWith(token)) {
+      tokenScore = Math.max(tokenScore, 50);
+    }
+    // 6. Color matches
+    else if (colors.some(c => c.startsWith(token) || c.includes(token))) {
+      tokenScore = Math.max(tokenScore, 45);
+    }
+    // 7. Category or Subcategory contains token
+    else if (category.includes(token) || subcategory.includes(token)) {
+      tokenScore = Math.max(tokenScore, 35);
+    }
+    // 8. Description contains token
+    else if (desc.includes(token)) {
+      tokenScore = Math.max(tokenScore, 20);
+    } 
+    else {
+      // Token did NOT match this product in any way: exclude!
+      return 0;
+    }
+
+    totalScore += tokenScore;
   }
 
-  return prev[b.length] <= maxDiff;
+  return totalScore;
 }
 
 /**
- * Builds the searchable corpus for a product
+ * Filter and sort products using professional initial-first relevance scoring
  */
-export function buildProductCorpus(product: Product): { corpusText: string; words: string[] } {
-  const parts = [
-    product.name,
-    product.description || '',
-    product.category || '',
-    (product.category || '').replace(/_/g, ' '),
-    product.subcategory || '',
-    product.brand || '',
-    product.sku || '',
-    product.slug || '',
-    Array.isArray(product.colors) ? product.colors.join(' ') : '',
-    Array.isArray(product.sizes) ? product.sizes.join(' ') : '',
-    product.details?.material || '',
-    product.details?.volume || '',
-  ];
+export function filterProductsBySearch(products: Product[], query: string): Product[] {
+  const clean = normalizeSearch(query);
+  if (!clean) return products;
 
-  const corpusText = normalizeSearchText(parts.join(' '));
-  const words = corpusText.split(/\s+/).filter(Boolean);
-  return { corpusText, words };
-}
+  const scored: { product: Product; score: number }[] = [];
 
-/**
- * Evaluates whether a product matches a universal search query
- * Supports multi-token, prefix, accent-free, and fuzzy resemblance
- */
-export function matchesUniversalSearch(product: Product, rawQuery: string): boolean {
-  const cleanQuery = normalizeSearchText(rawQuery);
-  if (!cleanQuery) return true;
-
-  const queryTokens = cleanQuery.split(/\s+/).filter(Boolean);
-  if (queryTokens.length === 0) return true;
-
-  const { corpusText, words } = buildProductCorpus(product);
-
-  // Fast path: if the exact cleaned query is a substring of the corpus
-  if (corpusText.includes(cleanQuery)) {
-    return true;
+  for (const p of products) {
+    const score = getProductSearchScore(p, clean);
+    if (score > 0) {
+      scored.push({ product: p, score });
+    }
   }
 
-  // Every token in the query must match at least one word in the product
-  return queryTokens.every(token => {
-    // 1. Direct substring in the full corpus
-    if (corpusText.includes(token)) return true;
+  // Sort by highest score first (exact initials come first)
+  scored.sort((a, b) => b.score - a.score);
 
-    // 2. Token-level matching with fuzzy tolerance for typos and similar words
-    return words.some(word => {
-      // Direct word match or prefix match
-      if (word.startsWith(token) || token.startsWith(word) || word.includes(token)) {
-        return true;
-      }
-      // If both token and word are at least 4 letters, check fuzzy resemblance
-      if (token.length >= 4 && word.length >= 3) {
-        return isSimilarWord(word, token);
-      }
-      return false;
-    });
-  });
+  return scored.map(item => item.product);
 }

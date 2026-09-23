@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck, Copy, 
-  Check, CreditCard, MapPin, PhoneCall, Zap, Globe, Smartphone, Package, 
-  User, Phone, AlertCircle 
+  ShoppingBag, X, Plus, Minus, Trash2, ShieldCheck, Truck, 
+  MapPin, Smartphone, User, Phone, AlertCircle, MessageCircle 
 } from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
@@ -37,10 +36,7 @@ export const CartDrawer: React.FC = () => {
   });
   const [validationError, setValidationError] = useState('');
 
-  const [paymentMethod, setPaymentMethod] = useState<'whatsapp' | 'muni'>('whatsapp');
-  const [region, setRegion] = useState<'insular' | 'continental'>('insular');
-  const [shippingType, setShippingType] = useState<'normal' | 'express'>('normal');
-  const [copiedMuni, setCopiedMuni] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Digital Pending Order Receipt State
   const [receiptOrder, setReceiptOrder] = useState<OrderReceiptData | null>(null);
@@ -48,9 +44,7 @@ export const CartDrawer: React.FC = () => {
 
   if (!isCartOpen) return null;
 
-  // Shipping calculation
-  const shippingCost = shippingType === 'express' ? 3000 : 0;
-  const grandTotal = subtotalPrice + shippingCost;
+  const grandTotal = subtotalPrice;
 
   const handleNameChange = (val: string) => {
     setCustomerName(val);
@@ -70,39 +64,20 @@ export const CartDrawer: React.FC = () => {
     try { localStorage.setItem('ebna_client_address', val); } catch {}
   };
 
-  const handleCopyMuni = () => {
-    navigator.clipboard.writeText('555439904');
-    setCopiedMuni(true);
-    setTimeout(() => setCopiedMuni(false), 2500);
-  };
-
-  const handleCheckout = () => {
+  const handleDirectTicketCheckout = async (method: 'whatsapp' | 'muni') => {
     if (cartItems.length === 0) return;
 
-    const trimmedName = customerName.trim();
-    if (!trimmedName || trimmedName.length < 3) {
-      setValidationError('Por favor ingresa tu Nombre y Apellidos reales para emitir tu comprobante oficial.');
-      return;
-    }
-    const lowerName = trimmedName.toLowerCase();
-    if (lowerName.includes('cliente vip') || lowerName.includes('prueba') || lowerName === 'test' || lowerName === 'anonimo') {
-      setValidationError('Por favor ingresa tu Nombre y Apellidos reales (no nombres de prueba o placeholder).');
-      return;
-    }
+    const trimmedName = customerName.trim() || 'Cliente VIP';
+    const cleanPhone = customerPhone.trim() || '240222633687';
+    const trimmedAddress = customerAddress.trim() || 'Malabo / Entrega Directa';
 
-    const cleanPhone = customerPhone.replace(/\s+/g, '').replace(/[-+()]/g, '');
-    if (!cleanPhone || cleanPhone.length < 6) {
-      setValidationError('Por favor ingresa tu número de Teléfono / WhatsApp real (ej. 222 633 687 o 555 439 904) para coordinar la entrega.');
-      return;
-    }
+    try {
+      if (customerName.trim()) localStorage.setItem('ebna_client_name', customerName.trim());
+      if (customerPhone.trim()) localStorage.setItem('ebna_client_phone', customerPhone.trim());
+      if (customerAddress.trim()) localStorage.setItem('ebna_client_address', customerAddress.trim());
+    } catch {}
 
-    const trimmedAddress = customerAddress.trim();
-    if (!trimmedAddress || trimmedAddress.length < 4) {
-      setValidationError('Por favor ingresa tu Dirección, Barrio o Referencia de entrega real (ej. Ela Nguema, Malabo II, Caracolas).');
-      return;
-    }
-
-    setValidationError('');
+    setIsProcessing(true);
 
     const receiptItems: ReceiptItem[] = cartItems.map(item => {
       recordProductOrder(item.product.id);
@@ -131,14 +106,14 @@ export const CartDrawer: React.FC = () => {
       orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       createdAt: formattedDate,
       customerName: trimmedName,
-      customerPhone: customerPhone.trim(),
+      customerPhone: cleanPhone,
       customerAddress: trimmedAddress,
-      region,
-      shippingType,
-      paymentMethod,
+      region: 'insular',
+      shippingType: 'normal',
+      paymentMethod: method,
       items: receiptItems,
       subtotal: subtotalPrice,
-      shippingCost,
+      shippingCost: 0,
       total: grandTotal,
       status: 'PENDIENTE'
     };
@@ -147,22 +122,23 @@ export const CartDrawer: React.FC = () => {
     setReceiptOrder(orderData);
     setIsReceiptOpen(true);
 
-    // Automatically trigger high-resolution PNG invoice download
-    downloadReceiptAsPng(orderData, 'haute-couture').catch(err => {
+    // Automatically trigger high-resolution PNG ticket download
+    try {
+      await downloadReceiptAsPng(orderData, 'haute-couture');
+    } catch (err) {
       console.warn('Auto download receipt PNG error:', err);
-    });
+    } finally {
+      setIsProcessing(false);
+    }
 
-    // Direct routing per customer payment method selection
-    if (paymentMethod === 'whatsapp') {
-      const waUrl = buildReceiptWhatsAppUrl(orderData);
-      window.open(waUrl, '_blank');
-    } else if (paymentMethod === 'muni') {
+    if (method === 'muni') {
       try {
         navigator.clipboard.writeText('555439904');
       } catch {}
-      const waUrl = buildReceiptWhatsAppUrl(orderData);
-      window.open(waUrl, '_blank');
     }
+
+    const waUrl = buildReceiptWhatsAppUrl(orderData);
+    window.open(waUrl, '_blank');
   };
 
   return (
@@ -282,24 +258,22 @@ export const CartDrawer: React.FC = () => {
                 })}
               </div>
 
-              {/* FUTURISTIC ORDER & DELIVERY INFORMATION FORM */}
-              <div className="futuristic-checkout-section">
-                
-                {/* 1. Datos del Destinatario Card */}
+              {/* SIMPLIFIED ORDER & DELIVERY INFORMATION FORM */}
+              <div className="futuristic-checkout-section" style={{ marginTop: '1rem', paddingTop: '1rem' }}>
                 <div className="futuristic-card delivery-info-box">
                   <div className="futuristic-card-header">
                     <div className="header-icon-box">
                       <User size={16} color="#D81B60" />
                     </div>
                     <div>
-                      <h4 className="futuristic-card-title">Información de Entrega</h4>
-                      <p className="futuristic-card-subtitle">Datos del destinatario para entrega oficial</p>
+                      <h4 className="futuristic-card-title">Datos para tu Ticket Oficial</h4>
+                      <p className="futuristic-card-subtitle">Descarga inmediata en archivo PNG y envío a WhatsApp</p>
                     </div>
                   </div>
 
                   <div className="futuristic-inputs-grid">
                     <div className="futuristic-input-field">
-                      <label className="futuristic-label">Nombre y Apellidos *</label>
+                      <label className="futuristic-label">Nombre y Apellidos</label>
                       <div className="futuristic-input-wrap">
                         <User size={15} className="input-icon" />
                         <input 
@@ -313,7 +287,7 @@ export const CartDrawer: React.FC = () => {
                     </div>
 
                     <div className="futuristic-input-field">
-                      <label className="futuristic-label">Teléfono / WhatsApp *</label>
+                      <label className="futuristic-label">Teléfono / WhatsApp</label>
                       <div className="futuristic-input-wrap">
                         <Phone size={15} className="input-icon" />
                         <input 
@@ -327,14 +301,14 @@ export const CartDrawer: React.FC = () => {
                     </div>
 
                     <div className="futuristic-input-field full-width">
-                      <label className="futuristic-label">Dirección / Barrio / Referencia *</label>
+                      <label className="futuristic-label">Dirección / Barrio de Entrega</label>
                       <div className="futuristic-input-wrap">
                         <MapPin size={15} className="input-icon" />
                         <input 
                           type="text" 
                           value={customerAddress} 
                           onChange={(e) => handleAddressChange(e.target.value)}
-                          placeholder="Ej. Malabo II, frente a los Ministerios / Ela Nguema"
+                          placeholder="Ej. Malabo II, Caracolas o Ela Nguema"
                           className="futuristic-input"
                         />
                       </div>
@@ -348,142 +322,12 @@ export const CartDrawer: React.FC = () => {
                     </div>
                   )}
                 </div>
-
-                {/* 2. Región de Entrega Cards */}
-                <div className="futuristic-group">
-                  <div className="futuristic-group-title">
-                    <Globe size={15} color="#D81B60" />
-                    <span>Región de Entrega</span>
-                  </div>
-
-                  <div className="futuristic-cards-2col">
-                    <div 
-                      className={`futuristic-interactive-card ${region === 'insular' ? 'active-border' : ''}`}
-                      onClick={() => setRegion('insular')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="card-badge-glow">Bioko</span>
-                        {region === 'insular' && <Check size={14} className="check-glow" />}
-                      </div>
-                      <div className="interactive-card-title">Región Insular</div>
-                      <div className="interactive-card-detail">Malabo y alrededores</div>
-                    </div>
-
-                    <div 
-                      className={`futuristic-interactive-card ${region === 'continental' ? 'active-border' : ''}`}
-                      onClick={() => setRegion('continental')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="card-badge-glow">Litoral</span>
-                        {region === 'continental' && <Check size={14} className="check-glow" />}
-                      </div>
-                      <div className="interactive-card-title">Región Continental</div>
-                      <div className="interactive-card-detail">Bata y provincias</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3. Modalidad de Envío Cards */}
-                <div className="futuristic-group">
-                  <div className="futuristic-group-title">
-                    <Truck size={15} color="#D81B60" />
-                    <span>Modalidad de Envío</span>
-                  </div>
-
-                  <div className="futuristic-cards-2col">
-                    <div 
-                      className={`futuristic-interactive-card ${shippingType === 'normal' ? 'active-border' : ''}`}
-                      onClick={() => setShippingType('normal')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="shipping-type-badge normal">
-                          <Package size={13} /> Estándar
-                        </span>
-                        <span className="shipping-tag-price gratis">Gratis</span>
-                      </div>
-                      <div className="interactive-card-title">Envío Normal</div>
-                      <div className="interactive-card-detail">Plazo: 5 a 7 días hábiles</div>
-                    </div>
-
-                    <div 
-                      className={`futuristic-interactive-card ${shippingType === 'express' ? 'active-border-gold' : ''}`}
-                      onClick={() => setShippingType('express')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="shipping-type-badge express">
-                          <Zap size={13} /> Express 3D
-                        </span>
-                        <span className="shipping-tag-price express">+3.000 FCFA</span>
-                      </div>
-                      <div className="interactive-card-title">Envío Express</div>
-                      <div className="interactive-card-detail">Entrega en 3 días garantizada</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 4. Método de Pago Cards */}
-                <div className="futuristic-group">
-                  <div className="futuristic-group-title">
-                    <CreditCard size={15} color="#D81B60" />
-                    <span>Método de Pago</span>
-                  </div>
-
-                  <div className="futuristic-cards-2col">
-                    <div 
-                      className={`futuristic-interactive-card muni-card ${paymentMethod === 'muni' ? 'active-border-muni' : ''}`}
-                      onClick={() => setPaymentMethod('muni')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="payment-brand-badge muni">MUNI DINERO</span>
-                        {paymentMethod === 'muni' && <Check size={14} className="check-glow" />}
-                      </div>
-                      <div className="interactive-card-title">Muni Dinero</div>
-                      <div className="interactive-card-detail">555439904</div>
-                    </div>
-
-                    <div 
-                      className={`futuristic-interactive-card wa-card ${paymentMethod === 'whatsapp' ? 'active-border-wa' : ''}`}
-                      onClick={() => setPaymentMethod('whatsapp')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="payment-brand-badge wa">WHATSAPP OFICIAL</span>
-                        {paymentMethod === 'whatsapp' && <Check size={14} className="check-glow" />}
-                      </div>
-                      <div className="interactive-card-title">WhatsApp / Pedido Directo</div>
-                      <div className="interactive-card-detail">+240 222 633 687</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Muni Dinero Direct Number Panel */}
-                {paymentMethod === 'muni' && (
-                  <div className="futuristic-muni-card glass-panel">
-                    <div className="muni-header-row">
-                      <Smartphone size={18} color="#002060" />
-                      <div>
-                        <strong style={{ fontSize: '0.86rem', color: '#002060' }}>Pago Muni Dinero</strong>
-                        <p style={{ margin: 0, fontSize: '0.76rem', color: '#64748B' }}>Número de abono: <strong>555439904</strong></p>
-                      </div>
-                    </div>
-
-                    <div className="muni-number-box">
-                      <span className="muni-number-val">555439904</span>
-                      <button 
-                        type="button" 
-                        className="btn-copy-muni"
-                        onClick={handleCopyMuni}
-                      >
-                        {copiedMuni ? <><Check size={13} /> ¡Copiado!</> : <><Copy size={13} /> Copiar 555439904</>}
-                      </button>
-                    </div>
-                  </div>
-                )}
               </div>
             </>
           )}
         </div>
 
-        {/* Footer Summary & Checkout Button */}
+        {/* Footer Summary & THE TWO PAYMENT OPTIONS */}
         {cartItems.length > 0 && (
           <div className="cart-drawer-footer">
             <div className="cart-summary-details">
@@ -492,8 +336,8 @@ export const CartDrawer: React.FC = () => {
                 <span className="summary-value">{formatPrice(subtotalPrice)}</span>
               </div>
               <div className="summary-row">
-                <span>Envío ({shippingType === 'express' ? 'Express 3 días' : 'Estándar 5-7 días'})</span>
-                <span className="summary-value">{shippingCost > 0 ? formatPrice(shippingCost) : 'Gratis'}</span>
+                <span>Envío Inmediato</span>
+                <span className="summary-value" style={{ color: '#16a34a', fontWeight: 700 }}>Gratis</span>
               </div>
               <div className="summary-row grand-total-row">
                 <span>Total a Pagar</span>
@@ -502,32 +346,38 @@ export const CartDrawer: React.FC = () => {
             </div>
 
             <div className="cart-value-props">
-              <div><Truck size={14} color="#25D366" /> <span>{shippingType === 'express' ? 'Entrega Garantizada en 3 Días' : 'Entrega en 5-7 días'}</span></div>
-              <div><ShieldCheck size={14} color="#D81B60" /> <span>Garantía de Calidad EBNA</span></div>
+              <div><Truck size={14} color="#25D366" /> <span>Entrega Inmediata en Malabo y Bata</span></div>
+              <div><ShieldCheck size={14} color="#D81B60" /> <span>Ticket Oficial con Foto y Detalle</span></div>
             </div>
 
-            {paymentMethod === 'muni' ? (
-              <button 
-                type="button"
-                className="btn-muni-navy-3d"
-                onClick={handleCheckout}
-                style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                <PhoneCall size={20} />
-                <span>Pagar con Muni Dinero (555439904) • {formatPrice(grandTotal)}</span>
-              </button>
-            ) : (
+            {/* ONLY TWO PAYMENT OPTIONS AS SPECIFIED BY USER */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
+              {/* Option 1: Pagar por WhatsApp */}
               <button 
                 type="button" 
                 className="wa-checkout-btn" 
-                onClick={handleCheckout}
+                onClick={() => handleDirectTicketCheckout('whatsapp')}
+                disabled={isProcessing}
+                style={{ width: '100%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
               >
-                <span>Pagar por WhatsApp (+240 222 633 687)</span>
-                <ArrowRight size={18} />
+                <MessageCircle size={19} />
+                <span>{isProcessing ? 'Generando Ticket...' : 'Pagar por WhatsApp (Descargar Ticket PNG)'}</span>
               </button>
-            )}
 
-            <button className="cart-clear-link" onClick={clearCart}>
+              {/* Option 2: Pagar con Muni Dinero (555439904) */}
+              <button 
+                type="button"
+                className="btn-muni-navy-3d"
+                onClick={() => handleDirectTicketCheckout('muni')}
+                disabled={isProcessing}
+                style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
+              >
+                <Smartphone size={19} color="#60A5FA" />
+                <span>Pagar con Muni Dinero (555439904)</span>
+              </button>
+            </div>
+
+            <button className="cart-clear-link" onClick={clearCart} style={{ marginTop: '8px' }}>
               Vaciar Carrito
             </button>
           </div>

@@ -15,9 +15,10 @@ export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
     const itemSubtotal = item.price * item.quantity;
     const sizeInfo = item.selectedSize ? ` | Talla: ${item.selectedSize}` : '';
     const colorInfo = item.selectedColor && item.selectedColor !== 'Original' ? ` | Color: ${item.selectedColor}` : '';
+    const descInfo = item.description ? `\n   📝 Descripción: ${item.description.length > 110 ? item.description.substring(0, 107) + '...' : item.description}` : '';
     const rawImg = (item.image || '/icons/ebna-logo.png').replace(/\.jfif$/i, '.jpg');
     const photoUrl = rawImg.startsWith('http') ? rawImg : `${baseUrl}${rawImg.startsWith('/') ? rawImg : '/' + rawImg}`;
-    return `${idx + 1}. 👗 *${item.name}* [x${item.quantity}]${sizeInfo}${colorInfo}\n   💰 Subtotal: ${formatPrice(itemSubtotal)}\n   🖼️ Ver Foto: ${photoUrl}`;
+    return `${idx + 1}. 👗 *${item.name}* [x${item.quantity}]${sizeInfo}${colorInfo}${descInfo}\n   💰 Subtotal: ${formatPrice(itemSubtotal)}\n   🖼️ Ver Foto: ${photoUrl}`;
   }).join('\n\n');
 
   const regionLabel = order.region === 'insular' 
@@ -198,9 +199,9 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
     ctx.stroke();
 
     currentY += 24;
-    ctx.font = 'bold 15px "Montserrat", sans-serif';
+    ctx.font = 'bold 16px "Montserrat", sans-serif';
     ctx.fillStyle = isDark ? '#E2E8F0' : '#475569';
-    ctx.fillText('COMPROBANTE OFICIAL DE PEDIDO PROVISIONAL', width / 2, currentY);
+    ctx.fillText('TICKET OFICIAL DE PEDIDO', width / 2, currentY);
 
     currentY += 26;
     // Order ID & Status Badge Box
@@ -466,7 +467,7 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
     try {
       const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `Factura-Pedido-SindyLuxury-${order.orderNumber}.png`;
+      link.download = `Ticket-Pedido-EBNA-${order.orderNumber}.png`;
       link.href = dataUrl;
       document.body.appendChild(link);
       link.click();
