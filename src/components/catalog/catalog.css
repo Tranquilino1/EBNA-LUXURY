@@ -272,29 +272,37 @@
 }
 
 .product-image {
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-sm);
-  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  opacity: 1 !important;
+  display: block;
+  content-visibility: auto;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .product-image.is-loading {
-  opacity: 0;
+  opacity: 1 !important;
 }
 
 .product-image.is-loaded {
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 .product-image-skeleton {
   position: absolute;
+  z-index: 1;
   inset: 12px;
   border-radius: 14px;
-  background: linear-gradient(90deg, #f0e6eb 25%, #fcecf3 50%, #f0e6eb 75%);
+  background: linear-gradient(90deg, rgba(240, 230, 235, 0.4) 25%, rgba(252, 236, 243, 0.7) 50%, rgba(240, 230, 235, 0.4) 75%);
   background-size: 200% 100%;
-  animation: skeletonShimmer 1.5s infinite;
+  animation: skeletonShimmer 1.2s infinite;
+  pointer-events: none;
 }
 
 @keyframes skeletonShimmer {

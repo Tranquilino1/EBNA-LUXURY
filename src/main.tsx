@@ -2,37 +2,19 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { prewarmImages } from './lib/imagePreloader';
+import { HD_PRODUCTS } from './data/hdProducts';
 
-// Auto-purge old browser caches & obsolete localstorage on version bump
-const APP_VERSION = 'v20_live_sync_universal';
-try {
-  if (typeof window !== 'undefined') {
-    if (localStorage.getItem('ebna_app_version') !== APP_VERSION) {
-      // Clear old product cache entries
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('ebna_') || key.includes('product') || key.includes('cache') || key.includes('storage')) {
-          localStorage.removeItem(key);
-        }
-      });
-      localStorage.setItem('ebna_app_version', APP_VERSION);
-
-      // Delete old PWA ServiceWorker CacheStorage and reload once
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(regs => {
-          regs.forEach(r => r.unregister());
-        });
-      }
-      if ('caches' in window) {
-        caches.keys().then(names => {
-          Promise.all(names.map(name => caches.delete(name))).then(() => {
-            window.location.reload();
-          });
-        });
-      }
-    }
-  }
-} catch (e) {
-  console.warn('Cache purge notice:', e);
+// High-Speed Instant Pre-warming: Decodes and keeps top product images warm in GPU memory
+if (typeof window !== 'undefined') {
+  const topImages = [
+    '/products/sindy_luxury/vestido_amarillo_drapeado.jpg',
+    '/products/sindy_luxury/vestido_azul_noche_gala.jpg',
+    '/products/sindy_luxury/vestido_largo_perla_imperial.jpg',
+    '/products/sindy_luxury/vestido_corto_fucsia_neon.jpg',
+    ...HD_PRODUCTS.slice(0, 30).map(p => p.images?.primary || (Array.isArray(p.images) ? p.images[0] : '')).filter(Boolean)
+  ];
+  prewarmImages(topImages, 16);
 }
 
 createRoot(document.getElementById('root')!).render(

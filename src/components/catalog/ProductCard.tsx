@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { ShoppingBag, Flame, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 import type { Product } from '../../types';
@@ -33,16 +33,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const { settings, isChristmasActive } = useCustomization();
   const isSelected = selectedIds.has(product.id);
 
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
   const resolveInitialImg = () => {
     return product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : '/icons/ebna-logo.png'));
   };
   const [imgSrc, setImgSrc] = useState<string>(resolveInitialImg);
+  const [imageLoaded, setImageLoaded] = useState(() => {
+    // If the image is an inline SVG or already loaded/cached
+    return typeof window !== 'undefined' && (imgSrc.startsWith('data:') || false);
+  });
 
   useEffect(() => {
     const nextImg = resolveInitialImg();
     setImgSrc(nextImg || '/icons/ebna-logo.png');
-    setImageLoaded(false);
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setImageLoaded(true);
+    }
   }, [product.images]);
 
   const ordersCount = getProductOrdersCount(product);
@@ -92,11 +98,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
       <div className="product-image-container">
         {!imageLoaded && <div className="product-image-skeleton shimmer"></div>}
         <img 
+          ref={imgRef}
           src={imgSrc} 
           alt={product.name} 
           className={`product-image ${imageLoaded ? 'is-loaded' : 'is-loading'}`}
-          loading={index < 4 ? 'eager' : 'lazy'}
-          fetchPriority={index < 4 ? 'high' : 'auto'}
+          loading={index < 16 ? 'eager' : 'lazy'}
+          fetchPriority={index < 8 ? 'high' : 'auto'}
           decoding="async"
           onLoad={() => setImageLoaded(true)}
           onError={() => {

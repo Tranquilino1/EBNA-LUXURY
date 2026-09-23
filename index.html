@@ -21,6 +21,51 @@
     <link rel="icon" type="image/png" href="/icons/favicon.png" />
     <link rel="preload" href="/icons/ebna-logo.png" as="image" type="image/png" fetchpriority="high" />
 
+    <!-- 0.0ms High-Priority Image Preloads & GPU Pre-warm -->
+    <link rel="preload" href="/products/sindy_luxury/vestido_amarillo_drapeado.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/products/hd/hd_ebna_01.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/products/hd/hd_ebna_02.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/products/hd/hd_ebna_03.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/products/hd/hd_ebna_04.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/products/hd/hd_ebna_05.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/products/hd/hd_ebna_06.jpg" as="image" fetchpriority="high" />
+    <link rel="preload" href="/products/hd/hd_ebna_07.jpg" as="image" fetchpriority="high" />
+    <script>
+      (function() {
+        var priorityImgs = [
+          '/products/sindy_luxury/vestido_amarillo_drapeado.jpg',
+          '/products/sindy_luxury/vestido_azul_noche_gala.jpg',
+          '/products/sindy_luxury/vestido_largo_perla_imperial.jpg',
+          '/products/hd/hd_ebna_01.jpg',
+          '/products/hd/hd_ebna_02.jpg',
+          '/products/hd/hd_ebna_03.jpg',
+          '/products/hd/hd_ebna_04.jpg',
+          '/products/hd/hd_ebna_05.jpg',
+          '/products/hd/hd_ebna_06.jpg',
+          '/products/hd/hd_ebna_07.jpg',
+          '/products/hd/hd_ebna_08.jpg',
+          '/products/hd/hd_ebna_09.jpg',
+          '/products/hd/hd_ebna_10.jpg',
+          '/products/hd/hd_ebna_11.jpg',
+          '/products/hd/hd_ebna_12.jpg',
+          '/products/hd/hd_ebna_13.jpg',
+          '/products/hd/hd_ebna_14.jpg',
+          '/products/hd/hd_ebna_15.jpg',
+          '/products/hd/hd_ebna_16.jpg'
+        ];
+        window.__ebna_prewarm = [];
+        for (var i = 0; i < priorityImgs.length; i++) {
+          var im = new Image();
+          im.src = priorityImgs[i];
+          im.decoding = 'async';
+          if ('decode' in im) {
+            im.decode().catch(function(){});
+          }
+          window.__ebna_prewarm.push(im);
+        }
+      })();
+    </script>
+
     <!-- PWA / iOS & Universal Install -->
     <link rel="manifest" href="/manifest.json" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -117,21 +162,6 @@
     <div id="root"></div>
     <script>
       (function() {
-        // Unregister stale service workers & clear cache storage on mobile devices
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            for (let registration of registrations) {
-              registration.unregister();
-            }
-          }).catch(function(){});
-        }
-        if ('caches' in window) {
-          caches.keys().then(function(names) {
-            for (let name of names) {
-              caches.delete(name);
-            }
-          }).catch(function(){});
-        }
         // Automatic recovery for stale ChunkLoadError on deployment updates
         window.addEventListener('error', function(e) {
           if (e && e.message && (e.message.indexOf('dynamically imported module') !== -1 || e.message.indexOf('Loading chunk') !== -1 || e.message.indexOf('Importing binding') !== -1)) {

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { demoGetProducts, demoSaveProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
+import { prewarmImages } from '../lib/imagePreloader';
 import { supabase } from '../config/supabase';
 import type { Product, FilterCategoryType } from '../types';
 
@@ -90,6 +91,7 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
       }
 
       setProducts(finalList);
+      prewarmImages(finalList.map(p => p.images?.primary || (Array.isArray(p.images) ? p.images[0] : '')).filter(Boolean), 16);
     } catch (err: any) {
       console.warn('Supabase fetch notice, using catalog fallback:', err);
       let list = demoGetProducts();
@@ -105,6 +107,7 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
         );
       }
       setProducts(list);
+      prewarmImages(list.map(p => p.images?.primary || (Array.isArray(p.images) ? p.images[0] : '')).filter(Boolean), 16);
       setError(err);
     } finally {
       setLoading(false);
