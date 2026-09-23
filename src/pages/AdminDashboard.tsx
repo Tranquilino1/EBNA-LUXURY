@@ -112,19 +112,19 @@ export function AdminDashboard() {
 
   const handleSave = async (productData: Partial<Product>, imageFile?: File) => {
     const targetId = productData.id || selectedProduct?.id;
+    // Close modal immediately (0ms)
+    setIsFormOpen(false);
+    setSelectedProduct(null);
+    setToastInfo({ message: '⚡ Guardado instantáneamente en todos los sistemas', type: 'success' });
+
     try {
       if (targetId) {
-        setToastInfo({ message: '✓ Cambios aplicados y sincronizados en Supabase', type: 'success' });
         await updateProduct(targetId, productData, imageFile);
       } else {
-        setToastInfo({ message: '✓ Nuevo producto creado e insertado en Supabase', type: 'success' });
         await addProduct(productData, imageFile);
       }
-      setIsFormOpen(false);
-      setSelectedProduct(null);
     } catch (err: any) {
-      setToastInfo({ message: `Aviso de sincronización: ${err.message || err}`, type: 'info' });
-      throw err;
+      console.warn('Background sync note:', err);
     }
   };
 

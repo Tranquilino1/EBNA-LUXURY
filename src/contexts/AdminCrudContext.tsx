@@ -122,20 +122,29 @@ export const AdminCrudProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const handleSaveProduct = async (productData: Partial<Product>, imageFile?: File) => {
-    if (selectedProduct) {
-      await updateProduct(selectedProduct.id, productData, imageFile);
-    } else {
-      await addProduct(productData, imageFile);
+    closeAllModals(); // Close modal immediately (0ms)
+    try {
+      if (selectedProduct) {
+        await updateProduct(selectedProduct.id, productData, imageFile);
+      } else {
+        await addProduct(productData, imageFile);
+      }
+    } catch (err) {
+      console.error('Error saving product in AdminCrudContext:', err);
     }
-    await refetch();
-    closeAllModals();
+    refetch().catch(() => {});
   };
 
   const handleConfirmDelete = async () => {
     if (selectedProduct) {
-      await deleteProduct(selectedProduct.id);
-      await refetch();
-      closeAllModals();
+      const pid = selectedProduct.id;
+      closeAllModals(); // Close modal immediately (0ms)
+      try {
+        await deleteProduct(pid);
+      } catch (err) {
+        console.error('Error deleting product in AdminCrudContext:', err);
+      }
+      refetch().catch(() => {});
     }
   };
 

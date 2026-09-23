@@ -106,6 +106,7 @@ export const Footer: React.FC = () => {
               <div>
                 <h2 className="brand-title-uppercase">SINDY LUXURY</h2>
                 <p className="brand-syndy-tagline">BY EBNA — Alta Costura & Moda</p>
+                <div className="brand-logo-underline"></div>
               </div>
             </div>
             
@@ -281,7 +282,7 @@ export const Footer: React.FC = () => {
             &copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados. | PWA Universal compatible con iOS, Android, Windows, Mac, Chromebook y Linux.
           </p>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <span>Arquitectura & Desarrollo por <strong>Startup AiDA</strong></span>
+            <span>Arquitectura & Desarrollo por <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}><img src="/icons/aida-logo.jpg" alt="AiDA" style={{ height: '16px', borderRadius: '3px', objectFit: 'contain' }} /> Startup AiDA</strong></span>
             <span>•</span>
             <a href="mailto:thetrapkinzofafrica@gmail.com" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>thetrapkinzofafrica@gmail.com</a>
             <span>•</span>

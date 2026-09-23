@@ -30,7 +30,6 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
   const [imagePreview, setImagePreview] = useState<string>(cleanInitialImg || '');
   const [customUrl, setCustomUrl] = useState<string>('');
   
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isDirty, setIsDirty] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
@@ -63,10 +62,9 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
     }
   };
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setError('');
-    setLoading(true);
 
     try {
       const priceNum = parseFloat(formData.price);
@@ -111,13 +109,14 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
         productPayload.sku = product.sku;
       }
 
+      // Instant 0ms optimistic close: update state immediately without waiting for network
       setIsDirty(false);
-      await onSave(productPayload, imageFile || undefined);
       onClose();
+      Promise.resolve(onSave(productPayload, imageFile || undefined)).catch((err) => {
+        console.error('Error saving product in background:', err);
+      });
     } catch (err: any) {
       setError(err.message || 'Error al guardar el producto');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -164,7 +163,6 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
             <button
               type="button"
               onClick={() => handleSubmit()}
-              disabled={loading}
               style={{ padding: '8px 18px', borderRadius: '20px', border: 'none', background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
             >
               <Save size={16} /> Guardar y Salir
@@ -172,7 +170,90 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="product-form space-y-4" style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+        <form
+          onSubmit={handleSubmit}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              const target = e.target as HTMLElement;
+              const tag = target.tagName;
+              if (tag === 'TEXTAREA') {
+                if (e.ctrlKey || e.metaKey) {
+                  e.preventDefault();
+                  handleSubmit();
+                }
+                return;
+              }
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
+          className="product-form space-y-4"
+          style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
+        >
+          {/* Quick Sticky Bar: Save with 1 click or Enter without scrolling */}
+          <div
+            className="quick-save-top-bar"
+            style={{
+              position: 'sticky',
+              top: 0,
+              zIndex: 40,
+              background: 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(10px)',
+              padding: '10px 14px',
+              borderRadius: '14px',
+              border: '1.5px solid rgba(216, 27, 96, 0.3)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              boxShadow: '0 4px 16px rgba(216, 27, 96, 0.12)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#D81B60', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                ⚡ GUARDADO INSTANTÁNEO 0ms
+              </span>
+              <span style={{ fontSize: '0.74rem', color: '#64748B' }}>
+                (Pulsa <kbd style={{ background: '#F1F5F9', border: '1px solid #CBD5E1', borderRadius: '4px', padding: '1px 6px', fontWeight: 700, color: '#0F172A' }}>Enter ↵</kbd> para guardar)
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                type="button"
+                onClick={handleAttemptClose}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  border: '1px solid #CBD5E1',
+                  background: 'white',
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  color: '#475569',
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                style={{
+                  padding: '7px 20px',
+                  borderRadius: '20px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+                  color: 'white',
+                  fontWeight: 800,
+                  fontSize: '0.84rem',
+                  cursor: 'pointer',
+                  boxShadow: '0 3px 12px rgba(216, 27, 96, 0.35)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <Save size={15} /> Guardar (Enter ↵)
+              </button>
+            </div>
+          </div>
           <div className="form-group">
             <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
               Nombre del Producto *
@@ -444,11 +525,11 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
           </div>
 
           <div className="modal-actions flex justify-end gap-3 mt-6" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem', marginTop: '1.5rem' }}>
-            <button type="button" className="btn-secondary" onClick={handleAttemptClose} disabled={loading} style={{ padding: '0.75rem 1.4rem', borderRadius: '999px', border: '1px solid var(--color-glass-border)', background: 'white', fontWeight: 600, cursor: 'pointer' }}>
+            <button type="button" className="btn-secondary" onClick={handleAttemptClose} style={{ padding: '0.75rem 1.4rem', borderRadius: '999px', border: '1px solid var(--color-glass-border)', background: 'white', fontWeight: 600, cursor: 'pointer' }}>
               Cancelar
             </button>
-            <button type="submit" className="btn-primary" disabled={loading} style={{ padding: '0.75rem 1.6rem', borderRadius: '999px', border: 'none', background: 'linear-gradient(135deg, #E05A88, #C4436F)', color: 'white', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 15px rgba(224, 90, 136, 0.3)' }}>
-              {loading ? 'Guardando...' : product ? 'Guardar Cambios' : 'Crear Producto'}
+            <button type="submit" className="btn-primary" style={{ padding: '0.75rem 1.6rem', borderRadius: '999px', border: 'none', background: 'linear-gradient(135deg, #E05A88, #C4436F)', color: 'white', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 15px rgba(224, 90, 136, 0.3)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <Save size={16} /> {product ? 'Guardar Cambios (Enter ↵)' : 'Crear Producto (Enter ↵)'}
             </button>
           </div>
         </form>

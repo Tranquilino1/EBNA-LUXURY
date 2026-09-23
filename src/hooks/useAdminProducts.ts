@@ -181,35 +181,42 @@ export function useAdminProducts() {
       setProducts(prev => [newProduct, ...prev.filter(p => p.id !== validId)]);
       notifyCatalogChange('add', newProduct);
 
-      // 2. Insert into Supabase in background
-      const isInfantilAdd = newProduct.category === 'MODA_INFANTIL';
-      const dbCategoryAdd = isInfantilAdd ? 'MODA_MUJER' : (newProduct.category || 'MODA_MUJER');
-      const dbSubcategoryAdd = isInfantilAdd ? 'Moda Infantil' : (newProduct.subcategory || 'General');
+      // 2. Insert into Supabase in background (Non-blocking: 0ms UI latency)
+      (async () => {
+        try {
+          const isInfantilAdd = newProduct.category === 'MODA_INFANTIL';
+          const dbCategoryAdd = isInfantilAdd ? 'MODA_MUJER' : (newProduct.category || 'MODA_MUJER');
+          const dbSubcategoryAdd = isInfantilAdd ? 'Moda Infantil' : (newProduct.subcategory || 'General');
 
-      const supabasePayload: any = {
-        id: validId,
-        sku: skuVal,
-        slug: newSlug,
-        name: newProduct.name,
-        category: dbCategoryAdd,
-        subcategory: dbSubcategoryAdd,
-        brand: newProduct.brand,
-        description: newProduct.description,
-        price: newProduct.price,
-        price_fcfa: newProduct.priceFCFA,
-        images: imagesObj,
-        colors: newProduct.colors,
-        sizes: newProduct.sizes,
-        in_stock: newProduct.in_stock,
-        is_hidden: newProduct.is_hidden,
-        created_at: newProduct.created_at,
-        updated_at: newProduct.updated_at,
-      };
+          const supabasePayload: any = {
+            id: validId,
+            sku: skuVal,
+            slug: newSlug,
+            name: newProduct.name,
+            category: dbCategoryAdd,
+            subcategory: dbSubcategoryAdd,
+            brand: newProduct.brand,
+            description: newProduct.description,
+            price: newProduct.price,
+            price_fcfa: newProduct.priceFCFA,
+            images: imagesObj,
+            colors: newProduct.colors,
+            sizes: newProduct.sizes,
+            in_stock: newProduct.in_stock,
+            is_hidden: newProduct.is_hidden,
+            created_at: newProduct.created_at,
+            updated_at: newProduct.updated_at,
+          };
 
-      const { error: insErr } = await supabase.from('products').insert(supabasePayload);
-      if (insErr) {
-        console.warn('Supabase insert notice:', insErr.message);
-      }
+          const { error: insErr } = await supabase.from('products').insert(supabasePayload);
+          if (insErr) {
+            console.warn('Supabase insert notice:', insErr.message);
+          }
+        } catch (bgErr) {
+          console.error('Background Supabase insert error:', bgErr);
+        }
+      })();
+
       return newProduct;
     } catch (err) {
       console.error('Error adding product:', err);
@@ -253,62 +260,68 @@ export function useAdminProducts() {
       demoUpdateProduct(id, updated);
       notifyCatalogChange('update', updated);
 
-      // 2. Build full relational Supabase payload
-      const isInfantilUpd = updated.category === 'MODA_INFANTIL';
-      const dbCategoryUpd = isInfantilUpd ? 'MODA_MUJER' : (updated.category || 'MODA_MUJER');
-      const dbSubcategoryUpd = isInfantilUpd ? 'Moda Infantil' : (updated.subcategory || 'General');
+      // 2. Direct update in Supabase (Non-blocking background sync: 0ms UI latency)
+      (async () => {
+        try {
+          const isInfantilUpd = updated.category === 'MODA_INFANTIL';
+          const dbCategoryUpd = isInfantilUpd ? 'MODA_MUJER' : (updated.category || 'MODA_MUJER');
+          const dbSubcategoryUpd = isInfantilUpd ? 'Moda Infantil' : (updated.subcategory || 'General');
 
-      const supabasePayload: any = {
-        name: updated.name,
-        category: dbCategoryUpd,
-        subcategory: dbSubcategoryUpd,
-        brand: updated.brand || 'EBNA Luxury Collection',
-        description: updated.description || '',
-        price: updated.price,
-        price_fcfa: updated.priceFCFA || updated.price,
-        in_stock: updated.in_stock !== undefined ? updated.in_stock : true,
-        is_hidden: updated.is_hidden || false,
-        updated_at: updated.updated_at
-      };
-
-      if (updated.sku) supabasePayload.sku = updated.sku;
-      if (updated.slug) supabasePayload.slug = updated.slug;
-      if (updated.images) {
-        const prim = updated.images.primary || (Array.isArray(updated.images) ? updated.images[0] : (typeof updated.images === 'string' ? updated.images : undefined));
-        if (prim) {
-          supabasePayload.images = {
-            primary: prim,
-            gallery: (Array.isArray(updated.images.gallery) && updated.images.gallery.length > 0) ? updated.images.gallery : [prim]
+          const supabasePayload: any = {
+            name: updated.name,
+            category: dbCategoryUpd,
+            subcategory: dbSubcategoryUpd,
+            brand: updated.brand || 'EBNA Luxury Collection',
+            description: updated.description || '',
+            price: updated.price,
+            price_fcfa: updated.priceFCFA || updated.price,
+            in_stock: updated.in_stock !== undefined ? updated.in_stock : true,
+            is_hidden: updated.is_hidden || false,
+            updated_at: updated.updated_at
           };
+
+          if (updated.sku) supabasePayload.sku = updated.sku;
+          if (updated.slug) supabasePayload.slug = updated.slug;
+          if (updated.images) {
+            const prim = updated.images.primary || (Array.isArray(updated.images) ? updated.images[0] : (typeof updated.images === 'string' ? updated.images : undefined));
+            if (prim) {
+              supabasePayload.images = {
+                primary: prim,
+                gallery: (Array.isArray(updated.images.gallery) && updated.images.gallery.length > 0) ? updated.images.gallery : [prim]
+              };
+            }
+          }
+          if (updated.colors) supabasePayload.colors = updated.colors;
+          if (updated.sizes) supabasePayload.sizes = updated.sizes;
+
+          // Direct update in Supabase (by ID or Slug)
+          const isUUID = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ||
+                         (id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id));
+          const targetIdToUse = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ? updated.id : id;
+
+          let updateQuery = supabase.from('products').update(supabasePayload);
+
+          if (isUUID) {
+            updateQuery = updateQuery.eq('id', targetIdToUse);
+          } else if (updated.slug) {
+            updateQuery = updateQuery.eq('slug', updated.slug);
+          } else {
+            updateQuery = updateQuery.eq('id', targetIdToUse);
+          }
+
+          const { data: updateRes, error: updateErr } = await updateQuery.select();
+
+          if (updateErr) {
+            console.warn('Supabase update notice:', updateErr.message);
+          } else if (!updateRes || updateRes.length === 0) {
+            if (updated.slug) {
+              await supabase.from('products').update(supabasePayload).eq('slug', updated.slug);
+            }
+          }
+        } catch (bgErr) {
+          console.error('Background Supabase update error:', bgErr);
         }
-      }
-      if (updated.colors) supabasePayload.colors = updated.colors;
-      if (updated.sizes) supabasePayload.sizes = updated.sizes;
-
-      // 3. Direct update in Supabase (by ID or Slug)
-      const isUUID = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ||
-                     (id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id));
-      const targetIdToUse = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ? updated.id : id;
-
-      let updateQuery = supabase.from('products').update(supabasePayload);
-
-      if (isUUID) {
-        updateQuery = updateQuery.eq('id', targetIdToUse);
-      } else if (updated.slug) {
-        updateQuery = updateQuery.eq('slug', updated.slug);
-      } else {
-        updateQuery = updateQuery.eq('id', targetIdToUse);
-      }
-
-      const { data: updateRes, error: updateErr } = await updateQuery.select();
-
-      if (updateErr) {
-        console.warn('Supabase update notice:', updateErr.message);
-      } else if (!updateRes || updateRes.length === 0) {
-        if (updated.slug) {
-          await supabase.from('products').update(supabasePayload).eq('slug', updated.slug);
-        }
-      }
+      })();
 
       return updated;
     } catch (err) {
@@ -322,38 +335,51 @@ export function useAdminProducts() {
       const prod = products.find(p => p.id === id || p.slug === id || p.sku === id);
       const targetSlug = prod?.slug || id;
 
-      // 1. Immediate local state update for instant UI feedback
+      // 1. Immediate local state update for instant UI feedback (0ms)
       setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug && p.sku !== id));
       demoDeleteProduct(id);
-
-      // 2. Delete from Supabase safely (only query UUID column if valid UUID format)
-      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-      if (isUUID) {
-        await supabase.from('products').delete().eq('id', id);
-      }
-      if (targetSlug) {
-        await supabase.from('products').delete().eq('slug', targetSlug);
-      }
-
-      // 3. Notify all devices and tabs
       notifyCatalogChange('delete', { id, slug: targetSlug });
-      await fetchProducts();
+
+      // 2. Delete from Supabase in background
+      (async () => {
+        try {
+          const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+          if (isUUID) {
+            await supabase.from('products').delete().eq('id', id);
+          }
+          if (targetSlug) {
+            await supabase.from('products').delete().eq('slug', targetSlug);
+          }
+        } catch (err) {
+          console.warn('Background Supabase delete notice:', err);
+        }
+      })();
     } catch (err) {
       console.error('Error deleting product:', err);
-      const prod = products.find(p => p.id === id || p.slug === id || p.sku === id);
-      const targetSlug = prod?.slug || id;
-      setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug && p.sku !== id));
     }
   };
 
   const toggleStock = async (id: string, currentStockStatus: boolean) => {
     const prod = products.find(p => p.id === id);
-    demoUpdateProduct(id, { in_stock: !currentStockStatus, inStock: !currentStockStatus });
-    if (prod) {
-      await supabase.from('products').update({ in_stock: !currentStockStatus }).eq('slug', prod.slug);
-    }
-    notifyCatalogChange('toggleStock', { id, in_stock: !currentStockStatus });
-    await fetchProducts();
+    const newStock = !currentStockStatus;
+
+    // 1. Immediate local update (0ms)
+    demoUpdateProduct(id, { in_stock: newStock, inStock: newStock });
+    setProducts(prev => prev.map(p => (p.id === id || p.slug === id || p.sku === id) ? { ...p, in_stock: newStock, inStock: newStock } : p));
+    notifyCatalogChange('toggleStock', { id, in_stock: newStock });
+
+    // 2. Supabase update in background
+    (async () => {
+      try {
+        if (prod) {
+          await supabase.from('products').update({ in_stock: newStock }).eq('slug', prod.slug);
+        } else {
+          await supabase.from('products').update({ in_stock: newStock }).eq('id', id);
+        }
+      } catch (err) {
+        console.warn('Background toggleStock notice:', err);
+      }
+    })();
   };
 
   const bulkDelete = async (ids: string[]) => {

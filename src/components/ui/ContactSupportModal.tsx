@@ -76,7 +76,11 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
               <div className="aida-startup-name">Startup AiDA</div>
               <div className="aida-startup-desc">Soluciones tecnológicas de alto rendimiento e ingeniería e-commerce de lujo.</div>
             </div>
-            <span style={{ fontSize: '1.8rem' }}>💎</span>
+            <img 
+              src="/icons/aida-logo.jpg" 
+              alt="AiDA Logo" 
+              style={{ width: '75px', height: 'auto', borderRadius: '8px', border: '1px solid rgba(24, 66, 102, 0.25)', boxShadow: '0 3px 12px rgba(24, 66, 102, 0.15)', background: 'white', padding: '3px' }} 
+            />
           </div>
 
           {/* Quick Channels Grid */}

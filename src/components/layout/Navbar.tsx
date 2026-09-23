@@ -118,6 +118,7 @@ export const Navbar: React.FC = () => {
           <div className="logo-text-brand">
             <span className="brand-name-uppercase">SINDY LUXURY</span>
             <span className="brand-sub-syndy">BY EBNA</span>
+            <div className="brand-logo-underline"></div>
           </div>
         </Link>
 
