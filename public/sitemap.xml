@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ebna-luxury.vercel.app/</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/catalogo</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/jabon-de-tocador-palmolive-naturals-extractos-herbales-pack-12-x-90g-ebna-12</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -43,12 +43,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/pack-2x-leggings-elasticos-maternidad-confort-ultra-soft-ebna-18</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/camiseta-de-tirantes-corta-acanalada-con-diseno-de-diamantes-blanco-hd-22</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -56,12 +50,6 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/conjunto-informal-2-piezas-top-sin-mangas-hombro-asimetrico-y-pantalon-con-lazo-celeste-hd-23</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/gafas-de-sol-classic-square-unisex-filtro-luz-azul-pack-3x-ebna-21</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -79,13 +67,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/soleia-conjunto-de-3-piezas-talla-grande-top-asimetrico-panuelo-negro-blanco-leopardo-hd-26</loc>
+    <loc>https://ebna-luxury.vercel.app/producto/shein-sxy-conjunto-informal-de-top-asimetrico-con-nudo-y-pantalon-capri-estampado-leopardo-hd-27</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/shein-sxy-conjunto-informal-de-top-asimetrico-con-nudo-y-pantalon-capri-estampado-leopardo-hd-27</loc>
+    <loc>https://ebna-luxury.vercel.app/producto/pack-2x-leggings-elasticos-maternidad-confort-ultra-soft-ebna-18</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -93,6 +81,18 @@
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/chaqueta-blazer-sastre-zara-style-new-collection-ebna-26</loc>
     <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/gafas-de-sol-classic-square-unisex-filtro-luz-azul-pack-3x-ebna-21</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/soleia-conjunto-de-3-piezas-talla-grande-top-asimetrico-panuelo-negro-blanco-leopardo-hd-26</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -140,31 +140,25 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/zara-vestido-corto-palabra-de-honor-azul-cielo-con-maxi-lazada-escultural-hd-40</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/bailarinas-elegantes-encaje-floral-ollio-paris-ebna-48</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/locion-corporal-hidratante-avena-instituto-espanol-ebna-49</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/set-de-cosmetica-facial-brunch-beauty-glow-serum-50ml-ebna-51</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/jabon-de-azufre-biosulfur-grisi-anti-acne-100g-ebna-52</loc>
     <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/locion-corporal-hidratante-avena-instituto-espanol-ebna-49</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/bailarinas-elegantes-encaje-floral-ollio-paris-ebna-48</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -176,12 +170,6 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/top-negro-cruzado-al-cuello-con-hebilla-metalica-dorada-y-bolso-bandolera-hd-33</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/jabon-aclarante-carowhite-clarifying-soap-180g-ebna-55</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -211,7 +199,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/sandalias-de-tacon-elegantes-zara-heels-gold-edition-ebna-61</loc>
+    <loc>https://ebna-luxury.vercel.app/producto/jabon-aclarante-carowhite-clarifying-soap-180g-ebna-55</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/set-de-cosmetica-facial-brunch-beauty-glow-serum-50ml-ebna-51</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/coleccion-de-vestidos-cortos-drapeados-de-tirantes-en-10-colores-hd-02</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -235,18 +235,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/vestido-largo-de-fiesta-palabra-de-honor-blanco-con-lazos-laterales-hd-01</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/coleccion-de-vestidos-cortos-drapeados-de-tirantes-en-10-colores-hd-02</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/pantalon-leggings-high-waist-levanta-bumbum-noir-ebna-67</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -260,12 +248,6 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/pantalon-jeans-wide-leg-streetwear-y2k-vintage-wash-ebna-69</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/sudadera-oversized-thermal-lined-kangaroo-hoodie-ebna-70</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -289,25 +271,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/botines-kraasa-chelsea-boots-de-cuero-urbano-ebna-75</loc>
+    <loc>https://ebna-luxury.vercel.app/producto/sudadera-oversized-thermal-lined-kangaroo-hoodie-ebna-70</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/locion-corporal-hidratante-avena-instituto-espanol-edition-ebna-76</loc>
-    <lastmod>2026-09-22</lastmod>
+    <loc>https://ebna-luxury.vercel.app/producto/vestido-largo-de-fiesta-palabra-de-honor-blanco-con-lazos-laterales-hd-01</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/gorro-de-saten-ajustable-largo-para-trenzas-dreads-ebna-78</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/mono-enterizo-ajustado-manga-larga-con-estampado-animal-abstracto-hd-03</loc>
+    <loc>https://ebna-luxury.vercel.app/producto/zapatillas-sneakers-nike-dunk-low-wine-red-edition-ebna-85</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -319,31 +295,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/desodorante-roll-on-nivea-men-black-white-invisible-pack-4x-ebna-81</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/pantalon-corto-bermuda-casual-men-s-solid-color-ebna-82</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/conjunto-casual-de-2-piezas-top-corto-y-pantalon-palazzo-fluido-azul-celeste-hd-04</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/traje-ejecutivo-de-sastreria-navy-blue-stripe-3-piezas-ebna-84</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/jabon-germicida-dole-medicated-lemon-soap-curcuma-kojico-edition-ebna-86</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -355,19 +307,55 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/zapatillas-sneakers-nike-dunk-low-wine-red-edition-ebna-85</loc>
+    <loc>https://ebna-luxury.vercel.app/producto/desodorante-roll-on-nivea-men-black-white-invisible-pack-4x-ebna-81</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/locion-corporal-hidratante-avena-instituto-espanol-edition-ebna-76</loc>
     <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/mono-enterizo-ajustado-manga-larga-con-estampado-animal-abstracto-hd-03</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/jabon-germicida-dole-medicated-lemon-soap-curcuma-kojico-edition-ebna-86</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/gorro-de-saten-ajustable-largo-para-trenzas-dreads-ebna-78</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/traje-ejecutivo-de-sastreria-navy-blue-stripe-3-piezas-ebna-84</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/botines-kraasa-chelsea-boots-de-cuero-urbano-ebna-75</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/pantalon-corto-bermuda-casual-men-s-solid-color-ebna-82</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/top-halter-plisado-espalda-al-aire-con-bajo-de-volantes-y-lazada-hd-06</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/jabon-de-tocador-palmolive-naturals-moisture-care-olivo-pack-4x-ebna-90</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -379,14 +367,14 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/jabon-de-tocador-palmolive-naturals-moisture-care-olivo-pack-4x-edition-ebna-92</loc>
-    <lastmod>2026-09-22</lastmod>
+    <loc>https://ebna-luxury.vercel.app/producto/funda-porta-pasaporte-pu-map-pattern-porta-tarjetas-edition-ebna-99</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/jabon-de-tocador-palmolive-naturals-moisture-care-olivo-pack-4x-luxury-ebna-93</loc>
-    <lastmod>2026-09-22</lastmod>
+    <loc>https://ebna-luxury.vercel.app/producto/jabon-de-tocador-palmolive-naturals-moisture-care-olivo-pack-4x-edition-ebna-92</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -397,8 +385,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/jabon-artesanal-crystal-egg-con-aceites-esenciales-120g-ebna-95</loc>
-    <lastmod>2026-09-22</lastmod>
+    <loc>https://ebna-luxury.vercel.app/producto/jabon-de-tocador-palmolive-naturals-moisture-care-olivo-pack-4x-luxury-ebna-93</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -410,18 +398,6 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/conjunto-deportivo-hooded-crop-top-pantalon-flare-luxury-ebna-97</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/funda-porta-pasaporte-pu-map-pattern-porta-tarjetas-edition-ebna-99</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/zapatillas-deportivas-puma-speedcat-og-classic-ebna-100</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -439,6 +415,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ebna-luxury.vercel.app/producto/jabon-artesanal-crystal-egg-con-aceites-esenciales-120g-ebna-95</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/zapatillas-deportivas-puma-speedcat-og-classic-ebna-100</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ebna-luxury.vercel.app/producto/jabon-corporal-hidratante-miel-avena-nutricion-intensa-100g-ebna-103</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -446,24 +434,6 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/top-asimetrico-blanco-con-lazada-al-hombro-y-pantalon-vaquero-hd-09</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/jabon-galong-naranja-colageno-aclarante-100g-ebna-105</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/vestido-corto-de-fiesta-tutu-palabra-de-honor-en-tul-plisado-lila-con-lazo-hd-10</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/pantalon-corto-bermuda-casual-men-s-solid-color-edition-ebna-107</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -481,6 +451,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ebna-luxury.vercel.app/producto/exfoliante-corporal-curcuma-sal-marina-con-aceite-de-jojoba-250g-edition-ebna-128</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ebna-luxury.vercel.app/producto/crema-facial-aclarante-turmeric-face-cream-50g-ebna-111</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -494,18 +470,42 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/chaqueta-active-soft-mid-layer-zip-up-black-oh-polly-style-edition-ebna-113</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/vestido-veraniego-polka-dot-retro-flared-red-ebna-115</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/crema-unificante-anti-manchas-topicrem-mela-day-cream-spf50-40ml-edition-ebna-117</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/jabon-galong-naranja-colageno-aclarante-100g-ebna-105</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/vestido-veraniego-polka-dot-retro-flared-red-ebna-115</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/mono-enterizo-ajustado-manga-larga-con-estampado-animal-abstracto-hd-13</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/lapiz-labial-liquido-velvet-matte-waterproof-long-lasting-edition-ebna-125</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/set-de-3-piezas-body-casual-de-cuello-redondo-sin-mangas-blanco-celeste-negro-hd-15</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -547,61 +547,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/mono-enterizo-ajustado-manga-larga-con-estampado-animal-abstracto-hd-13</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/lapiz-labial-liquido-velvet-matte-waterproof-long-lasting-edition-ebna-125</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/set-de-3-piezas-body-casual-de-cuello-redondo-sin-mangas-blanco-celeste-negro-hd-15</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/vestido-satinado-de-noche-zara-luxe-red-luxury-ebna-127</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/bailarinas-malla-calada-woven-mary-jane-flats-ebna-130</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/bailarinas-elegantes-encaje-floral-ollio-paris-edition-ebna-131</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/vestido-satinado-de-noche-zara-luxe-red-edition-ebna-126</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/vestido-maxi-peplum-y-falda-con-volantes-cuadros-vichy-rojo-y-blanco-hd-16</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/bailarinas-malla-calada-woven-mary-jane-flats-edition-ebna-133</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/sandalias-de-tacon-elegantes-zara-heels-gold-edition-edition-ebna-134</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -614,12 +578,6 @@
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/vestido-casual-y-elegante-para-mujer-top-palabra-de-honor-negro-falda-leopardo-hd-17</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/zara-red-vanilla-eau-de-toilette-edition-ebna-137</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -643,37 +601,37 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/sudadera-oversized-thermal-lined-kangaroo-hoodie-edition-ebna-141</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/vestido-mini-palabra-de-honor-rosa-fucsia-con-falda-de-volantes-escalonados-hd-37</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/exfoliante-corporal-curcuma-sal-marina-con-aceite-de-jojoba-250g-edition-ebna-128</loc>
+    <loc>https://ebna-luxury.vercel.app/producto/bailarinas-malla-calada-woven-mary-jane-flats-edition-ebna-133</loc>
     <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/zara-red-vanilla-eau-de-toilette-edition-ebna-137</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/sudadera-oversized-thermal-lined-kangaroo-hoodie-edition-ebna-141</loc>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/sandalias-de-tacon-elegantes-zara-heels-gold-edition-edition-ebna-134</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/vestido-midi-corse-escote-recto-y-falda-de-vuelo-cuadros-vichy-rosa-y-amarillo-pastel-hd-41</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/conjunto-deportivo-camiseta-entallada-y-shorts-ciclista-de-tiro-alto-amarillo-pastel-hd-42</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/editorial-moda-conjunto-acanalado-camiseta-y-pantalon-acampanado-con-cinta-pelo-pastel-hd-43</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -703,12 +661,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/bolso-cilindro-baguette-con-estampado-de-lunares-y-charm-corazon-marron-rojo-negro-crema-hd-48</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/conjunto-2-piezas-top-sin-mangas-y-pantalon-capri-estampado-lunares-amarillo-y-negro-hd-49</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -717,6 +669,18 @@
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/vestido-midi-verano-nido-de-abeja-tirantes-cuadros-vichy-rojo-y-blanco-studio-hd-50</loc>
     <lastmod>2026-09-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/editorial-moda-conjunto-acanalado-camiseta-y-pantalon-acampanado-con-cinta-pelo-pastel-hd-43</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/conjunto-deportivo-camiseta-entallada-y-shorts-ciclista-de-tiro-alto-amarillo-pastel-hd-42</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -769,12 +733,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/bailarinas-de-rejilla-mary-jane-con-tira-ajustable-y-lazo-frontal-hd-59</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/conjunto-2-piezas-top-sin-mangas-y-pantalon-capri-estampado-lunares-amarillo-y-negro-hd-60</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -793,19 +751,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/vestido-camisero-polo-de-punto-a-rayas-con-falda-plisada-evase-fucsia-y-gris-hd-63</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/sandalias-tacon-fino-verde-esmeralda-punta-cuadrada-con-tiras-joya-de-cristales-hd-64</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/camisetas-deportivas-running-compresion-secado-rapido-alice-run-en-4-colores-pastel-hd-65</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -817,62 +763,116 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/shein-girlism-camiseta-corta-blanca-con-estampado-floral-lirio-fucsia-hd-67</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/sandalias-planas-de-piel-negra-con-tira-en-el-dedo-y-aplique-dorado-mng-hd-68</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ebna-luxury.vercel.app/producto/conjunto-2-piezas-lino-blanco-roto-con-topos-negros-top-palabra-de-honor-y-pantalon-ancho-hd-69</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ebna-luxury.vercel.app/producto/shein-girlism-camiseta-corta-blanca-con-estampado-floral-lirio-fucsia-hd-67</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ebna-luxury.vercel.app/producto/sandalias-cuna-plataforma-alta-en-piel-negra-con-tiras-finas-cruzadas-diana-cantillo-hd-70</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/sandalias-planas-de-piel-negra-con-tira-en-el-dedo-y-aplique-dorado-mng-hd-68</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/vestido-camisero-polo-de-punto-a-rayas-con-falda-plisada-evase-fucsia-y-gris-hd-63</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/camisetas-deportivas-running-compresion-secado-rapido-alice-run-en-4-colores-pastel-hd-65</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ebna-luxury.vercel.app/producto/nike-air-rift-zapatillas-sandalias-tabi-con-puntera-dividida-en-neopreno-rosa-hd-71</loc>
-    <lastmod>2026-09-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ebna-luxury.vercel.app/producto/zuecos-con-plataforma-ugg-venture-daze-tazz-platform-ante-rosa-pastel-y-beige-hd-72</loc>
-    <lastmod>2026-09-22</lastmod>
+    <loc>https://ebna-luxury.vercel.app/producto/vestido-satinado-de-noche-zara-luxe-red-luxury-ebna-127</loc>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/adidas-originals-samba-jane-taekwondo-estilo-bailarina-de-ante-rosa-con-tres-bandas-blancas-hd-74</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/producto/conflass-gorro-de-dormir-de-saten-con-estampado-floral-y-ala-ancha-multicolor-hd-77</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/nike-air-rift-zapatillas-sandalias-tabi-con-puntera-dividida-en-neopreno-rosa-hd-71</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/zuecos-con-plataforma-ugg-venture-daze-tazz-platform-ante-rosa-pastel-y-beige-hd-72</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/bailarinas-de-rejilla-mary-jane-con-tira-ajustable-y-lazo-frontal-hd-59</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/sandalias-de-tacon-elegantes-zara-heels-gold-edition-ebna-61</loc>
     <lastmod>2026-09-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ebna-luxury.vercel.app/producto/jabon-de-tocador-palmolive-naturals-moisture-care-olivo-pack-4x-ebna-90</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/pantalon-corto-bermuda-casual-men-s-solid-color-edition-ebna-107</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/bolso-cilindro-baguette-con-estampado-de-lunares-y-charm-corazon-marron-rojo-negro-crema-hd-48</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ebna-luxury.vercel.app/producto/vestido-corto-de-fiesta-tutu-palabra-de-honor-en-tul-plisado-lila-con-lazo-hd-10</loc>
+    <lastmod>2026-09-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ebna-luxury.vercel.app/registro</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ebna-luxury.vercel.app/login</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

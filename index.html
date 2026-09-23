@@ -93,23 +93,63 @@
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     </noscript>
 
-    <!-- Schema.org JSON-LD Structured Data for Google SEO -->
+    <!-- Google Search Console Verification Meta Tag -->
+    <meta name="google-site-verification" content="google-site-verification-sindy-luxury" />
+
+    <!-- Google Sitelinks SearchBox Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Sindy Luxury by EBNA",
+      "alternateName": ["EBNA Luxury", "Sindy Luxury Guinea Ecuatorial", "Boutique Sindy Luxury"],
+      "url": "https://ebna-luxury.vercel.app/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://ebna-luxury.vercel.app/catalogo?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Schema.org JSON-LD Structured Data: ClothingStore & LocalBusiness in Malabo/Bata -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ClothingStore",
+      "@id": "https://ebna-luxury.vercel.app/#store",
       "name": "Sindy Luxury by EBNA — Alta Costura y Moda de Lujo",
+      "alternateName": "Sindy Luxury",
       "image": "https://ebna-luxury.vercel.app/products/sindy_luxury/vestido_amarillo_drapeado.jpg",
-      "description": "Boutique exclusiva de alta costura, vestidos de gala, conjuntos 2 piezas, calzado de fiesta y cosmética botánica en Guinea Ecuatorial con pago en FCFA y atención directa por WhatsApp.",
+      "logo": "https://ebna-luxury.vercel.app/icons/ebna-logo.png",
+      "description": "Boutique exclusiva de alta costura, vestidos de gala, conjuntos 2 piezas, calzado de fiesta y cosmética botánica en Guinea Ecuatorial con pago en FCFA (Muni Dinero 555439904) y pedidos inmediatos por WhatsApp.",
       "telephone": "+240 222 633 687",
       "currenciesAccepted": "XAF",
-      "priceRange": "FCFA",
+      "paymentAccepted": "Muni Dinero (555439904), WhatsApp, Efectivo",
+      "priceRange": "15.000 - 150.000 FCFA",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Malabo II / Avenida de la Paz",
         "addressCountry": "GQ",
         "addressLocality": "Malabo",
         "addressRegion": "Bioko Norte"
       },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 3.7504,
+        "longitude": 8.7371
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "08:00",
+          "closes": "22:00"
+        }
+      ],
       "areaServed": [
         {
           "@type": "City",
@@ -118,6 +158,10 @@
         {
           "@type": "City",
           "name": "Bata"
+        },
+        {
+          "@type": "Country",
+          "name": "Guinea Ecuatorial"
         }
       ],
       "url": "https://ebna-luxury.vercel.app/"
@@ -143,7 +187,7 @@
           "name": "¿Qué moneda se utiliza y cómo se paga en Sindy Luxury?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Todos los precios están fijados en Francos CFA (FCFA / XAF). Los pagos se coordinan directamente a través de WhatsApp con opciones de pago contra entrega o transferencias seguras."
+            "text": "Todos los precios están fijados en Francos CFA (FCFA / XAF). Puedes pagar directamente con Muni Dinero al 555439904 o por WhatsApp con entrega inmediata y descarga automática de tu Ticket oficial en imagen PNG."
           }
         },
         {
@@ -151,7 +195,15 @@
           "name": "¿Cuánto tardan los envíos en Guinea Ecuatorial?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Las entregas en la ciudad de Malabo se realizan en el mismo día (express). Para Bata y resto de la Región Continental, los envíos se gestionan de forma prioritaria en 24 a 48 horas."
+            "text": "Las entregas en la ciudad de Malabo se realizan de forma inmediata en el mismo día (express). Para Bata y el resto de la Región Continental, los envíos se gestionan de forma prioritaria en 24 a 48 horas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo recibo mi comprobante o ticket oficial de compra?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Al pulsar 'Pagar por WhatsApp' o 'Pagar con Muni Dinero', la tienda descarga al instante en tu teléfono un archivo PNG en alta definición con el Ticket Oficial que incluye la foto de la prenda, descripción completa, talla, color, precio y folio único."
           }
         }
       ]
