@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { ShoppingBag, Flame, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
+import { ShoppingBag, Flame, Pencil, Trash2, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import type { Product } from '../../types';
 import { formatPrice } from '../../lib/utils';
-import { useCart } from '../../contexts/CartContext';
 import { useAdminCrud } from '../../contexts/AdminCrudContext';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import { ChristmasHat } from '../effects/ChristmasHat';
-import { WhatsAppButton } from './WhatsAppButton';
 import { getProductOrdersCount } from '../../lib/popularityTracker';
 import './catalog.css';
 
@@ -21,7 +19,6 @@ const FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
   const navigate = useNavigate();
-  const { addToCart } = useCart();
   const { 
     isAdmin, 
     openEditModal, 
@@ -43,7 +40,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   };
   const [imgSrc, setImgSrc] = useState<string>(resolveInitialImg);
   const [imageLoaded, setImageLoaded] = useState(() => {
-    // If the image is an inline SVG or already loaded/cached
     return typeof window !== 'undefined' && (imgSrc.startsWith('data:') || false);
   });
 
@@ -60,16 +56,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const originalPriceVal = product.originalPriceFCFA;
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Prevent navigation if clicking on Admin buttons, checkbox, WhatsApp button, or Cart button
+    // Only prevent navigation if clicking on Admin controls or checkbox
     if (
       (e.target as HTMLElement).closest('.admin-checkbox-container') ||
-      (e.target as HTMLElement).closest('.admin-card-actions') || 
-      (e.target as HTMLElement).closest('.wa-button-container') || 
-      (e.target as HTMLElement).closest('.btn-add-cart-card')
+      (e.target as HTMLElement).closest('.admin-card-actions')
     ) {
       return;
     }
-    navigate(`/producto/${product.slug}`);
+    navigate(`/producto/${product.slug || product.id}`);
   };
 
   // Format category badge for display
@@ -365,18 +359,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           </div>
         </div>
         
-        <div className="product-actions" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '8px', alignItems: 'center' }}>
-          <WhatsAppButton product={product} fullWidth size="sm" />
+        <div className="product-actions" style={{ marginTop: '0.65rem' }}>
           <button
             type="button"
-            className="btn-add-cart-card"
+            className="btn-select-size-card"
             onClick={(e) => {
               e.stopPropagation();
-              addToCart(product, 1);
+              navigate(`/producto/${product.slug || product.id}`);
             }}
-            title="Agregar al Carrito"
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              borderRadius: '25px',
+              border: 'none',
+              background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+              color: 'white',
+              fontWeight: 800,
+              fontSize: '0.84rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '7px',
+              boxShadow: '0 4px 14px rgba(216, 27, 96, 0.28)',
+              transition: 'all 0.2s ease',
+            }}
           >
-            <ShoppingBag size={18} />
+            <ShoppingBag size={15} />
+            <span>Seleccionar Talla & Cantidad</span>
+            <ArrowRight size={14} />
           </button>
         </div>
       </div>

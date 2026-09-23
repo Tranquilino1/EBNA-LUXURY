@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect, useMemo, type MouseEvent } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { 
   ArrowRight, Sparkles, ShieldCheck, Truck, Clock, Flame, 
   MessageCircle, CreditCard, Compass
 } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/catalog/ProductCard';
-import { WhatsAppButton } from '../components/catalog/WhatsAppButton';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
 import { getSortedByPopularity } from '../lib/popularityTracker';
@@ -60,6 +59,7 @@ function StatCounter({ target, suffix = '', prefix = '' }: { target: number; suf
 }
 
 export function HomePage() {
+  const navigate = useNavigate();
   const { products, loading, error } = useProducts();
   const { settings, isChristmasActive } = useCustomization();
   const [orderTick, setOrderTick] = useState(0);
@@ -149,7 +149,9 @@ export function HomePage() {
               <div 
                 ref={cardRef}
                 className="glass-tilt-card"
-                style={style}
+                style={{ ...style, cursor: 'pointer' }}
+                onClick={() => navigate(`/producto/${tiltProduct.slug || tiltProduct.id}`)}
+                title={`Ver ${tiltProduct.name} para seleccionar talla y cantidad`}
               >
                 <div className="glare-effect"></div>
                 <img 
@@ -167,7 +169,35 @@ export function HomePage() {
                   </span>
                   <h3>{tiltProduct.name}</h3>
                   <p className="price">{formatPrice(tiltProduct.priceFCFA || tiltProduct.price)}</p>
-                  <WhatsAppButton product={tiltProduct} size="sm" />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/producto/${tiltProduct.slug || tiltProduct.id}`);
+                    }}
+                    className="btn-hero-select-size"
+                    style={{
+                      width: '100%',
+                      padding: '11px 18px',
+                      borderRadius: '25px',
+                      fontSize: '0.88rem',
+                      fontWeight: 800,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                      background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+                      color: 'white',
+                      border: 'none',
+                      boxShadow: '0 4px 15px rgba(216, 27, 96, 0.35)',
+                      marginTop: '10px',
+                      transition: 'all 0.25s ease'
+                    }}
+                  >
+                    <span>Ver Talla & Cantidad</span>
+                    <ArrowRight size={16} />
+                  </button>
                 </div>
               </div>
             </div>

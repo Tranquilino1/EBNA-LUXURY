@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
 import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff, Ticket } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
@@ -19,33 +19,32 @@ export function ProductPage() {
   const { products, loading } = useProducts();
   const { addToCart, setIsCartOpen } = useCart();
   const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
-  const productDetailRef = useRef<HTMLDivElement>(null);
   
   const product = useMemo(() => {
     if (!slug) return undefined;
-    const clean = slug.trim().toLowerCase();
+    const raw = slug.trim().toLowerCase();
+    let decoded = raw;
+    try {
+      decoded = decodeURIComponent(slug).trim().toLowerCase();
+    } catch {}
+
     return products.find(p => 
       p.slug === slug || 
       p.id === slug || 
       p.sku === slug || 
-      p.slug?.toLowerCase() === clean ||
-      p.id?.toLowerCase() === clean ||
-      p.sku?.toLowerCase() === clean
+      p.slug?.toLowerCase() === raw ||
+      p.id?.toLowerCase() === raw ||
+      p.sku?.toLowerCase() === raw ||
+      p.slug?.toLowerCase() === decoded ||
+      p.id?.toLowerCase() === decoded ||
+      p.sku?.toLowerCase() === decoded
     );
   }, [products, slug]);
 
-  // Smoothly center the product details and description in the viewport on navigation
+  // Ensure instant scroll to top on navigating to product detail
   useEffect(() => {
-    if (product && productDetailRef.current) {
-      const timer = setTimeout(() => {
-        productDetailRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-      }, 150);
-      return () => clearTimeout(timer);
-    }
-  }, [product]);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [slug]);
 
   const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product?.category || '');
   const isFootwear = product?.category === 'CALZADO';
@@ -375,7 +374,7 @@ export function ProductPage() {
         </div>
       )}
 
-      <div ref={productDetailRef} className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
+      <div className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
         <div className="product-image-section glass-panel" style={{ padding: '1.25rem', borderRadius: '24px', background: 'var(--canvas-elevated)', position: 'relative' }}>
           <img 
             src={activeImage} 
