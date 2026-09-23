@@ -29,8 +29,8 @@ export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
     : '📦 Estándar 5 a 7 Días (Gratis)';
 
   const paymentLabel = order.paymentMethod === 'muni'
-    ? '📲 MUNI DINERO (*423*2*1*555439904# / Giro al 555439904)'
-    : '🟠 ORANGE MONEY / WHATSAPP (+240 222 633 687)';
+    ? '📲 MUNI DINERO (555439904)'
+    : '💬 WHATSAPP OFICIAL (+240 222 633 687)';
 
   const message = `✨ *SOLICITUD DE PEDIDO — SINDY LUXURY BY EBNA* ✨
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -62,7 +62,7 @@ ${order.paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He solicita
 
 ¿Me confirman recepción del pedido para empaque y despacho?`;
 
-  // Always route order receipt submissions strictly to the official business WhatsApp: +240 222 633 687 (Orange/Getesa)
+  // Always route order receipt submissions strictly to the official business WhatsApp: +240 222 633 687
   const targetPhone = PRIMARY_PHONE;
   return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
 }
@@ -271,7 +271,7 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
     const shippingStr = order.shippingType === 'express' ? 'Express 3 Días (+3.000 FCFA)' : 'Normal Estándar (Gratis)';
     ctx.fillText(`${regionStr} • ${shippingStr}`, boxX + 180, textStartY + lineSpacing * 3);
 
-    const paymentStr = order.paymentMethod === 'muni' ? 'Muni Dinero (+240 555 439 904)' : 'WhatsApp / Efectivo';
+    const paymentStr = order.paymentMethod === 'muni' ? 'Muni Dinero (555439904)' : 'WhatsApp / Efectivo (+240 222 633 687)';
     ctx.fillText(paymentStr, boxX + 180, textStartY + lineSpacing * 4);
 
     // Items Section Header

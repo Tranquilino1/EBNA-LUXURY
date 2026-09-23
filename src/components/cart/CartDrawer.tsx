@@ -152,9 +152,10 @@ export const CartDrawer: React.FC = () => {
       window.open(waUrl, '_blank');
     } else if (paymentMethod === 'muni') {
       try {
-        navigator.clipboard.writeText('*423*2*1*555439904#');
+        navigator.clipboard.writeText('555439904');
       } catch {}
-      window.location.href = 'tel:*423*2*1*555439904%23';
+      const waUrl = buildReceiptWhatsAppUrl(orderData);
+      window.open(waUrl, '_blank');
     }
   };
 
@@ -423,18 +424,6 @@ export const CartDrawer: React.FC = () => {
 
                   <div className="futuristic-cards-2col">
                     <div 
-                      className={`futuristic-interactive-card wa-card ${paymentMethod === 'whatsapp' ? 'active-border-wa' : ''}`}
-                      onClick={() => setPaymentMethod('whatsapp')}
-                    >
-                      <div className="interactive-card-top">
-                        <span className="payment-brand-badge wa">ORANGE / WHATSAPP</span>
-                        {paymentMethod === 'whatsapp' && <Check size={14} className="check-glow" />}
-                      </div>
-                      <div className="interactive-card-title">Orange Money / WhatsApp</div>
-                      <div className="interactive-card-detail">+240 222 633 687 (Envío Inmediato)</div>
-                    </div>
-
-                    <div 
                       className={`futuristic-interactive-card muni-card ${paymentMethod === 'muni' ? 'active-border-muni' : ''}`}
                       onClick={() => setPaymentMethod('muni')}
                     >
@@ -443,24 +432,36 @@ export const CartDrawer: React.FC = () => {
                         {paymentMethod === 'muni' && <Check size={14} className="check-glow" />}
                       </div>
                       <div className="interactive-card-title">Muni Dinero</div>
-                      <div className="interactive-card-detail">+240 555 439 904 (*423*2*1*555439904#)</div>
+                      <div className="interactive-card-detail">555439904</div>
+                    </div>
+
+                    <div 
+                      className={`futuristic-interactive-card wa-card ${paymentMethod === 'whatsapp' ? 'active-border-wa' : ''}`}
+                      onClick={() => setPaymentMethod('whatsapp')}
+                    >
+                      <div className="interactive-card-top">
+                        <span className="payment-brand-badge wa">WHATSAPP OFICIAL</span>
+                        {paymentMethod === 'whatsapp' && <Check size={14} className="check-glow" />}
+                      </div>
+                      <div className="interactive-card-title">WhatsApp / Pedido Directo</div>
+                      <div className="interactive-card-detail">+240 222 633 687</div>
                     </div>
                   </div>
                 </div>
 
-                {/* Muni Dinero Direct USSD Execution Panel */}
+                {/* Muni Dinero Direct Number Panel */}
                 {paymentMethod === 'muni' && (
                   <div className="futuristic-muni-card glass-panel">
                     <div className="muni-header-row">
                       <Smartphone size={18} color="#002060" />
                       <div>
-                        <strong style={{ fontSize: '0.86rem', color: '#002060' }}>Giro Directo Muni Dinero</strong>
-                        <p style={{ margin: 0, fontSize: '0.76rem', color: '#64748B' }}>Código USSD rápido: <strong>*423*2*1*555439904#</strong></p>
+                        <strong style={{ fontSize: '0.86rem', color: '#002060' }}>Pago Muni Dinero</strong>
+                        <p style={{ margin: 0, fontSize: '0.76rem', color: '#64748B' }}>Número de abono: <strong>555439904</strong></p>
                       </div>
                     </div>
 
                     <div className="muni-number-box">
-                      <span className="muni-number-val">+240 555 439 904</span>
+                      <span className="muni-number-val">555439904</span>
                       <button 
                         type="button" 
                         className="btn-copy-muni"
@@ -469,19 +470,6 @@ export const CartDrawer: React.FC = () => {
                         {copiedMuni ? <><Check size={13} /> ¡Copiado!</> : <><Copy size={13} /> Copiar 555439904</>}
                       </button>
                     </div>
-
-                    <a 
-                      href="tel:*423*2*1*555439904%23"
-                      className="btn-muni-navy-3d"
-                      onClick={() => {
-                        try { navigator.clipboard.writeText('*423*2*1*555439904#'); } catch(e){}
-                      }}
-                      title="Ejecutar transferencia rápida Muni en tu móvil"
-                    >
-                      <PhoneCall size={18} />
-                      <span>Ejecutar USSD Muni</span>
-                      <span className="ussd-code-badge">*423*2*1*555439904#</span>
-                    </a>
                   </div>
                 )}
               </div>
@@ -520,15 +508,15 @@ export const CartDrawer: React.FC = () => {
                 style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <PhoneCall size={20} />
-                <span>Pagar con Muni Dinero ({formatPrice(grandTotal)})</span>
+                <span>Pagar con Muni Dinero (555439904) • {formatPrice(grandTotal)}</span>
               </button>
             ) : (
               <button 
-                type="button"
+                type="button" 
                 className="wa-checkout-btn" 
                 onClick={handleCheckout}
               >
-                <span>Pagar con Orange Money & WhatsApp (+240 222 633 687)</span>
+                <span>Pagar por WhatsApp (+240 222 633 687)</span>
                 <ArrowRight size={18} />
               </button>
             )}

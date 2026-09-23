@@ -81,7 +81,7 @@ export const ObsidianGoldTemplate: React.FC<ObsidianGoldTemplateProps> = ({ orde
           <div className="dossier-item">
             <span className="dossier-label" style={{ color: '#94A3B8' }}>Método de Pago</span>
             <span className="dossier-val">
-              {order.paymentMethod === 'muni' ? '📲 Muni Dinero (*423*2*1*555439904#)' : '🟠 Orange Money / WhatsApp (+240 222 633 687)'}
+              {order.paymentMethod === 'muni' ? '📲 Muni Dinero (555439904)' : '💬 WhatsApp Oficial (+240 222 633 687)'}
             </span>
           </div>
         </div>

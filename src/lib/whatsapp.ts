@@ -59,7 +59,7 @@ ${photoUrl}
 ${productPageUrl}
 ━━━━━━━━━━━━━━━━━━━━━━
 📍 *Lugar de Entrega:* Malabo / Bata (Guinea Ecuatorial)
-💳 *Modalidad:* ${phoneType === 'secondary' ? 'Muni Dinero (*423*2*1*555439904# / Giro al 555439904)' : 'WhatsApp Concierge / Efectivo contra entrega'}
+💳 *Modalidad:* ${phoneType === 'secondary' ? 'Muni Dinero (555439904)' : 'WhatsApp Concierge / Efectivo contra entrega'}
 
 ¿Tienen disponibilidad inmediata para confirmar el despacho?`;
 

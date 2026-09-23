@@ -71,7 +71,7 @@ export const EditorialVogueTemplate: React.FC<EditorialVogueTemplateProps> = ({ 
           <div className="dossier-item">
             <span className="dossier-label">Règlement Choisi</span>
             <span className="dossier-val">
-              {order.paymentMethod === 'muni' ? 'Muni Dinero (*423*2*1*555439904#)' : 'Orange Money / WhatsApp (+240 222 633 687)'}
+              {order.paymentMethod === 'muni' ? 'Muni Dinero (555439904)' : 'WhatsApp Oficial (+240 222 633 687)'}
             </span>
           </div>
         </div>
