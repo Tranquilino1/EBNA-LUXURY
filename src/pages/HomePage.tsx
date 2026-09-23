@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useMemo, type MouseEvent } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { 
   ArrowRight, Sparkles, ShieldCheck, Truck, Clock, Flame, 
-  MessageCircle, CreditCard, Compass
+  MessageCircle, CreditCard, Compass, Eye
 } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/catalog/ProductCard';
@@ -195,7 +195,8 @@ export function HomePage() {
                       transition: 'all 0.25s ease'
                     }}
                   >
-                    <span>Ver Talla & Cantidad</span>
+                    <Eye size={16} />
+                    <span>Ver</span>
                     <ArrowRight size={16} />
                   </button>
                 </div>

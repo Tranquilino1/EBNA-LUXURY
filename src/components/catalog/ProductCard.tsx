@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { ShoppingBag, Flame, Pencil, Trash2, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Flame, Pencil, Trash2, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import type { Product } from '../../types';
 import { formatPrice } from '../../lib/utils';
 import { useAdminCrud } from '../../contexts/AdminCrudContext';
@@ -375,7 +375,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               background: 'linear-gradient(135deg, #D81B60, #C2185B)',
               color: 'white',
               fontWeight: 800,
-              fontSize: '0.84rem',
+              fontSize: '0.88rem',
+              letterSpacing: '0.5px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -385,8 +386,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               transition: 'all 0.2s ease',
             }}
           >
-            <ShoppingBag size={15} />
-            <span>Seleccionar Talla & Cantidad</span>
+            <Eye size={15} />
+            <span>Ver</span>
             <ArrowRight size={14} />
           </button>
         </div>

@@ -285,7 +285,7 @@ export const Footer: React.FC = () => {
             <span>•</span>
             <a href="mailto:thetrapkinzofafrica@gmail.com" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>thetrapkinzofafrica@gmail.com</a>
             <span>•</span>
-            <a href="tel:+240222075662" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>+240 222 07 56 62</a>
+            <a href="tel:+240555320017" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>+240 555 32 00 17</a>
             <span>•</span>
             <button
               type="button"

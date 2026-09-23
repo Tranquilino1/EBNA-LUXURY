@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Mail, Phone, MessageSquare, Send, Sparkles, Headphones } from 'lucide-react';
+import { X, Mail, Phone, MessageSquare, Send, Sparkles, Headphones, ArrowRight } from 'lucide-react';
 import './contactSupportModal.css';
 
 interface ContactSupportModalProps {
@@ -11,9 +11,10 @@ interface ContactSupportModalProps {
 export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [contactInfo, setContactInfo] = useState('');
-  const [topic, setTopic] = useState('soporte_tecnico');
+  const [topic, setTopic] = useState('incidencia');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submittedUrl, setSubmittedUrl] = useState('');
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -40,11 +41,37 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
     e.preventDefault();
     if (!message.trim()) return;
 
-    const topicLabel = topic === 'soporte_tecnico' ? 'Soporte Técnico AiDA' : topic === 'pedidos' ? 'Consulta de Pedidos' : 'Incidencia General';
-    const text = `*EBNA LUXURY - TICKET DE CONTACTO*%0A%0A*Remitente:* ${encodeURIComponent(name || 'Cliente')}%0A*Contacto:* ${encodeURIComponent(contactInfo || 'No indicado')}%0A*Motivo:* ${encodeURIComponent(topicLabel)}%0A*Mensaje:*%0A${encodeURIComponent(message)}`;
+    const topicLabels: Record<string, string> = {
+      incidencia: '🚨 Reporte de Incidencia en la Plataforma',
+      soporte_tecnico: '🛠️ Soporte Técnico General',
+      pagos: '💳 Incidencia con Pago Muni Dinero',
+      pedidos: '📦 Consulta o Problema con Pedido',
+      personalizacion: '✨ Sugerencia o Personalización',
+      otro: 'ℹ️ Otra Consulta'
+    };
 
-    // Dispatch via WhatsApp AiDA Tech Support
-    window.open(`https://wa.me/240555320017?text=${text}`, '_blank');
+    const topicLabel = topicLabels[topic] || '🚨 Incidencia Plataforma';
+
+    const textLines = [
+      '🚨 *EBNA LUXURY - REPORTE DE INCIDENCIA / SOPORTE TÉCNICO*',
+      '',
+      `👤 *Remitente:* ${name.trim() || 'Cliente / Usuario'}`,
+      `📱 *Contacto:* ${contactInfo.trim() || 'No indicado'}`,
+      `🏷️ *Motivo:* ${topicLabel}`,
+      '',
+      '📝 *Detalle del Mensaje o Incidencia:*',
+      message.trim(),
+      '',
+      '🌐 _Enviado desde el Centro de Soporte Técnico EBNA Luxury_'
+    ];
+
+    const waText = encodeURIComponent(textLines.join('\n'));
+    // Enlazar directamente al número oficial de WhatsApp para incidencias: 555320017
+    const waUrl = `https://wa.me/240555320017?text=${waText}`;
+    setSubmittedUrl(waUrl);
+
+    // Despacho directo a WhatsApp
+    window.open(waUrl, '_blank');
     setSubmitted(true);
   };
 
@@ -59,7 +86,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
             </div>
             <div className="contact-header-titles">
               <h2>Centro de Soporte & Contacto</h2>
-              <p>Asistencia técnica, desarrollo web y atención al cliente</p>
+              <p>Asistencia técnica para incidencias, plataforma web y pedidos</p>
             </div>
           </div>
           <button className="contact-close-btn" onClick={onClose} aria-label="Cerrar ventana">
@@ -76,7 +103,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
               <div className="aida-startup-name">
                 Startup <span className="aida-logo-text" style={{ fontSize: '1.5rem', color: '#184266' }}>AiDA</span>
               </div>
-              <div className="aida-startup-desc">Soluciones tecnológicas de alto rendimiento e ingeniería e-commerce de lujo.</div>
+              <div className="aida-startup-desc">Centro oficial de resolución de incidencias e ingeniería e-commerce.</div>
             </div>
             <img 
               src="/icons/aida-logo.jpg" 
@@ -87,41 +114,41 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
 
           {/* Quick Channels Grid */}
           <div className="contact-channels-grid">
-            {/* WhatsApp AiDA Support */}
+            {/* WhatsApp AiDA Incident Support (555320017) */}
             <a 
-              href="https://wa.me/240555320017?text=Hola%20AiDA,%20necesito%20soporte%20t%C3%A9cnico%20sobre%20la%20plataforma%20EBNA%20Luxury" 
+              href="https://wa.me/240555320017?text=Hola%20AiDA,%20deseo%20reportar%20una%20incidencia%20t%C3%A9cnica%20en%20la%20plataforma%20EBNA%20Luxury" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="channel-card-link"
-              title="Abrir WhatsApp AiDA"
+              title="Abrir WhatsApp AiDA (555320017)"
             >
               <div className="channel-card-icon" style={{ background: 'rgba(37, 211, 102, 0.15)', color: '#25D366' }}>
                 <MessageSquare size={20} />
               </div>
               <div className="channel-card-text">
-                <span className="channel-card-label">WhatsApp Soporte <span className="aida-highlight-blue" style={{ fontSize: '0.85rem' }}>AiDA</span></span>
-                <span className="channel-card-val">+240 555 32 00 17</span>
+                <span className="channel-card-label">WhatsApp Incidencias <span className="aida-highlight-blue" style={{ fontSize: '0.85rem' }}>AiDA</span></span>
+                <span className="channel-card-val" style={{ fontWeight: 800, color: '#25D366' }}>+240 555 32 00 17</span>
               </div>
             </a>
 
-            {/* Direct Phone Call */}
+            {/* Direct Phone Call (555320017) */}
             <a 
-              href="tel:+240222075662" 
+              href="tel:+240555320017" 
               className="channel-card-link"
-              title="Llamar a Asistencia Técnica"
+              title="Llamar a Asistencia Técnica (555320017)"
             >
               <div className="channel-card-icon" style={{ background: 'rgba(24, 66, 102, 0.12)', color: '#184266' }}>
                 <Phone size={20} />
               </div>
               <div className="channel-card-text">
                 <span className="channel-card-label" style={{ color: '#184266', fontWeight: 800 }}>Teléfono <span className="aida-highlight-blue">AiDA</span></span>
-                <span className="channel-card-val">+240 222 07 56 62</span>
+                <span className="channel-card-val">+240 555 32 00 17</span>
               </div>
             </a>
 
             {/* Official Support Email */}
             <a 
-              href="mailto:thetrapkinzofafrica@gmail.com?subject=Soporte%20T%C3%A9cnico%20EBNA%20Luxury" 
+              href="mailto:thetrapkinzofafrica@gmail.com?subject=Reporte%20de%20Incidencia%20EBNA%20Luxury" 
               className="channel-card-link"
               style={{ gridColumn: '1 / -1' }}
               title="Enviar Correo Electrónico"
@@ -142,34 +169,58 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
           <div className="contact-ticket-section">
             <div className="ticket-header">
               <Sparkles size={16} color="var(--brand-accent)" />
-              <span>Enviar Consulta Directa a Ingeniería</span>
+              <span>Reportar Incidencia o Consulta Directa a Ingeniería</span>
             </div>
 
             {submitted ? (
-              <div style={{ textAlign: 'center', padding: '20px 10px' }}>
-                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🚀</div>
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>
-                  ¡Consulta Enviada con Éxito!
+              <div style={{ textAlign: 'center', padding: '24px 14px' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>🚀</div>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                  ¡Incidencia Transmitida a Soporte!
                 </h3>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                  El equipo de ingeniería de <strong style={{ color: '#184266', fontWeight: 900 }}>AiDA</strong> atenderá su requerimiento a la mayor brevedad posible.
+                <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
+                  Tu mensaje ha sido conectado directamente con el WhatsApp oficial de soporte técnico e incidencias: <strong style={{ color: '#25D366' }}>+240 555 32 00 17</strong>.
                 </p>
-                <button 
-                  type="button" 
-                  onClick={() => setSubmitted(false)}
-                  style={{
-                    padding: '8px 18px',
-                    borderRadius: '12px',
-                    background: 'var(--canvas-surface)',
-                    border: '1px solid var(--border-subtle)',
-                    cursor: 'pointer',
-                    fontSize: '0.82rem',
-                    fontWeight: 600,
-                    color: 'var(--text-primary)'
-                  }}
-                >
-                  Enviar otro mensaje
-                </button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+                  {submittedUrl && (
+                    <a
+                      href={submittedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '12px 24px',
+                        borderRadius: '25px',
+                        background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                        color: 'white',
+                        fontWeight: 800,
+                        fontSize: '0.9rem',
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)'
+                      }}
+                    >
+                      <MessageSquare size={18} /> Continuar en WhatsApp (+240 555 32 00 17) <ArrowRight size={16} />
+                    </a>
+                  )}
+                  <button 
+                    type="button" 
+                    onClick={() => { setSubmitted(false); setMessage(''); }}
+                    style={{
+                      padding: '8px 18px',
+                      borderRadius: '12px',
+                      background: 'var(--canvas-surface)',
+                      border: '1px solid var(--border-subtle)',
+                      cursor: 'pointer',
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      color: 'var(--text-primary)'
+                    }}
+                  >
+                    Enviar otro mensaje o incidencia
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
@@ -198,16 +249,18 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
                 </div>
 
                 <div className="ticket-form-group">
-                  <label className="ticket-label">Motivo</label>
+                  <label className="ticket-label">Tipo de Consulta o Incidencia</label>
                   <select 
                     className="ticket-input"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                   >
-                    <option value="soporte_tecnico">Soporte Técnico / Plataforma Web</option>
-                    <option value="pedidos">Gestión de Pedidos & Envíos</option>
-                    <option value="personalizacion">Personalización & Nuevas Funciones</option>
-                    <option value="otro">Otra Consulta</option>
+                    <option value="incidencia">🚨 Reportar Incidencia / Error en la Plataforma</option>
+                    <option value="soporte_tecnico">🛠️ Soporte Técnico General</option>
+                    <option value="pagos">💳 Incidencia con Pago Muni Dinero (555439904)</option>
+                    <option value="pedidos">📦 Gestión de Pedidos & Envíos</option>
+                    <option value="personalizacion">✨ Personalización & Nuevas Funciones</option>
+                    <option value="otro">ℹ️ Otra Consulta</option>
                   </select>
                 </div>
 
@@ -216,7 +269,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
                   <textarea 
                     className="ticket-textarea" 
                     rows={3}
-                    placeholder="Describe en qué te podemos ayudar..."
+                    placeholder="Describe exactamente qué ha sucedido o la incidencia que deseas reportar..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
@@ -225,7 +278,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
 
                 <button type="submit" className="ticket-submit-btn">
                   <Send size={16} />
-                  <span>Transmitir Consulta a Soporte <strong style={{ color: 'white', letterSpacing: '0.04em' }}>AiDA</strong></span>
+                  <span>Transmitir Incidencia a WhatsApp (+240 555 32 00 17)</span>
                 </button>
               </form>
             )}
