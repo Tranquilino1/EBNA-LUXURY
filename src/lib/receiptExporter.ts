@@ -92,19 +92,23 @@ Total a Pagar: ${formatPrice(order.total)}`;
 }
 
 /**
- * Helper to safely load an image for canvas drawing
+ * Helper to safely load an image for canvas drawing without tainting
  */
 function loadImage(src: string): Promise<HTMLImageElement | null> {
   return new Promise((resolve) => {
+    if (!src) {
+      resolve(null);
+      return;
+    }
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    // Only set crossOrigin for remote http(s) URLs
+    if (src.startsWith('http://') || src.startsWith('https://')) {
+      img.crossOrigin = 'anonymous';
+    }
     img.onload = () => resolve(img);
     img.onerror = () => {
-      // Fallback: try loading without crossOrigin if local or same-origin
-      const fallbackImg = new Image();
-      fallbackImg.onload = () => resolve(fallbackImg);
-      fallbackImg.onerror = () => resolve(null);
-      fallbackImg.src = src;
+      // Do not load remote images without crossOrigin as that taints canvas and blocks toDataURL
+      resolve(null);
     };
     img.src = src;
   });
@@ -116,11 +120,11 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
 export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haute-couture' | 'obsidian-gold' | 'editorial-vogue' = 'haute-couture'): Promise<boolean> {
   try {
     const width = 800;
-    // Calculate required height based on items count
+    // Calculate required height based on items count with room for description
     const headerHeight = 240;
     const customerHeight = 200;
     const itemsHeaderHeight = 60;
-    const itemRowHeight = 90;
+    const itemRowHeight = 112;
     const itemsTotalHeight = order.items.length * itemRowHeight;
     const totalsHeight = 210;
     const footerHeight = 120;
@@ -298,18 +302,19 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
     // Load thumbnails and draw items
     for (const item of order.items) {
       const itemRowY = currentY;
-      const thumbSize = 64;
+      const thumbSize = 74;
 
       // Draw item thumbnail container
-      ctx.fillStyle = isDark ? '#1E293B' : '#F1F5F9';
-      ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.3)' : 'rgba(0,0,0,0.1)';
+      ctx.fillStyle = isDark ? '#1E293B' : '#F8FAFC';
+      ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.35)' : 'rgba(216, 27, 96, 0.2)';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 8);
+      ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 10);
       ctx.fill();
       ctx.stroke();
 
-      // Try loading image
+      // Try loading and drawing image
+      let imageDrawn = false;
       if (item.image) {
         try {
           const cleanImg = item.image.replace(/\.jfif$/i, '.jpg');
@@ -317,56 +322,78 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
           if (img) {
             ctx.save();
             ctx.beginPath();
-            ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 8);
+            ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 10);
             ctx.clip();
             ctx.drawImage(img, boxX, itemRowY, thumbSize, thumbSize);
             ctx.restore();
+            imageDrawn = true;
           }
         } catch {
-          // Keep placeholder if load fails
+          // Keep placeholder
         }
+      }
+
+      if (!imageDrawn) {
+        // Luxury monogram fallback
+        ctx.fillStyle = isDark ? '#334155' : '#FCE4EC';
+        ctx.beginPath();
+        ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 10);
+        ctx.fill();
+        ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
+        ctx.font = 'bold 18px "Playfair Display", Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('SL', boxX + thumbSize / 2, itemRowY + thumbSize / 2 + 6);
       }
 
       // Quantity Badge floating on thumbnail
       ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
       ctx.beginPath();
-      ctx.roundRect(boxX + thumbSize - 22, itemRowY, 22, 18, 4);
+      ctx.roundRect(boxX + thumbSize - 24, itemRowY, 24, 20, 4);
       ctx.fill();
 
       ctx.textAlign = 'center';
-      ctx.font = 'bold 10px "Montserrat", sans-serif';
+      ctx.font = 'bold 11px "Montserrat", sans-serif';
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillText(`x${item.quantity}`, boxX + thumbSize - 11, itemRowY + 13);
+      ctx.fillText(`x${item.quantity}`, boxX + thumbSize - 12, itemRowY + 14);
 
-      // Item Name & Details
+      // Item Name
       ctx.textAlign = 'left';
       ctx.font = 'bold 14px "Playfair Display", Georgia, serif';
       ctx.fillStyle = isDark ? '#F8FAFC' : '#1E293B';
-      const itemName = item.name.length > 42 ? item.name.substring(0, 40) + '...' : item.name;
-      ctx.fillText(itemName, boxX + thumbSize + 15, itemRowY + 22);
+      const itemName = item.name.length > 40 ? item.name.substring(0, 38) + '...' : item.name;
+      ctx.fillText(itemName, boxX + thumbSize + 15, itemRowY + 20);
 
       // Size / Color Pill
-      ctx.font = '11px "Montserrat", sans-serif';
-      ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
-      const variantText = `Talla/Formato: ${item.selectedSize || 'Estándar'}${item.selectedColor && item.selectedColor !== 'Original' ? ` • Color: ${item.selectedColor}` : ''}`;
-      ctx.fillText(variantText, boxX + thumbSize + 15, itemRowY + 42);
+      ctx.font = '600 11px "Montserrat", sans-serif';
+      ctx.fillStyle = isDark ? '#ECC874' : '#C2185B';
+      const variantText = `Talla: ${item.selectedSize || 'Estándar'}${item.selectedColor && item.selectedColor !== 'Original' ? ` • Color: ${item.selectedColor}` : ''}`;
+      ctx.fillText(variantText, boxX + thumbSize + 15, itemRowY + 38);
+
+      // Description (Displayed clearly)
+      const descText = item.description || (item.category ? `Colección de Alta Confección • ${item.category.replace(/_/g, ' ')}` : '');
+      if (descText) {
+        ctx.font = 'italic 11px "Montserrat", sans-serif';
+        ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
+        const cleanDesc = descText.length > 68 ? descText.substring(0, 65) + '...' : descText;
+        ctx.fillText(cleanDesc, boxX + thumbSize + 15, itemRowY + 54);
+      }
 
       // Unit Price
-      ctx.font = '12px "Montserrat", sans-serif';
+      ctx.font = 'bold 11px "Montserrat", sans-serif';
       ctx.fillStyle = isDark ? '#CBD5E1' : '#475569';
-      ctx.fillText(`${formatPrice(item.price)} c/u`, boxX + thumbSize + 15, itemRowY + 60);
+      ctx.fillText(`Precio: ${formatPrice(item.price)} c/u`, boxX + thumbSize + 15, itemRowY + 70);
 
       // Item Subtotal (Right Aligned)
       ctx.textAlign = 'right';
       ctx.font = 'bold 15px "Montserrat", sans-serif';
       ctx.fillStyle = isDark ? '#FFD700' : '#D81B60';
-      ctx.fillText(formatPrice(item.price * item.quantity), boxX + boxWidth, itemRowY + 40);
+      ctx.fillText(formatPrice(item.price * item.quantity), boxX + boxWidth, itemRowY + 38);
 
       // Row separator
       ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
       ctx.beginPath();
-      ctx.moveTo(boxX, itemRowY + thumbSize + 14);
-      ctx.lineTo(boxX + boxWidth, itemRowY + thumbSize + 14);
+      ctx.moveTo(boxX, itemRowY + itemRowHeight - 12);
+      ctx.lineTo(boxX + boxWidth, itemRowY + itemRowHeight - 12);
       ctx.stroke();
 
       currentY += itemRowHeight;
@@ -435,16 +462,20 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
     ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
     ctx.fillText(`*EBNA-REC-${order.orderNumber}-SECURE-VERIFIED*`, width / 2, currentY);
 
-    // Trigger Download
-    const dataUrl = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = `Recibo-EBNA-${order.orderNumber}.png`;
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    return true;
+    // Trigger Download with luxury naming
+    try {
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `Factura-Pedido-SindyLuxury-${order.orderNumber}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return true;
+    } catch (e) {
+      console.error('Canvas export error:', e);
+      return false;
+    }
   } catch (error) {
     console.error('Error generating receipt PNG:', error);
     return false;

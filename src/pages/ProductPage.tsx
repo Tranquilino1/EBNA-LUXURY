@@ -1,23 +1,26 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router';
-import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff, Ticket } from 'lucide-react';
+import { 
+  ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
+  PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff,
+  MessageCircle, Smartphone, Download, User, MapPin, AlertCircle, X
+} from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
 import { useAdminCrud } from '../contexts/AdminCrudContext';
 import { SEOHead } from '../components/seo/SEOHead';
-import { buildWhatsAppUrl } from '../lib/whatsapp';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
 import { recordProductOrder } from '../lib/popularityTracker';
 import { OrderReceiptModal } from '../components/receipt/OrderReceiptModal';
 import { saveOrderRequest } from '../lib/orderStorage';
-import { buildReceiptWhatsAppUrl } from '../lib/receiptExporter';
+import { buildReceiptWhatsAppUrl, downloadReceiptAsPng } from '../lib/receiptExporter';
 import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
   const { products, loading } = useProducts();
-  const { addToCart, setIsCartOpen } = useCart();
+  const { addToCart } = useCart();
   const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
   
   const product = useMemo(() => {
@@ -79,33 +82,31 @@ export function ProductPage() {
   const [receiptOrder, setReceiptOrder] = useState<OrderReceiptData | null>(null);
   const [isReceiptOpen, setIsReceiptOpen] = useState(false);
 
-  const handleGenerateReceipt = () => {
+  // Quick Direct Customer Info Modal State
+  const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
+  const [orderPaymentMethod, setOrderPaymentMethod] = useState<'whatsapp' | 'muni'>('whatsapp');
+  const [customerName, setCustomerName] = useState(() => {
+    try { return localStorage.getItem('ebna_client_name') || ''; } catch { return ''; }
+  });
+  const [customerPhone, setCustomerPhone] = useState(() => {
+    try { return localStorage.getItem('ebna_client_phone') || ''; } catch { return ''; }
+  });
+  const [customerAddress, setCustomerAddress] = useState(() => {
+    try { return localStorage.getItem('ebna_client_address') || ''; } catch { return ''; }
+  });
+  const [region, setRegion] = useState<'insular' | 'continental'>('insular');
+  const [orderValidationError, setOrderValidationError] = useState('');
+  const [isGeneratingPng, setIsGeneratingPng] = useState(false);
+
+  const executeOrderAndDownload = async (
+    cName: string, 
+    cPhone: string, 
+    cAddress: string, 
+    cRegion: 'insular' | 'continental', 
+    method: 'whatsapp' | 'muni'
+  ) => {
     if (!product) return;
     recordProductOrder(product.id);
-
-    let clientName = '';
-    let clientPhone = '';
-    let clientAddress = '';
-    try {
-      clientName = localStorage.getItem('ebna_client_name') || '';
-      clientPhone = localStorage.getItem('ebna_client_phone') || '';
-      clientAddress = localStorage.getItem('ebna_client_address') || '';
-    } catch {}
-
-    const cleanPhone = clientPhone.replace(/\s+/g, '').replace(/[-+()]/g, '');
-    const isRealData = clientName && 
-      clientName.trim().length >= 3 && 
-      !clientName.toLowerCase().includes('cliente vip') && 
-      cleanPhone.length >= 6 && 
-      clientAddress && 
-      clientAddress.trim().length >= 4;
-
-    if (!isRealData) {
-      // Direct customer to complete real delivery info via the cart drawer
-      addToCart(product, quantity, selectedSize, selectedColor);
-      setIsCartOpen(true);
-      return;
-    }
 
     const rawImg = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (product.images as any)?.[0]);
     const cleanImg = typeof rawImg === 'string' ? rawImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
@@ -118,16 +119,17 @@ export function ProductPage() {
       orderId: `quick-${Date.now()}`,
       orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       createdAt: formattedDate,
-      customerName: clientName.trim(),
-      customerPhone: clientPhone.trim(),
-      customerAddress: clientAddress.trim(),
-      region: 'insular',
+      customerName: cName.trim(),
+      customerPhone: cPhone.trim(),
+      customerAddress: cAddress.trim(),
+      region: cRegion,
       shippingType: 'normal',
-      paymentMethod: 'whatsapp',
+      paymentMethod: method,
       items: [{
         id: product.id,
         name: product.name,
         category: product.category,
+        description: product.description,
         price: priceVal,
         quantity,
         selectedSize: selectedSize || availableSizes[0] || 'M',
@@ -141,12 +143,84 @@ export function ProductPage() {
       status: 'PENDIENTE'
     };
 
+    // Save and open visual modal
     saveOrderRequest(orderData);
     setReceiptOrder(orderData);
     setIsReceiptOpen(true);
+    setIsCustomerModalOpen(false);
 
+    // AUTOMATICALLY GENERATE & DOWNLOAD PNG FACTURA
+    setIsGeneratingPng(true);
+    try {
+      await downloadReceiptAsPng(orderData, 'haute-couture');
+    } catch (e) {
+      console.warn('PNG generation error:', e);
+    } finally {
+      setIsGeneratingPng(false);
+    }
+
+    // Direct routing per payment method
+    if (method === 'muni') {
+      try {
+        navigator.clipboard.writeText('555439904');
+      } catch {}
+    }
     const waUrl = buildReceiptWhatsAppUrl(orderData);
     window.open(waUrl, '_blank');
+  };
+
+  const startDirectOrder = (method: 'whatsapp' | 'muni' = 'whatsapp') => {
+    setOrderPaymentMethod(method);
+    let storedName = '';
+    let storedPhone = '';
+    let storedAddress = '';
+    try {
+      storedName = localStorage.getItem('ebna_client_name') || '';
+      storedPhone = localStorage.getItem('ebna_client_phone') || '';
+      storedAddress = localStorage.getItem('ebna_client_address') || '';
+    } catch {}
+
+    const cleanPhone = storedPhone.replace(/\s+/g, '').replace(/[-+()]/g, '');
+    const isRealData = storedName && 
+      storedName.trim().length >= 3 && 
+      !storedName.toLowerCase().includes('cliente vip') && 
+      cleanPhone.length >= 6 && 
+      storedAddress && 
+      storedAddress.trim().length >= 3;
+
+    if (isRealData) {
+      executeOrderAndDownload(storedName, storedPhone, storedAddress, region, method);
+    } else {
+      setIsCustomerModalOpen(true);
+    }
+  };
+
+  const handleModalSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmedName = customerName.trim();
+    if (!trimmedName || trimmedName.length < 3) {
+      setOrderValidationError('Por favor ingresa tu Nombre y Apellidos reales.');
+      return;
+    }
+    const cleanPhone = customerPhone.replace(/\s+/g, '').replace(/[-+()]/g, '');
+    if (!cleanPhone || cleanPhone.length < 6) {
+      setOrderValidationError('Por favor ingresa tu número de WhatsApp real (ej. 222 633 687 o 555 439 904).');
+      return;
+    }
+    const trimmedAddress = customerAddress.trim();
+    if (!trimmedAddress || trimmedAddress.length < 3) {
+      setOrderValidationError('Por favor ingresa tu Dirección o Barrio de entrega.');
+      return;
+    }
+
+    setOrderValidationError('');
+    try {
+      localStorage.setItem('ebna_client_name', trimmedName);
+      localStorage.setItem('ebna_client_phone', customerPhone.trim());
+      localStorage.setItem('ebna_client_address', trimmedAddress);
+    } catch {}
+
+    executeOrderAndDownload(trimmedName, customerPhone.trim(), trimmedAddress, region, orderPaymentMethod);
   };
 
   useEffect(() => {
@@ -253,10 +327,6 @@ export function ProductPage() {
       </div>
     );
   }
-
-  const secondaryPhone = '+240 555 439 904';
-  const primaryWaUrl = buildWhatsAppUrl(product, 'primary', selectedSize, selectedColor, quantity);
-  const secondaryWaUrl = buildWhatsAppUrl(product, 'secondary', selectedSize, selectedColor, quantity);
 
   const priceVal = product.priceFCFA || product.price || 0;
 
@@ -560,17 +630,19 @@ export function ProductPage() {
             </div>
           </div>
 
-          <div className="product-actions" style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '0.5rem' }}>
+          <div className="product-actions" style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '0.8rem' }}>
+            {/* Primary Order Action: WhatsApp + Auto PNG Invoice */}
             <button
               type="button"
-              onClick={() => addToCart(product, quantity, selectedSize, selectedColor)}
+              onClick={() => startDirectOrder('whatsapp')}
               disabled={!product.in_stock}
+              className="wa-btn wa-btn-lg full-width"
               style={{
                 width: '100%',
-                padding: '14px 24px',
+                padding: '15px 22px',
                 borderRadius: '30px',
                 border: 'none',
-                background: product.in_stock ? 'linear-gradient(135deg, #D81B60 0%, #C43869 100%)' : '#A3999E',
+                background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
                 color: 'white',
                 fontWeight: 800,
                 fontSize: '1rem',
@@ -579,63 +651,398 @@ export function ProductPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '10px',
-                boxShadow: product.in_stock ? '0 8px 20px rgba(224,90,136,0.35)' : 'none',
-                transition: 'all 0.25s ease',
+                boxShadow: '0 6px 20px rgba(37, 211, 102, 0.35)',
+                transition: 'all 0.25s ease'
               }}
             >
-              <ShoppingBag size={20} />
-              <span>{product.in_stock ? `Agregar ${quantity} al Carrito` : 'Producto Agotado'}</span>
+              <MessageCircle size={20} />
+              <span>Pedir por WhatsApp (Factura PNG Oficial)</span>
             </button>
 
-            <a 
-              href={primaryWaUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="wa-btn wa-btn-lg full-width"
-              style={{ textDecoration: 'none' }}
-              onClick={() => recordProductOrder(product.id)}
-            >
-              <span>Pedir por WhatsApp Directo</span>
-            </a>
-
-            <a 
-              href={secondaryWaUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="btn-secondary full-width"
-              style={{ textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-              onClick={() => recordProductOrder(product.id)}
-            >
-              <Phone size={18} /> Muni Dinero / Contacto ({secondaryPhone})
-            </a>
-
+            {/* Secondary Order Action: Muni Dinero (555439904) + Auto PNG Invoice */}
             <button
               type="button"
-              onClick={handleGenerateReceipt}
+              onClick={() => startDirectOrder('muni')}
+              disabled={!product.in_stock}
               style={{
                 width: '100%',
                 padding: '13px 20px',
+                borderRadius: '30px',
+                border: '1.5px solid #FF8C00',
+                background: 'linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, rgba(216, 27, 96, 0.06) 100%)',
+                color: '#E65100',
+                fontWeight: 800,
+                fontSize: '0.94rem',
+                cursor: product.in_stock ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 14px rgba(255, 140, 0, 0.12)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <Smartphone size={18} />
+              <span>Pagar con Muni Dinero (555439904) + Factura PNG</span>
+            </button>
+
+            {/* Direct PNG Invoice Generator Button */}
+            <button
+              type="button"
+              onClick={() => startDirectOrder('whatsapp')}
+              disabled={isGeneratingPng}
+              style={{
+                width: '100%',
+                padding: '12px 20px',
                 borderRadius: '30px',
                 border: '1px solid rgba(216, 27, 96, 0.4)',
                 background: 'linear-gradient(135deg, rgba(216, 27, 96, 0.08) 0%, rgba(197, 168, 128, 0.15) 100%)',
                 color: '#D81B60',
                 fontWeight: 800,
-                fontSize: '0.92rem',
+                fontSize: '0.88rem',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 4px 15px rgba(216, 27, 96, 0.1)',
+                boxShadow: '0 3px 12px rgba(216, 27, 96, 0.1)',
                 transition: 'all 0.2s ease'
               }}
             >
-              <Ticket size={18} />
-              <span>Generar Tarjeta de Pedido Pendiente (PNG)</span>
+              <Download size={16} />
+              <span>{isGeneratingPng ? 'Generando Factura PNG HD...' : 'Descargar Tarjeta de Factura (PNG HD)'}</span>
+            </button>
+
+            {/* Add to Cart button */}
+            <button
+              type="button"
+              onClick={() => addToCart(product, quantity, selectedSize, selectedColor)}
+              disabled={!product.in_stock}
+              style={{
+                width: '100%',
+                padding: '13px 20px',
+                borderRadius: '30px',
+                border: '1px solid rgba(0,0,0,0.1)',
+                background: product.in_stock ? 'var(--canvas-elevated)' : '#E2E8F0',
+                color: 'var(--text-primary)',
+                fontWeight: 700,
+                fontSize: '0.9rem',
+                cursor: product.in_stock ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <ShoppingBag size={18} />
+              <span>{product.in_stock ? `Agregar ${quantity} al Carrito` : 'Producto Agotado'}</span>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Quick Direct Customer Info Modal for PNG Receipt */}
+      {isCustomerModalOpen && (
+        <div 
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: 'rgba(15, 23, 42, 0.75)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '16px'
+          }}
+          onClick={() => setIsCustomerModalOpen(false)}
+        >
+          <div 
+            style={{
+              background: '#FFFFFF',
+              borderRadius: '24px',
+              maxWidth: '520px',
+              width: '100%',
+              padding: '24px',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+              border: '2px solid rgba(216, 27, 96, 0.2)',
+              position: 'relative',
+              maxHeight: '92vh',
+              overflowY: 'auto'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setIsCustomerModalOpen(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: '#F1F5F9',
+                border: 'none',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#64748B'
+              }}
+            >
+              <X size={18} />
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: '18px' }}>
+              <span style={{ fontSize: '0.72rem', letterSpacing: '2px', fontWeight: 800, color: '#D81B60', textTransform: 'uppercase' }}>
+                SINDY LUXURY • FACTURA DIGITAL
+              </span>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.45rem', margin: '4px 0 6px 0', color: '#1E293B' }}>
+                Datos para tu Tarjeta de Factura (PNG)
+              </h3>
+              <p style={{ fontSize: '0.84rem', color: '#64748B', margin: 0 }}>
+                Emitiremos tu comprobante oficial en imagen PNG con foto, descripción y precio.
+              </p>
+            </div>
+
+            {/* Product summary pill */}
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              alignItems: 'center',
+              padding: '12px',
+              background: '#FFF5F8',
+              borderRadius: '16px',
+              border: '1px solid rgba(216, 27, 96, 0.15)',
+              marginBottom: '18px'
+            }}>
+              <img 
+                src={activeImage} 
+                alt={product.name} 
+                style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '10px' }} 
+              />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 800, fontSize: '0.88rem', color: '#1E293B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {product.name}
+                </div>
+                <div style={{ fontSize: '0.76rem', color: '#64748B', marginTop: '2px' }}>
+                  Talla: <strong>{selectedSize || availableSizes[0] || 'M'}</strong> • Cantidad: <strong>x{quantity}</strong>
+                </div>
+                <div style={{ fontWeight: 800, fontSize: '0.94rem', color: '#D81B60', marginTop: '2px' }}>
+                  Total: {formatPrice((product.priceFCFA || product.price || 0) * quantity)}
+                </div>
+              </div>
+            </div>
+
+            {orderValidationError && (
+              <div style={{
+                background: '#FEE2E2',
+                color: '#B91C1C',
+                padding: '10px 14px',
+                borderRadius: '12px',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '14px'
+              }}>
+                <AlertCircle size={16} />
+                <span>{orderValidationError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleModalSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                  Nombre y Apellidos Reales:
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <User size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#94A3B8' }} />
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ej. Isabel Ndong"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px 10px 38px',
+                      borderRadius: '12px',
+                      border: '1.5px solid #CBD5E1',
+                      fontSize: '0.9rem',
+                      outline: 'none'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                  Teléfono / WhatsApp:
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <Phone size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#94A3B8' }} />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Ej. 222 633 687 o 555 439 904"
+                    value={customerPhone}
+                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px 10px 38px',
+                      borderRadius: '12px',
+                      border: '1.5px solid #CBD5E1',
+                      fontSize: '0.9rem',
+                      outline: 'none'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                  Dirección o Barrio de Entrega:
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <MapPin size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#94A3B8' }} />
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ej. Malabo II, Caracolas o Ela Nguema"
+                    value={customerAddress}
+                    onChange={(e) => setCustomerAddress(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px 10px 38px',
+                      borderRadius: '12px',
+                      border: '1.5px solid #CBD5E1',
+                      fontSize: '0.9rem',
+                      outline: 'none'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                  Región de Entrega:
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setRegion('insular')}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '12px',
+                      border: region === 'insular' ? '2px solid #D81B60' : '1px solid #CBD5E1',
+                      background: region === 'insular' ? '#FFF0F5' : '#FFFFFF',
+                      color: region === 'insular' ? '#D81B60' : '#475569',
+                      fontWeight: region === 'insular' ? 800 : 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    🏝️ Malabo (Bioko)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRegion('continental')}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '12px',
+                      border: region === 'continental' ? '2px solid #D81B60' : '1px solid #CBD5E1',
+                      background: region === 'continental' ? '#FFF0F5' : '#FFFFFF',
+                      color: region === 'continental' ? '#D81B60' : '#475569',
+                      fontWeight: region === 'continental' ? 800 : 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    🌍 Bata (Litoral)
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: '6px' }}>
+                  Método de Pago Preferido:
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setOrderPaymentMethod('whatsapp')}
+                    style={{
+                      padding: '9px 12px',
+                      borderRadius: '12px',
+                      border: orderPaymentMethod === 'whatsapp' ? '2px solid #25D366' : '1px solid #CBD5E1',
+                      background: orderPaymentMethod === 'whatsapp' ? '#F0FDF4' : '#FFFFFF',
+                      color: orderPaymentMethod === 'whatsapp' ? '#15803D' : '#475569',
+                      fontWeight: orderPaymentMethod === 'whatsapp' ? 800 : 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <MessageCircle size={15} /> WhatsApp
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setOrderPaymentMethod('muni')}
+                    style={{
+                      padding: '9px 12px',
+                      borderRadius: '12px',
+                      border: orderPaymentMethod === 'muni' ? '2px solid #FF8C00' : '1px solid #CBD5E1',
+                      background: orderPaymentMethod === 'muni' ? '#FFF7ED' : '#FFFFFF',
+                      color: orderPaymentMethod === 'muni' ? '#C2410C' : '#475569',
+                      fontWeight: orderPaymentMethod === 'muni' ? 800 : 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <Smartphone size={15} /> Muni Dinero
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isGeneratingPng}
+                style={{
+                  marginTop: '10px',
+                  width: '100%',
+                  padding: '14px 20px',
+                  borderRadius: '30px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #D81B60 0%, #C2185B 100%)',
+                  color: 'white',
+                  fontWeight: 800,
+                  fontSize: '0.98rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 18px rgba(216, 27, 96, 0.35)'
+                }}
+              >
+                <Download size={18} />
+                <span>{isGeneratingPng ? 'Generando Factura PNG...' : 'Generar Factura PNG y Enviar Pedido'}</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Digital Pending Order Receipt Modal */}
       <OrderReceiptModal

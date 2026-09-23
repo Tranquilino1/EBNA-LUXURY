@@ -117,6 +117,11 @@ export const EditorialVogueTemplate: React.FC<EditorialVogueTemplateProps> = ({ 
                     {item.selectedColor && item.selectedColor !== 'Original' && <span>Couleur: <strong>{item.selectedColor}</strong></span>}
                     <span>Prix: {formatPrice(item.price)}</span>
                   </div>
+                  {item.description && (
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.75rem', color: '#777777', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {item.description}
+                    </p>
+                  )}
                 </div>
 
                 <div style={{ textAlign: 'right' }}>

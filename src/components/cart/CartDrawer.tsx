@@ -9,7 +9,7 @@ import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
 import { OrderReceiptModal } from '../receipt/OrderReceiptModal';
 import { saveOrderRequest } from '../../lib/orderStorage';
-import { buildReceiptWhatsAppUrl } from '../../lib/receiptExporter';
+import { buildReceiptWhatsAppUrl, downloadReceiptAsPng } from '../../lib/receiptExporter';
 import type { OrderReceiptData, ReceiptItem } from '../../types';
 import './cart.css';
 
@@ -112,6 +112,7 @@ export const CartDrawer: React.FC = () => {
         id: item.cartItemId,
         name: item.product.name,
         category: item.product.category,
+        description: item.product.description,
         price: item.product.priceFCFA || item.product.price || 0,
         quantity: item.quantity,
         selectedSize: item.selectedSize,
@@ -145,6 +146,11 @@ export const CartDrawer: React.FC = () => {
     saveOrderRequest(orderData);
     setReceiptOrder(orderData);
     setIsReceiptOpen(true);
+
+    // Automatically trigger high-resolution PNG invoice download
+    downloadReceiptAsPng(orderData, 'haute-couture').catch(err => {
+      console.warn('Auto download receipt PNG error:', err);
+    });
 
     // Direct routing per customer payment method selection
     if (paymentMethod === 'whatsapp') {

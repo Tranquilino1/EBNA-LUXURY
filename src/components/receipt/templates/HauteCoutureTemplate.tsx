@@ -128,6 +128,11 @@ export const HauteCoutureTemplate: React.FC<HauteCoutureTemplateProps> = ({ orde
                     )}
                     <span className="receipt-unit-price">{formatPrice(item.price)} c/u</span>
                   </div>
+                  {item.description && (
+                    <p style={{ margin: '4px 0 0 0', fontSize: '0.78rem', color: '#64748B', lineHeight: 1.35, fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {item.description}
+                    </p>
+                  )}
                 </div>
 
                 <div className="receipt-item-price-col">
