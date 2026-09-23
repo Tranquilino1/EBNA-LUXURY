@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useParams, Link } from 'react-router';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { useParams, Link, useSearchParams } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
   PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff,
@@ -19,6 +19,10 @@ import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
+  const [searchParams] = useSearchParams();
+  const isPedirAction = searchParams.get('pedir') === 'true';
+  const orderSectionRef = useRef<HTMLDivElement>(null);
+
   const { products, loading } = useProducts();
   const { addToCart } = useCart();
   const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
@@ -44,10 +48,19 @@ export function ProductPage() {
     );
   }, [products, slug]);
 
-  // Ensure instant scroll to top on navigating to product detail
+  // Handle scroll: if pedir=true, scroll directly to order section; otherwise to top
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [slug]);
+    if (isPedirAction) {
+      const timer = setTimeout(() => {
+        if (orderSectionRef.current) {
+          orderSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 250);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [slug, isPedirAction, product]);
 
   const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product?.category || '');
   const isFootwear = product?.category === 'CALZADO';
@@ -580,19 +593,26 @@ export function ProductPage() {
           </div>
 
           {/* Compact Customer Info for Instant Ticket */}
-          <div style={{
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 245, 248, 0.85) 100%)',
-            border: '1px solid rgba(216, 27, 96, 0.2)',
-            borderRadius: '16px',
-            padding: '12px 14px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            marginTop: '0.4rem'
-          }}>
+          <div 
+            ref={orderSectionRef}
+            style={{
+              background: isPedirAction 
+                ? 'linear-gradient(135deg, rgba(255, 245, 248, 0.98) 0%, rgba(254, 235, 243, 0.95) 100%)' 
+                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 245, 248, 0.85) 100%)',
+              border: isPedirAction ? '2px solid #D81B60' : '1px solid rgba(216, 27, 96, 0.2)',
+              borderRadius: '16px',
+              padding: '14px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              marginTop: '0.4rem',
+              boxShadow: isPedirAction ? '0 0 20px rgba(216, 27, 96, 0.25)' : 'none',
+              transition: 'all 0.3s ease'
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--brand-accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Datos para tu Ticket Oficial de Compra
+                {isPedirAction ? '⚡ Pedido Inmediato - Generación de Ticket Oficial' : 'Datos para tu Ticket Oficial de Compra'}
               </span>
               <span style={{ fontSize: '0.72rem', color: '#16a34a', fontWeight: 700 }}>
                 ✓ Descarga Ticket PNG

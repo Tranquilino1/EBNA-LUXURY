@@ -168,31 +168,11 @@ export const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div className="footer-links">
-            <h3>Navegación & Soporte</h3>
+            <h3>Navegación</h3>
             <nav className="quick-links">
               <Link to="/">Inicio</Link>
               <Link to="/catalogo">Catálogo Completo</Link>
               <Link to="/login">Iniciar Sesión Cliente</Link>
-              <button
-                type="button"
-                onClick={() => setIsSupportModalOpen(true)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: 0,
-                  font: 'inherit',
-                  color: 'var(--brand-accent)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  fontWeight: 700,
-                  fontSize: '0.88rem',
-                  textAlign: 'left'
-                }}
-              >
-                <Headphones size={15} color="#184266" /> Soporte Técnico <span className="aida-highlight-blue">AiDA</span>
-              </button>
             </nav>
           </div>
 
@@ -222,8 +202,8 @@ export const Footer: React.FC = () => {
               >
                 <Headphones size={18} color="#184266" />
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.9rem', fontWeight: 800, color: '#184266' }}>Startup <span className="aida-highlight-blue" style={{ fontSize: '1rem' }}>AiDA</span> Soporte</span>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>thetrapkinzofafrica@gmail.com</span>
+                  <span style={{ display: 'block', fontSize: '0.9rem', fontWeight: 800, color: '#184266' }}>Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '1rem' }}>AiDA</span></span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Incidencias WhatsApp (+240 555 32 00 17)</span>
                 </div>
               </button>
             </div>
@@ -286,27 +266,6 @@ export const Footer: React.FC = () => {
             <a href="mailto:thetrapkinzofafrica@gmail.com" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>thetrapkinzofafrica@gmail.com</a>
             <span>•</span>
             <a href="tel:+240555320017" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>+240 555 32 00 17</a>
-            <span>•</span>
-            <button
-              type="button"
-              onClick={() => setIsSupportModalOpen(true)}
-              style={{
-                background: 'rgba(24, 66, 102, 0.08)',
-                border: '1.5px solid rgba(24, 66, 102, 0.3)',
-                borderRadius: '14px',
-                padding: '4px 12px',
-                color: '#184266',
-                fontSize: '0.78rem',
-                fontWeight: 800,
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                boxShadow: '0 2px 8px rgba(24, 66, 102, 0.12)'
-              }}
-            >
-              Contactar Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '0.85rem' }}>AiDA</span>
-            </button>
           </div>
         </div>
       </footer>

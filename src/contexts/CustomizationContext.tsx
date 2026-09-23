@@ -81,11 +81,21 @@ export const CustomizationProvider: React.FC<{ children: React.ReactNode }> = ({
     root.setAttribute('data-christmas', isChristmasActive ? 'true' : 'false');
   }, [settings, isChristmasActive]);
 
-  // Synchronize across tabs in real-time
+  // Synchronize across tabs and all connected client devices in real-time
   useEffect(() => {
     const unsub = subscribeToCatalogChanges((event) => {
       if (event.action === 'customization_update' || event.action === 'storage_change') {
         try {
+          if (event.payload && typeof event.payload === 'object') {
+            setSettings(prev => {
+              const updated = { ...prev, ...event.payload };
+              try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+              } catch (e) {}
+              return updated;
+            });
+            return;
+          }
           const saved = localStorage.getItem(STORAGE_KEY);
           if (saved) {
             setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(saved) });

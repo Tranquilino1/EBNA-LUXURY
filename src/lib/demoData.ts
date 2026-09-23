@@ -2,6 +2,7 @@ import type { Product, Profile } from '../types';
 import { generateUUID } from './utils';
 import { notifyCatalogChange } from './broadcast';
 import { HD_PRODUCTS } from '../data/hdProducts';
+import { COSMETICS_AND_BABY_PRODUCTS } from '../data/cosmeticsBabyProducts';
 
 export interface UserAccount {
   id: string;
@@ -13,6 +14,7 @@ export interface UserAccount {
 }
 
 export const INITIAL_PRODUCTS: Product[] = [
+  ...COSMETICS_AND_BABY_PRODUCTS,
   ...HD_PRODUCTS,
   {
     "id": "sindy-vest-01",
@@ -5534,7 +5536,10 @@ export function demoGetProducts(): Product[] {
     if (saved !== null) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed)) {
-        list = parsed;
+        // Sincronizar automáticamente cualquier producto nuevo de INITIAL_PRODUCTS que falte
+        const existingIds = new Set(parsed.map((p: any) => p.id));
+        const missingFromInitial = INITIAL_PRODUCTS.filter(p => !existingIds.has(p.id));
+        list = [...parsed, ...missingFromInitial];
       } else {
         list = INITIAL_PRODUCTS;
       }

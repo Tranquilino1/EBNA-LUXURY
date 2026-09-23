@@ -80,7 +80,7 @@ export const AdvertisingVideoPanel: React.FC = () => {
   const handleSave = () => {
     const finalUrl = videoType === 'youtube' ? youtubeUrl : videoType === 'mp4' ? mp4Url : '';
     
-    updateSettings({
+    const updated = {
       videoType,
       videoUrl: finalUrl,
       videoSvgPreset: svgPreset,
@@ -88,9 +88,10 @@ export const AdvertisingVideoPanel: React.FC = () => {
       videoSubtitle: campaignSubtitle,
       videoAudioDefault: audioDefault,
       videoQuality,
-    });
+    };
 
-    notifyCatalogChange('customization_update');
+    updateSettings(updated);
+    notifyCatalogChange('customization_update', updated);
     setSaveSuccess(true);
     setTimeout(() => setSaveSuccess(false), 3500);
   };

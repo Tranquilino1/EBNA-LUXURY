@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { Flame, Pencil, Trash2, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Flame, Pencil, Trash2, Eye, EyeOff, ShoppingCart, Send, Check } from 'lucide-react';
 import type { Product } from '../../types';
 import { formatPrice } from '../../lib/utils';
 import { useAdminCrud } from '../../contexts/AdminCrudContext';
 import { useCustomization } from '../../contexts/CustomizationContext';
+import { useCart } from '../../contexts/CartContext';
 import { ChristmasHat } from '../effects/ChristmasHat';
 import { getProductOrdersCount } from '../../lib/popularityTracker';
 import './catalog.css';
@@ -28,6 +29,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
     toggleSelect
   } = useAdminCrud();
   const { settings, isChristmasActive } = useCustomization();
+  const { addToCart, setIsCartOpen } = useCart();
+  const [justAddedToCart, setJustAddedToCart] = useState(false);
   const isSelected = selectedIds.has(product.id);
 
   const imgRef = useRef<HTMLImageElement>(null);
@@ -359,36 +362,98 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           </div>
         </div>
         
-        <div className="product-actions" style={{ marginTop: '0.65rem' }}>
+        <div className="product-actions-trio" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', marginTop: '0.65rem' }}>
+          {/* Botón 1: VER */}
           <button
             type="button"
-            className="btn-select-size-card"
+            className="btn-card-action btn-card-ver"
             onClick={(e) => {
               e.stopPropagation();
               navigate(`/producto/${product.slug || product.id}`);
             }}
+            title="Ver producto y detalles"
             style={{
-              width: '100%',
-              padding: '10px 14px',
-              borderRadius: '25px',
-              border: 'none',
-              background: 'linear-gradient(135deg, #D81B60, #C2185B)',
-              color: 'white',
+              padding: '9px 4px',
+              borderRadius: '20px',
+              border: '1.5px solid rgba(216, 27, 96, 0.35)',
+              background: 'rgba(255, 255, 255, 0.95)',
+              color: '#D81B60',
               fontWeight: 800,
-              fontSize: '0.88rem',
-              letterSpacing: '0.5px',
+              fontSize: '0.82rem',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '7px',
-              boxShadow: '0 4px 14px rgba(216, 27, 96, 0.28)',
+              gap: '4px',
               transition: 'all 0.2s ease',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
             }}
           >
-            <Eye size={15} />
+            <Eye size={13} />
             <span>Ver</span>
-            <ArrowRight size={14} />
+          </button>
+
+          {/* Botón 2: PEDIR */}
+          <button
+            type="button"
+            className="btn-card-action btn-card-pedir"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/producto/${product.slug || product.id}?pedir=true`);
+            }}
+            title="Pedir directamente con comprobante oficial"
+            style={{
+              padding: '9px 4px',
+              borderRadius: '20px',
+              border: 'none',
+              background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+              color: 'white',
+              fontWeight: 800,
+              fontSize: '0.82rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '4px',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 3px 10px rgba(216, 27, 96, 0.3)'
+            }}
+          >
+            <Send size={13} />
+            <span>Pedir</span>
+          </button>
+
+          {/* Botón 3: CARRITO */}
+          <button
+            type="button"
+            className="btn-card-action btn-card-carrito"
+            onClick={(e) => {
+              e.stopPropagation();
+              addToCart(product, 1);
+              setJustAddedToCart(true);
+              setTimeout(() => setJustAddedToCart(false), 1800);
+              setIsCartOpen(true);
+            }}
+            title="Añadir a la cesta de compras"
+            style={{
+              padding: '9px 4px',
+              borderRadius: '20px',
+              border: 'none',
+              background: justAddedToCart ? '#16A34A' : 'linear-gradient(135deg, #10B981, #059669)',
+              color: 'white',
+              fontWeight: 800,
+              fontSize: '0.82rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '4px',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 3px 10px rgba(16, 185, 129, 0.3)'
+            }}
+          >
+            {justAddedToCart ? <Check size={13} /> : <ShoppingCart size={13} />}
+            <span>{justAddedToCart ? 'Listo' : 'Carrito'}</span>
           </button>
         </div>
       </div>
