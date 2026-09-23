@@ -8,6 +8,7 @@ import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
 import { OrderReceiptModal } from '../receipt/OrderReceiptModal';
+import { saveOrderRequest } from '../../lib/orderStorage';
 import type { OrderReceiptData, ReceiptItem } from '../../types';
 import './cart.css';
 
@@ -125,6 +126,7 @@ export const CartDrawer: React.FC = () => {
       status: 'PENDIENTE'
     };
 
+    saveOrderRequest(orderData);
     setReceiptOrder(orderData);
     setIsReceiptOpen(true);
   };

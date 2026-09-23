@@ -1,5 +1,6 @@
 import type { OrderReceiptData } from '../types';
 import { formatPrice } from './utils';
+import { encodeOrderData } from './orderStorage';
 
 const PRIMARY_PHONE = '240222633687';
 const MUNI_PHONE = '240555439904';
@@ -8,6 +9,9 @@ const MUNI_PHONE = '240555439904';
  * Builds the official WhatsApp URL for the order receipt
  */
 export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
+  const baseUrl = typeof window !== 'undefined' && window.location.origin ? window.location.origin : 'https://ebna-luxury.vercel.app';
+  const receiptCardUrl = `${baseUrl}/recibo?order=${encodeOrderData(order)}`;
+
   const itemsText = order.items.map((item, idx) => {
     const itemSubtotal = item.price * item.quantity;
     const sizeInfo = item.selectedSize ? ` | ${item.selectedSize}` : '';
@@ -27,7 +31,10 @@ export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
     ? '📲 MUNI DINERO (*423*2*1*555439904# / Giro al 555439904)'
     : '💬 WHATSAPP / EFECTIVO CONTRA ENTREGA';
 
-  const message = `✨ *RECIBO DE PEDIDO OFICIAL — SINDY LUXURY BY EBNA* ✨
+  const message = `✨ *SOLICITUD DE PEDIDO — SINDY LUXURY BY EBNA* ✨
+━━━━━━━━━━━━━━━━━━━━━━
+🎫 *TARJETA DIGITAL DE PEDIDO (HAZ CLIC PARA VER CON FOTOS):*
+👉 ${receiptCardUrl}
 ━━━━━━━━━━━━━━━━━━━━━━
 🎫 *FOLIO:* #${order.orderNumber}
 📅 *FECHA:* ${order.createdAt}

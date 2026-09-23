@@ -10,6 +10,7 @@ import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
 import { recordProductOrder } from '../lib/popularityTracker';
 import { OrderReceiptModal } from '../components/receipt/OrderReceiptModal';
+import { saveOrderRequest } from '../lib/orderStorage';
 import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
@@ -137,6 +138,7 @@ export function ProductPage() {
       status: 'PENDIENTE'
     };
 
+    saveOrderRequest(orderData);
     setReceiptOrder(orderData);
     setIsReceiptOpen(true);
   };

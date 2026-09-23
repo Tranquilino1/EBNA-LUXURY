@@ -19,6 +19,7 @@ const WelcomePage = React.lazy(() => import('./pages/WelcomePage').then(m => ({ 
 const RegisterPage = React.lazy(() => import('./pages/RegisterPage').then(m => ({ default: m.RegisterPage })));
 const AdminLoginPage = React.lazy(() => import('./pages/AdminLoginPage').then(m => ({ default: m.AdminLoginPage })));
 const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
+const ReceiptViewerPage = React.lazy(() => import('./pages/ReceiptViewerPage').then(m => ({ default: m.ReceiptViewerPage })));
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Loader message="Cargando producto..." /></div>}>
             <ProductPage />
+          </Suspense>
+        ) 
+      },
+      { 
+        path: 'recibo', 
+        element: (
+          <Suspense fallback={<div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Loader message="Cargando tarjeta de comprobante..." /></div>}>
+            <ReceiptViewerPage />
           </Suspense>
         ) 
       },
