@@ -16,7 +16,7 @@ import type { OrderReceiptData } from '../types';
 export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
   const { products, loading } = useProducts();
-  const { addToCart } = useCart();
+  const { addToCart, setIsCartOpen } = useCart();
   const { isAdmin, openEditModal, openDeleteModal, quickToggleStock } = useAdminCrud();
   const productDetailRef = useRef<HTMLDivElement>(null);
   
@@ -39,13 +39,12 @@ export function ProductPage() {
       const timer = setTimeout(() => {
         productDetailRef.current?.scrollIntoView({
           behavior: 'smooth',
-          block: 'center',
-          inline: 'nearest'
+          block: 'center'
         });
-      }, 100);
+      }, 150);
       return () => clearTimeout(timer);
     }
-  }, [product?.id, slug]);
+  }, [product]);
 
   const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product?.category || '');
   const isFootwear = product?.category === 'CALZADO';
@@ -55,26 +54,13 @@ export function ProductPage() {
   const availableSizes = useMemo(() => {
     if (!product) return [];
     if (isCosmetic) {
-      if (product.details?.volume) return [product.details.volume];
-      const validFormats = (product.sizes || []).filter(s => !['S', 'M', 'L', 'XL', 'XS'].includes(s));
-      return validFormats.length > 0 ? validFormats : ['Formato Estándar'];
+      const vol = product.details?.volume;
+      if (vol) return [vol];
+      return product.sizes && product.sizes.length > 0 ? product.sizes : ['Formato Estándar'];
     }
-    if (isAccessory) {
-      if (product.sizes && product.sizes.length > 0 && !['S', 'M', 'L', 'XL'].includes(product.sizes[0])) {
-        return product.sizes;
-      }
-      return ['Talla Única'];
-    }
-    if (isFootwear) {
-      if (product.sizes && product.sizes.length > 0) return product.sizes;
-      if (product.details?.size && product.details.size.length > 0) return product.details.size;
-      return ['37', '38', '39', '40'];
-    }
-    // Clothing (Vestidos, Monos, Conjuntos, Tops)
     if (product.sizes && product.sizes.length > 0) return product.sizes;
-    if (product.details?.size && product.details.size.length > 0) return product.details.size;
-    return ['XS', 'M', 'XL'];
-  }, [product, isCosmetic, isAccessory, isFootwear]);
+    return isFootwear ? ['38', '39', '40', '41'] : ['S', 'M', 'L'];
+  }, [product, isCosmetic, isFootwear]);
 
   const availableColors = useMemo(() => {
     if (!product) return [];
@@ -96,28 +82,44 @@ export function ProductPage() {
   const handleGenerateReceipt = () => {
     if (!product) return;
     recordProductOrder(product.id);
+
+    let clientName = '';
+    let clientPhone = '';
+    let clientAddress = '';
+    try {
+      clientName = localStorage.getItem('ebna_client_name') || '';
+      clientPhone = localStorage.getItem('ebna_client_phone') || '';
+      clientAddress = localStorage.getItem('ebna_client_address') || '';
+    } catch {}
+
+    const cleanPhone = clientPhone.replace(/\s+/g, '').replace(/[-+()]/g, '');
+    const isRealData = clientName && 
+      clientName.trim().length >= 3 && 
+      !clientName.toLowerCase().includes('cliente vip') && 
+      cleanPhone.length >= 6 && 
+      clientAddress && 
+      clientAddress.trim().length >= 4;
+
+    if (!isRealData) {
+      // Direct customer to complete real delivery info via the cart drawer
+      addToCart(product, quantity, selectedSize, selectedColor);
+      setIsCartOpen(true);
+      return;
+    }
+
     const rawImg = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (product.images as any)?.[0]);
     const priceVal = product.priceFCFA || product.price || 0;
     const now = new Date();
     const formattedDate = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
       ' • ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
-    let clientName = 'Cliente VIP';
-    let clientPhone = '';
-    let clientAddress = 'Malabo / Bata (Por confirmar)';
-    try {
-      clientName = localStorage.getItem('ebna_client_name') || clientName;
-      clientPhone = localStorage.getItem('ebna_client_phone') || '';
-      clientAddress = localStorage.getItem('ebna_client_address') || clientAddress;
-    } catch {}
-
     const orderData: OrderReceiptData = {
       orderId: `quick-${Date.now()}`,
       orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       createdAt: formattedDate,
-      customerName: clientName,
-      customerPhone: clientPhone,
-      customerAddress: clientAddress,
+      customerName: clientName.trim(),
+      customerPhone: clientPhone.trim(),
+      customerAddress: clientAddress.trim(),
       region: 'insular',
       shippingType: 'normal',
       paymentMethod: 'whatsapp',

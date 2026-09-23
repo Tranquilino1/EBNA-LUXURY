@@ -106,7 +106,7 @@ export const OrderReceiptModal: React.FC<OrderReceiptModalProps> = ({
             }}
           >
             <MessageCircle size={18} />
-            <span>Enviar Recibo Oficial por WhatsApp</span>
+            <span>Enviar Recibo Oficial a WhatsApp (+240 222 633 687)</span>
           </a>
 
           <button

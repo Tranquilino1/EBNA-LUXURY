@@ -3,73 +3,6 @@ import type { OrderReceiptData, ReceiptStatus } from '../types';
 const STORAGE_KEY = 'ebna_received_orders_v1';
 const BROADCAST_NAME = 'ebna_orders_channel';
 
-// Initial preloaded orders so the admin and store owner can immediately see and inspect cards
-const INITIAL_DEMO_ORDERS: OrderReceiptData[] = [
-  {
-    orderId: 'ord-demo-001',
-    orderNumber: 'EB-2026-8849',
-    createdAt: '23 Sep 2026 • 02:40',
-    customerName: 'Montserrat Bindang Nguema',
-    customerPhone: '+240 222 555 888',
-    customerAddress: 'Caracolas, Frente a Casa Mallo, Malabo',
-    region: 'insular',
-    shippingType: 'express',
-    paymentMethod: 'muni',
-    items: [
-      {
-        id: 'eb-item-1',
-        name: 'Vestido Midi Plisado Seda Gold',
-        price: 26000,
-        quantity: 2,
-        selectedSize: 'M',
-        selectedColor: 'Dorado Champán',
-        image: '/icons/ebna-logo.png'
-      },
-      {
-        id: 'eb-item-2',
-        name: 'Jumpsuit Safari Segunda Piel Ébano',
-        price: 28500,
-        quantity: 1,
-        selectedSize: 'L',
-        selectedColor: 'Estampado Ébano',
-        image: '/icons/ebna-logo.png'
-      }
-    ],
-    subtotal: 80500,
-    shippingCost: 3000,
-    total: 83500,
-    status: 'PENDIENTE',
-    notes: 'Solicitud recibida desde la tienda online. Pago solicitado vía Muni Dinero.'
-  },
-  {
-    orderId: 'ord-demo-002',
-    orderNumber: 'EB-2026-7731',
-    createdAt: '22 Sep 2026 • 19:15',
-    customerName: 'Doña Teresa Obono',
-    customerPhone: '+240 555 439 904',
-    customerAddress: 'Paseo Marítimo de Bata, Residencia Miramar',
-    region: 'continental',
-    shippingType: 'normal',
-    paymentMethod: 'whatsapp',
-    items: [
-      {
-        id: 'eb-item-3',
-        name: 'Vestido Gala Terciopelo Imperial',
-        price: 45000,
-        quantity: 1,
-        selectedSize: 'S',
-        selectedColor: 'Azul Noche',
-        image: '/icons/ebna-logo.png'
-      }
-    ],
-    subtotal: 45000,
-    shippingCost: 0,
-    total: 45000,
-    status: 'CONFIRMADO',
-    notes: 'Confirmado por WhatsApp. Entrega estándar en Bata.'
-  }
-];
-
 /**
  * Safely encodes OrderReceiptData into a URL-friendly base64 string
  */
@@ -92,7 +25,7 @@ export function encodeOrderData(order: OrderReceiptData): string {
  */
 export function decodeOrderData(encoded: string): OrderReceiptData | null {
   try {
-    const raw = decodeURIComponent(encoded);
+    const raw = decodeURIComponent(encoded.trim());
     try {
       const binary = atob(raw);
       const bytes = new Uint8Array(binary.length);
@@ -111,6 +44,35 @@ export function decodeOrderData(encoded: string): OrderReceiptData | null {
 }
 
 /**
+ * Parses and imports an order from an order link or raw encoded string
+ */
+export function importOrderFromText(input: string): OrderReceiptData | null {
+  if (!input || !input.trim()) return null;
+  const trimmed = input.trim();
+
+  let encodedString = trimmed;
+
+  // If full URL was pasted (e.g., https://ebna-luxury.vercel.app/recibo?order=...)
+  if (trimmed.includes('order=')) {
+    try {
+      const url = new URL(trimmed, 'https://ebna-luxury.vercel.app');
+      const param = url.searchParams.get('order');
+      if (param) encodedString = param;
+    } catch {
+      const match = trimmed.match(/order=([^&\s]+)/);
+      if (match && match[1]) encodedString = match[1];
+    }
+  }
+
+  const order = decodeOrderData(encodedString);
+  if (order && order.orderNumber && Array.isArray(order.items)) {
+    saveOrderRequest(order);
+    return order;
+  }
+  return null;
+}
+
+/**
  * Retrieves all received order requests
  */
 export function getReceivedOrders(): OrderReceiptData[] {
@@ -118,17 +80,39 @@ export function getReceivedOrders(): OrderReceiptData[] {
     const data = localStorage.getItem(STORAGE_KEY);
     if (data) {
       const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+      if (Array.isArray(parsed)) {
+        // Strict filter to permanently remove old dummy/test orders
+        const cleaned = parsed.filter(o => 
+          o && 
+          o.orderId !== 'ord-demo-001' && 
+          o.orderId !== 'ord-demo-002' && 
+          o.customerName !== 'Montserrat Bindang Nguema' && 
+          o.customerName !== 'Doña Teresa Obono' &&
+          o.customerName !== 'Cliente VIP'
+        );
+        if (cleaned.length !== parsed.length) {
+          saveOrdersToStorage(cleaned);
+        }
+        return cleaned;
       }
     }
   } catch (err) {
     console.error('Error reading received orders:', err);
   }
 
-  // Pre-seed demo orders if none exist
-  saveOrdersToStorage(INITIAL_DEMO_ORDERS);
-  return INITIAL_DEMO_ORDERS;
+  return [];
+}
+
+/**
+ * Clears all orders from storage
+ */
+export function clearAllOrders(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    notifyOrderChange();
+  } catch (err) {
+    console.error('Error clearing orders:', err);
+  }
 }
 
 /**

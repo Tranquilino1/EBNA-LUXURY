@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import type { OrderReceiptData, ReceiptStatus } from '../../types';
-import { getReceivedOrders, updateOrderStatus, deleteOrderRequest, subscribeToOrders, saveOrderRequest } from '../../lib/orderStorage';
+import { getReceivedOrders, updateOrderStatus, deleteOrderRequest, subscribeToOrders, saveOrderRequest, importOrderFromText, clearAllOrders } from '../../lib/orderStorage';
 import { downloadReceiptAsPng, copyReceiptSummary } from '../../lib/receiptExporter';
 import { OrderReceiptCard } from '../receipt/OrderReceiptCard';
 import { formatPrice } from '../../lib/utils';
 import { 
   Clock, CheckCircle2, Truck, Sparkles, Phone, MapPin, 
   Download, Eye, EyeOff, Trash2, Search, MessageCircle, 
-  ExternalLink, Copy, Check, ShoppingBag, Plus
+  ExternalLink, Copy, Check, ShoppingBag, Plus, UploadCloud, AlertCircle
 } from 'lucide-react';
 import '../receipt/receipt.css';
 
@@ -18,6 +18,8 @@ export const ReceivedOrdersPanel: React.FC = () => {
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [exportingId, setExportingId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [importInput, setImportInput] = useState('');
+  const [importMessage, setImportMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const reloadOrders = () => {
     setOrders(getReceivedOrders());
@@ -30,6 +32,33 @@ export const ReceivedOrdersPanel: React.FC = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  const handleImportOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    setImportMessage(null);
+    if (!importInput.trim()) {
+      setImportMessage({ type: 'error', text: 'Por favor pega el enlace o código del pedido recibido en WhatsApp.' });
+      return;
+    }
+    const order = importOrderFromText(importInput.trim());
+    if (order) {
+      reloadOrders();
+      setExpandedOrderId(order.orderId);
+      setImportInput('');
+      setImportMessage({ type: 'success', text: `¡Tarjeta de pedido #${order.orderNumber} (${order.customerName}) registrada con éxito!` });
+      setTimeout(() => setImportMessage(null), 4000);
+    } else {
+      setImportMessage({ type: 'error', text: 'No se pudo leer el pedido. Asegúrate de pegar el enlace de WhatsApp completo o el código de la tarjeta.' });
+    }
+  };
+
+  const handleClearAll = () => {
+    if (confirm('¿Deseas vaciar todas las solicitudes de pedido de este navegador?')) {
+      clearAllOrders();
+      reloadOrders();
+      setExpandedOrderId(null);
+    }
+  };
 
   const handleStatusChange = (orderId: string, newStatus: ReceiptStatus) => {
     updateOrderStatus(orderId, newStatus);
@@ -69,12 +98,12 @@ export const ReceivedOrdersPanel: React.FC = () => {
       orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       createdAt: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
         ' • ' + new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
-      customerName: 'Cliente VIP Online',
+      customerName: 'Sindy Eyenga',
       customerPhone: '+240 222 633 687',
-      customerAddress: 'Ela Nguema, Malabo',
+      customerAddress: 'Malabo II, Frente a Edificio de Ministerios, Malabo',
       region: 'insular',
       shippingType: 'express',
-      paymentMethod: 'muni',
+      paymentMethod: 'whatsapp',
       items: [
         {
           id: `item-test-${Date.now()}`,
@@ -90,7 +119,7 @@ export const ReceivedOrdersPanel: React.FC = () => {
       shippingCost: 3000,
       total: 41000,
       status: 'PENDIENTE',
-      notes: 'Solicitud generada como prueba del sistema.'
+      notes: 'Solicitud con datos reales de Guinea Ecuatorial (+240 222 633 687).'
     };
     saveOrderRequest(testOrder);
     reloadOrders();
@@ -130,7 +159,7 @@ export const ReceivedOrdersPanel: React.FC = () => {
             </span>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', margin: '4px 0 0 0' }}>
-            Visualiza las tarjetas oficiales de pedido generadas desde la página, con miniaturas, cantidades y contacto directo por WhatsApp.
+            Visualiza las tarjetas oficiales de pedido generadas desde la página, con miniaturas, cantidades y contacto directo por WhatsApp al <strong>+240 222 633 687</strong>.
           </p>
         </div>
 
@@ -153,10 +182,102 @@ export const ReceivedOrdersPanel: React.FC = () => {
               boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
             }}
           >
-            <Plus size={15} /> Simular Solicitud de Pedido
+            <Plus size={15} /> Generar Pedido de Prueba Real
           </button>
+          {orders.length > 0 && (
+            <button
+              type="button"
+              onClick={handleClearAll}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '10px 16px',
+                borderRadius: '30px',
+                border: '1px solid rgba(239, 68, 68, 0.25)',
+                background: 'rgba(239, 68, 68, 0.05)',
+                color: '#EF4444',
+                fontWeight: 700,
+                fontSize: '0.84rem',
+                cursor: 'pointer'
+              }}
+            >
+              <Trash2 size={14} /> Vaciar Historial
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Import / Paste WhatsApp Order Card */}
+      <form onSubmit={handleImportOrder} style={{ background: 'white', padding: '1.2rem 1.6rem', borderRadius: '16px', border: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', gap: '0.8rem', boxShadow: '0 2px 10px rgba(0,0,0,0.03)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <UploadCloud size={18} color="#D81B60" />
+            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+              Cargar o Registrar Pedido desde Enlace de WhatsApp
+            </span>
+          </div>
+          <span style={{ fontSize: '0.78rem', color: '#64748B' }}>
+            Pega el enlace de la tarjeta (ej. https://ebna-luxury.vercel.app/recibo?order=...)
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            value={importInput}
+            onChange={(e) => setImportInput(e.target.value)}
+            placeholder="Pegar enlace recibido en WhatsApp o código de tarjeta..."
+            style={{
+              flex: 1,
+              minWidth: '260px',
+              padding: '10px 14px',
+              borderRadius: '24px',
+              border: '1.5px solid #E2E8F0',
+              fontSize: '0.86rem',
+              outline: 'none',
+              transition: 'border-color 0.2s'
+            }}
+          />
+          <button
+            type="submit"
+            style={{
+              padding: '10px 20px',
+              borderRadius: '24px',
+              border: 'none',
+              background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+              color: 'white',
+              fontWeight: 700,
+              fontSize: '0.86rem',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 4px 12px rgba(216, 27, 96, 0.25)'
+            }}
+          >
+            <Plus size={15} /> Registrar Tarjeta
+          </button>
+        </div>
+
+        {importMessage && (
+          <div style={{
+            padding: '8px 12px',
+            borderRadius: '10px',
+            fontSize: '0.82rem',
+            fontWeight: 600,
+            background: importMessage.type === 'success' ? '#ECFDF5' : '#FEF2F2',
+            color: importMessage.type === 'success' ? '#065F46' : '#991B1B',
+            border: `1px solid ${importMessage.type === 'success' ? '#A7F3D0' : '#FECACA'}`,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            {importMessage.type === 'success' ? <Check size={14} color="#10B981" /> : <AlertCircle size={14} color="#EF4444" />}
+            <span>{importMessage.text}</span>
+          </div>
+        )}
+      </form>
 
       {/* KPI Cards Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '1rem' }}>
@@ -243,20 +364,22 @@ export const ReceivedOrdersPanel: React.FC = () => {
 
       {/* Orders List */}
       {filteredOrders.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '4rem 1rem', background: 'white', borderRadius: '20px', border: '1px solid var(--border-light)' }}>
-          <ShoppingBag size={48} color="#D81B60" style={{ margin: '0 auto 1rem auto', opacity: 0.6 }} />
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--text-primary)', margin: 0 }}>
-            No se encontraron solicitudes con este filtro
+        <div style={{ textAlign: 'center', padding: '4rem 1.5rem', background: 'white', borderRadius: '20px', border: '1px solid var(--border-light)', boxShadow: '0 4px 15px rgba(0,0,0,0.02)' }}>
+          <ShoppingBag size={52} color="#D81B60" style={{ margin: '0 auto 1.2rem auto', opacity: 0.7 }} />
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--text-primary)', margin: 0 }}>
+            {orders.length === 0 ? 'Bandeja de Solicitudes de Pedidos Lista' : 'No se encontraron solicitudes con este filtro'}
           </h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', maxWidth: '400px', margin: '0.5rem auto 1.5rem auto' }}>
-            Las solicitudes de pedidos realizadas desde el carrito o desde las fichas de producto aparecerán aquí automáticamente.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '520px', margin: '0.8rem auto 1.8rem auto', lineHeight: 1.6 }}>
+            {orders.length === 0 
+              ? 'Cuando los clientes realicen un pedido en la tienda web, recibirás la solicitud directamente en tu WhatsApp oficial (+240 222 633 687) con la tarjeta de pedido y fotografías. Al abrir el enlace o pegarlo en el buscador superior, quedará guardado aquí.'
+              : 'Intenta cambiar el estado en los filtros o buscar por otro término.'}
           </p>
           <button
             type="button"
             onClick={handleCreateTestOrder}
-            style={{ padding: '10px 20px', borderRadius: '30px', background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', border: 'none', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer' }}
+            style={{ padding: '11px 24px', borderRadius: '30px', background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', border: 'none', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', boxShadow: '0 4px 14px rgba(216, 27, 96, 0.3)' }}
           >
-            Generar Solicitud de Pedido de Prueba
+            Generar Pedido de Demostración con Datos Reales
           </button>
         </div>
       ) : (
@@ -266,7 +389,10 @@ export const ReceivedOrdersPanel: React.FC = () => {
             const totalUnits = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
             // Clean clean phone number for whatsapp
-            const cleanPhone = (order.customerPhone || '').replace(/[^0-9]/g, '');
+            let cleanPhone = (order.customerPhone || '').replace(/[^0-9]/g, '');
+            if (cleanPhone.length === 9) {
+              cleanPhone = `240${cleanPhone}`;
+            }
             const customerWaUrl = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Hola ${order.customerName}, le contactamos de Sindy Luxury by EBNA con relación a su pedido #${order.orderNumber}.`)}` : '#';
 
             return (

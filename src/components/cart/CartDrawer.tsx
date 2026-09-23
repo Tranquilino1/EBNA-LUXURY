@@ -78,12 +78,26 @@ export const CartDrawer: React.FC = () => {
   const handleCheckout = () => {
     if (cartItems.length === 0) return;
 
-    if (!customerName.trim()) {
-      setValidationError('Por favor ingresa tu Nombre y Apellidos para preparar la entrega.');
+    const trimmedName = customerName.trim();
+    if (!trimmedName || trimmedName.length < 3) {
+      setValidationError('Por favor ingresa tu Nombre y Apellidos reales para emitir tu comprobante oficial.');
       return;
     }
-    if (!customerAddress.trim()) {
-      setValidationError('Por favor ingresa tu Dirección, Barrio o Referencia de entrega.');
+    const lowerName = trimmedName.toLowerCase();
+    if (lowerName.includes('cliente vip') || lowerName.includes('prueba') || lowerName === 'test' || lowerName === 'anonimo') {
+      setValidationError('Por favor ingresa tu Nombre y Apellidos reales (no nombres de prueba o placeholder).');
+      return;
+    }
+
+    const cleanPhone = customerPhone.replace(/\s+/g, '').replace(/[-+()]/g, '');
+    if (!cleanPhone || cleanPhone.length < 6) {
+      setValidationError('Por favor ingresa tu número de Teléfono / WhatsApp real (ej. 222 633 687 o 555 439 904) para coordinar la entrega.');
+      return;
+    }
+
+    const trimmedAddress = customerAddress.trim();
+    if (!trimmedAddress || trimmedAddress.length < 4) {
+      setValidationError('Por favor ingresa tu Dirección, Barrio o Referencia de entrega real (ej. Ela Nguema, Malabo II, Caracolas).');
       return;
     }
 
@@ -113,9 +127,9 @@ export const CartDrawer: React.FC = () => {
       orderId: `ord-${Date.now()}`,
       orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       createdAt: formattedDate,
-      customerName: customerName.trim(),
+      customerName: trimmedName,
       customerPhone: customerPhone.trim(),
-      customerAddress: customerAddress.trim(),
+      customerAddress: trimmedAddress,
       region,
       shippingType,
       paymentMethod,
@@ -485,24 +499,22 @@ export const CartDrawer: React.FC = () => {
             </div>
 
             {paymentMethod === 'muni' ? (
-              <a 
-                href="tel:*423*2*1*555439904%23"
+              <button 
+                type="button"
                 className="btn-muni-navy-3d"
-                onClick={() => {
-                  try { navigator.clipboard.writeText('*423*2*1*555439904#'); } catch(e){}
-                  setTimeout(() => handleCheckout(), 1200);
-                }}
-                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                onClick={handleCheckout}
+                style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <PhoneCall size={20} />
-                <span>Pagar con Muni Dinero ({formatPrice(grandTotal)})</span>
-              </a>
+                <span>Pagar con Muni & Generar Tarjeta ({formatPrice(grandTotal)})</span>
+              </button>
             ) : (
               <button 
+                type="button"
                 className="wa-checkout-btn" 
                 onClick={handleCheckout}
               >
-                <span>Confirmar Pedido por WhatsApp</span>
+                <span>Generar Tarjeta Oficial & Pedir (+240 222 633 687)</span>
                 <ArrowRight size={18} />
               </button>
             )}

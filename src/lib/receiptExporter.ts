@@ -3,7 +3,6 @@ import { formatPrice } from './utils';
 import { encodeOrderData } from './orderStorage';
 
 const PRIMARY_PHONE = '240222633687';
-const MUNI_PHONE = '240555439904';
 
 /**
  * Builds the official WhatsApp URL for the order receipt
@@ -61,7 +60,8 @@ ${order.paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He solicita
 
 ¿Me confirman recepción del pedido para empaque y despacho?`;
 
-  const targetPhone = order.paymentMethod === 'muni' ? MUNI_PHONE : PRIMARY_PHONE;
+  // Always route order receipt submissions strictly to the official business WhatsApp: +240 222 633 687 (starting with 222 63)
+  const targetPhone = PRIMARY_PHONE;
   return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
 }
 

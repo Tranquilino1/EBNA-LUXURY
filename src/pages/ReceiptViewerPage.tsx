@@ -189,7 +189,7 @@ export function ReceiptViewerPage() {
               }}
             >
               <MessageCircle size={14} />
-              <span>Contactar WhatsApp</span>
+              <span>Enviar a WhatsApp (+240 222 633 687)</span>
             </a>
           </div>
         </div>

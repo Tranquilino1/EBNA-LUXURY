@@ -3,6 +3,8 @@ import { MessageCircle, ChevronDown, Ticket } from 'lucide-react';
 import type { Product, OrderReceiptData } from '../../types';
 import { buildWhatsAppUrl } from '../../lib/whatsapp';
 import { recordProductOrder } from '../../lib/popularityTracker';
+import { saveOrderRequest } from '../../lib/orderStorage';
+import { useCart } from '../../contexts/CartContext';
 import { OrderReceiptModal } from '../receipt/OrderReceiptModal';
 import './catalog.css';
 
@@ -20,32 +22,49 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   const [showNumbers, setShowNumbers] = useState(false);
   const [singleReceipt, setSingleReceipt] = useState<OrderReceiptData | null>(null);
   const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+  const { addToCart, setIsCartOpen } = useCart();
 
   const handleOpenReceipt = () => {
     setShowNumbers(false);
     recordProductOrder(product.id);
+
+    let clientName = '';
+    let clientPhone = '';
+    let clientAddress = '';
+    try {
+      clientName = localStorage.getItem('ebna_client_name') || '';
+      clientPhone = localStorage.getItem('ebna_client_phone') || '';
+      clientAddress = localStorage.getItem('ebna_client_address') || '';
+    } catch {}
+
+    const cleanPhone = clientPhone.replace(/\s+/g, '').replace(/[-+()]/g, '');
+    const isRealData = clientName && 
+      clientName.trim().length >= 3 && 
+      !clientName.toLowerCase().includes('cliente vip') && 
+      cleanPhone.length >= 6 && 
+      clientAddress && 
+      clientAddress.trim().length >= 4;
+
+    if (!isRealData) {
+      // Must collect real customer details via the cart drawer form
+      addToCart(product, 1);
+      setIsCartOpen(true);
+      return;
+    }
+
     const rawImg = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (product.images as any)?.[0]);
     const priceVal = product.priceFCFA || product.price || 0;
     const now = new Date();
     const formattedDate = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
       ' • ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
-    let clientName = 'Cliente VIP';
-    let clientPhone = '';
-    let clientAddress = 'Malabo / Bata (Por confirmar)';
-    try {
-      clientName = localStorage.getItem('ebna_client_name') || clientName;
-      clientPhone = localStorage.getItem('ebna_client_phone') || '';
-      clientAddress = localStorage.getItem('ebna_client_address') || clientAddress;
-    } catch {}
-
     const orderData: OrderReceiptData = {
       orderId: `quick-${Date.now()}`,
       orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
       createdAt: formattedDate,
-      customerName: clientName,
-      customerPhone: clientPhone,
-      customerAddress: clientAddress,
+      customerName: clientName.trim(),
+      customerPhone: clientPhone.trim(),
+      customerAddress: clientAddress.trim(),
       region: 'insular',
       shippingType: 'normal',
       paymentMethod: 'whatsapp',
@@ -65,6 +84,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       total: priceVal,
       status: 'PENDIENTE'
     };
+    saveOrderRequest(orderData);
     setSingleReceipt(orderData);
     setIsReceiptModalOpen(true);
   };
