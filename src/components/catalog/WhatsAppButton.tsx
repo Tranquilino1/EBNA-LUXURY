@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { MessageCircle, ChevronDown } from 'lucide-react';
-import type { Product } from '../../types';
+import { MessageCircle, ChevronDown, Ticket } from 'lucide-react';
+import type { Product, OrderReceiptData } from '../../types';
 import { buildWhatsAppUrl } from '../../lib/whatsapp';
 import { recordProductOrder } from '../../lib/popularityTracker';
+import { OrderReceiptModal } from '../receipt/OrderReceiptModal';
 import './catalog.css';
 
 interface WhatsAppButtonProps {
@@ -17,6 +18,56 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   fullWidth = false 
 }) => {
   const [showNumbers, setShowNumbers] = useState(false);
+  const [singleReceipt, setSingleReceipt] = useState<OrderReceiptData | null>(null);
+  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+
+  const handleOpenReceipt = () => {
+    setShowNumbers(false);
+    recordProductOrder(product.id);
+    const rawImg = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (product.images as any)?.[0]);
+    const priceVal = product.priceFCFA || product.price || 0;
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
+      ' • ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+    let clientName = 'Cliente VIP';
+    let clientPhone = '';
+    let clientAddress = 'Malabo / Bata (Por confirmar)';
+    try {
+      clientName = localStorage.getItem('ebna_client_name') || clientName;
+      clientPhone = localStorage.getItem('ebna_client_phone') || '';
+      clientAddress = localStorage.getItem('ebna_client_address') || clientAddress;
+    } catch {}
+
+    const orderData: OrderReceiptData = {
+      orderId: `quick-${Date.now()}`,
+      orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      createdAt: formattedDate,
+      customerName: clientName,
+      customerPhone: clientPhone,
+      customerAddress: clientAddress,
+      region: 'insular',
+      shippingType: 'normal',
+      paymentMethod: 'whatsapp',
+      items: [{
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        price: priceVal,
+        quantity: 1,
+        selectedSize: product.sizes?.[0] || 'Original',
+        selectedColor: product.colors?.[0] || 'Original',
+        image: rawImg || '/icons/ebna-logo.png',
+        slug: product.slug
+      }],
+      subtotal: priceVal,
+      shippingCost: 0,
+      total: priceVal,
+      status: 'PENDIENTE'
+    };
+    setSingleReceipt(orderData);
+    setIsReceiptModalOpen(true);
+  };
 
   const handlePrimaryClick = () => {
     if (!showNumbers) {
@@ -65,8 +116,39 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
           >
             Línea Muni Dinero (+240 555 439 904)
           </a>
+
+          <button
+            type="button"
+            onClick={handleOpenReceipt}
+            className="wa-dropdown-item"
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              width: '100%', 
+              textAlign: 'left', 
+              cursor: 'pointer', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '6px',
+              color: '#D81B60',
+              fontWeight: 700,
+              borderTop: '1px solid rgba(216, 27, 96, 0.15)',
+              paddingTop: '8px',
+              marginTop: '4px'
+            }}
+          >
+            <Ticket size={14} />
+            <span>Ver Tarjeta / Recibo Digital</span>
+          </button>
         </div>
       )}
+
+      {/* Single Product Receipt Modal */}
+      <OrderReceiptModal
+        order={singleReceipt}
+        isOpen={isReceiptModalOpen}
+        onClose={() => setIsReceiptModalOpen(false)}
+      />
     </div>
   );
 };

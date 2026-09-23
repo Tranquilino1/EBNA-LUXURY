@@ -1,0 +1,852 @@
+/* receipt.css - Luxury Pending Order Receipt Cards & Templates */
+
+/* Modal Backdrop */
+.receipt-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 6, 9, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+  animation: receiptFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes receiptFadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.receipt-modal-container {
+  width: 100%;
+  max-width: 680px;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: auto;
+}
+
+/* Template Selector Tabs Bar */
+.receipt-templates-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(216, 27, 96, 0.2);
+  border-radius: 20px 20px 0 0;
+  padding: 10px 16px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.receipt-templates-tabs {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.receipt-templates-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.template-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.04);
+  color: #64748B;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.template-tab-btn:hover {
+  background: rgba(216, 27, 96, 0.08);
+  color: #D81B60;
+}
+
+.template-tab-btn.active {
+  background: linear-gradient(135deg, #D81B60 0%, #C2185B 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(216, 27, 96, 0.35);
+}
+
+.receipt-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.receipt-modal-close:hover {
+  background: #EF4444;
+  color: white;
+  border-color: #EF4444;
+}
+
+/* Scrollable Content */
+.receipt-scroll-body {
+  overflow-y: auto;
+  max-height: calc(94vh - 140px);
+  padding: 8px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* ==========================================================
+   PLANTILLA 1: HAUTE COUTURE VIP TICKET
+   ========================================================== */
+.receipt-card-haute-couture {
+  width: 100%;
+  background: linear-gradient(175deg, #FFFDF9 0%, #FAF5EC 50%, #F5ECE0 100%);
+  border: 2px solid #C5A880;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  position: relative;
+  padding: 32px 36px;
+  color: #1E1926;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+/* Ticket Side Notches / Perforations */
+.receipt-card-haute-couture::before,
+.receipt-card-haute-couture::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 48px;
+  background: rgba(10, 6, 9, 0.78);
+  border: 2px solid #C5A880;
+  z-index: 10;
+}
+
+.receipt-card-haute-couture::before {
+  left: -14px;
+  border-radius: 0 24px 24px 0;
+  border-left: none;
+}
+
+.receipt-card-haute-couture::after {
+  right: -14px;
+  border-radius: 24px 0 0 24px;
+  border-right: none;
+}
+
+/* Watermark Seal Background */
+.receipt-watermark-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  width: 320px;
+  height: 320px;
+  opacity: 0.04;
+  pointer-events: none;
+  background: url('/icons/ebna-logo.png') center/contain no-repeat;
+  filter: grayscale(100%);
+}
+
+/* Header */
+.receipt-header {
+  text-align: center;
+  position: relative;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed rgba(197, 168, 128, 0.6);
+}
+
+.receipt-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.receipt-crest-img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(197, 168, 128, 0.4));
+}
+
+.receipt-brand-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #1A1320;
+  margin: 0;
+}
+
+.receipt-brand-subtitle {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #D81B60;
+  margin: 2px 0 10px 0;
+}
+
+.receipt-order-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.receipt-folio-tag {
+  background: rgba(197, 168, 128, 0.16);
+  border: 1px solid rgba(197, 168, 128, 0.5);
+  color: #8B6F47;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.receipt-status-pill {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15));
+  border: 1px solid #F59E0B;
+  color: #B45309;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: statusGlow 2.5s infinite ease-in-out;
+}
+
+@keyframes statusGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
+  50% { box-shadow: 0 0 14px rgba(245, 158, 11, 0.35); }
+}
+
+.status-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F59E0B;
+  box-shadow: 0 0 8px #F59E0B;
+}
+
+.receipt-date-text {
+  font-size: 0.75rem;
+  color: #786670;
+  margin-top: 6px;
+}
+
+/* Customer & Shipping Dossier */
+.receipt-dossier-box {
+  margin: 18px 0;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(197, 168, 128, 0.35);
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.dossier-title {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #D81B60;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dossier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 18px;
+}
+
+.dossier-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dossier-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8C7B83;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dossier-val {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #23191E;
+}
+
+.dossier-val.highlight {
+  color: #D81B60;
+}
+
+/* Items List & Thumbnails */
+.receipt-items-section {
+  margin: 18px 0;
+}
+
+.receipt-items-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.receipt-items-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #1A1320;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.receipt-items-count-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #786670;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.receipt-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.receipt-item-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(197, 168, 128, 0.25);
+  border-radius: 12px;
+  padding: 10px 14px;
+  transition: transform 0.2s ease;
+}
+
+.receipt-item-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.receipt-item-thumb-wrapper {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  background: #F1EFE9;
+}
+
+.receipt-item-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.receipt-item-thumb-img:hover {
+  transform: scale(1.08);
+}
+
+.thumb-qty-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #D81B60;
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 6px 0 0 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.receipt-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.receipt-item-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1A1320;
+  margin: 0 0 3px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.receipt-item-meta {
+  font-size: 0.74rem;
+  color: #786670;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.receipt-meta-pill {
+  background: rgba(197, 168, 128, 0.15);
+  border: 1px solid rgba(197, 168, 128, 0.3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  color: #8B6F47;
+}
+
+.receipt-item-price-col {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.receipt-unit-price {
+  font-size: 0.74rem;
+  color: #8C7B83;
+}
+
+.receipt-line-total {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #D81B60;
+}
+
+/* Totals Box */
+.receipt-totals-box {
+  margin-top: 18px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+.receipt-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #64748B;
+  padding: 4px 0;
+}
+
+.receipt-grand-total-row {
+  border-top: 1px dashed rgba(197, 168, 128, 0.6);
+  margin-top: 8px;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.grand-total-label {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1A1320;
+}
+
+.grand-total-amount {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #D81B60;
+  letter-spacing: -0.01em;
+}
+
+/* Security Barcode & Monogram Footer */
+.receipt-security-footer {
+  margin-top: 24px;
+  text-align: center;
+  border-top: 1px dashed rgba(197, 168, 128, 0.6);
+  padding-top: 18px;
+}
+
+.security-barcode-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.security-barcode-stripes {
+  height: 22px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.barcode-stripe {
+  background: #23191E;
+  height: 100%;
+}
+
+.security-serial-code {
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #786670;
+  letter-spacing: 0.15em;
+}
+
+.security-guarantee-note {
+  font-size: 0.72rem;
+  color: #8C7B83;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* ==========================================================
+   PLANTILLA 2: OBSIDIAN GOLD FINTECH PASS
+   ========================================================== */
+.receipt-card-obsidian-gold {
+  width: 100%;
+  background: radial-gradient(circle at 80% 20%, #1A2338 0%, #0D111A 60%, #06080D 100%);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.1);
+  position: relative;
+  padding: 32px 36px;
+  color: #F8FAFC;
+  font-family: 'Montserrat', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.receipt-card-obsidian-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Microchip representation */
+.fintech-chip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.fintech-emv-chip {
+  width: 44px;
+  height: 32px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #ECC874 0%, #B88E3E 100%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.fintech-emv-chip::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+}
+
+.receipt-card-obsidian-gold .receipt-brand-title {
+  color: #FFF3D6;
+}
+
+.receipt-card-obsidian-gold .receipt-folio-tag {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.5);
+  color: #ECC874;
+}
+
+.receipt-card-obsidian-gold .receipt-dossier-box {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+.receipt-card-obsidian-gold .dossier-val {
+  color: #F8FAFC;
+}
+
+.receipt-card-obsidian-gold .receipt-item-row {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+.receipt-card-obsidian-gold .receipt-item-name {
+  color: #FFFFFF;
+}
+
+.receipt-card-obsidian-gold .receipt-line-total {
+  color: #FFD700;
+}
+
+.receipt-card-obsidian-gold .receipt-totals-box {
+  background: rgba(212, 175, 55, 0.06);
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+.receipt-card-obsidian-gold .grand-total-label {
+  color: #FFF3D6;
+}
+
+.receipt-card-obsidian-gold .grand-total-amount {
+  color: #FFD700;
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
+}
+
+.receipt-card-obsidian-gold .barcode-stripe {
+  background: #D4AF37;
+}
+
+/* ==========================================================
+   PLANTILLA 3: EDITORIAL VOGUE MINIMAL
+   ========================================================== */
+.receipt-card-editorial-vogue {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  padding: 36px 40px;
+  color: #111111;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.receipt-card-editorial-vogue .receipt-brand-title {
+  font-family: 'Cinzel', 'Playfair Display', serif;
+  font-size: 2rem;
+  letter-spacing: 0.12em;
+}
+
+.receipt-card-editorial-vogue .receipt-dossier-box {
+  background: #F9F9F9;
+  border: 1px solid #E5E5E5;
+  font-family: system-ui, sans-serif;
+}
+
+.receipt-card-editorial-vogue .receipt-item-row {
+  background: #FFFFFF;
+  border-bottom: 1px solid #EEEEEE;
+  border-radius: 0;
+  padding: 14px 0;
+}
+
+.receipt-card-editorial-vogue .receipt-line-total {
+  color: #000000;
+  font-weight: 800;
+}
+
+.receipt-card-editorial-vogue .receipt-totals-box {
+  background: #F8F8F8;
+  border: 1px solid #000000;
+  font-family: system-ui, sans-serif;
+}
+
+.receipt-card-editorial-vogue .grand-total-amount {
+  color: #000000;
+  font-weight: 900;
+}
+
+/* Bottom Actions Toolbar */
+.receipt-actions-toolbar {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(216, 27, 96, 0.2);
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  padding: 16px 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.receipt-btn-whatsapp {
+  flex: 1 1 200px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 20px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.92rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.receipt-btn-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+}
+
+.receipt-btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 20px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.88rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.receipt-btn-download:hover {
+  background: linear-gradient(135deg, #334155 0%, #1E293B 100%);
+  transform: translateY(-2px);
+}
+
+.receipt-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border-radius: 30px;
+  background: #F1F5F9;
+  color: #334155;
+  font-weight: 700;
+  font-size: 0.82rem;
+  border: 1px solid #CBD5E1;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.receipt-btn-secondary:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+/* Toast alert for copy */
+.receipt-copy-toast {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #10B981;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  z-index: 20;
+  animation: toastPop 0.3s ease;
+}
+
+@keyframes toastPop {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Print Stylesheet */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .receipt-modal-overlay {
+    position: static;
+    background: transparent;
+    padding: 0;
+  }
+  .receipt-scroll-body,
+  .receipt-scroll-body * {
+    visibility: visible;
+  }
+  .receipt-scroll-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .receipt-templates-bar,
+  .receipt-actions-toolbar,
+  .receipt-modal-close {
+    display: none !important;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .receipt-card-haute-couture,
+  .receipt-card-obsidian-gold,
+  .receipt-card-editorial-vogue {
+    padding: 24px 18px;
+  }
+  .receipt-card-haute-couture::before,
+  .receipt-card-haute-couture::after {
+    display: none;
+  }
+  .receipt-brand-title {
+    font-size: 1.35rem;
+  }
+  .receipt-item-name {
+    font-size: 0.86rem;
+  }
+  .receipt-actions-toolbar {
+    flex-direction: column;
+  }
+  .receipt-btn-whatsapp,
+  .receipt-btn-download,
+  .receipt-btn-secondary {
+    width: 100%;
+  }
+}

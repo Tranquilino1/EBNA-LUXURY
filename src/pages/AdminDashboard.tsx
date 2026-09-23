@@ -3,13 +3,14 @@ import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
 import { useAdminCrud } from '../contexts/AdminCrudContext';
 import { Loader } from '../components/ui/Loader';
-import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2, Sliders, CheckSquare, Film } from 'lucide-react';
+import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2, Sliders, CheckSquare, Film, Ticket } from 'lucide-react';
 import { notifyCatalogChange } from '../lib/broadcast';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
 import { ProductInspectModal } from '../components/admin/ProductInspectModal';
 import { CustomizationSettingsPanel } from '../components/admin/CustomizationSettingsPanel';
 import { AdvertisingVideoPanel } from '../components/admin/AdvertisingVideoPanel';
+import { ReceiptTemplatesStudio } from '../components/admin/ReceiptTemplatesStudio';
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
 import { Toast } from '../components/ui/Toast';
@@ -29,7 +30,7 @@ export function AdminDashboard() {
     openBulkDeleteModal 
   } = useAdminCrud();
 
-  const [activeTab, setActiveTab] = useState<'inventory' | 'customization' | 'advertising' | 'users' | 'security' | 'analytics'>('inventory');
+  const [activeTab, setActiveTab] = useState<'inventory' | 'customization' | 'advertising' | 'receipts' | 'users' | 'security' | 'analytics'>('inventory');
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -79,13 +80,13 @@ export function AdminDashboard() {
   const totalInventoryValue = products.reduce((acc, p) => acc + (p.in_stock ? p.price : 0), 0);
   const categoriesCount = new Set(products.map(p => p.category)).size;
 
-  const handleEdit = (product: Product) => {
-    setSelectedProduct(product);
+  const handleCreate = () => {
+    setSelectedProduct(null);
     setIsFormOpen(true);
   };
 
-  const handleCreate = () => {
-    setSelectedProduct(null);
+  const handleEdit = (product: Product) => {
+    setSelectedProduct(product);
     setIsFormOpen(true);
   };
 
@@ -103,12 +104,11 @@ export function AdminDashboard() {
   };
 
   const handleDeleteAll = async () => {
-    // Delete all products one by one
     for (const p of products) {
       await deleteProduct(p.id);
     }
     setIsDeleteAllOpen(false);
-    refetch();
+    clearSelection();
   };
 
   const handleSave = async (productData: Partial<Product>, imageFile?: File) => {
@@ -171,6 +171,7 @@ export function AdminDashboard() {
         {[
           { id: 'inventory' as const, label: `Inventario (${products.length})`, icon: <Package size={18} /> },
           { id: 'advertising' as const, label: 'Publicidad & Video', icon: <Film size={18} /> },
+          { id: 'receipts' as const, label: 'Tarjetas & Recibos UX', icon: <Ticket size={18} /> },
           { id: 'customization' as const, label: 'Personalización & UI', icon: <Sliders size={18} /> },
           { id: 'users' as const, label: 'Usuarios & Roles', icon: <Users size={18} /> },
           { id: 'security' as const, label: 'Mi Cuenta & Seguridad', icon: <KeyRound size={18} /> },
@@ -736,6 +737,13 @@ export function AdminDashboard() {
               <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: 0 }}>{activeProducts} activos en stock</p>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* TAB: RECEIPT TEMPLATES STUDIO */}
+      {activeTab === 'receipts' && (
+        <div style={{ background: 'white', borderRadius: '24px', border: '1px solid var(--color-glass-border)', padding: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+          <ReceiptTemplatesStudio />
         </div>
       )}
 

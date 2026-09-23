@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router';
-import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff, Ticket } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
 import { useAdminCrud } from '../contexts/AdminCrudContext';
@@ -9,6 +9,8 @@ import { buildWhatsAppUrl } from '../lib/whatsapp';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
 import { recordProductOrder } from '../lib/popularityTracker';
+import { OrderReceiptModal } from '../components/receipt/OrderReceiptModal';
+import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -85,6 +87,59 @@ export function ProductPage() {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
+
+  // Digital Pending Order Receipt State
+  const [receiptOrder, setReceiptOrder] = useState<OrderReceiptData | null>(null);
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false);
+
+  const handleGenerateReceipt = () => {
+    if (!product) return;
+    recordProductOrder(product.id);
+    const rawImg = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (product.images as any)?.[0]);
+    const priceVal = product.priceFCFA || product.price || 0;
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
+      ' • ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+    let clientName = 'Cliente VIP';
+    let clientPhone = '';
+    let clientAddress = 'Malabo / Bata (Por confirmar)';
+    try {
+      clientName = localStorage.getItem('ebna_client_name') || clientName;
+      clientPhone = localStorage.getItem('ebna_client_phone') || '';
+      clientAddress = localStorage.getItem('ebna_client_address') || clientAddress;
+    } catch {}
+
+    const orderData: OrderReceiptData = {
+      orderId: `quick-${Date.now()}`,
+      orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      createdAt: formattedDate,
+      customerName: clientName,
+      customerPhone: clientPhone,
+      customerAddress: clientAddress,
+      region: 'insular',
+      shippingType: 'normal',
+      paymentMethod: 'whatsapp',
+      items: [{
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        price: priceVal,
+        quantity,
+        selectedSize: selectedSize || availableSizes[0] || 'M',
+        selectedColor: selectedColor || availableColors[0] || 'Original',
+        image: rawImg || '/icons/ebna-logo.png',
+        slug: product.slug
+      }],
+      subtotal: priceVal * quantity,
+      shippingCost: 0,
+      total: priceVal * quantity,
+      status: 'PENDIENTE'
+    };
+
+    setReceiptOrder(orderData);
+    setIsReceiptOpen(true);
+  };
 
   useEffect(() => {
     if (availableSizes.length > 0) {
@@ -539,9 +594,41 @@ export function ProductPage() {
             >
               <Phone size={18} /> Muni Dinero / Contacto ({secondaryPhone})
             </a>
+
+            <button
+              type="button"
+              onClick={handleGenerateReceipt}
+              style={{
+                width: '100%',
+                padding: '13px 20px',
+                borderRadius: '30px',
+                border: '1px solid rgba(216, 27, 96, 0.4)',
+                background: 'linear-gradient(135deg, rgba(216, 27, 96, 0.08) 0%, rgba(197, 168, 128, 0.15) 100%)',
+                color: '#D81B60',
+                fontWeight: 800,
+                fontSize: '0.92rem',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 15px rgba(216, 27, 96, 0.1)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <Ticket size={18} />
+              <span>Generar Tarjeta de Pedido Pendiente (PNG)</span>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Digital Pending Order Receipt Modal */}
+      <OrderReceiptModal
+        order={receiptOrder}
+        isOpen={isReceiptOpen}
+        onClose={() => setIsReceiptOpen(false)}
+      />
     </div>
   );
 }

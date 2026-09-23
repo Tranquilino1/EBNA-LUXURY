@@ -7,11 +7,9 @@ import {
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
-import { getAbsoluteImageUrl } from '../../lib/whatsapp';
+import { OrderReceiptModal } from '../receipt/OrderReceiptModal';
+import type { OrderReceiptData, ReceiptItem } from '../../types';
 import './cart.css';
-
-const PRIMARY_PHONE = '240222633687'; // WhatsApp principal EBNA (+240 222 633 687)
-const MUNI_PHONE = '240555439904';    // Número oficial Muni Dinero (+240 555 439 904)
 
 export const CartDrawer: React.FC = () => {
   const { 
@@ -41,6 +39,10 @@ export const CartDrawer: React.FC = () => {
   const [region, setRegion] = useState<'insular' | 'continental'>('insular');
   const [shippingType, setShippingType] = useState<'normal' | 'express'>('normal');
   const [copiedMuni, setCopiedMuni] = useState(false);
+
+  // Digital Pending Order Receipt State
+  const [receiptOrder, setReceiptOrder] = useState<OrderReceiptData | null>(null);
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false);
 
   if (!isCartOpen) return null;
 
@@ -86,61 +88,45 @@ export const CartDrawer: React.FC = () => {
 
     setValidationError('');
 
-    let itemsListText = '';
-    cartItems.forEach((item, index) => {
+    const receiptItems: ReceiptItem[] = cartItems.map(item => {
       recordProductOrder(item.product.id);
-      const itemSubtotal = (item.product.priceFCFA || item.product.price || 0) * item.quantity;
-      const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(item.product.category || '');
-      const isFootwear = item.product.category === 'CALZADO';
-      const sizeLabel = isCosmetic ? 'Presentación' : isFootwear ? 'Talla EU' : 'Talla';
-      const colorText = isCosmetic || !item.selectedColor || item.selectedColor === 'Original' ? '' : ` | Color: ${item.selectedColor}`;
       const rawImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : (item.product.images as any)?.[0]);
-      const photoUrl = getAbsoluteImageUrl(rawImg);
-      const productUrl = `https://ebna-luxury.vercel.app/producto/${item.product.slug}`;
-
-      itemsListText += `\n${index + 1}. 👗 *${item.product.name}*
-   • Cantidad: ${item.quantity} ud.
-   • ${sizeLabel}: ${item.selectedSize}${colorText}
-   • Subtotal: ${formatPrice(itemSubtotal)}
-   • 🖼️ Foto: ${photoUrl}
-   • 🔗 Ficha: ${productUrl}\n`;
+      return {
+        id: item.cartItemId,
+        name: item.product.name,
+        category: item.product.category,
+        price: item.product.priceFCFA || item.product.price || 0,
+        quantity: item.quantity,
+        selectedSize: item.selectedSize,
+        selectedColor: item.selectedColor,
+        image: rawImg || '/icons/ebna-logo.png',
+        slug: item.product.slug
+      };
     });
 
-    const regionText = region === 'insular' 
-      ? '🏝️ Región Insular (Bioko / Malabo)' 
-      : '🌍 Región Continental (Litoral / Bata y provincias)';
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
+      ' • ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
-    const shippingText = shippingType === 'express' 
-      ? '⚡ Envío Express 3 Días (+3.000 FCFA)' 
-      : '📦 Envío Estándar 5 a 7 Días (Gratis)';
+    const orderData: OrderReceiptData = {
+      orderId: `ord-${Date.now()}`,
+      orderNumber: `EB-2026-${Math.floor(1000 + Math.random() * 9000)}`,
+      createdAt: formattedDate,
+      customerName: customerName.trim(),
+      customerPhone: customerPhone.trim(),
+      customerAddress: customerAddress.trim(),
+      region,
+      shippingType,
+      paymentMethod,
+      items: receiptItems,
+      subtotal: subtotalPrice,
+      shippingCost,
+      total: grandTotal,
+      status: 'PENDIENTE'
+    };
 
-    const paymentText = paymentMethod === 'muni' 
-      ? '📲 MUNI DINERO (USSD *423*2*1*555439904# / Giro al 555439904)' 
-      : '💬 WHATSAPP / EFECTIVO CONTRA ENTREGA';
-
-    const message = `✨ *PEDIDO OFICIAL — SINDY LUXURY BY EBNA* ✨
-━━━━━━━━━━━━━━━━━━━━━━
-👤 *INFORMACIÓN DE ENTREGA:*
-• Destinatario: *${customerName.trim()}*
-• Teléfono/WhatsApp: *${customerPhone.trim() || 'No especificado'}*
-• Dirección / Barrio: *${customerAddress.trim()}*
-• Región: *${regionText}*
-━━━━━━━━━━━━━━━━━━━━━━
-🛍️ *PRENDAS SELECCIONADAS (${totalItemsCount} uds):*
-${itemsListText}
-━━━━━━━━━━━━━━━━━━━━━━
-💰 Subtotal Prendas: ${formatPrice(subtotalPrice)}
-🚚 Modalidad de Envío: ${shippingText}
-💳 Método de Pago: ${paymentText}
-💵 *TOTAL A PAGAR: ${formatPrice(grandTotal)}*
-━━━━━━━━━━━━━━━━━━━━━━
-${paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He procesado el giro directo al 555439904 (o ejecutaré *423*2*1*555439904#).' : ''}
-¿Me confirman recepción del pedido y horario estimado de entrega?`;
-
-    const targetPhone = paymentMethod === 'muni' ? MUNI_PHONE : PRIMARY_PHONE;
-    const encoded = encodeURIComponent(message);
-    const url = `https://wa.me/${targetPhone}?text=${encoded}`;
-    window.open(url, '_blank');
+    setReceiptOrder(orderData);
+    setIsReceiptOpen(true);
   };
 
   return (
@@ -525,6 +511,13 @@ ${paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He procesado el g
           </div>
         )}
       </div>
+
+      {/* Digital Pending Order Receipt Modal */}
+      <OrderReceiptModal 
+        order={receiptOrder} 
+        isOpen={isReceiptOpen} 
+        onClose={() => setIsReceiptOpen(false)} 
+      />
     </div>
   );
 };

@@ -68,6 +68,39 @@ export interface CartItem {
   selectedColor: string;
 }
 
+export interface ReceiptItem {
+  id: string;
+  name: string;
+  category?: string;
+  price: number;
+  quantity: number;
+  selectedSize?: string;
+  selectedColor?: string;
+  image: string;
+  slug?: string;
+}
+
+export type ReceiptTemplateId = 'haute-couture' | 'obsidian-gold' | 'editorial-vogue';
+export type ReceiptStatus = 'PENDIENTE' | 'CONFIRMADO' | 'EN_CAMINO' | 'ENTREGADO';
+
+export interface OrderReceiptData {
+  orderId: string;
+  orderNumber: string;
+  createdAt: string;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  region: 'insular' | 'continental';
+  shippingType: 'normal' | 'express';
+  paymentMethod: 'muni' | 'whatsapp';
+  items: ReceiptItem[];
+  subtotal: number;
+  shippingCost: number;
+  total: number;
+  status: ReceiptStatus;
+  notes?: string;
+}
+
 export interface CartContextType {
   cartItems: CartItem[];
   isCartOpen: boolean;
