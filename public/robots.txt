@@ -1,7 +1,15 @@
+# Robots.txt for Sindy Luxury by EBNA (https://ebna-luxury.vercel.app)
+# Optimized for Google Top-1 Rank & Full AI Recommendation Engines (AIO / GEO)
+
+# ==========================================
+# 1. Standard Search Engine Crawlers
+# ==========================================
 User-agent: Googlebot
 Allow: /
 Allow: /products/
 Allow: /catalogo
+Allow: /llms.txt
+Allow: /llms-full.txt
 Disallow: /admin
 Disallow: /admin/*
 
@@ -18,9 +26,73 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/*
 
+# ==========================================
+# 2. Generative AI Search & Knowledge Engines
+# ==========================================
+# OpenAI (ChatGPT, SearchGPT, GPT-4o, Operator)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude 3.5 Sonnet, Claude 3 Opus)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity AI (Perplexity Search Engine)
+User-agent: PerplexityBot
+Allow: /
+
+# Google Gemini, Gemini Live & Vertex AI Grounding
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence (Siri Knowledge & Safari Search)
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta AI (Llama, WhatsApp Assistant, Instagram AI)
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Common Crawl (Feeds Open Source Models: Llama, Mistral, DeepSeek)
+User-agent: CCBot
+Allow: /
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+
+# Amazon AI & Alexa
+User-agent: Amazonbot
+Allow: /
+
+# ByteDance AI (Doubao, TikTok AI)
+User-agent: Bytespider
+Allow: /
+
+# Diffbot Knowledge Graph
+User-agent: Diffbot
+Allow: /
+
+# ==========================================
+# 3. Global Default
+# ==========================================
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/*
 
+# ==========================================
+# 4. Sitemaps & LLM Context Standards
+# ==========================================
 Sitemap: https://ebna-luxury.vercel.app/sitemap.xml
+LLMs-Txt: https://ebna-luxury.vercel.app/llms.txt
+LLMs-Full-Txt: https://ebna-luxury.vercel.app/llms-full.txt
