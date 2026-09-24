@@ -13,7 +13,9 @@ export interface UserAccount {
   created_at: string;
 }
 
-export const INITIAL_PRODUCTS: Product[] = [
+export const DUPLICATE_IDS_TO_REMOVE = new Set<string>(["a093b587-d06c-43e5-b7d0-e3dc14fb9472","b8e99ffd-dc0c-43d6-a8ec-049143ebe71e","eaa90b43-cfb7-411d-9a66-06ce6dcee325","cbcef8fb-0724-4578-bec8-29aca73bd399","0dddc0fa-99ec-44eb-b911-92d9d291d87e","1c0a9860-9a59-4510-9060-65555c3714e4","68251977-6f81-4d6d-bc56-8ec06e8989c9","e2df788a-d74d-47ba-a8d4-ac311cea77a8","ebna-99","ebna-71","ebna-97","ebna-58","ebna-131","ebna-76","ebna-125","ebna-126","ebna-127","ebna-134","ebna-63","ebna-64","ebna-94","ebna-141","ebna-101","ebna-102","ebna-119","ebna-86","ebna-117","ebna-118","ebna-107","ebna-92","ebna-93","ebna-113","ebna-128","ebna-122","ebna-133","ebna-137"]);
+
+const RAW_INITIAL_PRODUCTS: Product[] = [
   ...COSMETICS_AND_BABY_PRODUCTS,
   ...HD_PRODUCTS,
   {
@@ -5462,6 +5464,8 @@ export const INITIAL_PRODUCTS: Product[] = [
   }
 ];
 
+export const INITIAL_PRODUCTS: Product[] = RAW_INITIAL_PRODUCTS.filter(p => !DUPLICATE_IDS_TO_REMOVE.has(p.id));
+
 // Fast in-memory lookup maps for hyper-fast 0ms querying
 const PRODUCTS_BY_ID = new Map<string, Product>();
 const PRODUCTS_BY_SLUG = new Map<string, Product>();
@@ -5471,9 +5475,9 @@ INITIAL_PRODUCTS.forEach(p => {
   PRODUCTS_BY_SLUG.set(p.slug, p);
 });
 
-const LOCAL_PRODUCTS_KEY = 'ebna_local_products_v4';
+const LOCAL_PRODUCTS_KEY = 'ebna_local_products_v5';
 const LOCAL_USERS_KEY = 'ebna_local_users_v4';
-const LOCAL_DELETED_KEY = 'ebna_deleted_ids_v4';
+const LOCAL_DELETED_KEY = 'ebna_deleted_ids_v5';
 
 export function getDeletedProductIds(): string[] {
   try {
