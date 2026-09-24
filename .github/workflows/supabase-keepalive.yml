@@ -1,0 +1,36 @@
+name: Supabase Auth Keep-Alive Routine
+
+on:
+  schedule:
+    # Ejecuta a las 04:00 UTC cada 3 días para mantener activo el proyecto Supabase
+    - cron: '0 4 */3 * *'
+  workflow_dispatch: # Permite ejecución manual bajo demanda
+
+jobs:
+  keepalive:
+    name: Ping PostgREST Supabase API
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Realizar Petición Autenticada de Salud
+        run: |
+          echo "Iniciando ping de actividad hacia el endpoint PostgREST de Supabase..."
+          
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            --retry 3 \
+            --retry-delay 5 \
+            --max-time 15 \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/")
+          
+          echo "Código HTTP retornado: $HTTP_STATUS"
+          
+          # 200 OK o 404 (Swagger no expuesto pero API activa) demuestran recepción y actividad de computación
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 500 ]; then
+            echo "✅ Verificación exitosa: Instancia de Supabase activa y respondiendo."
+          else
+            echo "❌ Fallo crítico en el ping: Estado HTTP inesperado $HTTP_STATUS"
+            exit 1
+          fi
