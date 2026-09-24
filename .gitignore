@@ -30,3 +30,5 @@ scratch/
 response.json
 productos_descargados_hd/
 productos_descargados_HD/
+*.db
+*.db-journal
