@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Menu, X, User, LogOut, ShieldCheck, QrCode, ShoppingBag, ShoppingCart, Circle, Sun, Moon, Headphones } from 'lucide-react';
+import { Menu, X, User, LogOut, ShieldCheck, QrCode, ShoppingBag, ShoppingCart, Circle, Sun, Moon, Headphones, Search } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTraffic } from '../../contexts/TrafficContext';
 import { useCart } from '../../contexts/CartContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useGlobalSearch } from '../../contexts/GlobalSearchContext';
 import { QRModal } from '../ui/QRModal';
 import { AdminAuthModal } from '../admin/AdminAuthModal';
 import { ContactSupportModal } from '../ui/ContactSupportModal';
@@ -24,6 +25,7 @@ export const Navbar: React.FC = () => {
   const { onlineCount } = useTraffic();
   const { setIsCartOpen, totalItemsCount } = useCart();
   const { theme, toggleTheme } = useTheme();
+  const { openSearch } = useGlobalSearch();
   const { settings, isChristmasActive } = useCustomization();
   
   const navigate = useNavigate();
@@ -142,10 +144,32 @@ export const Navbar: React.FC = () => {
               {link.name}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => openSearch()}
+            className="navbar-search-glass-btn glass-panel"
+            title="Buscador Rápido (Ctrl+K)"
+            aria-label="Abrir buscador rápido"
+          >
+            <Search size={15} color="#D81B60" />
+            <span>Buscar</span>
+          </button>
         </div>
 
-        {/* Right side: Theme Toggle, Cart, QR, Traffic and User */}
+        {/* Right side: Search (Mobile), Theme Toggle, Cart, QR, Traffic and User */}
         <div className="navbar-actions">
+          {/* Mobile Quick Search Button */}
+          <button
+            type="button"
+            className="theme-toggle-btn mobile-only"
+            onClick={() => openSearch()}
+            title="Buscar productos"
+            aria-label="Buscar productos"
+            style={{ color: '#D81B60', border: '1px solid rgba(216, 27, 96, 0.3)' }}
+          >
+            <Search size={17} />
+          </button>
+
           {/* Theme Toggle Button */}
           <button
             type="button"

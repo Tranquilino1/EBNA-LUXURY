@@ -6,6 +6,8 @@ import { PWAInstallBanner } from '../ui/PWAInstallBanner';
 import { CartDrawer } from '../cart/CartDrawer';
 import { ParticleBackground } from '../effects/ParticleBackground';
 import { AdminCrudProvider } from '../../contexts/AdminCrudContext';
+import { GlobalSearchProvider } from '../../contexts/GlobalSearchContext';
+import { GlobalSearchModal } from '../search/GlobalSearchModal';
 import { AdminFloatingDock } from '../admin/AdminFloatingDock';
 import { ChristmasSnowOverlay } from '../effects/ChristmasSnowOverlay';
 import { ChristmasMagicOverlay } from '../effects/ChristmasMagicOverlay';
@@ -17,21 +19,25 @@ export const Layout: React.FC = () => {
   const { isChristmasActive, settings } = useCustomization();
 
   return (
-    <AdminCrudProvider>
-      <div className="luxury-canvas min-h-screen">
-        <ParticleBackground />
-        {isChristmasActive && settings.christmasSnow && <ChristmasSnowOverlay />}
-        {isChristmasActive && <ChristmasMagicOverlay />}
-        <Navbar />
-        <main className="main-content">
-          <Outlet />
-        </main>
-        <Footer />
-        <CartDrawer />
-        <PWAInstallBanner />
-        <AdminFloatingDock />
-        <ScrollToTopButton />
-      </div>
-    </AdminCrudProvider>
+    <GlobalSearchProvider>
+      <AdminCrudProvider>
+        <div className="luxury-canvas min-h-screen">
+          <ParticleBackground />
+          {isChristmasActive && settings.christmasSnow && <ChristmasSnowOverlay />}
+          {isChristmasActive && <ChristmasMagicOverlay />}
+          <Navbar />
+          <main className="main-content">
+            <Outlet />
+          </main>
+          <Footer />
+          <GlobalSearchModal />
+          <CartDrawer />
+          <PWAInstallBanner />
+          <AdminFloatingDock />
+          <ScrollToTopButton />
+        </div>
+      </AdminCrudProvider>
+    </GlobalSearchProvider>
   );
 };
+
