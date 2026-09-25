@@ -3,6 +3,7 @@ import { demoGetProducts, demoSaveProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { prewarmImages } from '../lib/imagePreloader';
 import { supabase } from '../config/supabase';
+import { fetchProductsFromTurso } from '../lib/tursoClient';
 import type { Product, FilterCategoryType } from '../types';
 
 export function useProducts(category?: FilterCategoryType, searchQuery?: string) {
@@ -22,49 +23,58 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
       if (!isSilent) {
         setLoading(true);
       }
-      // Fetch live updates from Supabase
-      const { data: remoteProducts, error: dbError } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
 
       let finalList: Product[] = [];
 
-      if (!dbError && remoteProducts && remoteProducts.length > 0) {
-        finalList = remoteProducts.map((item: any) => {
-          const rawPrimary = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : (typeof item.images === 'string' ? item.images : '/icons/ebna-logo.png'));
-          const primaryImg = typeof rawPrimary === 'string' ? rawPrimary.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
-          const rawGallery = Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]);
-          const gallery = rawGallery.map((g: any) => typeof g === 'string' ? g.replace(/\.jfif$/i, '.jpg') : g);
-          const resolvedCategory = (item.subcategory === 'Moda Infantil' || item.category === 'MODA_INFANTIL')
-            ? 'MODA_INFANTIL'
-            : (item.category || 'MODA_MUJER');
-
-          return {
-            id: item.id,
-            sku: item.sku,
-            slug: item.slug,
-            name: item.name,
-            brand: item.brand || 'EBNA Luxury Collection',
-            category: resolvedCategory,
-            subcategory: item.subcategory || 'General',
-            priceFCFA: item.price_fcfa || item.price,
-            price: item.price_fcfa || item.price,
-            inStock: item.in_stock !== undefined ? item.in_stock : true,
-            in_stock: item.in_stock !== undefined ? item.in_stock : true,
-            is_hidden: item.is_hidden || false,
-            description: item.description || '',
-            images: { primary: primaryImg, gallery, 0: primaryImg },
-            colors: item.colors || ['Blanco', 'Negro'],
-            sizes: item.sizes || ['S', 'M', 'L'],
-            created_at: item.created_at,
-            updated_at: item.updated_at,
-          };
-        });
-        demoSaveProducts(finalList);
+      // 1. Primary: Fetch live updates from Turso Cloud Database
+      const localBase = demoGetProducts();
+      const tursoProducts = await fetchProductsFromTurso(localBase);
+      if (tursoProducts && tursoProducts.length > 0) {
+        finalList = tursoProducts;
+        demoSaveProducts(tursoProducts);
       } else {
-        // Resilient fallback to catalog products if Supabase table is empty or RLS-restricted
-        finalList = demoGetProducts();
+        // 2. Secondary fallback: Fetch live updates from Supabase
+        const { data: remoteProducts, error: dbError } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!dbError && remoteProducts && remoteProducts.length > 0) {
+          finalList = remoteProducts.map((item: any) => {
+            const rawPrimary = item.images?.primary || (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : (typeof item.images === 'string' ? item.images : '/icons/ebna-logo-white.png'));
+            const primaryImg = typeof rawPrimary === 'string' ? (rawPrimary.startsWith('data:image/') ? rawPrimary : rawPrimary.replace(/\.jfif$/i, '.jpg')) : '/icons/ebna-logo-white.png';
+            const rawGallery = Array.isArray(item.images) ? item.images : (item.images?.gallery || [primaryImg]);
+            const gallery = rawGallery.map((g: any) => typeof g === 'string' ? (g.startsWith('data:image/') ? g : g.replace(/\.jfif$/i, '.jpg')) : g);
+            const resolvedCategory = (item.subcategory === 'Moda Infantil' || item.category === 'MODA_INFANTIL')
+              ? 'MODA_INFANTIL'
+              : (item.category || 'MODA_MUJER');
+
+            return {
+              id: item.id,
+              sku: item.sku,
+              slug: item.slug,
+              name: item.name,
+              brand: item.brand || 'EBNA Luxury Collection',
+              category: resolvedCategory,
+              subcategory: item.subcategory || 'General',
+              priceFCFA: item.price_fcfa || item.price,
+              price: item.price_fcfa || item.price,
+              inStock: item.in_stock !== undefined ? item.in_stock : true,
+              in_stock: item.in_stock !== undefined ? item.in_stock : true,
+              is_hidden: item.is_hidden || false,
+              description: item.description || '',
+              images: { primary: primaryImg, gallery, 0: primaryImg },
+              colors: item.colors || ['Blanco', 'Negro'],
+              sizes: item.sizes || ['S', 'M', 'L'],
+              created_at: item.created_at,
+              updated_at: item.updated_at,
+            };
+          });
+          demoSaveProducts(finalList);
+        } else {
+          // Resilient fallback to catalog products if Supabase table is empty or RLS-restricted
+          finalList = demoGetProducts();
+        }
       }
 
       // Filter out hidden items for public view

@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, demoGetProducts, demoSaveProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
-import { syncProductToTurso, deleteProductFromTurso } from '../lib/tursoClient';
+import { fetchProductsFromTurso, syncProductToTurso, deleteProductFromTurso } from '../lib/tursoClient';
+import { compressImageFile } from '../lib/imageOptimizer';
 import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
 
@@ -41,7 +42,16 @@ export function useAdminProducts() {
       setLoading(true);
     }
     try {
-      // Fetch from Supabase
+      // 1. Primary: Read from Turso Cloud Database (Universal Source of Truth)
+      const localBase = demoGetProducts();
+      const tursoProducts = await fetchProductsFromTurso(localBase);
+      if (tursoProducts && tursoProducts.length > 0) {
+        demoSaveProducts(tursoProducts);
+        setProducts(tursoProducts);
+        return;
+      }
+
+      // 2. Secondary fallback: Fetch from Supabase
       const { data: dbProducts, error } = await supabase
         .from('products')
         .select('*')
@@ -132,7 +142,7 @@ export function useAdminProducts() {
 
   const addProduct = async (productData: Partial<Product>, imageFile?: File) => {
     try {
-      let primaryUrl = '/icons/ebna-logo.png';
+      let primaryUrl = '/icons/ebna-logo-white.png';
       if (productData.images?.primary) {
         primaryUrl = productData.images.primary;
       } else if (Array.isArray(productData.images) && productData.images.length > 0) {
@@ -141,9 +151,10 @@ export function useAdminProducts() {
 
       if (imageFile) {
         try {
-          primaryUrl = await fileToDataUrl(imageFile);
+          const optimized = await compressImageFile(imageFile, 1200, 1200, 0.85);
+          primaryUrl = optimized.dataUrl;
         } catch {
-          primaryUrl = URL.createObjectURL(imageFile);
+          primaryUrl = await fileToDataUrl(imageFile);
         }
       }
 
@@ -237,16 +248,18 @@ export function useAdminProducts() {
 
       if (imageFile) {
         try {
+          const optimized = await compressImageFile(imageFile, 1200, 1200, 0.85);
+          updatedData.images = {
+            primary: optimized.dataUrl,
+            gallery: [optimized.dataUrl],
+            0: optimized.dataUrl
+          };
+        } catch {
           const dataUrl = await fileToDataUrl(imageFile);
           updatedData.images = {
             primary: dataUrl,
-            gallery: [dataUrl]
-          };
-        } catch {
-          const localUrl = URL.createObjectURL(imageFile);
-          updatedData.images = {
-            primary: localUrl,
-            gallery: [localUrl]
+            gallery: [dataUrl],
+            0: dataUrl
           };
         }
       }
@@ -388,8 +401,16 @@ export function useAdminProducts() {
     setProducts(prev => prev.map(p => (p.id === id || p.slug === id || p.sku === id) ? { ...p, in_stock: newStock, inStock: newStock } : p));
     notifyCatalogChange('toggleStock', { id, in_stock: newStock });
 
-    // 2. Supabase update in background
+    // 2. Turso Cloud & Supabase update in background
     (async () => {
+      try {
+        if (prod) {
+          await syncProductToTurso({ ...prod, in_stock: newStock, inStock: newStock });
+        }
+      } catch (tursoErr) {
+        console.warn('Background Turso toggleStock notice:', tursoErr);
+      }
+
       try {
         if (prod) {
           await supabase.from('products').update({ in_stock: newStock }).eq('slug', prod.slug);

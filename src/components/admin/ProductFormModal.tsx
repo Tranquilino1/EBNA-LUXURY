@@ -22,6 +22,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { PinterestImagePicker } from './PinterestImagePicker';
+import { compressImageFile } from '../../lib/imageOptimizer';
 
 interface ProductFormModalProps {
   product: Product | null;
@@ -45,9 +46,11 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
   const [imageTab, setImageTab] = useState<'pinterest' | 'file' | 'url'>('pinterest');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const initialImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : (typeof product?.images === 'string' ? product.images : ''));
-  const cleanInitialImg = typeof initialImg === 'string' ? initialImg.replace(/\.jfif$/i, '.jpg') : '';
+  const cleanInitialImg = typeof initialImg === 'string' ? (initialImg.startsWith('data:image/') ? initialImg : initialImg.replace(/\.jfif$/i, '.jpg')) : '';
   const [imagePreview, setImagePreview] = useState<string>(cleanInitialImg || '');
   const [customUrl, setCustomUrl] = useState<string>('');
+  const [isOptimizingImage, setIsOptimizingImage] = useState(false);
+  const [optimizedImageInfo, setOptimizedImageInfo] = useState<string>('');
   
   const [error, setError] = useState('');
   const [isDirty, setIsDirty] = useState(false);
@@ -64,12 +67,25 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-      setIsDirty(true);
+      setIsOptimizingImage(true);
+      setError('');
+      try {
+        const optimized = await compressImageFile(file, 1200, 1200, 0.85);
+        setImageFile(optimized.file);
+        setImagePreview(optimized.dataUrl);
+        const origKb = Math.round(optimized.originalSize / 1024);
+        const compKb = Math.round(optimized.compressedSize / 1024);
+        setOptimizedImageInfo(`Foto optimizada: ${compKb} KB (antes ${origKb} KB) - Lista para guardar permanentemente`);
+        setIsDirty(true);
+      } catch (err: any) {
+        console.error('Error optimizando imagen local:', err);
+        setError('No se pudo procesar la imagen seleccionada. Por favor prueba con otra foto.');
+      } finally {
+        setIsOptimizingImage(false);
+      }
     }
   };
 
@@ -77,6 +93,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
     if (customUrl.trim()) {
       setImagePreview(customUrl.trim());
       setImageFile(null);
+      setOptimizedImageInfo('');
       setIsDirty(true);
     }
   };
@@ -97,7 +114,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
 
       const finalPrice = Math.round(priceNum);
       const generatedSlug = formData.slug.trim() || formData.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-      const finalImageUrl = imagePreview || initialImg || product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '') || '/icons/ebna-logo.png';
+      const finalImageUrl = imagePreview || initialImg || product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '') || '/icons/ebna-logo-white.png';
 
       const parsedSizes = formData.sizes.split(',').map(s => s.trim()).filter(Boolean);
       const parsedColors = formData.colors.split(',').map(c => c.trim()).filter(Boolean);
@@ -540,20 +557,37 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
             )}
 
             {imageTab === 'file' && (
-              <div style={{ border: '2px dashed rgba(216, 27, 96, 0.3)', padding: '1.5rem', borderRadius: '14px', background: 'var(--canvas-subtle, #F8FAFC)', textAlign: 'center', cursor: 'pointer' }}>
+              <div style={{ border: '2px dashed rgba(216, 27, 96, 0.3)', padding: '1.5rem', borderRadius: '14px', background: 'var(--canvas-subtle, #F8FAFC)', textAlign: 'center', cursor: isOptimizingImage ? 'wait' : 'pointer' }}>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
                   id="product-image-input"
                   style={{ display: 'none' }}
+                  disabled={isOptimizingImage}
                 />
-                <label htmlFor="product-image-input" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                  <Upload size={30} color="#D81B60" />
-                  <span style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-primary)' }}>
-                    {imageFile ? imageFile.name : 'Haz clic para seleccionar foto desde tu PC o Teléfono'}
-                  </span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Formatos soportados: JPG, PNG, WEBP</span>
+                <label htmlFor="product-image-input" style={{ cursor: isOptimizingImage ? 'wait' : 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                  {isOptimizingImage ? (
+                    <>
+                      <Sparkles size={30} color="#D81B60" className="animate-spin" />
+                      <span style={{ fontWeight: 700, fontSize: '0.88rem', color: '#D81B60' }}>
+                        Optimizando y preparando imagen para la nube...
+                      </span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Convirtiendo a formato WebP ultraligero y nítido</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={30} color="#D81B60" />
+                      <span style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-primary)' }}>
+                        {imageFile ? imageFile.name : 'Haz clic para seleccionar foto desde tu PC o Teléfono'}
+                      </span>
+                      {optimizedImageInfo ? (
+                        <span style={{ fontSize: '0.78rem', color: '#16A34A', fontWeight: 600 }}>{optimizedImageInfo}</span>
+                      ) : (
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Formatos soportados: JPG, PNG, WEBP (Se optimiza automáticamente para persistencia inmediata)</span>
+                      )}
+                    </>
+                  )}
                 </label>
               </div>
             )}
