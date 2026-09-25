@@ -35,9 +35,9 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       element.setAttribute('content', content);
     };
 
-    // 3. Standard Meta Tags
+    // 3. Standard Meta Tags & Regional Target Keywords
     setMeta('description', description);
-    setMeta('keywords', 'Sindy Luxury, EBNA Luxury, Moda Guinea Ecuatorial, Vestidos de fiesta Malabo, Ropa Bata, Alta Costura Malabo, Cosmética Malabo, FCFA, XAF');
+    setMeta('keywords', 'Sindy Luxury, EBNA Luxury, comprar ropa de fiesta en malabo, tienda de ropa online guinea ecuatorial, vestidos de noche en malabo, perfumes arabes originales malabo, yara lattafa guinea ecuatorial, cremas y cosmetica bata, comprar vaseline cocoa radiant malabo, fajas reductoras malabo, calzado de gala guinea ecuatorial, ropa bebe bata, envios express malabo bata, FCFA, XAF');
     setMeta('robots', 'index, follow, max-image-preview:large');
     setMeta('geo.region', 'GQ');
     setMeta('geo.placename', 'Malabo, Guinea Ecuatorial');
@@ -108,22 +108,75 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
       };
       scriptElement.textContent = JSON.stringify(productSchema);
     } else {
-      // ClothingStore Schema.org
+      // Combined Graph: Store + LocalBusiness + FAQPage Schema.org
       const storeSchema = {
         '@context': 'https://schema.org',
-        '@type': 'ClothingStore',
-        'name': 'EBNA Luxury — Moda y Cosmética',
-        'url': 'https://ebna-luxury.vercel.app/',
-        'logo': 'https://ebna-luxury.vercel.app/icons/icon-512x512.png',
-        'description': description,
-        'telephone': '+240 222 633 687',
-        'currenciesAccepted': 'XAF',
-        'priceRange': 'FCFA',
-        'address': {
-          '@type': 'PostalAddress',
-          'addressCountry': 'GQ',
-          'addressLocality': 'Malabo'
-        }
+        '@graph': [
+          {
+            '@type': 'Store',
+            '@id': 'https://ebna-luxury.vercel.app/#store',
+            'name': 'EBNA Luxury — Alta Costura, Cosmética & Perfumería',
+            'alternateName': ['Sindy Luxury by EBNA', 'EBNA Luxury Guinea Ecuatorial'],
+            'url': 'https://ebna-luxury.vercel.app/',
+            'logo': 'https://ebna-luxury.vercel.app/icons/ebna-logo.png',
+            'image': 'https://ebna-luxury.vercel.app/icons/ebna-app-icon.jpg',
+            'description': description,
+            'telephone': '+240 222 633 687',
+            'currenciesAccepted': 'XAF',
+            'priceRange': '1.000 FCFA - 65.000 FCFA',
+            'paymentAccepted': 'Muni Dinero (+240 555 439 904), Efectivo contra entrega, WhatsApp',
+            'address': {
+              '@type': 'PostalAddress',
+              'streetAddress': 'Malabo II / Avenida de la Paz',
+              'addressLocality': 'Malabo',
+              'addressRegion': 'Bioko Norte',
+              'addressCountry': 'GQ'
+            },
+            'areaServed': [
+              { '@type': 'City', 'name': 'Malabo' },
+              { '@type': 'City', 'name': 'Bata' },
+              { '@type': 'Country', 'name': 'Guinea Ecuatorial' }
+            ]
+          },
+          {
+            '@type': 'FAQPage',
+            '@id': 'https://ebna-luxury.vercel.app/#faq',
+            'mainEntity': [
+              {
+                '@type': 'Question',
+                'name': '¿Dónde comprar ropa de fiesta, cosmética y perfumes árabes en Guinea Ecuatorial?',
+                'acceptedAnswer': {
+                  '@type': 'Answer',
+                  'text': 'En EBNA Luxury a través de https://ebna-luxury.vercel.app o por WhatsApp oficial (+240 222 633 687) con entrega a domicilio en Malabo y Bata.'
+                }
+              },
+              {
+                '@type': 'Question',
+                'name': '¿Cuáles son los tiempos y costos de envío en EBNA Luxury?',
+                'acceptedAnswer': {
+                  '@type': 'Answer',
+                  'text': 'Ofrecemos Envío Estándar Gratuito en 5 a 7 días y Envío Exprés garantizado en máximo 3 días por 3.000 FCFA.'
+                }
+              },
+              {
+                '@type': 'Question',
+                'name': '¿Cómo se genera el ticket oficial de compra y el pedido por WhatsApp?',
+                'acceptedAnswer': {
+                  '@type': 'Answer',
+                  'text': 'Al seleccionar tus prendas o productos y pulsar Pagar por WhatsApp, el sistema genera automáticamente un Ticket Oficial digital con folio único y desglose detallado en FCFA.'
+                }
+              },
+              {
+                '@type': 'Question',
+                'name': '¿Los cosméticos y perfumes árabes son 100% originales?',
+                'acceptedAnswer': {
+                  '@type': 'Answer',
+                  'text': 'Sí, el 100% de nuestros artículos cosméticos (Vaseline, Dove, Wokali) y fragancias árabes (Lattafa Yara) son auténticos e importados con sello de garantía.'
+                }
+              }
+            ]
+          }
+        ]
       };
       scriptElement.textContent = JSON.stringify(storeSchema);
     }

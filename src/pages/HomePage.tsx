@@ -15,6 +15,7 @@ import { FashionCinemaPlayer } from '../components/home/FashionCinemaPlayer';
 import { useCustomization } from '../contexts/CustomizationContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { InteractiveSantaHat } from '../components/effects/InteractiveSantaHat';
+import { HomeFAQSection } from '../components/home/HomeFAQSection';
 
 /**
  * Animated Counter Component for Luxury Metrics
@@ -384,6 +385,11 @@ export function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ==========================================================================
+          GEO & AI Engine Optimized FAQs (ChatGPT, Gemini, Perplexity & Google Rich Snippets)
+          ========================================================================== */}
+      <HomeFAQSection />
 
       {/* Editorial Fashion Film Reel Modal */}
       <FashionFilmModal isOpen={isFilmOpen} onClose={() => setIsFilmOpen(false)} />
