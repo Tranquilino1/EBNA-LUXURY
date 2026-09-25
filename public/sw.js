@@ -1,5 +1,5 @@
-// Sindy Luxury by EBNA - Universal Service Worker v9 (Instant Multi-Device Sync)
-const SW_VERSION = 'ebna-live-v9';
+// Sindy Luxury by EBNA - Universal Service Worker v10 (Instant Multi-Device Sync & Always-Fresh Catalog)
+const SW_VERSION = 'ebna-live-v10-fresh';
 
 self.addEventListener('install', (event) => {
   // Take control immediately across all tabs and devices
@@ -32,8 +32,13 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
 
-  // Never cache HTML documents or API calls: always serve fresh from network
-  if (request.mode === 'navigate' || (request.headers.get('accept') && request.headers.get('accept').includes('text/html'))) {
+  // Never cache HTML documents, API calls or product catalog assets: always serve fresh from network
+  if (
+    request.mode === 'navigate' || 
+    (request.headers.get('accept') && request.headers.get('accept').includes('text/html')) ||
+    request.url.includes('/products/') ||
+    request.url.includes('turso.io')
+  ) {
     event.respondWith(
       fetch(request, { cache: 'no-cache' }).catch(() => {
         return fetch(request);

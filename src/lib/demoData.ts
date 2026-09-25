@@ -33,9 +33,11 @@ INITIAL_PRODUCTS.forEach(p => {
   PRODUCTS_BY_SLUG.set(p.slug, p);
 });
 
-const LOCAL_PRODUCTS_KEY = 'ebna_local_products_v8';
+export const CATALOG_BUILD_VERSION = 'v10.1_2026_09_25_fresh';
+const VERSION_KEY = 'ebna_catalog_version';
+const LOCAL_PRODUCTS_KEY = `ebna_local_products_${CATALOG_BUILD_VERSION}`;
 const LOCAL_USERS_KEY = 'ebna_local_users_v4';
-const LOCAL_DELETED_KEY = 'ebna_deleted_ids_v8';
+const LOCAL_DELETED_KEY = 'ebna_deleted_ids_v10';
 
 export function getDeletedProductIds(): string[] {
   try {
@@ -96,15 +98,46 @@ export function isProductDeleted(p: Product, deleted: string[]): boolean {
 export function demoGetProducts(): Product[] {
   let list: Product[] = [];
   try {
-    const saved = localStorage.getItem(LOCAL_PRODUCTS_KEY);
+    // 1. Control automático de versión de caché:
+    // Si el usuario recarga con F5 y tiene una versión vieja guardada en localStorage, purgarla inmediatamente
+    const currentVer = typeof localStorage !== 'undefined' ? localStorage.getItem(VERSION_KEY) : null;
+    if (typeof localStorage !== 'undefined' && currentVer !== CATALOG_BUILD_VERSION) {
+      for (let i = 1; i <= 9; i++) {
+        localStorage.removeItem(`ebna_local_products_v${i}`);
+        localStorage.removeItem(`ebna_deleted_ids_v${i}`);
+      }
+      localStorage.removeItem('ebna_local_products_v8');
+      localStorage.setItem(VERSION_KEY, CATALOG_BUILD_VERSION);
+      return INITIAL_PRODUCTS;
+    }
+
+    const saved = typeof localStorage !== 'undefined' ? localStorage.getItem(LOCAL_PRODUCTS_KEY) : null;
     if (saved !== null) {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
-        // Sincronizar automáticamente cualquier producto nuevo de INITIAL_PRODUCTS priorizando los recién subidos al inicio
-        const existingIds = new Set(parsed.map((p: any) => p.id));
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Mapa de productos iniciales compilados para garantizar que imágenes actualizadas nunca se congelen
+        const initialMap = new Map<string, Product>();
+        INITIAL_PRODUCTS.forEach(p => {
+          if (p.id) initialMap.set(p.id, p);
+          if (p.slug) initialMap.set(p.slug, p);
+        });
+
+        const merged = parsed.map((p: any) => {
+          const fresh = initialMap.get(p.id) || initialMap.get(p.slug);
+          if (fresh) {
+            return {
+              ...fresh,
+              ...p,
+              images: fresh.images, // Las imágenes oficiales siempre se priorizan sobre cachés antiguas
+            };
+          }
+          return p;
+        });
+
+        const existingIds = new Set(merged.map((p: any) => p.id));
         const currentDeleted = getDeletedProductIds();
         const missingFromInitial = INITIAL_PRODUCTS.filter(p => !existingIds.has(p.id) && !isProductDeleted(p, currentDeleted));
-        list = [...missingFromInitial, ...parsed];
+        list = [...missingFromInitial, ...merged];
       } else {
         list = INITIAL_PRODUCTS;
       }
