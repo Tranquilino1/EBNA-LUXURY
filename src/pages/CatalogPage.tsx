@@ -1,4 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router';
 import { useProducts } from '../hooks/useProducts';
 import { SearchBar } from '../components/ui/SearchBar';
 import { CategoryFilter } from '../components/catalog/CategoryFilter';
@@ -9,17 +10,142 @@ import type { FilterCategoryType } from '../types';
 import { getSortedByPopularity } from '../lib/popularityTracker';
 import { filterProductsBySearch } from '../lib/searchUtils';
 import { SEOHead } from '../components/seo/SEOHead';
-import { Sparkles, X, Search } from 'lucide-react';
+import { Sparkles, X, Search, ArrowLeft } from 'lucide-react';
+import { getSavedZoneScroll } from '../components/ui/SmartInputCentering';
+
+interface CatalogZoneSnapshot {
+  activeCategory: FilterCategoryType;
+  searchQuery: string;
+  sortBy: SortOptionType;
+  priceRange: PriceRangeType;
+  onlyInStock: boolean;
+  scrollY: number;
+}
+
+const CATALOG_STATE_STORAGE_KEY = 'ebna_catalog_zone_state_v2';
+const CATALOG_HISTORY_STORAGE_KEY = 'ebna_catalog_zone_history_v2';
+
+function loadSavedCatalogState(): Partial<CatalogZoneSnapshot> {
+  try {
+    const raw = sessionStorage.getItem(CATALOG_STATE_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return {};
+}
+
+function loadSavedCatalogHistory(): CatalogZoneSnapshot[] {
+  try {
+    const raw = sessionStorage.getItem(CATALOG_HISTORY_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return [];
+}
 
 export function CatalogPage() {
-  const [activeCategory, setActiveCategory] = useState<FilterCategoryType>('TODOS');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [sortBy, setSortBy] = useState<SortOptionType>('popularity');
-  const [priceRange, setPriceRange] = useState<PriceRangeType>('all');
-  const [onlyInStock, setOnlyInStock] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const savedInitial = useMemo(() => loadSavedCatalogState(), []);
+
+  const [activeCategory, setActiveCategoryState] = useState<FilterCategoryType>(
+    savedInitial.activeCategory || 'TODOS'
+  );
+  const [searchQuery, setSearchQuery] = useState<string>(savedInitial.searchQuery || '');
+  const [sortBy, setSortByState] = useState<SortOptionType>(savedInitial.sortBy || 'popularity');
+  const [priceRange, setPriceRangeState] = useState<PriceRangeType>(savedInitial.priceRange || 'all');
+  const [onlyInStock, setOnlyInStockState] = useState<boolean>(savedInitial.onlyInStock || false);
+  const [zoneHistory, setZoneHistory] = useState<CatalogZoneSnapshot[]>(() => loadSavedCatalogHistory());
   
   // Universal data fetch: load all products once into memory for instant 0ms search
   const { products, loading, error } = useProducts();
+
+  // Save current zone state continuously in sessionStorage so returning from a product restores exact state
+  useEffect(() => {
+    try {
+      const current: CatalogZoneSnapshot = {
+        activeCategory,
+        searchQuery,
+        sortBy,
+        priceRange,
+        onlyInStock,
+        scrollY: window.scrollY,
+      };
+      sessionStorage.setItem(CATALOG_STATE_STORAGE_KEY, JSON.stringify(current));
+    } catch {}
+  }, [activeCategory, searchQuery, sortBy, priceRange, onlyInStock]);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(CATALOG_HISTORY_STORAGE_KEY, JSON.stringify(zoneHistory.slice(-12)));
+    } catch {}
+  }, [zoneHistory]);
+
+  // Restore saved scrollY when mounting CatalogPage (e.g. returning from a product or page)
+  useEffect(() => {
+    const savedY = getSavedZoneScroll('/catalogo') ?? savedInitial.scrollY ?? 0;
+    if (savedY > 0) {
+      const restore = () => window.scrollTo({ top: savedY, behavior: 'instant' as ScrollBehavior });
+      restore();
+      const t1 = window.setTimeout(restore, 50);
+      const t2 = window.setTimeout(restore, 150);
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+      };
+    }
+  }, [savedInitial.scrollY]);
+
+  const pushCurrentSnapshotToHistory = useCallback(() => {
+    const snap: CatalogZoneSnapshot = {
+      activeCategory,
+      searchQuery,
+      sortBy,
+      priceRange,
+      onlyInStock,
+      scrollY: Math.round(window.scrollY),
+    };
+    setZoneHistory(prev => [...prev.slice(-11), snap]);
+  }, [activeCategory, searchQuery, sortBy, priceRange, onlyInStock]);
+
+  const setActiveCategory = useCallback((nextCat: FilterCategoryType) => {
+    if (nextCat === activeCategory) return;
+    pushCurrentSnapshotToHistory();
+    setActiveCategoryState(nextCat);
+  }, [activeCategory, pushCurrentSnapshotToHistory]);
+
+  const setSortBy = useCallback((nextSort: SortOptionType) => {
+    if (nextSort === sortBy) return;
+    pushCurrentSnapshotToHistory();
+    setSortByState(nextSort);
+  }, [sortBy, pushCurrentSnapshotToHistory]);
+
+  const setPriceRange = useCallback((nextRange: PriceRangeType) => {
+    if (nextRange === priceRange) return;
+    pushCurrentSnapshotToHistory();
+    setPriceRangeState(nextRange);
+  }, [priceRange, pushCurrentSnapshotToHistory]);
+
+  const setOnlyInStock = useCallback((nextStock: boolean) => {
+    if (nextStock === onlyInStock) return;
+    pushCurrentSnapshotToHistory();
+    setOnlyInStockState(nextStock);
+  }, [onlyInStock, pushCurrentSnapshotToHistory]);
+
+  // Step back to the exact previous filter/category zone and exact scrollY
+  const handleStepBackZone = useCallback(() => {
+    if (zoneHistory.length > 0) {
+      const last = zoneHistory[zoneHistory.length - 1];
+      setZoneHistory(prev => prev.slice(0, -1));
+      setActiveCategoryState(last.activeCategory);
+      setSearchQuery(last.searchQuery);
+      setSortByState(last.sortBy);
+      setPriceRangeState(last.priceRange);
+      setOnlyInStockState(last.onlyInStock);
+      window.setTimeout(() => {
+        window.scrollTo({ top: last.scrollY, behavior: 'smooth' });
+      }, 40);
+    } else {
+      navigate(-1);
+    }
+  }, [zoneHistory, navigate]);
 
   const isSearchActive = searchQuery.trim().length > 0;
 
@@ -114,6 +240,33 @@ export function CatalogPage() {
       </header>
 
       <div className="catalog-controls" style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginBottom: '1.2rem', overflowAnchor: 'none' }}>
+        {zoneHistory.length > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '720px', width: '100%', margin: '0 auto' }}>
+            <button
+              type="button"
+              onClick={handleStepBackZone}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 16px',
+                borderRadius: '999px',
+                background: 'rgba(216, 27, 96, 0.09)',
+                border: '1.5px solid rgba(216, 27, 96, 0.28)',
+                color: '#D81B60',
+                fontWeight: 700,
+                fontSize: '0.84rem',
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(216, 27, 96, 0.08)'
+              }}
+              title="Regresar exactamente al ajuste o categoría anterior y su posición en pantalla"
+            >
+              <ArrowLeft size={15} />
+              <span>Volver a la zona anterior ({zoneHistory[zoneHistory.length - 1].activeCategory === 'TODOS' ? 'Todo el Catálogo' : zoneHistory[zoneHistory.length - 1].activeCategory.replace('_', ' ')})</span>
+            </button>
+          </div>
+        )}
+
         <SearchBar 
           value={searchQuery} 
           onChange={setSearchQuery} 

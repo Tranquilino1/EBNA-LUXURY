@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
 import { useAdminCrud } from '../contexts/AdminCrudContext';
 import { Loader } from '../components/ui/Loader';
-import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2, Sliders, CheckSquare, Film } from 'lucide-react';
+import { Pencil, Trash2, Eye, EyeOff, Plus, LogOut, Package, Users, KeyRound, BarChart3, Search, ShieldCheck, RefreshCw, Database, CheckCircle2, Sliders, CheckSquare, Film, ArrowLeft } from 'lucide-react';
 import { notifyCatalogChange } from '../lib/broadcast';
 import { ProductFormModal } from '../components/admin/ProductFormModal';
 import { DeleteConfirmModal } from '../components/admin/DeleteConfirmModal';
@@ -13,10 +14,14 @@ import { AdvertisingVideoPanel } from '../components/admin/AdvertisingVideoPanel
 import { UserRoleManagement } from '../components/admin/UserRoleManagement';
 import { ChangePasswordModal } from '../components/admin/ChangePasswordModal';
 import { Toast } from '../components/ui/Toast';
+import { getLastStoreRoute } from '../components/ui/SmartInputCentering';
 import type { Product, ProductCategory } from '../types';
 import { formatPrice } from '../lib/utils';
 
+type AdminTabType = 'inventory' | 'advertising' | 'customization' | 'users' | 'security' | 'analytics';
+
 export function AdminDashboard() {
+  const navigate = useNavigate();
   const { user, profile, signOut } = useAuth();
   const { products, loading, addProduct, updateProduct, deleteProduct, toggleStock, refetch } = useAdminProducts();
   const { 
@@ -29,7 +34,28 @@ export function AdminDashboard() {
     openBulkDeleteModal 
   } = useAdminCrud();
 
-  const [activeTab, setActiveTab] = useState<'inventory' | 'advertising' | 'customization' | 'users' | 'security' | 'analytics'>('inventory');
+  const [activeTab, setActiveTabState] = useState<AdminTabType>('inventory');
+  const [tabHistory, setTabHistory] = useState<Array<{ tab: AdminTabType; scrollY: number }>>([]);
+
+  const setActiveTab = useCallback((nextTab: AdminTabType) => {
+    if (nextTab === activeTab) return;
+    setTabHistory(prev => [...prev.slice(-10), { tab: activeTab, scrollY: Math.round(window.scrollY) }]);
+    setActiveTabState(nextTab);
+  }, [activeTab]);
+
+  const handleBackToPreviousZone = useCallback(() => {
+    if (tabHistory.length > 0) {
+      const last = tabHistory[tabHistory.length - 1];
+      setTabHistory(prev => prev.slice(0, -1));
+      setActiveTabState(last.tab);
+      window.setTimeout(() => {
+        window.scrollTo({ top: last.scrollY, behavior: 'smooth' });
+      }, 40);
+    } else {
+      const lastStore = getLastStoreRoute();
+      navigate(lastStore, { state: { restoreScroll: true } });
+    }
+  }, [tabHistory, navigate]);
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -159,9 +185,33 @@ export function AdminDashboard() {
           </p>
         </div>
 
-        <button onClick={signOut} className="btn-logout" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.65rem 1.2rem', borderRadius: '999px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', transition: 'all 0.2s ease' }}>
-          <LogOut size={18}/> Cerrar Sesión
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={handleBackToPreviousZone}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.65rem 1.25rem',
+              borderRadius: '999px',
+              border: '1.5px solid rgba(216, 27, 96, 0.32)',
+              background: 'rgba(216, 27, 96, 0.08)',
+              color: '#D81B60',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              cursor: 'pointer'
+            }}
+            title="Regresar exactamente al ajuste o sección anterior de donde procedías"
+          >
+            <ArrowLeft size={17} />
+            <span>{tabHistory.length > 0 ? 'Volver al Ajuste Anterior' : 'Volver a la Zona Anterior'}</span>
+          </button>
+
+          <button onClick={signOut} className="btn-logout" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.65rem 1.2rem', borderRadius: '999px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#ef4444', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', transition: 'all 0.2s ease' }}>
+            <LogOut size={18}/> Cerrar Sesión
+          </button>
+        </div>
       </header>
 
       {/* Navigation Tabs Bar */}

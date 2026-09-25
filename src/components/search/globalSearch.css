@@ -87,7 +87,7 @@
 .global-search-input-box:focus-within {
   border-color: var(--brand-accent);
   box-shadow: 0 6px 24px rgba(216, 27, 96, 0.25);
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .global-search-input {

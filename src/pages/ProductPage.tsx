@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { useParams, Link, useSearchParams } from 'react-router';
+import { useParams, Link, useSearchParams, useNavigate } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
   PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff,
@@ -18,6 +18,7 @@ import { WhatsAppIcon } from '../components/ui/WhatsAppIcon';
 import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
+  const navigate = useNavigate();
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const isPedirAction = searchParams.get('pedir') === 'true';
@@ -314,15 +315,40 @@ export function ProductPage() {
         ogImage={activeImage} 
         type="product"
       />
-      <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+      <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '0.8rem', flexWrap: 'wrap' }}>
         <Link to="/" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Inicio</Link> &gt; 
         <Link to="/catalogo" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Catálogo</Link> &gt; 
         <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{product.name}</span>
       </nav>
 
-      <Link to="/catalogo" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--brand-accent)', fontWeight: 600, textDecoration: 'none', marginBottom: '1.5rem' }}>
-        <ArrowLeft size={18} /> Volver al catálogo
-      </Link>
+      <button
+        type="button"
+        onClick={() => {
+          if (window.history.length > 1) {
+            navigate(-1);
+          } else {
+            navigate('/catalogo', { state: { restoreScroll: true } });
+          }
+        }}
+        className="back-link"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 18px',
+          borderRadius: '999px',
+          background: 'rgba(216, 27, 96, 0.09)',
+          border: '1.5px solid rgba(216, 27, 96, 0.28)',
+          color: '#D81B60',
+          fontWeight: 700,
+          fontSize: '0.9rem',
+          cursor: 'pointer',
+          marginBottom: '1.5rem',
+          boxShadow: '0 4px 12px rgba(216, 27, 96, 0.08)'
+        }}
+      >
+        <ArrowLeft size={18} /> Volver a la zona anterior
+      </button>
 
       {/* Admin Quick Control Bar on Product Page */}
       {isAdmin && (

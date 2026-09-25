@@ -1,35 +1,147 @@
 import React, { useEffect } from 'react';
+import { useLocation, useNavigationType } from 'react-router';
 
 /**
- * SmartInputCentering
- * -------------------
- * Global Ergonomic Input Centering & Anti-Jump Anchor Lock System.
+ * SmartInputCentering & Zone Scroll Memory
+ * ----------------------------------------
+ * 1. WRITING ZONE LOCK ("Mantenerse ahí mismo hasta que decida salir"):
+ *    - When the user puts the pointer/focus in ANY writing area (<input>, <textarea>, <select>),
+ *      if the input is already visible on screen, the screen DOES NOT MOVE AT ALL—it locks
+ *      the exact current scroll position (`lockedScrollY`) right where the pointer is.
+ *    - Only if the input is covered by a mobile virtual keyboard or hidden behind the top navbar
+ *      does it bring it into the visible zone once and immediately lock it there.
+ *    - While the user remains in the writing area (until blur/click outside), any unwanted
+ *      scroll jumps caused by live search filtering or DOM updates are prevented so the writing
+ *      box stays 100% stationary under the pointer.
  *
- * Guarantees two critical behaviors whenever the user focuses or types in an <input> / <textarea>:
- * 1. AUTOMATIC ERGONOMIC CENTERING:
- *    - Smoothly scrolls the screen so the active input is placed in the ideal visual center
- *      (cleared below the fixed Navbar and above mobile virtual keyboards).
- *    - Adds temporary bottom scroll room (`body.ebna-input-focused`) so even inputs on short
- *      pages or filtered views can always be centered.
- * 2. ANTI-JUMP ANCHOR LOCK WHILE TYPING ("Zero Drift"):
- *    - Once centered, records the exact screen Y coordinate (`lockedScreenTop`) of the input.
- *    - As the user types letter by letter (and results/DOM elements below update), any unwanted
- *      vertical drift is synchronously compensated in the same frame (`window.scrollBy`), keeping
- *      the input 100% rock-solid and centered in front of the user's eyes.
- *    - If the user manually scrolls away (wheel/touch) and starts typing again, the screen
- *      smoothly brings the input back to the center and re-locks it.
+ * 2. PREVIOUS ZONE & SCROLL RESTORATION ("Volver justo a la zona anterior de donde procedía"):
+ *    - Continuously records the exact vertical scroll position (`window.scrollY`) for every
+ *      route/zone in `sessionStorage`.
+ *    - When the user goes back (browser Back button, phone Back gesture, or "Volver" buttons),
+ *      automatically restores the exact scroll coordinate (`window.scrollY`) of the previous zone.
  */
-export const SmartInputCentering: React.FC = () => {
-  useEffect(() => {
-    let smoothTimerId: number | null = null;
-    let lockSettleTimerId: number | null = null;
-    let viewportTimerId: number | null = null;
 
+const SCROLL_STORAGE_PREFIX = 'ebna_zone_scroll_v2:';
+const LAST_NON_ADMIN_ROUTE_KEY = 'ebna_last_store_route_v2';
+
+export function saveCurrentZoneScroll(pathname: string, search: string = '') {
+  try {
+    const key = `${SCROLL_STORAGE_PREFIX}${pathname}${search}`;
+    sessionStorage.setItem(key, String(Math.round(window.scrollY)));
+    sessionStorage.setItem(`${SCROLL_STORAGE_PREFIX}${pathname}`, String(Math.round(window.scrollY)));
+    if (!pathname.startsWith('/admin') && !pathname.startsWith('/login') && !pathname.startsWith('/registro')) {
+      sessionStorage.setItem(LAST_NON_ADMIN_ROUTE_KEY, `${pathname}${search}`);
+    }
+  } catch {
+    // Ignore storage quota errors
+  }
+}
+
+export function getSavedZoneScroll(pathname: string, search: string = ''): number | null {
+  try {
+    const exact = sessionStorage.getItem(`${SCROLL_STORAGE_PREFIX}${pathname}${search}`);
+    if (exact !== null) {
+      const parsed = Number(exact);
+      if (Number.isFinite(parsed)) return parsed;
+    }
+    const byPath = sessionStorage.getItem(`${SCROLL_STORAGE_PREFIX}${pathname}`);
+    if (byPath !== null) {
+      const parsed = Number(byPath);
+      if (Number.isFinite(parsed)) return parsed;
+    }
+  } catch {
+    // Ignore
+  }
+  return null;
+}
+
+export function getLastStoreRoute(): string {
+  try {
+    return sessionStorage.getItem(LAST_NON_ADMIN_ROUTE_KEY) || '/catalogo';
+  } catch {
+    return '/catalogo';
+  }
+}
+
+export const SmartInputCentering: React.FC = () => {
+  const location = useLocation();
+  const navigationType = useNavigationType();
+
+  // 1. Track and restore scroll position when navigating between zones/pages
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const currentSearch = location.search;
+
+    if (!currentPath.startsWith('/admin') && !currentPath.startsWith('/login') && !currentPath.startsWith('/registro')) {
+      try {
+        sessionStorage.setItem(LAST_NON_ADMIN_ROUTE_KEY, `${currentPath}${currentSearch}`);
+      } catch {}
+    }
+
+    const shouldRestoreScroll =
+      navigationType === 'POP' ||
+      Boolean((location.state as any)?.restoreScroll) ||
+      currentPath === '/catalogo' ||
+      currentPath === '/';
+
+    if (shouldRestoreScroll) {
+      const savedY = getSavedZoneScroll(currentPath, currentSearch);
+      if (savedY !== null && savedY > 0) {
+        // Restore immediately and re-verify as images/products finish rendering
+        const restore = () => {
+          window.scrollTo({ top: savedY, behavior: 'instant' as ScrollBehavior });
+        };
+        restore();
+        const t1 = window.setTimeout(restore, 40);
+        const t2 = window.setTimeout(restore, 140);
+        const t3 = window.setTimeout(restore, 300);
+        return () => {
+          window.clearTimeout(t1);
+          window.clearTimeout(t2);
+          window.clearTimeout(t3);
+        };
+      }
+    }
+  }, [location.pathname, location.search, navigationType, location.state]);
+
+  // Continuously save current scroll position of the active page before any click/navigation
+  useEffect(() => {
+    let scrollSaveTimer: number | null = null;
+
+    const handleScroll = () => {
+      if (scrollSaveTimer) window.clearTimeout(scrollSaveTimer);
+      scrollSaveTimer = window.setTimeout(() => {
+        saveCurrentZoneScroll(window.location.pathname, window.location.search);
+      }, 60);
+    };
+
+    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      // If clicking a link or button that might navigate, save exact current scroll immediately
+      if (target.closest('a') || target.closest('button')) {
+        saveCurrentZoneScroll(window.location.pathname, window.location.search);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.addEventListener('mousedown', handlePointerDown, { passive: true });
+    document.addEventListener('touchstart', handlePointerDown, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+      if (scrollSaveTimer) window.clearTimeout(scrollSaveTimer);
+    };
+  }, []);
+
+  // 2. Writing Zone Lock: Keep the screen 100% still where the user puts the pointer to write
+  useEffect(() => {
     let activeInputEl: HTMLElement | null = null;
-    let activeContainerEl: HTMLElement | null = null;
-    let lockedScreenTop: number | null = null;
-    let isSmoothScrolling = false;
-    let userManuallyScrolledAway = false;
+    let lockedScrollY: number | null = null;
+    let userScrollingManually = false;
+    let manualScrollResetTimer: number | null = null;
 
     const isTextEntryElement = (el: Element | null): el is HTMLElement => {
       if (!el || !(el instanceof HTMLElement)) return false;
@@ -54,138 +166,33 @@ export const SmartInputCentering: React.FC = () => {
       return el.isContentEditable;
     };
 
-    const getInputWrapper = (el: HTMLElement): HTMLElement => {
-      return (
-        (el.closest('.search-bar-wrapper') as HTMLElement) ||
-        (el.closest('.global-search-input-box') as HTMLElement) ||
-        (el.closest('.form-group') as HTMLElement) ||
-        el
-      );
-    };
+    const ensureVisibleOnlyIfObscured = (el: HTMLElement) => {
+      if (!el || !document.body.contains(el)) return;
+      if (el.closest('.global-search-backdrop')) return;
 
-    const isSearchField = (el: HTMLElement): boolean => {
-      return (
-        Boolean(el.closest('.search-bar-wrapper')) ||
-        Boolean(el.closest('.global-search-card')) ||
-        el.getAttribute('type') === 'search' ||
-        (el.getAttribute('placeholder') || '').toLowerCase().includes('buscar')
-      );
-    };
-
-    const getDesiredScreenTop = (el: HTMLElement, wrapperRect: DOMRect): number => {
       const visibleHeight = window.visualViewport
         ? window.visualViewport.height
         : window.innerHeight;
-      const navbarClearance = 104; // Below fixed floating navbar
+      const rect = el.getBoundingClientRect();
+      const navbarBottom = 92;
+      const bottomMargin = 48;
 
-      if (isSearchField(el)) {
-        // Position search bar in upper-center (~20% of visible viewport, min 108px)
-        // so both the text being typed and the live product results right below are centered.
-        return Math.max(navbarClearance, Math.min(165, visibleHeight * 0.20));
-      }
-
-      // Standard form input: ergonomic center (~40% of visible height above keyboard)
-      const centeredTop = visibleHeight * 0.40 - wrapperRect.height / 2;
-      return Math.max(navbarClearance, centeredTop);
-    };
-
-    const findScrollableParent = (el: HTMLElement): HTMLElement | null => {
-      let current = el.parentElement;
-      while (current && current !== document.body && current !== document.documentElement) {
-        const style = window.getComputedStyle(current);
-        const overflowY = style.overflowY;
-        if (
-          (overflowY === 'auto' || overflowY === 'scroll') &&
-          current.scrollHeight > current.clientHeight + 10
-        ) {
-          return current;
-        }
-        current = current.parentElement;
-      }
-      return null;
-    };
-
-    const centerActiveInput = (el: HTMLElement, behavior: ScrollBehavior = 'smooth') => {
-      if (!el || !document.body.contains(el)) return;
-
-      const wrapper = getInputWrapper(el);
-      activeContainerEl = wrapper;
-
-      // Check if inside a fixed modal/drawer (e.g. GlobalSearchModal, CartDrawer, AdminModal)
-      const fixedOverlay =
-        (el.closest('.global-search-backdrop') as HTMLElement) ||
-        (el.closest('.cart-drawer') as HTMLElement) ||
-        (el.closest('.modal-overlay') as HTMLElement);
-
-      if (fixedOverlay) {
-        const scrollableModal = findScrollableParent(el);
-        if (scrollableModal && !el.closest('.global-search-backdrop')) {
-          const containerRect = scrollableModal.getBoundingClientRect();
-          const elRect = wrapper.getBoundingClientRect();
-          const relativeTop = elRect.top - containerRect.top + scrollableModal.scrollTop;
-          const desiredOffset = Math.max(40, containerRect.height * 0.32);
-          scrollableModal.scrollTo({
-            top: Math.max(0, relativeTop - desiredOffset),
-            behavior,
-          });
-        }
-        lockedScreenTop = wrapper.getBoundingClientRect().top;
-        userManuallyScrolledAway = false;
-        return;
-      }
-
-      const rect = wrapper.getBoundingClientRect();
-      const desiredScreenTop = getDesiredScreenTop(el, rect);
-      const deltaY = rect.top - desiredScreenTop;
-      const targetScrollY = Math.max(0, window.scrollY + deltaY);
-
-      if (Math.abs(deltaY) > 6) {
-        isSmoothScrolling = behavior === 'smooth';
-        window.scrollTo({
-          top: targetScrollY,
-          behavior,
-        });
-
-        if (lockSettleTimerId) window.clearTimeout(lockSettleTimerId);
-        lockSettleTimerId = window.setTimeout(
-          () => {
-            isSmoothScrolling = false;
-            if (activeContainerEl && document.body.contains(activeContainerEl)) {
-              lockedScreenTop = activeContainerEl.getBoundingClientRect().top;
-              userManuallyScrolledAway = false;
-            }
-          },
-          behavior === 'smooth' ? 320 : 30
-        );
+      // ONLY scroll if the input is actually cut off behind the top navbar or below the bottom/keyboard!
+      // If it is already visible on the screen where the user placed their pointer, DO NOT MOVE IT!
+      if (rect.top < navbarBottom) {
+        const delta = rect.top - (navbarBottom + 24);
+        const newScrollY = Math.max(0, window.scrollY + delta);
+        window.scrollTo({ top: newScrollY, behavior: 'instant' as ScrollBehavior });
+        lockedScrollY = newScrollY;
+      } else if (rect.bottom > visibleHeight - bottomMargin) {
+        const targetTop = Math.max(navbarBottom + 20, visibleHeight * 0.38);
+        const delta = rect.top - targetTop;
+        const newScrollY = Math.max(0, window.scrollY + delta);
+        window.scrollTo({ top: newScrollY, behavior: 'instant' as ScrollBehavior });
+        lockedScrollY = newScrollY;
       } else {
-        lockedScreenTop = rect.top;
-        userManuallyScrolledAway = false;
-      }
-    };
-
-    // Keep the active input glued to its lockedScreenTop if DOM below it changes height while typing
-    const enforceAnchorLock = () => {
-      if (
-        !activeInputEl ||
-        !activeContainerEl ||
-        isSmoothScrolling ||
-        userManuallyScrolledAway ||
-        lockedScreenTop === null
-      ) {
-        return;
-      }
-      if (!document.body.contains(activeContainerEl)) return;
-      if (activeInputEl.closest('.global-search-backdrop')) return;
-
-      const currentRect = activeContainerEl.getBoundingClientRect();
-      const drift = currentRect.top - lockedScreenTop;
-
-      // If layout changed and shifted the input by more than 1.5px, restore immediately
-      if (Math.abs(drift) > 1.5) {
-        window.scrollBy({
-          top: drift,
-          behavior: 'auto',
-        });
+        // Input is already comfortably visible right where the pointer is -> lock current scrollY!
+        lockedScrollY = window.scrollY;
       }
     };
 
@@ -194,18 +201,12 @@ export const SmartInputCentering: React.FC = () => {
       if (!isTextEntryElement(target)) return;
 
       activeInputEl = target;
-      activeContainerEl = getInputWrapper(target);
-      userManuallyScrolledAway = false;
-
+      userScrollingManually = false;
       document.body.classList.add('ebna-input-focused');
       target.classList.add('ebna-active-typing-input');
 
-      if (smoothTimerId) window.clearTimeout(smoothTimerId);
-      smoothTimerId = window.setTimeout(() => {
-        if (document.activeElement === target) {
-          centerActiveInput(target, 'smooth');
-        }
-      }, 60);
+      ensureVisibleOnlyIfObscured(target);
+      lockedScrollY = window.scrollY;
     };
 
     const handleFocusOut = (e: FocusEvent) => {
@@ -218,33 +219,45 @@ export const SmartInputCentering: React.FC = () => {
         if (!isTextEntryElement(document.activeElement)) {
           document.body.classList.remove('ebna-input-focused');
           activeInputEl = null;
-          activeContainerEl = null;
-          lockedScreenTop = null;
-          userManuallyScrolledAway = false;
+          lockedScrollY = null;
+          userScrollingManually = false;
         }
-      }, 100);
+      }, 60);
     };
 
-    // Detect if the user intentionally scrolled with mouse wheel or touch
+    // Allow intentional user scrolling with wheel/touchpad/finger, then update lockedScrollY to the new spot
     const handleManualScrollIntent = () => {
-      if (activeInputEl && !isSmoothScrolling) {
-        userManuallyScrolledAway = true;
+      if (!activeInputEl) return;
+      userScrollingManually = true;
+      if (manualScrollResetTimer) window.clearTimeout(manualScrollResetTimer);
+      manualScrollResetTimer = window.setTimeout(() => {
+        userScrollingManually = false;
+        if (activeInputEl) {
+          lockedScrollY = window.scrollY;
+        }
+      }, 180);
+    };
+
+    // If the browser attempts an automatic scroll jump while the user is focused/typing (without wheel/touch),
+    // immediately clamp window.scrollY back to lockedScrollY so the screen stays 100% still!
+    const handleWindowScroll = () => {
+      if (!activeInputEl || userScrollingManually || lockedScrollY === null) return;
+      if (activeInputEl.closest('.global-search-backdrop')) return;
+
+      if (Math.abs(window.scrollY - lockedScrollY) > 1) {
+        window.scrollTo({ top: lockedScrollY, behavior: 'instant' as ScrollBehavior });
       }
     };
 
-    // When the user types in the input:
-    // - Keep cursor visible horizontally inside the input
-    // - If user had scrolled away, smoothly center the screen back on the input
-    // - Otherwise, lock the input in place so DOM updates below never shift the screen
+    // When typing, keep horizontal cursor in view and keep vertical scroll locked
     const handleInput = (e: Event) => {
       const target = e.target as Element | null;
       if (!isTextEntryElement(target)) return;
 
       activeInputEl = target;
-      activeContainerEl = getInputWrapper(target);
       document.body.classList.add('ebna-input-focused');
 
-      // Ensure text cursor at the end remains visible inside horizontal inputs
+      // Keep horizontal text cursor visible as user types long strings
       if (target instanceof HTMLInputElement) {
         try {
           if (
@@ -253,49 +266,30 @@ export const SmartInputCentering: React.FC = () => {
           ) {
             target.scrollLeft = target.scrollWidth;
           }
-        } catch {
-          // Ignore for inputs that don't support selectionStart
+        } catch {}
+      }
+
+      // If user had manually scrolled the input completely off-screen and started typing again,
+      // bring it back into view once and lock it
+      ensureVisibleOnlyIfObscured(target);
+
+      if (lockedScrollY !== null && !userScrollingManually) {
+        if (Math.abs(window.scrollY - lockedScrollY) > 1) {
+          window.scrollTo({ top: lockedScrollY, behavior: 'instant' as ScrollBehavior });
         }
       }
-
-      if (userManuallyScrolledAway || lockedScreenTop === null) {
-        centerActiveInput(target, 'smooth');
-      } else {
-        // Enforce zero vertical shift both immediately and after React re-render frame
-        enforceAnchorLock();
-        requestAnimationFrame(() => {
-          enforceAnchorLock();
-        });
-      }
     };
 
+    // Mobile virtual keyboard resize handler
     const handleViewportResize = () => {
-      const active = document.activeElement;
-      if (!isTextEntryElement(active)) return;
-
-      if (viewportTimerId) window.clearTimeout(viewportTimerId);
-      viewportTimerId = window.setTimeout(() => {
-        centerActiveInput(active, 'smooth');
-      }, 80);
+      if (!activeInputEl || !isTextEntryElement(activeInputEl)) return;
+      ensureVisibleOnlyIfObscured(activeInputEl);
     };
-
-    // Observe body height changes while typing so if product grids shrink/grow, scroll stays pinned
-    const resizeObserver =
-      typeof ResizeObserver !== 'undefined'
-        ? new ResizeObserver(() => {
-            if (activeInputEl && !isSmoothScrolling && !userManuallyScrolledAway) {
-              enforceAnchorLock();
-            }
-          })
-        : null;
-
-    if (resizeObserver) {
-      resizeObserver.observe(document.body);
-    }
 
     document.addEventListener('focusin', handleFocusIn, { passive: true });
     document.addEventListener('focusout', handleFocusOut, { passive: true });
     document.addEventListener('input', handleInput, { passive: true });
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
     window.addEventListener('wheel', handleManualScrollIntent, { passive: true });
     window.addEventListener('touchmove', handleManualScrollIntent, { passive: true });
 
@@ -307,17 +301,13 @@ export const SmartInputCentering: React.FC = () => {
       document.removeEventListener('focusin', handleFocusIn);
       document.removeEventListener('focusout', handleFocusOut);
       document.removeEventListener('input', handleInput);
+      window.removeEventListener('scroll', handleWindowScroll);
       window.removeEventListener('wheel', handleManualScrollIntent);
       window.removeEventListener('touchmove', handleManualScrollIntent);
       if (window.visualViewport) {
         window.visualViewport.removeEventListener('resize', handleViewportResize);
       }
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
-      if (smoothTimerId) window.clearTimeout(smoothTimerId);
-      if (lockSettleTimerId) window.clearTimeout(lockSettleTimerId);
-      if (viewportTimerId) window.clearTimeout(viewportTimerId);
+      if (manualScrollResetTimer) window.clearTimeout(manualScrollResetTimer);
       document.body.classList.remove('ebna-input-focused');
     };
   }, []);

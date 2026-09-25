@@ -852,6 +852,18 @@ select.ebna-active-typing-input {
 .search-bar-wrapper:has(.ebna-active-typing-input) {
   border-color: #D81B60 !important;
   box-shadow: 0 0 0 4px rgba(216, 27, 96, 0.18), 0 14px 34px rgba(216, 27, 96, 0.16) !important;
+  transform: none !important;
+}
+
+/* Freeze any hover/focus movement on cards or panels that contain writing areas */
+.glass-card:has(input, textarea, select):hover,
+.glass-card:has(input, textarea, select):focus-within,
+body.ebna-input-focused .glass-card:hover,
+.search-bar-wrapper:hover,
+.search-bar-wrapper:focus-within,
+.global-search-input-box:hover,
+.global-search-input-box:focus-within {
+  transform: none !important;
 }
 
 /* Prevent iOS Safari / Android Chrome forced horizontal zoom when focusing inputs */
