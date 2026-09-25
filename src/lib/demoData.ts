@@ -4,6 +4,7 @@ import { notifyCatalogChange } from './broadcast';
 import { HD_PRODUCTS } from '../data/hdProducts';
 import { COSMETICS_AND_BABY_PRODUCTS } from '../data/cosmeticsBabyProducts';
 import { NEW_PRODUCTS_CATALOG } from '../data/newProductsCatalog';
+import { OTROS_PRODUCTOS_NUEVOS } from '../data/otrosProductosNuevos';
 
 export interface UserAccount {
   id: string;
@@ -17,6 +18,7 @@ export interface UserAccount {
 export const DUPLICATE_IDS_TO_REMOVE = new Set<string>(["a093b587-d06c-43e5-b7d0-e3dc14fb9472","b8e99ffd-dc0c-43d6-a8ec-049143ebe71e","eaa90b43-cfb7-411d-9a66-06ce6dcee325","cbcef8fb-0724-4578-bec8-29aca73bd399","0dddc0fa-99ec-44eb-b911-92d9d291d87e","1c0a9860-9a59-4510-9060-65555c3714e4","68251977-6f81-4d6d-bc56-8ec06e8989c9","e2df788a-d74d-47ba-a8d4-ac311cea77a8","ebna-99","ebna-71","ebna-97","ebna-58","ebna-131","ebna-76","ebna-125","ebna-126","ebna-127","ebna-134","ebna-63","ebna-64","ebna-94","ebna-141","ebna-101","ebna-102","ebna-119","ebna-86","ebna-117","ebna-118","ebna-107","ebna-92","ebna-93","ebna-113","ebna-128","ebna-122","ebna-133","ebna-137","ebna-1","ebna-2","ebna-3","ebna-12","ebna-18","ebna-21","ebna-26","ebna-48","ebna-49","ebna-50","ebna-51","ebna-52","ebna-53","ebna-54","ebna-55","ebna-56","ebna-60","ebna-61","ebna-62","ebna-67","ebna-68","ebna-69","ebna-70","ebna-72","ebna-74","ebna-75","ebna-78","ebna-80","ebna-81","ebna-82","ebna-84","ebna-85","ebna-90","ebna-95","ebna-96","ebna-100","ebna-103","ebna-105","ebna-111","ebna-112","ebna-115","ebna-120","ebna-121","ebna-123","ebna-130","ebna-135"]);
 
 const RAW_INITIAL_PRODUCTS: Product[] = [
+  ...OTROS_PRODUCTOS_NUEVOS,
   ...NEW_PRODUCTS_CATALOG,
   ...COSMETICS_AND_BABY_PRODUCTS,
   ...HD_PRODUCTS,
@@ -33,11 +35,11 @@ INITIAL_PRODUCTS.forEach(p => {
   PRODUCTS_BY_SLUG.set(p.slug, p);
 });
 
-export const CATALOG_BUILD_VERSION = 'v10.1_2026_09_25_fresh';
+export const CATALOG_BUILD_VERSION = 'v11.0_2026_09_25_otros_nuevos';
 const VERSION_KEY = 'ebna_catalog_version';
 const LOCAL_PRODUCTS_KEY = `ebna_local_products_${CATALOG_BUILD_VERSION}`;
 const LOCAL_USERS_KEY = 'ebna_local_users_v4';
-const LOCAL_DELETED_KEY = 'ebna_deleted_ids_v10';
+const LOCAL_DELETED_KEY = 'ebna_deleted_ids_v11';
 
 export function getDeletedProductIds(): string[] {
   try {
