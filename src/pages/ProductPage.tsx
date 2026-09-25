@@ -3,7 +3,7 @@ import { useParams, Link, useSearchParams } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
   PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff,
-  Smartphone, User, MapPin, AlertCircle 
+  Smartphone, User, MapPin, AlertCircle, ZoomIn, ZoomOut, X 
 } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
@@ -22,6 +22,9 @@ export function ProductPage() {
   const [searchParams] = useSearchParams();
   const isPedirAction = searchParams.get('pedir') === 'true';
   const orderSectionRef = useRef<HTMLDivElement>(null);
+
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   const { products, loading } = useProducts();
   const { addToCart } = useCart();
@@ -198,15 +201,28 @@ export function ProductPage() {
   const currentSize = selectedSize || availableSizes[0] || '';
   const currentColor = selectedColor || availableColors[0] || '';
 
-  const rawDefaultMainImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '/icons/ebna-logo.png');
-  const defaultMainImg = typeof rawDefaultMainImg === 'string' ? rawDefaultMainImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
-  const [activeImage, setActiveImage] = useState<string>(defaultMainImg || '/icons/ebna-logo.png');
+  const rawDefaultMainImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '/icons/ebna-logo-white.png');
+  const defaultMainImg = typeof rawDefaultMainImg === 'string' ? (rawDefaultMainImg.startsWith('data:image/') ? rawDefaultMainImg : rawDefaultMainImg.replace(/\.jfif$/i, '.jpg')) : '/icons/ebna-logo-white.png';
+  const [activeImage, setActiveImage] = useState<string>(defaultMainImg || '/icons/ebna-logo-white.png');
 
   useEffect(() => {
     if (defaultMainImg) {
       setActiveImage(defaultMainImg);
     }
   }, [defaultMainImg]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+        setIsZoomed(false);
+      }
+    };
+    if (isLightboxOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen]);
 
   const galleryImages = useMemo(() => {
     if (!product) return [];
@@ -404,20 +420,102 @@ export function ProductPage() {
       )}
 
       <div className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
-        <div className="product-image-section glass-panel" style={{ padding: '1.25rem', borderRadius: '24px', background: 'var(--canvas-elevated)', position: 'relative' }}>
-          <img 
-            src={activeImage} 
-            alt={product.name} 
-            className="main-image" 
-            style={{ width: '100%', maxHeight: '480px', objectFit: 'cover', borderRadius: '16px', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
-            onError={(e) => {
-              e.currentTarget.src = '/icons/ebna-logo.png';
+        <div 
+          className="product-image-section glass-panel" 
+          style={{ 
+            padding: '1.25rem', 
+            borderRadius: '24px', 
+            background: 'var(--canvas-elevated)', 
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-start'
+          }}
+        >
+          {/* Centered Image Stage with Clean Aspect Ratio */}
+          <div
+            onClick={() => setIsLightboxOpen(true)}
+            style={{
+              position: 'relative',
+              width: '100%',
+              minHeight: '440px',
+              maxHeight: '520px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '20px',
+              background: 'radial-gradient(circle at center, rgba(255, 245, 248, 0.8) 0%, rgba(248, 250, 252, 0.96) 100%)',
+              border: '1.5px solid rgba(216, 27, 96, 0.15)',
+              overflow: 'hidden',
+              cursor: 'zoom-in',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.05)',
+              transition: 'all 0.3s ease'
             }}
-          />
+            title="Haz clic para ver la imagen ampliada en resolución completa"
+          >
+            <img 
+              src={activeImage} 
+              alt={product.name} 
+              className="main-image" 
+              style={{ 
+                maxWidth: '100%', 
+                maxHeight: '480px', 
+                width: 'auto',
+                height: 'auto',
+                objectFit: 'contain', 
+                display: 'block',
+                margin: '0 auto',
+                borderRadius: '14px',
+                transition: 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)' 
+              }}
+              onError={(e) => {
+                e.currentTarget.src = '/icons/ebna-logo-white.png';
+              }}
+            />
+
+            {/* Subtle Zoom Badge Hint */}
+            <div 
+              style={{
+                position: 'absolute',
+                bottom: '14px',
+                right: '14px',
+                background: 'rgba(255, 255, 255, 0.94)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(216, 27, 96, 0.25)',
+                borderRadius: '20px',
+                padding: '6px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '0.75rem',
+                fontWeight: 800,
+                color: '#D81B60',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
+                pointerEvents: 'none'
+              }}
+            >
+              <ZoomIn size={14} /> Clic para ampliar
+            </div>
+
+            {/* Availability Badge */}
+            <div style={{ position: 'absolute', top: '14px', left: '14px', display: 'flex', gap: '8px' }}>
+              {product.inStock || product.in_stock ? (
+                <span style={{ background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', fontWeight: 800, fontSize: '0.72rem', padding: '5px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}>
+                  <PackageCheck size={13} /> EN STOCK
+                </span>
+              ) : (
+                <span style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)', color: 'white', fontWeight: 800, fontSize: '0.72rem', padding: '5px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 4px 12px rgba(239,68,68,0.3)' }}>
+                  <PackageX size={13} /> AGOTADO
+                </span>
+              )}
+            </div>
+          </div>
 
           {/* Interactive Thumbnail Gallery Strip */}
           {galleryImages.length > 1 && (
-            <div style={{ display: 'flex', gap: '10px', marginTop: '14px', overflowX: 'auto', padding: '4px 0' }}>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '14px', width: '100%', justifyContent: 'center', overflowX: 'auto', padding: '4px 0' }}>
               {galleryImages.map((img, i) => (
                 <button
                   key={i}
@@ -426,40 +524,31 @@ export function ProductPage() {
                   style={{
                     width: '64px',
                     height: '64px',
-                    borderRadius: '12px',
-                    padding: '2px',
-                    border: activeImage === img ? '2px solid var(--brand-accent)' : '1.5px solid var(--border-subtle)',
+                    borderRadius: '14px',
+                    padding: '3px',
+                    border: activeImage === img ? '2.5px solid var(--brand-accent)' : '1.5px solid var(--border-subtle)',
                     background: 'var(--canvas-surface)',
                     cursor: 'pointer',
                     overflow: 'hidden',
                     flexShrink: 0,
                     transition: 'all 0.2s ease',
                     boxShadow: activeImage === img ? '0 0 12px rgba(216, 27, 96, 0.35)' : 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                   title={`Ver fotografía ${i + 1}`}
                 >
                   <img 
                     src={img} 
                     alt="" 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} 
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo.png'; }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '10px' }} 
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo-white.png'; }}
                   />
                 </button>
               ))}
             </div>
           )}
-
-          <div style={{ position: 'absolute', top: '24px', left: '24px', display: 'flex', gap: '8px' }}>
-            {product.inStock || product.in_stock ? (
-              <span style={{ background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', fontWeight: 800, fontSize: '0.75rem', padding: '6px 14px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}>
-                <PackageCheck size={14} /> DISPONIBLE / EN STOCK
-              </span>
-            ) : (
-              <span style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)', color: 'white', fontWeight: 800, fontSize: '0.75rem', padding: '6px 14px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(239,68,68,0.3)' }}>
-                <PackageX size={14} /> AGOTADO
-              </span>
-            )}
-          </div>
         </div>
         
         <div className="product-info-section glass-panel" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.25rem', background: 'var(--canvas-surface)' }}>
@@ -705,50 +794,95 @@ export function ProductPage() {
                 <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#475569', marginBottom: '5px' }}>
                   Modalidad de Envío:
                 </label>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                  {/* Opción 1: Envío Estándar */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  {/* Opción 1: Envío Normal - Azul Animado Elegante y Simple */}
                   <button
                     type="button"
                     onClick={() => setShippingType('normal')}
+                    className={shippingType === 'normal' ? 'shipping-btn-normal-active' : 'shipping-btn-normal-inactive'}
                     style={{
-                      padding: '8px 10px',
-                      borderRadius: '10px',
-                      border: shippingType === 'normal' ? '2px solid #D81B60' : '1px solid #CBD5E1',
-                      background: shippingType === 'normal' ? 'rgba(216, 27, 96, 0.08)' : 'white',
+                      padding: '10px 12px',
+                      borderRadius: '14px',
                       cursor: 'pointer',
                       textAlign: 'left',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '4px',
+                      position: 'relative',
+                      overflow: 'hidden'
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1E293B' }}>Envío Estándar</span>
-                      <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#16A34A', background: 'rgba(22, 163, 74, 0.12)', padding: '1px 6px', borderRadius: '6px' }}>Gratis</span>
+                      <span style={{ fontSize: '0.84rem', fontWeight: 800 }}>Envío Normal</span>
+                      <span style={{ 
+                        fontSize: '0.7rem', 
+                        fontWeight: 900, 
+                        color: shippingType === 'normal' ? '#FFFFFF' : '#1D4ED8', 
+                        background: shippingType === 'normal' ? 'rgba(255, 255, 255, 0.22)' : 'rgba(37, 99, 235, 0.12)', 
+                        padding: '1px 6px', 
+                        borderRadius: '8px' 
+                      }}>
+                        Gratis
+                      </span>
                     </div>
-                    <span style={{ fontSize: '0.7rem', color: '#64748B' }}>5 a 7 días hábiles</span>
+                    <span style={{ 
+                      fontSize: '0.72rem', 
+                      fontWeight: 600, 
+                      color: shippingType === 'normal' ? 'rgba(255, 255, 255, 0.92)' : '#475569' 
+                    }}>
+                      Duración máxima 1 semana
+                    </span>
                   </button>
 
-                  {/* Opción 2: Botón Exclusivo Express 3000 Francos */}
+                  {/* Opción 2: Botón Exclusivo Envío Exprés - Oro Dorado 3D Imperial */}
                   <button
                     type="button"
                     onClick={() => setShippingType('express')}
+                    className={shippingType === 'express' ? 'shipping-btn-express-3d-active' : 'shipping-btn-express-3d-inactive'}
                     style={{
-                      padding: '8px 10px',
-                      borderRadius: '10px',
-                      border: shippingType === 'express' ? '2px solid #D81B60' : '1px solid rgba(216, 27, 96, 0.35)',
-                      background: shippingType === 'express' 
-                        ? 'linear-gradient(135deg, rgba(216, 27, 96, 0.12), rgba(255, 215, 0, 0.15))' 
-                        : 'white',
-                      boxShadow: shippingType === 'express' ? '0 3px 10px rgba(216, 27, 96, 0.2)' : 'none',
+                      padding: '10px 12px',
+                      borderRadius: '14px',
                       cursor: 'pointer',
                       textAlign: 'left',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '4px',
+                      position: 'relative',
+                      overflow: 'hidden'
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#D81B60' }}>⚡ Express</span>
-                      <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#D81B60', background: 'rgba(216, 27, 96, 0.12)', padding: '1px 6px', borderRadius: '6px' }}>3.000 FCFA</span>
+                      <span style={{ 
+                        fontSize: '0.84rem', 
+                        fontWeight: 900, 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '3px',
+                        color: shippingType === 'express' ? '#FFFFFF' : '#92400E',
+                        textShadow: shippingType === 'express' ? '0 1px 2px rgba(0,0,0,0.3)' : 'none'
+                      }}>
+                        ⚡ Envío Exprés
+                      </span>
+                      <span style={{ 
+                        fontSize: '0.7rem', 
+                        fontWeight: 900, 
+                        color: shippingType === 'express' ? '#78350F' : '#B45309', 
+                        background: shippingType === 'express' ? '#FDE68A' : 'rgba(245, 158, 11, 0.2)', 
+                        padding: '1px 6px', 
+                        borderRadius: '8px' 
+                      }}>
+                        3.000 FCFA
+                      </span>
                     </div>
-                    <span style={{ fontSize: '0.7rem', color: '#1E293B', fontWeight: 700 }}>Dura máx. 3 días</span>
+                    <span style={{ 
+                      fontSize: '0.72rem', 
+                      fontWeight: 700, 
+                      color: shippingType === 'express' ? '#FFFBEB' : '#78350F' 
+                    }}>
+                      Duración máx. 3 días
+                    </span>
                   </button>
                 </div>
               </div>
@@ -863,6 +997,187 @@ export function ProductPage() {
         onClose={() => setIsProcessingModalOpen(false)}
         onConfirmed={() => {}}
       />
+
+      {/* Fullscreen High-Resolution Image Lightbox Modal */}
+      {isLightboxOpen && (
+        <div 
+          className="product-lightbox-overlay"
+          onClick={() => {
+            setIsLightboxOpen(false);
+            setIsZoomed(false);
+          }}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 999999,
+            background: 'rgba(8, 6, 9, 0.95)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+            animation: 'fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}
+        >
+          {/* Top Floating Control Bar */}
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              left: '24px',
+              right: '24px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              color: 'white',
+              zIndex: 10
+            }}
+          >
+            <div>
+              <span style={{ fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#D4AF37', fontWeight: 800 }}>
+                EBNA Haute Résolution • Vista Completa Detallada
+              </span>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', color: '#FFFFFF', margin: '2px 0 0 0', fontWeight: 700 }}>
+                {product.name}
+              </h3>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                type="button"
+                onClick={() => setIsZoomed(!isZoomed)}
+                style={{
+                  background: isZoomed ? '#D81B60' : 'rgba(255, 255, 255, 0.14)',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  color: 'white',
+                  borderRadius: '30px',
+                  padding: '8px 16px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.2s ease',
+                  boxShadow: isZoomed ? '0 0 15px rgba(216, 27, 96, 0.5)' : 'none'
+                }}
+              >
+                {isZoomed ? <ZoomOut size={16} /> : <ZoomIn size={16} />}
+                <span>{isZoomed ? 'Ajustar' : 'Zoom 2x'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setIsLightboxOpen(false);
+                  setIsZoomed(false);
+                }}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  color: 'white',
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+                aria-label="Cerrar vista completa"
+              >
+                <X size={22} />
+              </button>
+            </div>
+          </div>
+
+          {/* Centered Image with Adaptive Zoom */}
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'relative',
+              maxWidth: '92vw',
+              maxHeight: '82vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: isZoomed ? 'auto' : 'hidden',
+              borderRadius: '20px',
+              boxShadow: '0 25px 60px rgba(0, 0, 0, 0.8)'
+            }}
+          >
+            <img 
+              src={activeImage} 
+              alt={product.name}
+              style={{
+                maxWidth: isZoomed ? '160%' : '90vw',
+                maxHeight: isZoomed ? 'none' : '78vh',
+                width: isZoomed ? 'auto' : 'auto',
+                height: isZoomed ? 'auto' : 'auto',
+                objectFit: 'contain',
+                borderRadius: '16px',
+                cursor: isZoomed ? 'zoom-out' : 'zoom-in',
+                transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                transform: isZoomed ? 'scale(1.25)' : 'scale(1)',
+                background: 'rgba(255, 255, 255, 0.04)'
+              }}
+              onClick={() => setIsZoomed(!isZoomed)}
+              onError={(e) => {
+                e.currentTarget.src = '/icons/ebna-logo-white.png';
+              }}
+            />
+          </div>
+
+          {/* Bottom Thumbnail Strip for Multi-Image Gallery */}
+          {galleryImages.length > 1 && (
+            <div 
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'absolute',
+                bottom: '20px',
+                display: 'flex',
+                gap: '10px',
+                padding: '8px 14px',
+                background: 'rgba(0, 0, 0, 0.65)',
+                backdropFilter: 'blur(16px)',
+                borderRadius: '24px',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                zIndex: 10
+              }}
+            >
+              {galleryImages.map((img, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => {
+                    setActiveImage(img);
+                    setIsZoomed(false);
+                  }}
+                  style={{
+                    width: '52px',
+                    height: '52px',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    border: activeImage === img ? '2.5px solid #D81B60' : '1px solid rgba(255, 255, 255, 0.25)',
+                    background: '#000',
+                    padding: 0,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    boxShadow: activeImage === img ? '0 0 12px rgba(216, 27, 96, 0.5)' : 'none'
+                  }}
+                  title={`Foto ${i + 1}`}
+                >
+                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

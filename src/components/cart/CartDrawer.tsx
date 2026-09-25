@@ -314,60 +314,96 @@ export const CartDrawer: React.FC = () => {
                     </label>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      {/* Opción 1: Envío Estándar */}
+                      {/* Opción 1: Envío Normal - Azul Animado Elegante y Simple */}
                       <button
                         type="button"
                         onClick={() => setShippingType('normal')}
+                        className={shippingType === 'normal' ? 'shipping-btn-normal-active' : 'shipping-btn-normal-inactive'}
                         style={{
-                          padding: '10px 12px',
-                          borderRadius: '14px',
-                          border: shippingType === 'normal' ? '2px solid #D81B60' : '1.5px solid rgba(0,0,0,0.12)',
-                          background: shippingType === 'normal' ? 'rgba(216, 27, 96, 0.08)' : 'rgba(255, 255, 255, 0.85)',
+                          padding: '11px 12px',
+                          borderRadius: '16px',
                           cursor: 'pointer',
                           textAlign: 'left',
-                          transition: 'all 0.2s ease',
+                          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: '3px'
+                          gap: '4px',
+                          position: 'relative',
+                          overflow: 'hidden'
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <span style={{ fontWeight: 800, fontSize: '0.84rem', color: '#1E293B' }}>Envío Estándar</span>
-                          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#16A34A', background: 'rgba(22, 163, 74, 0.12)', padding: '2px 6px', borderRadius: '8px' }}>Gratis</span>
+                          <span style={{ fontWeight: 800, fontSize: '0.85rem', letterSpacing: '-0.01em' }}>
+                            Envío Normal
+                          </span>
+                          <span style={{ 
+                            fontSize: '0.72rem', 
+                            fontWeight: 900, 
+                            color: shippingType === 'normal' ? '#FFFFFF' : '#1D4ED8', 
+                            background: shippingType === 'normal' ? 'rgba(255, 255, 255, 0.22)' : 'rgba(37, 99, 235, 0.12)', 
+                            padding: '2px 7px', 
+                            borderRadius: '10px' 
+                          }}>
+                            Gratis
+                          </span>
                         </div>
-                        <span style={{ fontSize: '0.74rem', color: '#64748B' }}>Dura de 5 a 7 días</span>
+                        <span style={{ 
+                          fontSize: '0.72rem', 
+                          fontWeight: 600, 
+                          color: shippingType === 'normal' ? 'rgba(255, 255, 255, 0.92)' : '#475569' 
+                        }}>
+                          Duración máxima 1 semana
+                        </span>
                       </button>
 
-                      {/* Opción 2: Botón Exclusivo Envío Express 3000 Francos */}
+                      {/* Opción 2: Botón Exclusivo Envío Exprés - Oro Dorado 3D Imperial */}
                       <button
                         type="button"
                         onClick={() => setShippingType('express')}
+                        className={shippingType === 'express' ? 'shipping-btn-express-3d-active' : 'shipping-btn-express-3d-inactive'}
                         style={{
-                          padding: '10px 12px',
-                          borderRadius: '14px',
-                          border: shippingType === 'express' ? '2px solid #D81B60' : '1.5px solid rgba(216, 27, 96, 0.35)',
-                          background: shippingType === 'express' 
-                            ? 'linear-gradient(135deg, rgba(216, 27, 96, 0.14) 0%, rgba(255, 215, 0, 0.15) 100%)' 
-                            : 'rgba(255, 255, 255, 0.9)',
-                          boxShadow: shippingType === 'express' ? '0 4px 14px rgba(216, 27, 96, 0.25)' : 'none',
+                          padding: '11px 12px',
+                          borderRadius: '16px',
                           cursor: 'pointer',
                           textAlign: 'left',
-                          transition: 'all 0.2s ease',
+                          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                           display: 'flex',
                           flexDirection: 'column',
-                          gap: '3px'
+                          gap: '4px',
+                          position: 'relative',
+                          overflow: 'hidden'
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <span style={{ fontWeight: 800, fontSize: '0.84rem', color: '#D81B60', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                            ⚡ Express
+                          <span style={{ 
+                            fontWeight: 900, 
+                            fontSize: '0.85rem', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '3px',
+                            color: shippingType === 'express' ? '#FFFFFF' : '#92400E',
+                            textShadow: shippingType === 'express' ? '0 1px 2px rgba(0,0,0,0.3)' : 'none'
+                          }}>
+                            ⚡ Envío Exprés
                           </span>
-                          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#D81B60', background: 'rgba(216, 27, 96, 0.12)', padding: '2px 6px', borderRadius: '8px' }}>
+                          <span style={{ 
+                            fontSize: '0.72rem', 
+                            fontWeight: 900, 
+                            color: shippingType === 'express' ? '#78350F' : '#B45309', 
+                            background: shippingType === 'express' ? '#FDE68A' : 'rgba(245, 158, 11, 0.2)', 
+                            padding: '2px 7px', 
+                            borderRadius: '10px',
+                            boxShadow: shippingType === 'express' ? '0 1px 3px rgba(0,0,0,0.15)' : 'none'
+                          }}>
                             3.000 FCFA
                           </span>
                         </div>
-                        <span style={{ fontSize: '0.74rem', color: '#1E293B', fontWeight: 700 }}>
-                          Dura máx. 3 días
+                        <span style={{ 
+                          fontSize: '0.72rem', 
+                          fontWeight: 700, 
+                          color: shippingType === 'express' ? '#FFFBEB' : '#78350F' 
+                        }}>
+                          Duración máx. 3 días
                         </span>
                       </button>
                     </div>

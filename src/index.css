@@ -1677,3 +1677,72 @@ img {
   }
 }
 
+/* ==========================================================================
+   Luxury Exclusive Shipping Buttons (Blue Animated & 3D Imperial Gold)
+   ========================================================================== */
+@keyframes blueGlowPulse {
+  0% {
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    border-color: #3B82F6;
+  }
+  50% {
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.55), inset 0 1.5px 2px rgba(255, 255, 255, 0.85);
+    border-color: #60A5FA;
+  }
+  100% {
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    border-color: #3B82F6;
+  }
+}
+
+@keyframes goldShimmer3D {
+  0% {
+    box-shadow: 0 6px 16px rgba(217, 119, 6, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.75), inset 0 -2px 3px rgba(0, 0, 0, 0.12);
+  }
+  50% {
+    box-shadow: 0 10px 28px rgba(245, 158, 11, 0.6), inset 0 2.5px 3px rgba(255, 255, 255, 0.95), inset 0 -2px 3px rgba(0, 0, 0, 0.18);
+  }
+  100% {
+    box-shadow: 0 6px 16px rgba(217, 119, 6, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.75), inset 0 -2px 3px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.shipping-btn-normal-active {
+  background: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #3B82F6 100%) !important;
+  color: #FFFFFF !important;
+  animation: blueGlowPulse 2.8s infinite ease-in-out !important;
+  border: 1.5px solid #60A5FA !important;
+}
+
+.shipping-btn-normal-inactive {
+  background: rgba(239, 246, 255, 0.85) !important;
+  border: 1.5px solid rgba(59, 130, 246, 0.3) !important;
+  color: #1E3A8A !important;
+}
+
+.shipping-btn-normal-inactive:hover {
+  background: rgba(219, 234, 254, 0.95) !important;
+  border-color: #3B82F6 !important;
+  transform: translateY(-1px);
+}
+
+.shipping-btn-express-3d-active {
+  background: linear-gradient(135deg, #FFE066 0%, #F59E0B 45%, #D97706 80%, #B45309 100%) !important;
+  color: #FFFFFF !important;
+  animation: goldShimmer3D 2.6s infinite ease-in-out !important;
+  border: 1.5px solid #FDE68A !important;
+  transform: translateY(-1px);
+}
+
+.shipping-btn-express-3d-inactive {
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.7) 0%, rgba(253, 230, 138, 0.4) 100%) !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.35) !important;
+  color: #92400E !important;
+}
+
+.shipping-btn-express-3d-inactive:hover {
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.95) 0%, rgba(253, 230, 138, 0.7) 100%) !important;
+  border-color: #F59E0B !important;
+  transform: translateY(-1px);
+}
+

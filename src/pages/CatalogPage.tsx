@@ -118,6 +118,7 @@ export function CatalogPage() {
           value={searchQuery} 
           onChange={setSearchQuery} 
           placeholder="Buscar cualquier prenda, vestido, gala, color, calzado o cosmética..."
+          products={products}
         />
         
         {/* Universal Search Live Indicator Banner */}
