@@ -1,7 +1,26 @@
 import React, { useState } from 'react';
 import type { Product } from '../../types';
 import { Modal } from '../ui/Modal';
-import { Upload, Link as LinkIcon, Image as ImageIcon, AlertTriangle, Save, LogOut } from 'lucide-react';
+import { 
+  Tag, 
+  FolderTree, 
+  Coins, 
+  Ruler, 
+  Palette, 
+  FileText, 
+  Image as ImageIcon, 
+  Upload, 
+  Link as LinkIcon, 
+  CheckCircle2, 
+  PackageCheck, 
+  PackageX, 
+  Eye, 
+  EyeOff, 
+  Save, 
+  AlertTriangle, 
+  LogOut,
+  Sparkles
+} from 'lucide-react';
 import { PinterestImagePicker } from './PinterestImagePicker';
 
 interface ProductFormModalProps {
@@ -14,13 +33,13 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
   const [formData, setFormData] = useState({
     name: product?.name || '',
     slug: product?.slug || '',
-    category: product?.category || 'VESTIDOS',
+    category: product?.category || 'MODA_MUJER',
     description: product?.description || '',
     price: product?.price ? String(product.price) : '',
     in_stock: product?.in_stock ?? true,
     is_hidden: product?.is_hidden ?? false,
-    sizes: product?.sizes ? product.sizes.join(', ') : 'S, M, L, XL, XXL',
-    colors: product?.colors ? product.colors.join(', ') : 'Blanco, Negro, Rojo, Verde, Azul',
+    sizes: product?.sizes ? product.sizes.join(', ') : 'S, M, L, XL',
+    colors: product?.colors ? product.colors.join(', ') : 'Blanco, Negro, Rojo',
   });
   
   const [imageTab, setImageTab] = useState<'pinterest' | 'file' | 'url'>('pinterest');
@@ -69,18 +88,15 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
     try {
       const priceNum = parseFloat(formData.price);
       if (isNaN(priceNum) || priceNum <= 0) {
-        throw new Error('El precio debe ser un número válido mayor a 0 FCFA');
+        throw new Error('El precio debe ser un número entero válido mayor a 0 FCFA');
       }
 
       if (!formData.name.trim()) {
-        throw new Error('El nombre del producto es obligatorio');
+        throw new Error('El nombre de la prenda o artículo es obligatorio');
       }
 
-      // Save price exactly as entered by the admin (no forced rounding or 25% markup)
       const finalPrice = Math.round(priceNum);
-
       const generatedSlug = formData.slug.trim() || formData.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-
       const finalImageUrl = imagePreview || initialImg || product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '') || '/icons/ebna-logo.png';
 
       const parsedSizes = formData.sizes.split(',').map(s => s.trim()).filter(Boolean);
@@ -96,8 +112,8 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
         in_stock: formData.in_stock,
         inStock: formData.in_stock,
         is_hidden: formData.is_hidden,
-        sizes: parsedSizes.length > 0 ? parsedSizes : ['S', 'M', 'L', 'XL'],
-        colors: parsedColors.length > 0 ? parsedColors : ['Blanco', 'Negro', 'Rojo'],
+        sizes: parsedSizes.length > 0 ? parsedSizes : ['S', 'M', 'L'],
+        colors: parsedColors.length > 0 ? parsedColors : ['Blanco', 'Negro'],
         images: {
           primary: finalImageUrl,
           gallery: [finalImageUrl],
@@ -109,14 +125,13 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
         productPayload.sku = product.sku;
       }
 
-      // Instant 0ms optimistic close: update state immediately without waiting for network
       setIsDirty(false);
       onClose();
       Promise.resolve(onSave(productPayload, imageFile || undefined)).catch((err) => {
-        console.error('Error saving product in background:', err);
+        console.error('Error al guardar el producto:', err);
       });
     } catch (err: any) {
-      setError(err.message || 'Error al guardar el producto');
+      setError(err.message || 'Error al procesar el formulario');
     }
   };
 
@@ -129,18 +144,23 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
   };
 
   return (
-    <Modal isOpen={true} onClose={handleAttemptClose} title={product ? 'Editar Producto en Catálogo' : 'Añadir Nuevo Producto'}>
-      {error && <div className="auth-error mb-4" style={{ color: '#ef4444', background: 'rgba(239,68,68,0.1)', padding: '0.8rem', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>{error}</div>}
+    <Modal isOpen={true} onClose={handleAttemptClose} title={product ? 'Editar Artículo del Catálogo' : 'Añadir Nueva Prenda o Artículo'}>
+      {error && (
+        <div style={{ color: '#EF4444', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.25)', padding: '0.85rem 1rem', borderRadius: '12px', marginBottom: '1.2rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <AlertTriangle size={18} />
+          <span>{error}</span>
+        </div>
+      )}
 
-      {/* Unsaved Changes Confirmation Dialog */}
+      {/* Diálogo de Confirmación de Cambios sin Guardar */}
       {showExitConfirm ? (
-        <div style={{ padding: '1rem', background: 'rgba(245, 158, 11, 0.1)', borderRadius: '16px', border: '1px solid #f59e0b', margin: '1rem 0' }}>
+        <div style={{ padding: '1.2rem', background: 'rgba(245, 158, 11, 0.08)', borderRadius: '16px', border: '1px solid rgba(245, 158, 11, 0.35)', margin: '1rem 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.8rem' }}>
-            <AlertTriangle size={24} color="#f59e0b" />
+            <AlertTriangle size={22} color="#D97706" />
             <div>
-              <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#92400e' }}>¿Tienes cambios sin guardar?</h4>
-              <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.88rem', color: '#b45309' }}>
-                ¿Deseas guardar los cambios antes de salir o descartar las modificaciones?
+              <h4 style={{ margin: 0, fontSize: '0.98rem', fontWeight: 700, color: '#92400E' }}>¿Deseas salir sin guardar los cambios?</h4>
+              <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.84rem', color: '#B45309' }}>
+                Hay modificaciones en el producto que no han sido confirmadas.
               </p>
             </div>
           </div>
@@ -149,241 +169,296 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
             <button
               type="button"
               onClick={() => setShowExitConfirm(false)}
-              style={{ padding: '8px 16px', borderRadius: '20px', border: '1px solid #cbd5e1', background: 'white', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer' }}
+              style={{ padding: '8px 16px', borderRadius: '20px', border: '1px solid #CBD5E1', background: 'white', fontWeight: 600, fontSize: '0.84rem', cursor: 'pointer' }}
             >
-              Cancelar
+              Continuar Editando
             </button>
             <button
               type="button"
               onClick={onClose}
-              style={{ padding: '8px 16px', borderRadius: '20px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              style={{ padding: '8px 16px', borderRadius: '20px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.08)', color: '#EF4444', fontWeight: 700, fontSize: '0.84rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
-              <LogOut size={16} /> Salir sin Guardar
+              <LogOut size={15} /> Descartar y Salir
             </button>
             <button
               type="button"
               onClick={() => handleSubmit()}
-              style={{ padding: '8px 18px', borderRadius: '20px', border: 'none', background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', fontWeight: 800, fontSize: '0.85rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
+              style={{ padding: '8px 18px', borderRadius: '20px', border: 'none', background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', fontWeight: 800, fontSize: '0.84rem', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.25)' }}
             >
-              <Save size={16} /> Guardar y Salir
+              <Save size={15} /> Guardar Cambios
             </button>
           </div>
         </div>
       ) : (
         <form
           onSubmit={handleSubmit}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              const target = e.target as HTMLElement;
-              const tag = target.tagName;
-              if (tag === 'TEXTAREA') {
-                if (e.ctrlKey || e.metaKey) {
-                  e.preventDefault();
-                  handleSubmit();
-                }
-                return;
-              }
-              e.preventDefault();
-              handleSubmit();
-            }
-          }}
-          className="product-form space-y-4"
+          className="product-form-senior-ux"
           style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
         >
-          {/* Quick Sticky Bar: Save with 1 click or Enter without scrolling */}
-          <div
-            className="quick-save-top-bar"
-            style={{
-              position: 'sticky',
-              top: 0,
-              zIndex: 40,
-              background: 'rgba(255, 255, 255, 0.98)',
-              backdropFilter: 'blur(10px)',
-              padding: '10px 14px',
-              borderRadius: '14px',
-              border: '1.5px solid rgba(216, 27, 96, 0.3)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              boxShadow: '0 4px 16px rgba(216, 27, 96, 0.12)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#D81B60', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                ⚡ GUARDADO INSTANTÁNEO 0ms
-              </span>
-              <span style={{ fontSize: '0.74rem', color: '#64748B' }}>
-                (Pulsa <kbd style={{ background: '#F1F5F9', border: '1px solid #CBD5E1', borderRadius: '4px', padding: '1px 6px', fontWeight: 700, color: '#0F172A' }}>Enter ↵</kbd> para guardar)
-              </span>
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                type="button"
-                onClick={handleAttemptClose}
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  border: '1px solid #CBD5E1',
-                  background: 'white',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  color: '#475569',
-                }}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                style={{
-                  padding: '7px 20px',
-                  borderRadius: '20px',
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #D81B60, #C2185B)',
-                  color: 'white',
-                  fontWeight: 800,
-                  fontSize: '0.84rem',
-                  cursor: 'pointer',
-                  boxShadow: '0 3px 12px rgba(216, 27, 96, 0.35)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-              >
-                <Save size={15} /> Guardar (Enter ↵)
-              </button>
-            </div>
-          </div>
-          <div className="form-group">
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
-              Nombre del Producto *
-            </label>
-            <input
-              type="text"
-              name="name"
-              className="glass-input"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Ej: Vestido Satinado de Noche Zara Luxe"
-              required
-              style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
-            />
-          </div>
-
-          <div className="form-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          {/* Cuadrícula armónica de 2 columnas para campos principales */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+            {/* Campo 1: Nombre */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
-                Categoría *
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
+                <Tag size={15} color="#D81B60" />
+                <span>Nombre del Producto *</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Ej: Vestido Largo de Noche Soleil"
+                required
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
+                  border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                  fontSize: '0.9rem',
+                  color: 'var(--text-primary)',
+                  background: 'var(--canvas-base, #FFFFFF)',
+                  outline: 'none',
+                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            {/* Campo 2: Categoría */}
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
+                <FolderTree size={15} color="#D81B60" />
+                <span>Categoría de Lujo *</span>
               </label>
               <select
                 name="category"
-                className="glass-input"
                 value={formData.category}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', background: 'white', fontSize: '0.92rem', color: '#1E293B', cursor: 'pointer' }}
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
+                  border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                  fontSize: '0.9rem',
+                  color: 'var(--text-primary)',
+                  background: 'var(--canvas-base, #FFFFFF)',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  boxSizing: 'border-box'
+                }}
               >
-                <option value="MODA_MUJER">MODA FEMENINA & VESTIDOS</option>
-                <option value="MODA_INFANTIL">MODA INFANTIL & BEBÉS</option>
-                <option value="MODA_HOMBRE">MODA MASCULINA</option>
-                <option value="CALZADO">CALZADO & SNEAKERS</option>
-                <option value="BOLSOS_ACCESORIOS">BOLSOS & ACCESORIOS</option>
-                <option value="PERFUMERIA">PERFUMERÍA DE LUJO</option>
-                <option value="COSMETICA_FACIAL">COSMÉTICA FACIAL</option>
-                <option value="HIGIENE_CORPORAL">HIGIENE CORPORAL & JABONES</option>
+                <option value="MODA_MUJER">Moda Femenina & Vestidos de Gala</option>
+                <option value="MODA_INFANTIL">Moda Infantil & Bebés Chicco/Nenuco</option>
+                <option value="MODA_HOMBRE">Moda Masculina</option>
+                <option value="CALZADO">Calzado de Gala & Sneakers</option>
+                <option value="BOLSOS_ACCESORIOS">Bolsos & Accesorios de Pasarela</option>
+                <option value="PERFUMERIA">Perfumería & Fragancias Exclusivas</option>
+                <option value="COSMETICA_FACIAL">Cosmética & Cuidado Facial</option>
+                <option value="HIGIENE_CORPORAL">Higiene Corporal, Jabones & Vaselinas</option>
               </select>
             </div>
 
+            {/* Campo 3: Precio */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
-                Precio (FCFA) *
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
+                <Coins size={15} color="#D81B60" />
+                <span>Precio Oficial (FCFA) *</span>
               </label>
               <input
                 type="number"
                 name="price"
-                className="glass-input"
                 value={formData.price}
                 onChange={handleChange}
-                placeholder="Ej: 15000"
+                placeholder="Ej: 25000"
                 required
                 min="0"
-                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
+                step="1"
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
+                  border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                  fontSize: '0.9rem',
+                  color: 'var(--text-primary)',
+                  background: 'var(--canvas-base, #FFFFFF)',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
               />
             </div>
-          </div>
 
-          {/* Sizes and Colors Fields */}
-          <div className="form-group" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+            {/* Campo 4: Tallas */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
-                Tallas Disponibles (Separadas por comas)
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
+                <Ruler size={15} color="#D81B60" />
+                <span>Tallas Disponibles (Separadas por comas)</span>
               </label>
               <input
                 type="text"
                 name="sizes"
-                className="glass-input"
                 value={formData.sizes}
                 onChange={handleChange}
-                placeholder="Ej: S, M, L, XL, XXL, 38, 39, 40"
-                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
+                placeholder="Ej: S, M, L, XL, 38, 39, 40"
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
+                  border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                  fontSize: '0.9rem',
+                  color: 'var(--text-primary)',
+                  background: 'var(--canvas-base, #FFFFFF)',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
               />
             </div>
 
+            {/* Campo 5: Colores */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
-                Colores / Tonos (Separados por comas)
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
+                <Palette size={15} color="#D81B60" />
+                <span>Colores y Tonos (Separados por comas)</span>
               </label>
               <input
                 type="text"
                 name="colors"
-                className="glass-input"
                 value={formData.colors}
                 onChange={handleChange}
-                placeholder="Ej: Blanco, Negro, Rojo, Azul, Marrón, Mate"
-                style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF' }}
+                placeholder="Ej: Blanco Perla, Negro, Rojo Carmesí"
+                style={{
+                  width: '100%',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
+                  border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                  fontSize: '0.9rem',
+                  color: 'var(--text-primary)',
+                  background: 'var(--canvas-base, #FFFFFF)',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
               />
+            </div>
+
+            {/* Campo 6: Stock y Visibilidad (Mini tarjetas interactivas) */}
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
+                <PackageCheck size={15} color="#D81B60" />
+                <span>Estado de Stock y Visibilidad</span>
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                {/* Botón Switch Stock */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDirty(true);
+                    setFormData(prev => ({ ...prev, in_stock: !prev.in_stock }));
+                  }}
+                  style={{
+                    padding: '8px 10px',
+                    borderRadius: '10px',
+                    border: formData.in_stock ? '1.5px solid #10B981' : '1.5px solid #EF4444',
+                    background: formData.in_stock ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)',
+                    color: formData.in_stock ? '#059669' : '#DC2626',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  {formData.in_stock ? <PackageCheck size={15} /> : <PackageX size={15} />}
+                  <span>{formData.in_stock ? 'Disponible' : 'Agotado'}</span>
+                </button>
+
+                {/* Botón Switch Visibilidad */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDirty(true);
+                    setFormData(prev => ({ ...prev, is_hidden: !prev.is_hidden }));
+                  }}
+                  style={{
+                    padding: '8px 10px',
+                    borderRadius: '10px',
+                    border: formData.is_hidden ? '1.5px solid #94A3B8' : '1.5px solid #D81B60',
+                    background: formData.is_hidden ? 'rgba(148, 163, 184, 0.08)' : 'rgba(216, 27, 96, 0.08)',
+                    color: formData.is_hidden ? '#64748B' : '#D81B60',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  {formData.is_hidden ? <EyeOff size={15} /> : <Eye size={15} />}
+                  <span>{formData.is_hidden ? 'Oculto' : 'Público'}</span>
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="form-group">
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
-              Descripción Detallada
+          {/* Campo Descripción (Ancho Completo) */}
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
+              <FileText size={15} color="#D81B60" />
+              <span>Descripción y Detalles del Material</span>
             </label>
             <textarea
               name="description"
-              className="glass-input"
               rows={3}
               value={formData.description}
               onChange={handleChange}
-              placeholder="Escribe la descripción del producto, materiales y detalles..."
-              style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '12px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.92rem', color: '#1E293B', background: '#FFFFFF', minHeight: '80px' }}
+              placeholder="Detalla los acabados, tejido de alta costura, corte o recomendaciones..."
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                borderRadius: '12px',
+                border: '1.5px solid rgba(216, 27, 96, 0.2)',
+                fontSize: '0.9rem',
+                color: 'var(--text-primary)',
+                background: 'var(--canvas-base, #FFFFFF)',
+                outline: 'none',
+                minHeight: '75px',
+                boxSizing: 'border-box'
+              }}
             />
           </div>
 
-          {/* IMAGE SELECTION MODULE */}
-          <div className="form-group" style={{ marginTop: '0.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem' }}>Imagen del Producto</label>
+          {/* Módulo de Selección de Imagen */}
+          <div style={{ marginTop: '0.3rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.6rem' }}>
+              <ImageIcon size={15} color="#D81B60" />
+              <span>Fotografía Oficial de la Prenda</span>
+            </label>
             
-            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.8rem' }}>
+            {/* Pestañas de Selección */}
+            <div style={{ display: 'flex', gap: '6px', marginBottom: '0.8rem' }}>
               <button
                 type="button"
                 onClick={() => setImageTab('pinterest')}
                 style={{
                   flex: 1,
-                  padding: '0.5rem 0.8rem',
-                  borderRadius: '8px',
-                  border: 'none',
-                  background: imageTab === 'pinterest' ? 'linear-gradient(135deg, #E05A88, #C4436F)' : '#f1f5f9',
-                  color: imageTab === 'pinterest' ? 'white' : '#64748b',
-                  fontWeight: 600,
+                  padding: '8px 12px',
+                  borderRadius: '10px',
+                  border: imageTab === 'pinterest' ? '1.5px solid #D81B60' : '1px solid #E2E8F0',
+                  background: imageTab === 'pinterest' ? 'linear-gradient(135deg, #D81B60, #C2185B)' : '#F8FAFC',
+                  color: imageTab === 'pinterest' ? 'white' : '#64748B',
+                  fontWeight: 700,
                   fontSize: '0.8rem',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '0.4rem'
+                  gap: '6px',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                <ImageIcon size={16} /> Buscador Pinterest HD
+                <Sparkles size={14} /> Catálogo HD
               </button>
 
               <button
@@ -391,21 +466,22 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 onClick={() => setImageTab('file')}
                 style={{
                   flex: 1,
-                  padding: '0.5rem 0.8rem',
-                  borderRadius: '8px',
-                  border: 'none',
-                  background: imageTab === 'file' ? 'linear-gradient(135deg, #E05A88, #C4436F)' : '#f1f5f9',
-                  color: imageTab === 'file' ? 'white' : '#64748b',
-                  fontWeight: 600,
+                  padding: '8px 12px',
+                  borderRadius: '10px',
+                  border: imageTab === 'file' ? '1.5px solid #D81B60' : '1px solid #E2E8F0',
+                  background: imageTab === 'file' ? 'linear-gradient(135deg, #D81B60, #C2185B)' : '#F8FAFC',
+                  color: imageTab === 'file' ? 'white' : '#64748B',
+                  fontWeight: 700,
                   fontSize: '0.8rem',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '0.4rem'
+                  gap: '6px',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                <Upload size={16} /> Dispositivo Local
+                <Upload size={14} /> Subir desde PC
               </button>
 
               <button
@@ -413,31 +489,40 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 onClick={() => setImageTab('url')}
                 style={{
                   flex: 1,
-                  padding: '0.5rem 0.8rem',
-                  borderRadius: '8px',
-                  border: 'none',
-                  background: imageTab === 'url' ? 'linear-gradient(135deg, #E05A88, #C4436F)' : '#f1f5f9',
-                  color: imageTab === 'url' ? 'white' : '#64748b',
-                  fontWeight: 600,
+                  padding: '8px 12px',
+                  borderRadius: '10px',
+                  border: imageTab === 'url' ? '1.5px solid #D81B60' : '1px solid #E2E8F0',
+                  background: imageTab === 'url' ? 'linear-gradient(135deg, #D81B60, #C2185B)' : '#F8FAFC',
+                  color: imageTab === 'url' ? 'white' : '#64748B',
+                  fontWeight: 700,
                   fontSize: '0.8rem',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '0.4rem'
+                  gap: '6px',
+                  transition: 'all 0.2s ease'
                 }}
               >
-                <LinkIcon size={16} /> URL Web
+                <LinkIcon size={14} /> Enlace Web
               </button>
             </div>
 
+            {/* Vista Previa de Imagen Activa */}
             {imagePreview && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.8rem', background: 'white', borderRadius: '12px', border: '1px solid var(--color-glass-border)', marginBottom: '0.8rem' }}>
-                <img src={imagePreview} alt="Preview" style={{ width: '64px', height: '64px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--color-glass-border)' }} />
-                <div>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#16a34a' }}>✓ Imagen Seleccionada</span>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: '0.2rem 0 0 0', wordBreak: 'break-all' }}>
-                    {imagePreview.length > 50 ? imagePreview.slice(0, 50) + '...' : imagePreview}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 14px', background: 'var(--canvas-subtle, #F8FAFC)', borderRadius: '12px', border: '1px solid rgba(216, 27, 96, 0.2)', marginBottom: '0.8rem' }}>
+                <img 
+                  src={imagePreview} 
+                  alt="Vista previa" 
+                  style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '10px', border: '1.5px solid rgba(216, 27, 96, 0.3)' }} 
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo.png'; }}
+                />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#16A34A', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <CheckCircle2 size={13} /> Fotografía Lista para Publicar
+                  </span>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #64748B)', margin: '2px 0 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {imagePreview}
                   </p>
                 </div>
               </div>
@@ -455,7 +540,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
             )}
 
             {imageTab === 'file' && (
-              <div className="image-upload-area glass-card p-4 text-center cursor-pointer" style={{ border: '2px dashed var(--color-glass-border)', padding: '1.5rem', borderRadius: '14px', background: 'var(--color-bg-secondary)', textAlign: 'center' }}>
+              <div style={{ border: '2px dashed rgba(216, 27, 96, 0.3)', padding: '1.5rem', borderRadius: '14px', background: 'var(--canvas-subtle, #F8FAFC)', textAlign: 'center', cursor: 'pointer' }}>
                 <input
                   type="file"
                   accept="image/*"
@@ -464,72 +549,62 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                   style={{ display: 'none' }}
                 />
                 <label htmlFor="product-image-input" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                  <Upload size={32} color="#E05A88" />
-                  <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-primary-dark)' }}>
+                  <Upload size={30} color="#D81B60" />
+                  <span style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-primary)' }}>
                     {imageFile ? imageFile.name : 'Haz clic para seleccionar foto desde tu PC o Teléfono'}
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Soporta JPG, PNG, WEBP, JFIF</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Formatos soportados: JPG, PNG, WEBP</span>
                 </label>
               </div>
             )}
 
             {imageTab === 'url' && (
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <input
                   type="url"
-                  placeholder="Pega el enlace directo de la imagen (https://...)"
+                  placeholder="https://ejemplo.com/foto-prenda.jpg"
                   value={customUrl}
                   onChange={(e) => setCustomUrl(e.target.value)}
-                  style={{ flex: 1, padding: '0.65rem 1rem', borderRadius: '10px', border: '1px solid var(--color-glass-border)', fontSize: '0.85rem' }}
+                  style={{ flex: 1, padding: '10px 14px', borderRadius: '10px', border: '1.5px solid rgba(216, 27, 96, 0.2)', fontSize: '0.85rem' }}
                 />
                 <button
                   type="button"
                   onClick={handleUrlApply}
-                  style={{ padding: '0.65rem 1.2rem', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #E05A88, #C4436F)', color: 'white', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer' }}
+                  style={{ padding: '10px 18px', borderRadius: '10px', border: 'none', background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: 'white', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer' }}
                 >
-                  Aplicar
+                  Cargar
                 </button>
               </div>
             )}
           </div>
 
-          {/* Stock and Visibility Toggles */}
-          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
-            <div className="form-group flex items-center gap-2" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <input
-                type="checkbox"
-                id="in_stock"
-                name="in_stock"
-                checked={formData.in_stock}
-                onChange={handleChange}
-                style={{ width: '18px', height: '18px', accentColor: '#E05A88', cursor: 'pointer' }}
-              />
-              <label htmlFor="in_stock" style={{ cursor: 'pointer', fontWeight: 600, fontSize: '0.88rem', color: formData.in_stock ? '#10B981' : '#EF4444' }}>
-                {formData.in_stock ? '🟢 STOCK: DISPONIBLE' : '🔴 STOCK: AGOTADO'}
-              </label>
-            </div>
-
-            <div className="form-group flex items-center gap-2" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <input
-                type="checkbox"
-                id="is_hidden"
-                name="is_hidden"
-                checked={formData.is_hidden}
-                onChange={handleChange}
-                style={{ width: '18px', height: '18px', accentColor: '#6B7280', cursor: 'pointer' }}
-              />
-              <label htmlFor="is_hidden" style={{ cursor: 'pointer', fontWeight: 600, fontSize: '0.88rem', color: formData.is_hidden ? '#6B7280' : '#E05A88' }}>
-                {formData.is_hidden ? '👁️‍🗨️ VISIBILIDAD: OCULTO' : '👁️ VISIBILIDAD: PÚBLICO'}
-              </label>
-            </div>
-          </div>
-
-          <div className="modal-actions flex justify-end gap-3 mt-6" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem', marginTop: '1.5rem' }}>
-            <button type="button" className="btn-secondary" onClick={handleAttemptClose} style={{ padding: '0.75rem 1.4rem', borderRadius: '999px', border: '1px solid var(--color-glass-border)', background: 'white', fontWeight: 600, cursor: 'pointer' }}>
+          {/* Barra de Acciones Final */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '1.2rem', paddingTop: '1rem', borderTop: '1px solid rgba(0, 0, 0, 0.06)' }}>
+            <button 
+              type="button" 
+              onClick={handleAttemptClose} 
+              style={{ padding: '10px 20px', borderRadius: '25px', border: '1px solid #CBD5E1', background: 'white', color: '#475569', fontWeight: 600, fontSize: '0.88rem', cursor: 'pointer' }}
+            >
               Cancelar
             </button>
-            <button type="submit" className="btn-primary" style={{ padding: '0.75rem 1.6rem', borderRadius: '999px', border: 'none', background: 'linear-gradient(135deg, #E05A88, #C4436F)', color: 'white', fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 15px rgba(224, 90, 136, 0.3)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <Save size={16} /> {product ? 'Guardar Cambios (Enter ↵)' : 'Crear Producto (Enter ↵)'}
+            <button 
+              type="submit" 
+              style={{ 
+                padding: '10px 24px', 
+                borderRadius: '25px', 
+                border: 'none', 
+                background: 'linear-gradient(135deg, #D81B60, #C2185B)', 
+                color: 'white', 
+                fontWeight: 800, 
+                fontSize: '0.88rem', 
+                cursor: 'pointer', 
+                boxShadow: '0 4px 15px rgba(216, 27, 96, 0.35)', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '8px' 
+              }}
+            >
+              <Save size={16} /> {product ? 'Guardar Cambios' : 'Publicar Producto'}
             </button>
           </div>
         </form>

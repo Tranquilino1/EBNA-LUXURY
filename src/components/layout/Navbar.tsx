@@ -114,7 +114,20 @@ export const Navbar: React.FC = () => {
               }} 
             />
           )}
-          <img src="/icons/ebna-logo.png" alt="EBNA" className="logo-img" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
+          <img 
+            key={theme}
+            src={theme === 'dark' ? '/icons/ebna-logo-dark.png' : '/icons/ebna-logo-white.png'} 
+            alt="EBNA" 
+            className="logo-img" 
+            onError={(e) => { 
+              const img = e.currentTarget as HTMLImageElement;
+              if (img.src.includes('white') || img.src.includes('dark')) {
+                img.src = '/icons/ebna-logo.png';
+              } else {
+                img.style.display = 'none';
+              }
+            }} 
+          />
           <div className="logo-text-brand">
             <span className="brand-name-uppercase">SINDY LUXURY</span>
             <span className="brand-sub-syndy">BY EBNA</span>
@@ -172,7 +185,10 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* User Icon Menu (Icono de Persona Unificado) */}
-          <div className="profile-menu-container">
+          <div 
+            className="profile-menu-container"
+            onMouseLeave={() => setIsProfileOpen(false)}
+          >
             <button 
               className="profile-button"
               onClick={() => setIsProfileOpen(!isProfileOpen)}

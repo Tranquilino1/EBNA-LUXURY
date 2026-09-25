@@ -1,6 +1,5 @@
 import type { OrderReceiptData } from '../types';
 import { formatPrice } from './utils';
-import { encodeOrderData } from './orderStorage';
 
 const PRIMARY_PHONE = '240222633687';
 
@@ -9,21 +8,18 @@ const PRIMARY_PHONE = '240222633687';
  */
 export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
   const baseUrl = typeof window !== 'undefined' && window.location.origin ? window.location.origin : 'https://ebna-luxury.vercel.app';
-  const receiptCardUrl = `${baseUrl}/recibo?order=${encodeOrderData(order)}`;
+  const receiptCardUrl = `${baseUrl}/recibo?id=${order.orderId}&ref=${order.orderNumber}`;
 
   const itemsText = order.items.map((item, idx) => {
     const itemSubtotal = item.price * item.quantity;
-    const sizeInfo = item.selectedSize ? ` | Talla: ${item.selectedSize}` : '';
-    const colorInfo = item.selectedColor && item.selectedColor !== 'Original' ? ` | Color: ${item.selectedColor}` : '';
-    const descInfo = item.description ? `\n   📝 Descripción: ${item.description.length > 110 ? item.description.substring(0, 107) + '...' : item.description}` : '';
-    const rawImg = (item.image || '/icons/ebna-logo.png').replace(/\.jfif$/i, '.jpg');
-    const photoUrl = rawImg.startsWith('http') ? rawImg : `${baseUrl}${rawImg.startsWith('/') ? rawImg : '/' + rawImg}`;
-    return `${idx + 1}. 👗 *${item.name}* [x${item.quantity}]${sizeInfo}${colorInfo}${descInfo}\n   💰 Subtotal: ${formatPrice(itemSubtotal)}\n   🖼️ Ver Foto: ${photoUrl}`;
+    const sizeInfo = item.selectedSize ? ` [Talla: ${item.selectedSize}]` : '';
+    const colorInfo = item.selectedColor && item.selectedColor !== 'Original' ? ` [Color: ${item.selectedColor}]` : '';
+    return `${idx + 1}. 👗 *${item.name}* (x${item.quantity})${sizeInfo}${colorInfo}\n   💰 Subtotal: ${formatPrice(itemSubtotal)}`;
   }).join('\n\n');
 
   const regionLabel = order.region === 'insular' 
-    ? '🏝️ Región Insular (Bioko / Malabo)' 
-    : '🌍 Región Continental (Litoral / Bata y provincias)';
+    ? 'Bioko / Malabo' 
+    : 'Bata / Continental';
 
   const shippingLabel = order.shippingType === 'express'
     ? '⚡ Express 3 Días (+3.000 FCFA)'
@@ -31,39 +27,36 @@ export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
 
   const paymentLabel = order.paymentMethod === 'muni'
     ? '📲 MUNI DINERO (555439904)'
-    : '💬 WHATSAPP OFICIAL (+240 222 633 687)';
+    : '💬 WHATSAPP DIRECTO (+240 222 633 687)';
 
   const message = `✨ *SOLICITUD DE PEDIDO — SINDY LUXURY BY EBNA* ✨
 ━━━━━━━━━━━━━━━━━━━━━━
-🎫 *TARJETA DIGITAL CON FOTOS EN ALTA DEFINICIÓN:*
-👉 ${receiptCardUrl}
-━━━━━━━━━━━━━━━━━━━━━━
 🎫 *FOLIO:* #${order.orderNumber}
 📅 *FECHA:* ${order.createdAt}
-⏳ *ESTADO:* PENDIENTE DE RECEPCIÓN / VALIDACIÓN
+⏳ *ESTADO:* PENDIENTE DE VALIDACIÓN
 
 👤 *DATOS DEL DESTINATARIO:*
 • Nombre: *${order.customerName}*
 • Teléfono: *${order.customerPhone || 'Pendiente'}*
-• Dirección: *${order.customerAddress}*
-• Región: *${regionLabel}*
+• Entrega: *${order.customerAddress}* (${regionLabel})
 
 🛍️ *PRENDAS SELECCIONADAS (${order.items.reduce((acc, i) => acc + i.quantity, 0)} unidades):*
 ${itemsText}
 
 ━━━━━━━━━━━━━━━━━━━━━━
 💵 *DESGLOSE FINANCIERO:*
-• Subtotal Prendas: ${formatPrice(order.subtotal)}
+• Subtotal: ${formatPrice(order.subtotal)}
 • Modalidad de Envío: ${shippingLabel}
-• Tarifa de Envío: ${order.shippingCost > 0 ? formatPrice(order.shippingCost) : 'Gratis'}
 • Método de Pago: ${paymentLabel}
 ⭐ *TOTAL A PAGAR: ${formatPrice(order.total)}*
 ━━━━━━━━━━━━━━━━━━━━━━
+📸 *Ticket PNG:* Generado y descargado automáticamente en el dispositivo.
+🔗 *Ver Comprobante Digital:* ${receiptCardUrl}
+
 ${order.paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He solicitado el pedido con pago vía Muni Dinero al 555439904.' : '📌 Adjunto mi comprobante digital para programar la entrega.'}
 
 ¿Me confirman recepción del pedido para empaque y despacho?`;
 
-  // Always route order receipt submissions strictly to the official business WhatsApp: +240 222 633 687
   const targetPhone = PRIMARY_PHONE;
   return `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
 }

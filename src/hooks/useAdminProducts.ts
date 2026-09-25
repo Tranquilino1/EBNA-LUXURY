@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, demoGetProducts, demoSaveProducts } from '../lib/demoData';
 import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
+import { syncProductToTurso, deleteProductFromTurso } from '../lib/tursoClient';
 import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
 
@@ -181,8 +182,14 @@ export function useAdminProducts() {
       setProducts(prev => [newProduct, ...prev.filter(p => p.id !== validId)]);
       notifyCatalogChange('add', newProduct);
 
-      // 2. Insert into Supabase in background (Non-blocking: 0ms UI latency)
+      // 2. Insert into Turso Cloud & Supabase in background (Non-blocking: 0ms UI latency)
       (async () => {
+        try {
+          await syncProductToTurso(newProduct);
+        } catch (tursoErr) {
+          console.warn('[Turso Sync Notice]:', tursoErr);
+        }
+
         try {
           const isInfantilAdd = newProduct.category === 'MODA_INFANTIL';
           const dbCategoryAdd = isInfantilAdd ? 'MODA_MUJER' : (newProduct.category || 'MODA_MUJER');
@@ -260,8 +267,14 @@ export function useAdminProducts() {
       demoUpdateProduct(id, updated);
       notifyCatalogChange('update', updated);
 
-      // 2. Direct update in Supabase (Non-blocking background sync: 0ms UI latency)
+      // 2. Direct update in Turso Cloud & Supabase (Non-blocking background sync: 0ms UI latency)
       (async () => {
+        try {
+          await syncProductToTurso(updated);
+        } catch (tursoErr) {
+          console.warn('[Turso Update Notice]:', tursoErr);
+        }
+
         try {
           const isInfantilUpd = updated.category === 'MODA_INFANTIL';
           const dbCategoryUpd = isInfantilUpd ? 'MODA_MUJER' : (updated.category || 'MODA_MUJER');
@@ -340,8 +353,15 @@ export function useAdminProducts() {
       demoDeleteProduct(id);
       notifyCatalogChange('delete', { id, slug: targetSlug });
 
-      // 2. Delete from Supabase in background
+      // 2. Delete from Turso Cloud & Supabase in background
       (async () => {
+        try {
+          await deleteProductFromTurso(id);
+          if (targetSlug) await deleteProductFromTurso(targetSlug);
+        } catch (tursoErr) {
+          console.warn('[Turso Delete Notice]:', tursoErr);
+        }
+
         try {
           const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
           if (isUUID) {

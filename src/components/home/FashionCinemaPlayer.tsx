@@ -348,7 +348,10 @@ export const FashionCinemaPlayer: React.FC = () => {
 
                   <div className="controls-right">
                     {/* Quality Selector Dropdown */}
-                    <div className="cinema-quality-menu-wrapper">
+                    <div 
+                      className="cinema-quality-menu-wrapper"
+                      onMouseLeave={() => setIsQualityOpen(false)}
+                    >
                       <button 
                         type="button" 
                         className="cinema-btn quality-badge-btn"

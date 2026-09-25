@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
-import { Flame, Pencil, Trash2, Eye, EyeOff, ShoppingCart, Send, Check } from 'lucide-react';
+import { Flame, Pencil, Trash2, Eye, EyeOff, ShoppingCart, Check } from 'lucide-react';
+import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 import type { Product } from '../../types';
 import { formatPrice } from '../../lib/utils';
 import { useAdminCrud } from '../../contexts/AdminCrudContext';
@@ -393,7 +394,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             <span>Ver</span>
           </button>
 
-          {/* Botón 2: PEDIR */}
+          {/* Botón 2: PEDIR (Verde WhatsApp con Logo Ajustable y Limpio) */}
           <button
             type="button"
             className="btn-card-action btn-card-pedir"
@@ -401,12 +402,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               e.stopPropagation();
               navigate(`/producto/${product.slug || product.id}?pedir=true`);
             }}
-            title="Pedir directamente con comprobante oficial"
+            title="Pedir directamente por WhatsApp con comprobante oficial"
             style={{
               padding: '9px 4px',
               borderRadius: '20px',
               border: 'none',
-              background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+              background: 'linear-gradient(135deg, #25D366, #128C7E)',
               color: 'white',
               fontWeight: 800,
               fontSize: '0.82rem',
@@ -414,16 +415,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '4px',
+              gap: '5px',
               transition: 'all 0.2s ease',
-              boxShadow: '0 3px 10px rgba(216, 27, 96, 0.3)'
+              boxShadow: '0 3px 10px rgba(37, 211, 102, 0.35)'
             }}
           >
-            <Send size={13} />
+            <WhatsAppIcon size={14} color="white" />
             <span>Pedir</span>
           </button>
 
-          {/* Botón 3: CARRITO */}
+          {/* Botón 3: CARRITO (Rosa Lujo EBNA) */}
           <button
             type="button"
             className="btn-card-action btn-card-carrito"
@@ -439,7 +440,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               padding: '9px 4px',
               borderRadius: '20px',
               border: 'none',
-              background: justAddedToCart ? '#16A34A' : 'linear-gradient(135deg, #10B981, #059669)',
+              background: justAddedToCart 
+                ? 'linear-gradient(135deg, #10B981, #059669)' 
+                : 'linear-gradient(135deg, #D81B60, #C2185B)',
               color: 'white',
               fontWeight: 800,
               fontSize: '0.82rem',
@@ -449,7 +452,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               justifyContent: 'center',
               gap: '4px',
               transition: 'all 0.2s ease',
-              boxShadow: '0 3px 10px rgba(16, 185, 129, 0.3)'
+              boxShadow: justAddedToCart 
+                ? '0 3px 10px rgba(16, 185, 129, 0.35)' 
+                : '0 3px 10px rgba(216, 27, 96, 0.35)'
             }}
           >
             {justAddedToCart ? <Check size={13} /> : <ShoppingCart size={13} />}

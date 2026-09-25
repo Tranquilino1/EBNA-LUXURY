@@ -3,7 +3,7 @@ import { useParams, Link, useSearchParams } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
   PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff,
-  MessageCircle, Smartphone, User, MapPin 
+  Smartphone, User, MapPin 
 } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
@@ -15,6 +15,7 @@ import { recordProductOrder } from '../lib/popularityTracker';
 import { OrderReceiptModal } from '../components/receipt/OrderReceiptModal';
 import { saveOrderRequest } from '../lib/orderStorage';
 import { buildReceiptWhatsAppUrl, downloadReceiptAsPng } from '../lib/receiptExporter';
+import { WhatsAppIcon } from '../components/ui/WhatsAppIcon';
 import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
@@ -147,8 +148,8 @@ export function ProductPage() {
         description: product.description,
         price: priceVal,
         quantity,
-        selectedSize: selectedSize || availableSizes[0] || 'M',
-        selectedColor: selectedColor || availableColors[0] || 'Original',
+        selectedSize: currentSize || 'M',
+        selectedColor: currentColor || 'Original',
         image: cleanImg,
         slug: product.slug
       }],
@@ -200,6 +201,9 @@ export function ProductPage() {
       setSelectedColor('');
     }
   }, [availableColors]);
+
+  const currentSize = selectedSize || availableSizes[0] || '';
+  const currentColor = selectedColor || availableColors[0] || '';
 
   const rawDefaultMainImg = product?.images?.primary || (Array.isArray(product?.images) ? product.images[0] : '/icons/ebna-logo.png');
   const defaultMainImg = typeof rawDefaultMainImg === 'string' ? rawDefaultMainImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
@@ -504,10 +508,10 @@ export function ProductPage() {
                     style={{
                       padding: '8px 16px',
                       borderRadius: '12px',
-                      border: selectedSize === size ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
-                      background: selectedSize === size ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
-                      color: selectedSize === size ? 'var(--brand-accent)' : 'var(--text-primary)',
-                      fontWeight: selectedSize === size ? 800 : 600,
+                      border: currentSize === size ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
+                      background: currentSize === size ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
+                      color: currentSize === size ? 'var(--brand-accent)' : 'var(--text-primary)',
+                      fontWeight: currentSize === size ? 800 : 600,
                       fontSize: '0.88rem',
                       cursor: 'pointer',
                       transition: 'all 0.2s'
@@ -535,10 +539,10 @@ export function ProductPage() {
                     style={{
                       padding: '8px 16px',
                       borderRadius: '12px',
-                      border: selectedColor === color ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
-                      background: selectedColor === color ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
-                      color: selectedColor === color ? 'var(--brand-accent)' : 'var(--text-primary)',
-                      fontWeight: selectedColor === color ? 800 : 600,
+                      border: currentColor === color ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
+                      background: currentColor === color ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
+                      color: currentColor === color ? 'var(--brand-accent)' : 'var(--text-primary)',
+                      fontWeight: currentColor === color ? 800 : 600,
                       fontSize: '0.88rem',
                       cursor: 'pointer',
                       display: 'inline-flex',
@@ -547,7 +551,7 @@ export function ProductPage() {
                       transition: 'all 0.2s'
                     }}
                   >
-                    {selectedColor === color && <Check size={14} />}
+                    {currentColor === color && <Check size={14} />}
                     {color}
                   </button>
                 ))}
@@ -727,8 +731,8 @@ export function ProductPage() {
                 transition: 'all 0.2s ease'
               }}
             >
-              <MessageCircle size={20} />
-              <span>{isGeneratingPng ? 'Generando Ticket...' : 'Pagar por WhatsApp (Descargar Ticket PNG)'}</span>
+              <WhatsAppIcon size={20} color="white" />
+              <span>{isGeneratingPng ? 'Generando Ticket Oficial...' : 'Pedir por WhatsApp (Ticket Oficial)'}</span>
             </button>
 
             {/* 2. PAGAR CON MUNI DINERO (555439904) (Direct Ticket Generator) */}
@@ -758,31 +762,32 @@ export function ProductPage() {
               <span>Pagar con Muni Dinero (555439904)</span>
             </button>
 
-            {/* 3. AGREGAR A LA CESTA */}
+            {/* 3. AGREGAR A LA CESTA (Rosa Lujo EBNA) */}
             <button
               type="button"
-              onClick={() => addToCart(product, quantity, selectedSize, selectedColor)}
+              onClick={() => addToCart(product, quantity, currentSize, currentColor)}
               disabled={!product.in_stock}
               style={{
                 width: '100%',
-                padding: '11px 18px',
+                padding: '12px 20px',
                 borderRadius: '30px',
-                border: '1px solid rgba(0,0,0,0.12)',
-                background: product.in_stock ? 'var(--canvas-elevated)' : '#E2E8F0',
-                color: 'var(--text-primary)',
-                fontWeight: 700,
-                fontSize: '0.88rem',
+                border: 'none',
+                background: product.in_stock ? 'linear-gradient(135deg, #D81B60, #C2185B)' : '#E2E8F0',
+                color: product.in_stock ? '#FFFFFF' : '#94A3B8',
+                fontWeight: 800,
+                fontSize: '0.92rem',
                 cursor: product.in_stock ? 'pointer' : 'not-allowed',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
                 marginTop: '2px',
+                boxShadow: product.in_stock ? '0 4px 14px rgba(216, 27, 96, 0.3)' : 'none',
                 transition: 'all 0.2s ease'
               }}
             >
-              <ShoppingBag size={16} />
-              <span>{product.in_stock ? `Agregar ${quantity} al Carrito` : 'Producto Agotado'}</span>
+              <ShoppingBag size={18} />
+              <span>{product.in_stock ? `Añadir ${quantity} al Carrito` : 'Producto Agotado'}</span>
             </button>
           </div>
         </div>

@@ -4,12 +4,14 @@ import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, Chev
 import { QRModal } from '../ui/QRModal';
 import { ContactSupportModal } from '../ui/ContactSupportModal';
 import { useCustomization } from '../../contexts/CustomizationContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { ChristmasHat } from '../effects/ChristmasHat';
 import './layout.css';
 
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const { settings, isChristmasActive } = useCustomization();
+  const { theme } = useTheme();
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -102,7 +104,18 @@ export const Footer: React.FC = () => {
                   }} 
                 />
               )}
-              <img src="/icons/ebna-logo.png" alt="EBNA Logo" className="footer-logo-circle" />
+              <img 
+                key={theme}
+                src={theme === 'dark' ? '/icons/ebna-logo-dark.png' : '/icons/ebna-logo-white.png'} 
+                alt="EBNA Logo" 
+                className="footer-logo-circle" 
+                onError={(e) => { 
+                  const img = e.currentTarget as HTMLImageElement;
+                  if (img.src.includes('white') || img.src.includes('dark')) {
+                    img.src = '/icons/ebna-logo.png';
+                  }
+                }}
+              />
               <div>
                 <h2 className="brand-title-uppercase">SINDY LUXURY</h2>
                 <p className="brand-syndy-tagline">BY EBNA — Alta Costura & Moda</p>
@@ -202,7 +215,7 @@ export const Footer: React.FC = () => {
               >
                 <Headphones size={18} color="#184266" />
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.9rem', fontWeight: 800, color: '#184266' }}>Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '1rem' }}>AiDA</span></span>
+                  <span style={{ display: 'block', fontSize: '0.86rem', fontWeight: 700, color: 'var(--text-primary)' }}>Soporte Técnico Especializado</span>
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Incidencias WhatsApp (+240 555 32 00 17)</span>
                 </div>
               </button>
@@ -261,7 +274,7 @@ export const Footer: React.FC = () => {
             &copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados. | PWA Universal compatible con iOS, Android, Windows, Mac, Chromebook y Linux.
           </p>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <span>Arquitectura & Desarrollo por <strong style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#184266', fontSize: '0.92rem' }}><img src="/icons/aida-logo.jpg" alt="AiDA" style={{ height: '20px', borderRadius: '4px', objectFit: 'contain', border: '1px solid rgba(24, 66, 102, 0.25)', boxShadow: '0 1px 4px rgba(24, 66, 102, 0.15)' }} /> Startup <span className="aida-logo-text" style={{ fontSize: '1.02rem', color: '#184266' }}>AiDA</span></strong></span>
+            <span>Tecnología y arquitectura desarrollada por <strong style={{ color: '#184266', fontWeight: 800 }}>AiDA</strong></span>
             <span>•</span>
             <a href="mailto:thetrapkinzofafrica@gmail.com" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>thetrapkinzofafrica@gmail.com</a>
             <span>•</span>

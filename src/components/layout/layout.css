@@ -317,6 +317,17 @@
   box-shadow: var(--shadow-sm);
 }
 
+@keyframes profileMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .profile-dropdown {
   position: absolute;
   top: calc(100% + 12px);
@@ -328,6 +339,9 @@
   overflow: hidden;
   z-index: 1001;
   background: var(--canvas-surface);
+  animation: profileMenuFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top right;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .profile-header {
