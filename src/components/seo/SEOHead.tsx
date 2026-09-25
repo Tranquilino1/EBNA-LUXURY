@@ -142,7 +142,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
               'latitude': 1.630333,
               'longitude': 11.308053
             },
-            'hasMap': 'https://www.google.com/maps/search/?api=1&query=1.630333,11.308053',
+            'hasMap': 'https://goo.gl/maps/wn7YCzyVwkFNm1ns7',
             'areaServed': [
               { '@type': 'City', 'name': 'Mongomo' },
               { '@type': 'City', 'name': 'Malabo' },

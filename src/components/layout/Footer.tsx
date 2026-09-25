@@ -198,7 +198,7 @@ export const Footer: React.FC = () => {
             <div className="contact-links">
               {/* Sede Física en Mongomo con Enlace GPS Google Maps */}
               <a 
-                href="https://www.google.com/maps/search/?api=1&query=1.630333,11.308053"
+                href="https://goo.gl/maps/wn7YCzyVwkFNm1ns7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="contact-link location-badge-link" 

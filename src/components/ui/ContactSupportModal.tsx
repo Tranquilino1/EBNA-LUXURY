@@ -175,7 +175,7 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '10px' }}>
               {/* Sede Física con GPS */}
               <a 
-                href="https://www.google.com/maps/search/?api=1&query=1.630333,11.308053"
+                href="https://goo.gl/maps/wn7YCzyVwkFNm1ns7"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '10px', background: 'var(--canvas-surface)', borderRadius: '12px', border: '1px solid var(--border-subtle)', textDecoration: 'none', color: 'inherit' }}
