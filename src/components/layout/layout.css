@@ -819,4 +819,40 @@
   }
 }
 
+/* =========================================================
+   ERGONOMIC INPUT CENTERING & ACTIVE TYPING FOCUS SYSTEM
+   ========================================================= */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
+textarea,
+select {
+  scroll-margin-top: 130px;
+  scroll-margin-bottom: 180px;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+/* Subtle luxury focus halo when actively typing in standard inputs */
+input.ebna-active-typing-input:not(.search-input):not(.global-search-input),
+textarea.ebna-active-typing-input,
+select.ebna-active-typing-input {
+  border-color: #D81B60 !important;
+  box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.18), 0 8px 24px rgba(216, 27, 96, 0.1) !important;
+}
+
+/* Highlight wrapper when typing in catalog search bar */
+.search-bar-wrapper:has(.ebna-active-typing-input) {
+  border-color: #D81B60 !important;
+  box-shadow: 0 0 0 4px rgba(216, 27, 96, 0.18), 0 14px 34px rgba(216, 27, 96, 0.16) !important;
+  transform: translateY(-1px);
+}
+
+/* Prevent iOS Safari / Android Chrome forced horizontal zoom when focusing inputs */
+@media (max-width: 768px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    font-size: max(16px, 1rem) !important;
+  }
+}
+
+
 

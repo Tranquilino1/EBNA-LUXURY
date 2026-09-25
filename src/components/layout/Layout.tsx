@@ -12,6 +12,7 @@ import { AdminFloatingDock } from '../admin/AdminFloatingDock';
 import { ChristmasSnowOverlay } from '../effects/ChristmasSnowOverlay';
 import { ChristmasMagicOverlay } from '../effects/ChristmasMagicOverlay';
 import { ScrollToTopButton } from '../ui/ScrollToTopButton';
+import { SmartInputCentering } from '../ui/SmartInputCentering';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import './layout.css';
 
@@ -22,6 +23,7 @@ export const Layout: React.FC = () => {
     <GlobalSearchProvider>
       <AdminCrudProvider>
         <div className="luxury-canvas min-h-screen">
+          <SmartInputCentering />
           <ParticleBackground />
           {isChristmasActive && settings.christmasSnow && <ChristmasSnowOverlay />}
           {isChristmasActive && <ChristmasMagicOverlay />}
