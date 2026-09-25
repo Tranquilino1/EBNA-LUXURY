@@ -17,34 +17,46 @@ export const Footer: React.FC = () => {
   const { openSearch } = useGlobalSearch();
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isNearBottom, setIsNearBottom] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [isManuallyCollapsed, setIsManuallyCollapsed] = useState(false);
+
+  const handleToggleFooter = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (isExpanded) {
+      // El usuario pulsa "Ocultar Pie de Página"
+      setIsExpanded(false);
+      setIsManuallyCollapsed(true);
+    } else {
+      // El usuario pulsa "Mostrar / Desplegar Pie de Página"
+      setIsExpanded(true);
+      setIsManuallyCollapsed(false);
+      setTimeout(() => {
+        const footerEl = document.querySelector('.footer-wrapper');
+        if (footerEl) {
+          footerEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 80);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
+      // Si el usuario ocultó manualmente el pie de página, respetar su decisión al 100%
+      if (isManuallyCollapsed) return;
+
       const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.scrollHeight - 550;
-      const nearBottom = scrollPosition >= threshold;
-      setIsNearBottom(nearBottom);
-      if (nearBottom) {
+      const threshold = document.documentElement.scrollHeight - 250;
+      if (scrollPosition >= threshold && !isExpanded) {
         setIsExpanded(true);
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleMouseEnter = () => {
-    setIsExpanded(true);
-  };
-
-  const handleMouseLeave = () => {
-    if (!isNearBottom) {
-      setIsExpanded(false);
-    }
-  };
+  }, [isManuallyCollapsed, isExpanded]);
 
   const handleShareWhatsApp = () => {
     const url = window.location.href || 'https://ebna-luxury.vercel.app';
@@ -64,11 +76,9 @@ export const Footer: React.FC = () => {
 
   return (
     <div 
-      className={`footer-wrapper ${isExpanded ? 'is-expanded' : 'is-collapsed'} ${isNearBottom ? 'is-near-bottom' : ''}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      className={`footer-wrapper ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}
     >
-      {/* Floating Glassmorphism Dock Bar: Inicio + Lupa de Búsqueda General + Desplegar */}
+      {/* Floating Glassmorphism Dock Bar: Inicio + Lupa de Búsqueda General + Ocultar/Desplegar Pie de Página */}
       <div className="footer-floating-glass-dock glass-panel">
         <Link 
           to="/" 
@@ -95,26 +105,26 @@ export const Footer: React.FC = () => {
         <button 
           type="button"
           className="footer-dock-toggle-btn"
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={handleToggleFooter}
           title={isExpanded ? 'Ocultar pie de página' : 'Desplegar pie de página'}
           aria-expanded={isExpanded}
         >
           {isExpanded ? (
             <>
-              <ChevronDown size={15} color="#D81B60" />
-              <span>Ocultar</span>
+              <ChevronDown size={15} color="#D81B60" strokeWidth={2.5} />
+              <span>Ocultar Pie de Página</span>
             </>
           ) : (
             <>
-              <ChevronUp size={15} color="#D81B60" />
-              <span>Info</span>
+              <ChevronUp size={15} color="#D81B60" strokeWidth={2.5} />
+              <span>Mostrar Pie de Página</span>
             </>
           )}
         </button>
       </div>
 
       {/* Main Footer Body */}
-      <footer className="footer glass-panel">
+      <footer className="footer glass-panel" aria-hidden={!isExpanded}>
         <div className="footer-content">
           {/* Brand & App Download */}
           <div className="footer-brand">
@@ -461,7 +471,17 @@ export const Footer: React.FC = () => {
           </div>
         </div>
         
-        <div className="footer-bottom" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', textAlign: 'center', paddingTop: '16px' }}>
+        <div className="footer-bottom" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', textAlign: 'center', paddingTop: '16px' }}>
+          <button
+            type="button"
+            onClick={handleToggleFooter}
+            className="footer-nav-search-pill glass-panel"
+            style={{ padding: '6px 16px', borderRadius: '20px', marginBottom: '4px' }}
+            title="Ocultar pie de página"
+          >
+            <ChevronDown size={14} strokeWidth={2.5} />
+            <span>Ocultar Pie de Página</span>
+          </button>
           <p style={{ margin: 0 }}>
             &copy; {currentYear} EBNA Moda & Cosmética. Todos los derechos reservados. | PWA Universal compatible con iOS, Android, Windows, Mac, Chromebook y Linux.
           </p>
