@@ -112,19 +112,18 @@ export function AdminDashboard() {
 
   const handleSave = async (productData: Partial<Product>, imageFile?: File) => {
     const targetId = productData.id || selectedProduct?.id;
-    // Close modal immediately (0ms)
-    setIsFormOpen(false);
-    setSelectedProduct(null);
-    setToastInfo({ message: '⚡ Guardado instantáneamente en todos los sistemas', type: 'success' });
-
     try {
       if (targetId) {
         await updateProduct(targetId, productData, imageFile);
       } else {
         await addProduct(productData, imageFile);
       }
+      setIsFormOpen(false);
+      setSelectedProduct(null);
+      setToastInfo({ message: '✨ Guardado permanentemente en la base de datos de Turso Cloud', type: 'success' });
     } catch (err: any) {
-      console.warn('Background sync note:', err);
+      console.error('Error saving product in AdminDashboard:', err);
+      throw err;
     }
   };
 

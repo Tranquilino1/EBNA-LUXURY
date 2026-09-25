@@ -16,9 +16,9 @@ export interface OptimizedImageResult {
  */
 export async function compressImageFile(
   file: File,
-  maxWidth = 1200,
-  maxHeight = 1200,
-  quality = 0.84
+  maxWidth = 900,
+  maxHeight = 900,
+  quality = 0.80
 ): Promise<OptimizedImageResult> {
   return new Promise((resolve, reject) => {
     if (!file.type.startsWith('image/')) {

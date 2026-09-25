@@ -140,8 +140,33 @@ export async function fetchProductsFromTurso(baseProducts?: Product[]): Promise<
   }
 }
 
+// Validation helper for foreign key constraints in Turso Cloud
+const VALID_CATEGORY_IDS = new Set([
+  'cat-higiene-corporal',
+  'cat-cosmetica-facial',
+  'cat-perfumeria',
+  'cat-bolsos-accesorios',
+  'cat-moda-infantil',
+  'cat-moda-mujer',
+  'cat-calzado'
+]);
+
+export function resolveValidCategoryId(cat?: string): string {
+  if (!cat) return 'cat-moda-mujer';
+  const clean = cat.toLowerCase().replace(/_/g, '-');
+  const candidate = clean.startsWith('cat-') ? clean : `cat-${clean}`;
+  if (VALID_CATEGORY_IDS.has(candidate)) return candidate;
+  if (candidate.includes('bolso') || candidate.includes('accesorio')) return 'cat-bolsos-accesorios';
+  if (candidate.includes('calzado') || candidate.includes('zapato')) return 'cat-calzado';
+  if (candidate.includes('cosmetica') || candidate.includes('facial')) return 'cat-cosmetica-facial';
+  if (candidate.includes('higiene') || candidate.includes('corporal')) return 'cat-higiene-corporal';
+  if (candidate.includes('perfum')) return 'cat-perfumeria';
+  if (candidate.includes('infantil') || candidate.includes('bebe')) return 'cat-moda-infantil';
+  return 'cat-moda-mujer';
+}
+
 /**
- * Persists an edited or newly created product directly into Turso Cloud
+ * Persists an edited or newly created product directly into Turso Cloud (Universal Source of Truth)
  */
 export async function syncProductToTurso(product: Partial<Product>): Promise<boolean> {
   const client = getTursoClient();
@@ -157,6 +182,8 @@ export async function syncProductToTurso(product: Partial<Product>): Promise<boo
     const priceVal = Math.round(product.priceFCFA || product.price || 0);
     const inStockVal = product.in_stock !== undefined ? (product.in_stock ? 1 : 0) : 1;
     const now = Date.now();
+    const categoryId = resolveValidCategoryId(product.category);
+    const descriptionVal = product.description && product.description.trim() ? product.description.trim() : 'Artículo de alta gama de la colección oficial Sindy Luxury by EBNA.';
 
     // Check if record exists
     const checkRes = await client.execute({
@@ -165,7 +192,7 @@ export async function syncProductToTurso(product: Partial<Product>): Promise<boo
     });
 
     if (checkRes.rows.length > 0) {
-      // Update
+      // Update existing record
       const existingId = String(checkRes.rows[0].id);
       await client.execute({
         sql: `UPDATE products 
@@ -173,15 +200,17 @@ export async function syncProductToTurso(product: Partial<Product>): Promise<boo
                   description = ?, 
                   price = ?, 
                   stock = ?, 
+                  category_id = ?,
                   main_image_url = ?, 
                   gallery_images = ?, 
                   updated_at = ?
               WHERE id = ?`,
         args: [
           product.name || 'Producto EBNA',
-          product.description || '',
+          descriptionVal,
           priceVal,
           inStockVal ? 10 : 0,
+          categoryId,
           mainImg,
           gallery,
           now,
@@ -191,11 +220,7 @@ export async function syncProductToTurso(product: Partial<Product>): Promise<boo
       console.log(`[Turso Cloud] Product ${existingId} updated successfully.`);
       return true;
     } else {
-      // Insert
-      const categoryId = product.category 
-        ? `cat-${product.category.toLowerCase().replace(/_/g, '-')}` 
-        : 'cat-moda-mujer';
-
+      // Insert new record
       await client.execute({
         sql: `INSERT INTO products 
               (id, slug, title, description, price, currency, stock, status, category_id, main_image_url, gallery_images, is_featured, created_at, updated_at)
@@ -204,7 +229,7 @@ export async function syncProductToTurso(product: Partial<Product>): Promise<boo
           product.id,
           product.slug || product.id,
           product.name || 'Nuevo Producto',
-          product.description || '',
+          descriptionVal,
           priceVal,
           inStockVal ? 10 : 0,
           categoryId,
@@ -219,6 +244,51 @@ export async function syncProductToTurso(product: Partial<Product>): Promise<boo
     }
   } catch (err) {
     console.error('[Turso Cloud Sync Error]:', err);
+    return false;
+  }
+}
+
+/**
+ * Reads global site customization settings from Turso Cloud
+ */
+export async function fetchSiteSettingsFromTurso(): Promise<Record<string, any> | null> {
+  const client = getTursoClient();
+  if (!client) return null;
+  try {
+    const res = await client.execute('SELECT key, value FROM site_settings');
+    if (!res.rows || res.rows.length === 0) return null;
+    const settings: Record<string, any> = {};
+    for (const r of res.rows) {
+      try {
+        settings[String(r.key)] = JSON.parse(String(r.value));
+      } catch {
+        settings[String(r.key)] = r.value;
+      }
+    }
+    return settings;
+  } catch (err) {
+    console.warn('[Turso Settings Read Notice]:', err);
+    return null;
+  }
+}
+
+/**
+ * Persists global site customization settings to Turso Cloud (Available across all devices)
+ */
+export async function saveSiteSettingsToTurso(key: string, value: any): Promise<boolean> {
+  const client = getTursoClient();
+  if (!client) return false;
+  try {
+    const valStr = typeof value === 'string' ? value : JSON.stringify(value);
+    await client.execute({
+      sql: `INSERT INTO site_settings (key, value, updated_at) 
+            VALUES (?, ?, ?) 
+            ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
+      args: [key, valStr, Date.now()]
+    });
+    return true;
+  } catch (err) {
+    console.warn('[Turso Settings Save Notice]:', err);
     return false;
   }
 }

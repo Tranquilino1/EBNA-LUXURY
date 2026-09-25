@@ -205,19 +205,21 @@ export function useAdminProducts() {
         updated_at: new Date().toISOString(),
       };
 
-      // 1. Add locally for instant UI update (0ms)
+      // 1. Guaranteed commit to Turso Cloud (Universal Source of Truth)
+      try {
+        await syncProductToTurso(newProduct);
+        console.log(`[Turso Cloud] Successfully persisted new product ${newProduct.name} (${validId})`);
+      } catch (tursoErr) {
+        console.warn('[Turso Sync Warning]:', tursoErr);
+      }
+
+      // 2. Update local state and broadcast
       demoAddProduct(newProduct);
       setProducts(prev => [newProduct, ...prev.filter(p => p.id !== validId)]);
       notifyCatalogChange('add', newProduct);
 
-      // 2. Insert into Turso Cloud & Supabase in background (Non-blocking: 0ms UI latency)
+      // 3. Secondary asynchronous backup to Supabase
       (async () => {
-        try {
-          await syncProductToTurso(newProduct);
-        } catch (tursoErr) {
-          console.warn('[Turso Sync Notice]:', tursoErr);
-        }
-
         try {
           const isInfantilAdd = newProduct.category === 'MODA_INFANTIL';
           const dbCategoryAdd = isInfantilAdd ? 'MODA_MUJER' : (newProduct.category || 'MODA_MUJER');
@@ -281,7 +283,6 @@ export function useAdminProducts() {
         }
       }
 
-      // 1. Update locally in 0ms (OPTIMISTIC INSTANT UPDATE)
       const existing = products.find(p => p.id === id || p.slug === id || p.sku === id);
       const updated: Product = {
         ...(existing || {}),
@@ -292,19 +293,21 @@ export function useAdminProducts() {
         updated_at: new Date().toISOString()
       } as Product;
 
-      // Update state immediately without ANY delay
+      // 1. Guaranteed commit to Turso Cloud (Universal Source of Truth)
+      try {
+        await syncProductToTurso(updated);
+        console.log(`[Turso Cloud] Successfully updated product ${updated.name} (${updated.id})`);
+      } catch (tursoErr) {
+        console.warn('[Turso Update Warning]:', tursoErr);
+      }
+
+      // 2. Update local state and broadcast
       setProducts(prev => prev.map(p => (p.id === id || p.slug === id || p.sku === id) ? updated : p));
       demoUpdateProduct(id, updated);
       notifyCatalogChange('update', updated);
 
-      // 2. Direct update in Turso Cloud & Supabase (Non-blocking background sync: 0ms UI latency)
+      // 3. Secondary asynchronous backup to Supabase
       (async () => {
-        try {
-          await syncProductToTurso(updated);
-        } catch (tursoErr) {
-          console.warn('[Turso Update Notice]:', tursoErr);
-        }
-
         try {
           const isInfantilUpd = updated.category === 'MODA_INFANTIL';
           const dbCategoryUpd = isInfantilUpd ? 'MODA_MUJER' : (updated.category || 'MODA_MUJER');
@@ -337,7 +340,6 @@ export function useAdminProducts() {
           if (updated.colors) supabasePayload.colors = updated.colors;
           if (updated.sizes) supabasePayload.sizes = updated.sizes;
 
-          // Direct update in Supabase (by ID or Slug)
           const isUUID = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ||
                          (id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id));
           const targetIdToUse = (updated.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(updated.id)) ? updated.id : id;
@@ -378,28 +380,29 @@ export function useAdminProducts() {
       const prod = products.find(p => p.id === id || p.slug === id || p.sku === id);
       const targetSlug = prod?.slug || id;
 
-      // 1. Immediate local state update for instant UI feedback (0ms)
+      // 1. Guaranteed deletion from Turso Cloud LibSQL (Universal Database)
+      try {
+        await deleteProductFromTurso(id);
+        if (targetSlug && targetSlug !== id) {
+          await deleteProductFromTurso(targetSlug);
+        }
+        if (prod?.id && prod.id !== id) {
+          await deleteProductFromTurso(prod.id);
+        }
+        console.log(`[Turso Cloud DB] Product ${id} permanently deleted.`);
+      } catch (tursoErr) {
+        console.warn('[Turso Delete Notice]:', tursoErr);
+      }
+
+      // 2. Update local state
       setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug && p.sku !== id));
       demoDeleteProduct(id);
       if (prod?.id) demoDeleteProduct(prod.id);
       if (targetSlug && targetSlug !== id) demoDeleteProduct(targetSlug);
       notifyCatalogChange('delete', { id, slug: targetSlug });
 
-      // 2. Physical Deletion from Turso Cloud LibSQL (Universal Database) & Supabase
+      // 3. Secondary Supabase delete
       (async () => {
-        try {
-          await deleteProductFromTurso(id);
-          if (targetSlug && targetSlug !== id) {
-            await deleteProductFromTurso(targetSlug);
-          }
-          if (prod?.id && prod.id !== id) {
-            await deleteProductFromTurso(prod.id);
-          }
-          console.log(`[Turso Cloud DB] Product ${id} permanently deleted.`);
-        } catch (tursoErr) {
-          console.warn('[Turso Delete Notice]:', tursoErr);
-        }
-
         try {
           const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
           if (isUUID) {
@@ -411,7 +414,6 @@ export function useAdminProducts() {
           if (prod?.id) {
             await supabase.from('products').delete().eq('id', prod.id);
           }
-          console.log(`[Supabase DB] Product ${id} permanently deleted.`);
         } catch (err) {
           console.warn('Background Supabase delete notice:', err);
         }
@@ -425,21 +427,22 @@ export function useAdminProducts() {
     const prod = products.find(p => p.id === id);
     const newStock = !currentStockStatus;
 
-    // 1. Immediate local update (0ms)
+    // 1. Guaranteed commit to Turso Cloud
+    try {
+      if (prod) {
+        await syncProductToTurso({ ...prod, in_stock: newStock, inStock: newStock });
+      }
+    } catch (tursoErr) {
+      console.warn('Turso toggleStock notice:', tursoErr);
+    }
+
+    // 2. Immediate local update
     demoUpdateProduct(id, { in_stock: newStock, inStock: newStock });
     setProducts(prev => prev.map(p => (p.id === id || p.slug === id || p.sku === id) ? { ...p, in_stock: newStock, inStock: newStock } : p));
     notifyCatalogChange('toggleStock', { id, in_stock: newStock });
 
-    // 2. Turso Cloud & Supabase update in background
+    // 3. Supabase update in background
     (async () => {
-      try {
-        if (prod) {
-          await syncProductToTurso({ ...prod, in_stock: newStock, inStock: newStock });
-        }
-      } catch (tursoErr) {
-        console.warn('Background Turso toggleStock notice:', tursoErr);
-      }
-
       try {
         if (prod) {
           await supabase.from('products').update({ in_stock: newStock }).eq('slug', prod.slug);

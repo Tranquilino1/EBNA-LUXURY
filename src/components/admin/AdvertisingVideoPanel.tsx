@@ -58,9 +58,18 @@ export const AdvertisingVideoPanel: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setUploadFileName(file.name);
-      const url = URL.createObjectURL(file);
-      setMp4Url(url);
-      setVideoType('mp4');
+      if (file.size <= 3 * 1024 * 1024) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setMp4Url(reader.result as string);
+          setVideoType('mp4');
+        };
+        reader.readAsDataURL(file);
+      } else {
+        const url = URL.createObjectURL(file);
+        setMp4Url(url);
+        setVideoType('mp4');
+      }
     }
   };
 

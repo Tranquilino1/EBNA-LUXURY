@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { SiteCustomizationSettings } from '../types';
 import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
+import { fetchSiteSettingsFromTurso, saveSiteSettingsToTurso } from '../lib/tursoClient';
 
 export const isDateInChristmasSeason = (): boolean => {
   const now = new Date();
@@ -81,6 +82,27 @@ export const CustomizationProvider: React.FC<{ children: React.ReactNode }> = ({
     root.setAttribute('data-christmas', isChristmasActive ? 'true' : 'false');
   }, [settings, isChristmasActive]);
 
+  // Load customization settings from Turso Cloud on mount (Universal Cross-Device Truth)
+  useEffect(() => {
+    (async () => {
+      try {
+        const remote = await fetchSiteSettingsFromTurso();
+        if (remote && remote.customization_settings) {
+          const remoteSettings = remote.customization_settings;
+          setSettings(prev => {
+            const merged = { ...prev, ...remoteSettings };
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+            } catch (e) {}
+            return merged;
+          });
+        }
+      } catch (err) {
+        console.warn('[Turso Settings Init Notice]:', err);
+      }
+    })();
+  }, []);
+
   // Synchronize across tabs and all connected client devices in real-time
   useEffect(() => {
     const unsub = subscribeToCatalogChanges((event) => {
@@ -113,6 +135,10 @@ export const CustomizationProvider: React.FC<{ children: React.ReactNode }> = ({
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       } catch (e) {}
       notifyCatalogChange('customization_update', updated);
+      // Persist to Turso Cloud so mobile and desktop browsers instantly see the changes
+      saveSiteSettingsToTurso('customization_settings', updated).catch(err => {
+        console.warn('[Turso Settings Save Notice]:', err);
+      });
       return updated;
     });
   };
@@ -122,6 +148,8 @@ export const CustomizationProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_SETTINGS));
     } catch (e) {}
+    notifyCatalogChange('customization_update', DEFAULT_SETTINGS);
+    saveSiteSettingsToTurso('customization_settings', DEFAULT_SETTINGS).catch(() => {});
   };
 
   return (

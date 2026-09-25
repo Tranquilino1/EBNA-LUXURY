@@ -19,7 +19,8 @@ import {
   Save, 
   AlertTriangle, 
   LogOut,
-  Sparkles
+  Sparkles,
+  Loader2
 } from 'lucide-react';
 import { PinterestImagePicker } from './PinterestImagePicker';
 import { compressImageFile } from '../../lib/imageOptimizer';
@@ -55,6 +56,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
   const [error, setError] = useState('');
   const [isDirty, setIsDirty] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -98,8 +100,9 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
     }
   };
 
-  const handleSubmit = (e?: React.FormEvent) => {
+  const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (isSaving) return;
     setError('');
 
     try {
@@ -111,6 +114,8 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
       if (!formData.name.trim()) {
         throw new Error('El nombre de la prenda o artículo es obligatorio');
       }
+
+      setIsSaving(true);
 
       const finalPrice = Math.round(priceNum);
       const generatedSlug = formData.slug.trim() || formData.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
@@ -142,13 +147,15 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
         productPayload.sku = product.sku;
       }
 
+      // Esperar obligatoriamente la confirmación en la nube (Turso) antes de cerrar el modal
+      await onSave(productPayload, imageFile || undefined);
       setIsDirty(false);
       onClose();
-      Promise.resolve(onSave(productPayload, imageFile || undefined)).catch((err) => {
-        console.error('Error al guardar el producto:', err);
-      });
     } catch (err: any) {
-      setError(err.message || 'Error al procesar el formulario');
+      console.error('Error al guardar el producto:', err);
+      setError(err.message || 'Error al persistir el producto en la nube. Comprueba tu conexión.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -617,28 +624,48 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
             <button 
               type="button" 
               onClick={handleAttemptClose} 
-              style={{ padding: '10px 20px', borderRadius: '25px', border: '1px solid #CBD5E1', background: 'white', color: '#475569', fontWeight: 600, fontSize: '0.88rem', cursor: 'pointer' }}
+              disabled={isSaving}
+              style={{ 
+                padding: '10px 20px', 
+                borderRadius: '25px', 
+                border: '1px solid #CBD5E1', 
+                background: 'white', 
+                color: '#475569', 
+                fontWeight: 600, 
+                fontSize: '0.88rem', 
+                cursor: isSaving ? 'not-allowed' : 'pointer',
+                opacity: isSaving ? 0.6 : 1
+              }}
             >
               Cancelar
             </button>
             <button 
               type="submit" 
+              disabled={isSaving}
               style={{ 
                 padding: '10px 24px', 
                 borderRadius: '25px', 
                 border: 'none', 
-                background: 'linear-gradient(135deg, #D81B60, #C2185B)', 
+                background: isSaving ? '#94A3B8' : 'linear-gradient(135deg, #D81B60, #C2185B)', 
                 color: 'white', 
                 fontWeight: 800, 
                 fontSize: '0.88rem', 
-                cursor: 'pointer', 
-                boxShadow: '0 4px 15px rgba(216, 27, 96, 0.35)', 
+                cursor: isSaving ? 'not-allowed' : 'pointer', 
+                boxShadow: isSaving ? 'none' : '0 4px 15px rgba(216, 27, 96, 0.35)', 
                 display: 'inline-flex', 
                 alignItems: 'center', 
                 gap: '8px' 
               }}
             >
-              <Save size={16} /> {product ? 'Guardar Cambios' : 'Publicar Producto'}
+              {isSaving ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" /> Guardando en la nube...
+                </>
+              ) : (
+                <>
+                  <Save size={16} /> {product ? 'Guardar Cambios' : 'Publicar Producto'}
+                </>
+              )}
             </button>
           </div>
         </form>

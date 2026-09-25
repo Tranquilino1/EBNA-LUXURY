@@ -128,7 +128,7 @@ export function demoGetProducts(): Product[] {
             return {
               ...fresh,
               ...p,
-              images: fresh.images, // Las imágenes oficiales siempre se priorizan sobre cachés antiguas
+              images: (p.images && p.images.primary) ? p.images : fresh.images,
             };
           }
           return p;
@@ -161,28 +161,7 @@ export function demoSaveProducts(products: Product[]): void {
   try {
     localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(products));
   } catch (e) {
-    console.warn('Error saving products to local cache:', e);
-    try {
-      // Resguardo de seguridad: Si se excede la cuota de 5MB de localStorage, sanitizar Base64 pesados
-      const sanitized = products.map(p => {
-        const prim = p.images?.primary || '';
-        if (typeof prim === 'string' && prim.startsWith('data:') && prim.length > 30000) {
-          return {
-            ...p,
-            images: {
-              ...p.images,
-              primary: '/icons/ebna-logo-white.png',
-              0: '/icons/ebna-logo-white.png',
-              gallery: ['/icons/ebna-logo-white.png']
-            }
-          };
-        }
-        return p;
-      });
-      localStorage.setItem(LOCAL_PRODUCTS_KEY, JSON.stringify(sanitized));
-    } catch {
-      // Si el almacenamiento local está saturado por otros datos del navegador
-    }
+    console.warn('Alerta de cuota en localStorage; Turso Cloud mantiene la fuente de verdad universal:', e);
   }
 }
 
