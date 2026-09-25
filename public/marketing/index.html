@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Publicitario Oficial | Sindy Luxury by EBNA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold-primary: #D4AF37;
+      --gold-light: #F3E5AB;
+      --gold-dark: #AA7C11;
+      --bg-dark: #0B0F19;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --text-light: #F8FAFC;
+      --text-muted: #94A3B8;
+      --magenta-couture: #D81B60;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1.5rem 5rem 1.5rem;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(216, 27, 96, 0.07) 0%, transparent 40%);
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 1rem 2.5rem 1rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      margin-bottom: 3.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(216, 27, 96, 0.15));
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFF, var(--gold-light), var(--gold-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 760px;
+      margin: 0 auto 1.8rem auto;
+      font-weight: 300;
+    }
+
+    .quick-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(212, 175, 55, 0.5);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-light);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--gold-light);
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: var(--gold-light);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2.5rem;
+      margin-bottom: 4.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 20px;
+      padding: 1.8rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold-primary);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      color: var(--gold-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .card-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold-primary);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .img-wrapper {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .img-wrapper:hover img {
+      transform: scale(1.02);
+    }
+
+    .card-details {
+      margin-top: auto;
+    }
+
+    .specs-list {
+      list-style: none;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.4rem;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 1rem;
+      border-radius: 10px;
+      border-left: 2px solid var(--gold-primary);
+    }
+
+    .specs-list li {
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .specs-list li strong {
+      color: var(--text-light);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .card-actions .btn {
+      flex: 1;
+      justify-content: center;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+    }
+
+    /* Production Specs Box */
+    .specs-box {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(216, 27, 96, 0.04));
+      border: 1.5px solid rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+      padding: 2.2rem;
+      margin-top: 2rem;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .spec-item h4 {
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .spec-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+        padding: 0;
+      }
+      .quick-actions, .card-actions, header p, .specs-box {
+        display: none !important;
+      }
+      .card {
+        border: none;
+        box-shadow: none;
+        page-break-after: always;
+        padding: 0;
+        margin: 0;
+      }
+      .img-wrapper {
+        border: none;
+        box-shadow: none;
+      }
+      .img-wrapper img {
+        width: 100%;
+        max-height: 95vh;
+        object-fit: contain;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">Sindy Luxury by EBNA • Colección Oficial 2026</span>
+      <h1>Dirección de Arte & Material Publicitario</h1>
+      <p class="subtitle">
+        Piezas de diseño gráfico publicitario de alta gama concebidas para la promoción omnicanal (Vitrinas, Marquesinas, Redes Sociales e Imprenta Offset de Lujo) de la boutique online <strong>ebna-luxury.vercel.app</strong> en Guinea Ecuatorial (Malabo y Bata).
+      </p>
+      <div class="quick-actions">
+        <button class="btn btn-gold" onclick="window.print()">
+          🖨️ Imprimir / Guardar en PDF
+        </button>
+        <a class="btn btn-outline" href="https://ebna-luxury.vercel.app" target="_blank">
+          🌐 Visitar Tienda en Vivo
+        </a>
+      </div>
+    </header>
+
+    <!-- SECCIÓN 1: FLYERS PUBLICITARIOS -->
+    <section>
+      <h2 class="section-title">✨ Flyers Publicitarios Oficiales (Formato A5 / Redes Sociales)</h2>
+      <p class="section-desc">Diseñados con proporción áurea para folletos de mano de lujo, cartas de invitación VIP y publicaciones en formato 3:4 para Instagram, Facebook y WhatsApp Business.</p>
+
+      <div class="grid">
+        <!-- FLYER 1 -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Flyer 01: Gran Lanzamiento & Alta Costura</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">Colección Gala & Vestidos de Pasarela</p>
+            </div>
+            <span class="card-tag">3:4 / A5</span>
+          </div>
+
+          <div class="img-wrapper">
+            <img src="/marketing/flyer_1_alta_costura.jpg" alt="Flyer de Alta Costura y Lanzamiento - Sindy Luxury by EBNA" loading="lazy">
+          </div>
+
+          <div class="card-details">
+            <ul class="specs-list">
+              <li><span>Concepto:</span> <strong>Elegancia Regia & E-Commerce</strong></li>
+              <li><span>Paleta:</span> <strong>Oro Satinado & Magenta Couture</strong></li>
+              <li><span>Llamada a la Acción:</span> <strong>Código QR Interactivo a la Web</strong></li>
+              <li><span>Destino:</span> <strong>Lanzamiento en Malabo y Bata</strong></li>
+            </ul>
+            <div class="card-actions">
+              <a href="/marketing/flyer_1_alta_costura.jpg" download="Flyer_Alta_Costura_Sindy_Luxury.jpg" class="btn btn-gold">
+                ⬇️ Descargar HD
+              </a>
+              <a href="/marketing/flyer_1_alta_costura.jpg" target="_blank" class="btn btn-outline">
+                🔍 Ver Fullscreen
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- FLYER 2 -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Flyer 02: Alta Perfumería & Belleza Facial</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">Fragancias de Diseñador & Cosmética Francesa</p>
+            </div>
+            <span class="card-tag">3:4 / A5</span>
+          </div>
+
+          <div class="img-wrapper">
+            <img src="/marketing/flyer_2_perfumeria_cosmetica.jpg" alt="Flyer de Perfumería y Belleza - Sindy Luxury by EBNA" loading="lazy">
+          </div>
+
+          <div class="card-details">
+            <ul class="specs-list">
+              <li><span>Concepto:</span> <strong>Opulencia Sensorial & Skincare</strong></li>
+              <li><span>Bodegón:</span> <strong>Frascos en Cristal, Orquídeas y Mármol</strong></li>
+              <li><span>Llamada a la Acción:</span> <strong>Envíos Express Malabo & Bata</strong></li>
+              <li><span>Destino:</span> <strong>Campaña Cosmética & Fragancias</strong></li>
+            </ul>
+            <div class="card-actions">
+              <a href="/marketing/flyer_2_perfumeria_cosmetica.jpg" download="Flyer_Perfumeria_Belleza_Sindy_Luxury.jpg" class="btn btn-gold">
+                ⬇️ Descargar HD
+              </a>
+              <a href="/marketing/flyer_2_perfumeria_cosmetica.jpg" target="_blank" class="btn btn-outline">
+                🔍 Ver Fullscreen
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: PÓSTERS PUBLICITARIOS -->
+    <section>
+      <h2 class="section-title">👑 Pósters Publicitarios de Gran Formato (A2 / A3 / Escaparates)</h2>
+      <p class="section-desc">Pósters de impacto visual masivo para marquesinas en avenidas principales, fachadas de boutiques exclusivas, stands de centros comerciales y paneles de bienvenida.</p>
+
+      <div class="grid">
+        <!-- PÓSTER 1 -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Póster 01: Pasarela Internacional</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">Campaña Cinematográfica de Pasarela</p>
+            </div>
+            <span class="card-tag">2:3 / A2-A3</span>
+          </div>
+
+          <div class="img-wrapper">
+            <img src="/marketing/poster_1_pasarela_internacional.jpg" alt="Póster de Pasarela Internacional - Sindy Luxury by EBNA" loading="lazy">
+          </div>
+
+          <div class="card-details">
+            <ul class="specs-list">
+              <li><span>Iluminación:</span> <strong>Candelabros y Foco Spotlight Dorado</strong></li>
+              <li><span>Vestuario:</span> <strong>Traje Escultural Bordado en Oro y Capa</strong></li>
+              <li><span>Titular:</span> <strong>Pasarela & Alta Costura Internacional</strong></li>
+              <li><span>Ubicación:</span> <strong>Marquesinas & Escaparates Centrales</strong></li>
+            </ul>
+            <div class="card-actions">
+              <a href="/marketing/poster_1_pasarela_internacional.jpg" download="Poster_Pasarela_Internacional_Sindy_Luxury.jpg" class="btn btn-gold">
+                ⬇️ Descargar HD
+              </a>
+              <a href="/marketing/poster_1_pasarela_internacional.jpg" target="_blank" class="btn btn-outline">
+                🔍 Ver Fullscreen
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- PÓSTER 2 -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Póster 02: Boutique Digital & Accesorios</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">Tu Boutique de Alta Costura en un Clic</p>
+            </div>
+            <span class="card-tag">2:3 / A2-A3</span>
+          </div>
+
+          <div class="img-wrapper">
+            <img src="/marketing/poster_2_boutique_digital.jpg" alt="Póster de Boutique Digital y Accesorios - Sindy Luxury by EBNA" loading="lazy">
+          </div>
+
+          <div class="card-details">
+            <ul class="specs-list">
+              <li><span>Composición:</span> <strong>Smartphone Flotante & Accesorios Dior/Gucci</strong></li>
+              <li><span>Entorno:</span> <strong>Galería Arquitectónica Clásica de Lujo</strong></li>
+              <li><span>Titular:</span> <strong>Tu Boutique de Alta Costura en un Clic</strong></li>
+              <li><span>Mensaje:</span> <strong>Compra Online 24/7 con Envío Directo</strong></li>
+            </ul>
+            <div class="card-actions">
+              <a href="/marketing/poster_2_boutique_digital.jpg" download="Poster_Boutique_Digital_Sindy_Luxury.jpg" class="btn btn-gold">
+                ⬇️ Descargar HD
+              </a>
+              <a href="/marketing/poster_2_boutique_digital.jpg" target="_blank" class="btn btn-outline">
+                🔍 Ver Fullscreen
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ESPECIFICACIONES DE IMPRENTA SENIOR -->
+    <div class="specs-box">
+      <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold-primary); margin-bottom: 0.4rem;">
+        📋 Especificaciones Técnicas para Imprenta Offset y Gran Formato (Senior Graphic Design)
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">
+        Instrucciones de preimpresión para garantizar la máxima fidelidad cromática y textura táctil de lujo en los talleres gráficos de Malabo y Bata:
+      </p>
+
+      <div class="specs-grid">
+        <div class="spec-item">
+          <h4>Papel & Gramaje Recomendado</h4>
+          <p>• <strong>Flyers A5:</strong> Papel Couché Estucado Semibrillante de <strong>250 g/m²</strong> con plastificado mate suave (Soft-Touch).<br>• <strong>Pósters A2/A3:</strong> Papel Couché de <strong>300 g/m²</strong> o Vinilo Polimérico Mate retroiluminado.</p>
+        </div>
+
+        <div class="spec-item">
+          <h4>Acabados de Lujo Especiales</h4>
+          <p>• <strong>Estampado en Caliente (Hot Stamping):</strong> Lámina de Oro Champán metalizada en los logotipos "SINDY LUXURY BY EBNA".<br>• <strong>Barniz UV UVI Sectorizado:</strong> Brillo selectivo en los frascos de perfume, joyas y vestidos.</p>
+        </div>
+
+        <div class="spec-item">
+          <h4>Perfil de Color & Resolución</h4>
+          <p>• Espacio de color para imprenta: <strong>CMYK Fogra39 / ISO Coated v2</strong>.<br>• Resolución nativa: <strong>300 DPI reales</strong> al 100% de escala.<br>• Sangrado perimetral reglamentario: <strong>3 mm</strong> por cada lado con marcas de corte.</p>
+        </div>
+
+        <div class="spec-item">
+          <h4>Canales Digitales (Social Media)</h4>
+          <p>• Perfil digital: <strong>sRGB IEC61966-2.1</strong> optimizado.<br>• Formato óptimo: JPG / WebP a 85% de compresión sin aberración cromática para Instagram Reels, Posts y WhatsApp Business Status.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
