@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossier Técnico, Manual de Operaciones y Contrato Comercial | Sindy Luxury by EBNA</title>
+  <link rel="icon" type="image/png" href="/icons/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0F172A;
+      --accent: #D81B60;
+      --gold: #C5A059;
+      --gold-dark: #997839;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #1E293B;
+      --text-muted: #64748B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      line-height: 1.65;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Floating Navigation / Action Bar */
+    .action-bar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--gold);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .action-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-badge {
+      background: var(--gold);
+      color: #0F172A;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .action-bar-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-print {
+      background: linear-gradient(135deg, #D81B60, #AD1457);
+      color: white;
+      box-shadow: 0 3px 12px rgba(216, 27, 96, 0.35);
+    }
+
+    .btn-print:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 16px rgba(216, 27, 96, 0.5);
+    }
+
+    .btn-back {
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Container */
+    .document-wrapper {
+      max-width: 960px;
+      margin: 32px auto 60px;
+      background: var(--card-bg);
+      padding: 60px 70px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Letterhead / Header */
+    .header-letterhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--gold);
+      margin-bottom: 32px;
+    }
+
+    .header-logo-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-logo-brand img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      padding: 2px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .header-brand-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: #0F172A;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+
+    .header-brand-text p {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    .header-agency-badge {
+      text-align: right;
+    }
+
+    .header-agency-badge img {
+      width: 80px;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid #CBD5E1;
+      padding: 4px;
+      background: white;
+    }
+
+    .header-agency-badge .agency-name {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* Document Title Banner */
+    .title-banner {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.03) 0%, rgba(216, 27, 96, 0.05) 100%);
+      border: 1px solid rgba(197, 160, 89, 0.35);
+      border-left: 6px solid var(--gold);
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 36px;
+    }
+
+    .title-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px;
+      color: #0F172A;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(197, 160, 89, 0.4);
+      font-size: 12px;
+    }
+
+    .meta-item strong {
+      color: #0F172A;
+      display: block;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    /* Section Headers */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: #0F172A;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--border);
+      margin: 36px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-num {
+      background: var(--gold);
+      color: #0F172A;
+      font-size: 12px;
+      font-weight: 800;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    h3 {
+      font-size: 15px;
+      color: #0F172A;
+      margin: 20px 0 10px;
+      font-weight: 700;
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: #334155;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 16px;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 12.5px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+
+    th {
+      background: #F1F5F9;
+      color: #0F172A;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* Highlight Cards */
+    .spec-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+
+    .spec-card h4 {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    /* Contract Price Callout Box */
+    .price-callout-box {
+      background: linear-gradient(135deg, #FFF7ED 0%, #FFFBEB 100%);
+      border: 2px solid #F59E0B;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 24px 0;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.12);
+    }
+
+    .price-callout-header {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #B45309;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .price-real {
+      font-size: 14px;
+      color: #64748B;
+      text-decoration: line-through;
+      margin-bottom: 6px;
+    }
+
+    .price-final {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0F172A;
+      font-family: 'Playfair Display', serif;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .price-final span {
+      color: var(--accent);
+    }
+
+    .price-rationale {
+      font-size: 12.5px;
+      color: #78350F;
+      line-height: 1.6;
+      border-top: 1px dashed rgba(245, 158, 11, 0.4);
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+
+    /* Signatures Section */
+    .signatures-block {
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 2px solid var(--border);
+    }
+
+    .signatures-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .signature-card {
+      text-align: center;
+    }
+
+    .signature-line {
+      width: 80%;
+      margin: 0 auto 12px;
+      border-bottom: 1.5px solid #0F172A;
+      height: 48px;
+    }
+
+    .signature-role {
+      font-weight: 800;
+      font-size: 13px;
+      color: #0F172A;
+    }
+
+    .signature-entity {
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .signature-country {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .seal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: #F1F5F9;
+      border: 1px dashed #94A3B8;
+      border-radius: 8px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #475569;
+      margin-top: 24px;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: white;
+        color: black;
+        font-size: 11pt;
+      }
+
+      .action-bar {
+        display: none !important;
+      }
+
+      .document-wrapper {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+      }
+
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+
+      .price-callout-box {
+        border-color: #000;
+        background: #F8FAFC !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      @page {
+        margin: 1.6cm 1.4cm;
+        size: A4 portrait;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print & Nav Action Bar -->
+  <header class="action-bar">
+    <div class="action-bar-left">
+      <span class="action-badge">Documento Oficial</span>
+      <span class="action-bar-title">Dossier Ejecutivo & Contrato Mercantil • Sindy Luxury by EBNA</span>
+    </div>
+    <div class="action-buttons">
+      <a href="/" class="btn btn-back">← Volver a la Tienda</a>
+      <button onclick="window.print()" class="btn btn-print">🖨️ Imprimir / Guardar en PDF</button>
+    </div>
+  </header>
+
+  <!-- Main Document Page -->
+  <main class="document-wrapper">
+    
+    <!-- Letterhead -->
+    <div class="header-letterhead">
+      <div class="header-logo-brand">
+        <img src="/icons/ebna-logo.png" alt="EBNA Logo">
+        <div class="header-brand-text">
+          <h1>SINDY LUXURY</h1>
+          <p>BY EBNA • ALTA COSTURA & COSMÉTICA BOTÁNICA</p>
+        </div>
+      </div>
+      <div class="header-agency-badge">
+        <img src="/icons/aida-logo.jpg" alt="AiDA Startup Logo">
+        <div class="agency-name">Desarrollado por Startup AiDA</div>
+      </div>
+    </div>
+
+    <!-- Title Banner -->
+    <div class="title-banner">
+      <h2>Dossier Ejecutivo Integral: Documentación Técnica, Manual de Usuario, Cesión de Propiedad Intelectual y Contrato Comercial</h2>
+      <p style="margin: 0; font-size: 13px; color: #475569;">
+        Documento maestro acreditativo de entrega definitiva, ingeniería del sistema, operativa diaria de la boutique y acuerdo formal con cláusula de valoración económica y precio especial de cortesía.
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>Plataforma Web Oficial:</strong>
+          <a href="https://ebna-luxury.vercel.app" target="_blank" style="color: var(--accent); font-weight: 700;">https://ebna-luxury.vercel.app</a>
+        </div>
+        <div class="meta-item">
+          <strong>Sede Física Principal:</strong>
+          Mongomo, Barrio Koete (al otro lado de Agencia FORAMA)
+        </div>
+        <div class="meta-item">
+          <strong>Coordenadas GPS Satelitales:</strong>
+          01°37′49.2″N, 11°18′28.99″E (1.630333, 11.308053)
+        </div>
+        <div class="meta-item">
+          <strong>Google Maps Oficial:</strong>
+          <a href="https://goo.gl/maps/wn7YCzyVwkFNm1ns7" target="_blank" style="color: #0369A1; font-weight: 700;">goo.gl/maps/wn7YCzyVwkFNm1ns7</a>
+        </div>
+        <div class="meta-item">
+          <strong>Contacto Oficial Boutique:</strong>
+          WhatsApp: +240 222 633 687 | Email: sindyluxury@gmail.com
+        </div>
+        <div class="meta-item">
+          <strong>TikTok Oficial:</strong>
+          @sindyluxury (tiktok.com/@sindyluxury)
+        </div>
+      </div>
+    </div>
+
+    <!-- PARTE I: DOCUMENTACIÓN TÉCNICA -->
+    <section>
+      <div class="section-title">
+        <span class="section-num">1</span>
+        <h2>Manual Estructural y Documentación Técnica de Ingeniería</h2>
+      </div>
+
+      <p>
+        El sistema <strong>Sindy Luxury by EBNA</strong> representa una solución integral de comercio electrónico de última generación concebida específicamente para el sector del lujo, la alta costura y la cosmética botánica en la República de Guinea Ecuatorial.
+      </p>
+
+      <div class="spec-card">
+        <h4>1.1. Arquitectura de Software y Frontend</h4>
+        <ul>
+          <li><strong>Framework Core:</strong> React 19 emparejado con TypeScript 5 para garantizar cero errores en tiempo de ejecución.</li>
+          <li><strong>Empaquetado & Compilación:</strong> Vite 8 con motor ultra-rápido, separación automática de dependencias vendor (chunks modulares) y carga diferida (lazy loading).</li>
+          <li><strong>Estilismo Visual Editorial:</strong> Hojas de estilo CSS optimizadas con variables dinámicas para modo Claro/Oscuro y efectos de vidrio de lujo (Glassmorphism).</li>
+          <li><strong>Iconografía Vectorial:</strong> Iconos oficiales Lucide React integrados con glifo oficial vectorizado 3D de TikTok (<span style="color: #FE2C55; font-weight: 700;">@sindyluxury</span>) e iconos de geolocalización.</li>
+        </ul>
+      </div>
+
+      <div class="spec-card">
+        <h4>1.2. Base de Datos Cloud Distribuida (Turso Cloud LibSQL)</h4>
+        <ul>
+          <li><strong>Motor Distribuido:</strong> Base de datos relacional Turso Cloud LibSQL (SQLite distribuido sobre infraestructura AWS us-west-2).</li>
+          <li><strong>Inventario Oficial Activo:</strong> <strong>188 productos reales</strong> de alta costura, calzado joya, conjuntos 2 piezas, fajas colombianas y cosmética botánica.</li>
+          <li><strong>Protocolo de Borrado Físico:</strong> Toda eliminación de productos ejecuta un <code>DELETE</code> directo sobre la base de datos, garantizando la liberación total de espacio de almacenamiento sin datos huérfanos.</li>
+          <li><strong>Latencia de Respuesta:</strong> Lecturas en menos de 15 ms en producción.</li>
+        </ul>
+      </div>
+
+      <div class="spec-card">
+        <h4>1.3. PWA Universal (Progressive Web App Multiplataforma)</h4>
+        <p style="margin: 0; font-size: 13px;">
+          La tienda opera como una aplicación instalable universal nativa sin necesidad de descarga desde App Store o Google Play:
+        </p>
+        <ul style="margin-top: 6px;">
+          <li><strong>iOS (iPhone / iPad):</strong> Instalable al instante mediante <em>"Añadir a pantalla de inicio"</em> en Safari.</li>
+          <li><strong>Android:</strong> Instalación en 1 clic desde Google Chrome mediante el manifiesto universal.</li>
+          <li><strong>Escritorio:</strong> Compatible con Windows 10/11, macOS, Linux y Chromebook.</li>
+          <li><strong>Pre-calentamiento GPU:</strong> Pre-carga asíncrona de activos de alta prioridad para renderizado a 0.0 milisegundos.</li>
+        </ul>
+      </div>
+
+      <div class="spec-card">
+        <h4>1.4. Automatización de Tickets Oficiales y Despacho WhatsApp</h4>
+        <ul>
+          <li><strong>Generación Gráfica Automatizada:</strong> Al tramitar el pedido, el sistema genera dinámicamente un <strong>Ticket Oficial de Pedido en archivo PNG de alta resolución</strong> vía <code>html2canvas</code>.</li>
+          <li><strong>Contenido del Ticket:</strong> Folio único criptográfico, foto de las prendas, tallas, colores, precio desglosado en Francos CFA (FCFA / XAF) y tipo de envío seleccionado.</li>
+          <li><strong>Despacho Concierge:</strong> Apertura directa de WhatsApp con el número oficial (+240 222 633 687), enviando la información estructurada de inmediato.</li>
+        </ul>
+      </div>
+
+      <div class="spec-card">
+        <h4>1.5. Infraestructura SEO, GEO y Posicionamiento Top-1</h4>
+        <ul>
+          <li><strong>Google Search Console:</strong> Propiedad oficialmente verificada con token <code>googled6fb95f26de3d100</code>.</li>
+          <li><strong>Sitemap XML:</strong> 193 páginas y productos registrados e indexados en <code>https://ebna-luxury.vercel.app/sitemap.xml</code>.</li>
+          <li><strong>Schema.org Graph:</strong> Marcado JSON-LD con <code>ClothingStore</code>, <code>GeoCoordinates</code>, <code>hasMap</code> y <code>FAQPage</code>.</li>
+          <li><strong>Generative Engine Optimization (GEO):</strong> Archivos <code>llms.txt</code> y <code>llms-full.txt</code> para que ChatGPT, Gemini, Perplexity y Claude recomienden a Sindy Luxury como la tienda número 1 en Guinea Ecuatorial.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Page Break for Clean Print -->
+    <div class="page-break"></div>
+
+    <!-- PARTE II: MANUAL DE USUARIO -->
+    <section>
+      <div class="section-title">
+        <span class="section-num">2</span>
+        <h2>Manual de Usuario y Guía de Operaciones para la Boutique</h2>
+      </div>
+
+      <h3>2.1. Gestión y Experiencia de Venta</h3>
+      <p>
+        El catálogo ha sido configurado para que las clientas disfruten de una experiencia fluida e ininterrumpida:
+      </p>
+      <ul>
+        <li><strong>Búsqueda Predictiva Universal:</strong> El buscador en tiempo real sugiere prendas al instante al escribir cualquier inicial o palabra clave.</li>
+        <li><strong>Adición al Carrito sin Expulsión:</strong> Cuando la clienta pulsa <em>"Agregar al Carrito"</em>, la prenda se añade automáticamente sin sacarla del catálogo ni interrumpir su navegación.</li>
+        <li><strong>Opciones de Envío en Carrito:</strong>
+          <ul>
+            <li><strong>Envío Estándar Gratuito:</strong> 0 FCFA • Entrega en 5 a 7 días.</li>
+            <li><strong>Envío Exprés Exclusivo:</strong> 3.000 FCFA • Entrega prioritaria garantizada en máximo 3 días.</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>2.2. Recepción de Pedidos y Cobro vía Muni Dinero</h3>
+      <ol>
+        <li>La clienta completa su pedido y pulsa <em>"Pagar por WhatsApp"</em>.</li>
+        <li>Su dispositivo genera y descarga automáticamente el Ticket Oficial en imagen PNG y abre el chat de WhatsApp de la boutique (+240 222 633 687).</li>
+        <li>La encargada de la tienda valida el folio del ticket y solicita el comprobante de pago móvil al número oficial:
+          <div style="margin: 8px 0; padding: 10px 16px; background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; font-weight: 800; color: #92400E; display: inline-block;">
+            MUNI DINERO OFICIAL: 555439904 (+240 555 439 904)
+          </div>
+        </li>
+        <li>Una vez verificado el saldo, se procede al empaquetado de lujo y despacho según la modalidad elegida.</li>
+      </ol>
+
+      <h3>2.3. Panel de Administración (/admin)</h3>
+      <ul>
+        <li><strong>Acceso:</strong> Navegar a <code>https://ebna-luxury.vercel.app/admin</code> e iniciar sesión con las credenciales de administradora.</li>
+        <li><strong>Control de Precios e Inventario:</strong> Edición en vivo de cualquier precio en FCFA o existencia de stock.</li>
+        <li><strong>Eliminación Definitiva de Productos:</strong> Al borrar un producto del panel, este se elimina de forma física en Turso Cloud, liberando espacio permanentemente.</li>
+      </ul>
+    </section>
+
+    <!-- Page Break for Clean Print -->
+    <div class="page-break"></div>
+
+    <!-- PARTE III: ACTA DE PROPIEDAD INTELECTUAL -->
+    <section>
+      <div class="section-title">
+        <span class="section-num">3</span>
+        <h2>Acta Notarial de Entrega y Cesión Total de Propiedad Intelectual</h2>
+      </div>
+
+      <p>
+        En la ciudad de Mongomo / Malabo, a 25 de Septiembre de 2026.
+      </p>
+
+      <p>
+        Por medio de la presente acta, la agencia desarrolladora <strong>Startup AiDA</strong>, representada por su equipo de ingeniería e-commerce, declara formalmente haber completado al 100% de conformidad técnica todos los requerimientos de desarrollo, arquitectura, diseño y optimización de la plataforma digital <strong>Sindy Luxury by EBNA</strong>.
+      </p>
+
+      <div class="spec-card" style="border-left: 4px solid #10B981; background: #ECFDF5;">
+        <h4 style="color: #065F46;">Declaración de Cesión Universal, Plena e Irrevocable</h4>
+        <ol style="margin-top: 8px; color: #064E3B;">
+          <li><strong>Titularidad Exclusiva:</strong> A partir de la fecha de entrega, todos los derechos morales, patrimoniales, de explotación comercial, reproducción, adaptación y distribución de la marca <strong>Sindy Luxury by EBNA</strong> y de su plataforma web corresponden con carácter exclusivo, pleno e irrevocable a la <strong>TITULAR Y PROPIETARIA DE SINDY LUXURY</strong>.</li>
+          <li><strong>Propiedad del Código y Datos:</strong> La base de datos (188 productos reales, imágenes de alta fidelidad, esquemas de catálogo y registros de inventario) son propiedad inalienable de la cliente.</li>
+          <li><strong>Renuncia de Retención:</strong> La desarrolladora certifica que no conserva códigos de bloqueo, puertas traseras (backdoors) ni derechos restrictivos sobre el uso que la cliente desee dar a su tienda en línea.</li>
+        </ol>
+      </div>
+
+      <p>
+        Se hace entrega formal del repositorio central en GitHub (<code>Tranquilino1/EBNA-LUXURY</code>), el acceso verificado a Google Search Console (<code>googled6fb95f26de3d100</code>) y el enlace satelital a Google Maps de la sede física en Mongomo.
+      </p>
+    </section>
+
+    <!-- PARTE IV: CONTRATO MERCANTIL Y CLÁUSULA ECONÓMICA -->
+    <section>
+      <div class="section-title">
+        <span class="section-num">4</span>
+        <h2>Contrato Mercantil de Prestación de Servicios y Valoración Especial</h2>
+      </div>
+
+      <p>
+        <strong>COMPARECEN:</strong> De una parte, <strong>Startup AiDA</strong> (la "DESARROLLADORA"), y de otra parte, <strong>SINDY LUXURY / EBNA LUXURY</strong> (la "CLIENTE"), con sede física principal en Barrio Koete (al otro lado de la Agencia FORAMA), Mongomo, Guinea Ecuatorial.
+      </p>
+
+      <p>
+        <strong>OBJETO:</strong> Entrega definitiva, diseño a medida, arquitectura PWA universal, pasarela de WhatsApp, optimización para Google Top-1 y puesta en producción de la tienda digital de alta costura Sindy Luxury.
+      </p>
+
+      <!-- CLÁUSULA ESPECIAL DE PRECIO (70.000 XAF) -->
+      <div class="price-callout-box">
+        <div class="price-callout-header">
+          ★ Cláusula Económica Especial de Honorarios y Deferencia Comercial
+        </div>
+
+        <div class="price-real">
+          Valoración Real de Mercado: 1.500.000 FCFA - 2.500.000 FCFA (Cientos de Miles / Millones de Francos CFA)
+        </div>
+
+        <div class="price-final">
+          70.000 XAF <span>(Setenta Mil Francos CFA)</span>
+        </div>
+
+        <div class="price-rationale">
+          <strong>ESTIPULACIÓN CONTRACTUAL EXPRESA:</strong><br>
+          Las partes dejan formal constancia de que un desarrollo tecnológico de esta envergadura técnica (PWA universal, base de datos distribuida en la nube con micro-latencia, tickets criptográficos en PNG, vinculación GPS por satélite y posicionamiento en Google y motores de Inteligencia Artificial) <strong>está valorado en el mercado tecnológico internacional en varios cientos de miles de Francos CFA</strong>.
+          <br><br>
+          No obstante su elevado valor objetivo de mercado, y <strong>en atención a la estrecha relación de confianza, afecto y consideración hacia la CLIENTE como una de las clientas más distinguidas, queridas y preciadas de la agencia</strong>, la DESARROLLADORA concede un <strong>descuento de cortesía integral en calidad de REGALO COMERCIAL DE FIDELIZACIÓN</strong>, fijando el precio total, único y definitivo en la cantidad simbólica de <strong>70.000 XAF</strong>, libre de cualquier coste futuro o canon oculto.
+        </div>
+      </div>
+
+      <p>
+        <strong>GARANTÍA Y CONFIDENCIALIDAD:</strong> La DESARROLLADORA otorga garantía técnica sobre el funcionamiento ininterrumpido de la plataforma en producción (HTTP 200 OK) y se compromete a guardar el más estricto secreto profesional respecto a datos comerciales y financieros de la boutique.
+      </p>
+
+      <!-- Signatures Block -->
+      <div class="signatures-block">
+        <p style="text-align: center; font-weight: 700; color: #0F172A; margin-bottom: 24px;">
+          En fe de conformidad, aprobación y aceptación de todos los términos, firman las partes:
+        </p>
+
+        <div class="signatures-grid">
+          <div class="signature-card">
+            <div class="signature-line"></div>
+            <div class="signature-role">POR LA DESARROLLADORA</div>
+            <div class="signature-entity">Startup AiDA</div>
+            <div class="signature-country">Ingeniería & Arquitectura E-Commerce • Guinea Ecuatorial</div>
+          </div>
+
+          <div class="signature-card">
+            <div class="signature-line"></div>
+            <div class="signature-role">POR LA CLIENTE</div>
+            <div class="signature-entity">SINDY LUXURY</div>
+            <div class="signature-country">Titular & Propietaria de la Boutique • Mongomo / Malabo</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 32px;">
+          <div class="seal-badge">
+            🔐 CERTIFICADO TÉCNICO OFICIAL • EBNA-LUXURY-DOCS-2026 • STATUS: 200 OK
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
