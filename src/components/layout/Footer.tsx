@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, ChevronUp, ChevronDown, Headphones } from 'lucide-react';
+import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, ChevronUp, ChevronDown, Headphones, MapPin, Mail } from 'lucide-react';
 import { QRModal } from '../ui/QRModal';
 import { ContactSupportModal } from '../ui/ContactSupportModal';
+import { TikTokIcon } from '../ui/TikTokIcon';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { ChristmasHat } from '../effects/ChristmasHat';
@@ -186,14 +187,75 @@ export const Footer: React.FC = () => {
             <nav className="quick-links">
               <Link to="/">Inicio</Link>
               <Link to="/catalogo">Catálogo Completo</Link>
+              <Link to="/recibo">Consultar Ticket / Recibo</Link>
               <Link to="/login">Iniciar Sesión Cliente</Link>
             </nav>
           </div>
 
-          {/* Direct Contact & Muni */}
+          {/* Sede Física, Correo & Atención */}
           <div className="footer-contact">
-            <h3>Atención & Pagos</h3>
+            <h3>Sede Física & Contacto</h3>
             <div className="contact-links">
+              {/* Sede Física en Mongomo */}
+              <div 
+                className="contact-link" 
+                style={{ 
+                  cursor: 'default',
+                  background: 'rgba(216, 27, 96, 0.05)',
+                  padding: '10px 14px',
+                  borderRadius: '14px',
+                  border: '1px solid rgba(216, 27, 96, 0.16)',
+                  alignItems: 'flex-start'
+                }}
+              >
+                <MapPin size={20} style={{ color: 'var(--brand-accent)', flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <span style={{ display: 'block', fontSize: '0.86rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                    Sede Física: Mongomo
+                  </span>
+                  <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
+                    Barrio Koete • Al otro lado de la Agencia FORAMA
+                  </span>
+                </div>
+              </div>
+
+              {/* Correo Oficial de la Tienda */}
+              <a 
+                href="mailto:sindyluxury@gmail.com" 
+                className="contact-link"
+                title="Enviar correo electrónico oficial a sindyluxury@gmail.com"
+              >
+                <Mail size={18} style={{ color: 'var(--brand-accent)', flexShrink: 0 }} />
+                <div>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    sindyluxury@gmail.com
+                  </span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
+                    Correo Oficial de la Tienda
+                  </span>
+                </div>
+              </a>
+
+              {/* TikTok Oficial Enlace Directo */}
+              <a 
+                href="https://www.tiktok.com/@sindyluxury" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="contact-link"
+                title="Perfil Oficial en TikTok @sindyluxury"
+              >
+                <TikTokIcon size={18} color="var(--brand-accent)" />
+                <div>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    @sindyluxury
+                  </span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
+                    TikTok Oficial de la Boutique
+                  </span>
+                </div>
+              </a>
+
+              {/* WhatsApp Concierge */}
               <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="contact-link">
                 <MessageCircle size={18} className="text-ebna" />
                 <div>
@@ -201,6 +263,8 @@ export const Footer: React.FC = () => {
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Atención General WhatsApp</span>
                 </div>
               </a>
+
+              {/* Muni Dinero */}
               <a href="https://wa.me/240555439904" target="_blank" rel="noopener noreferrer" className="contact-link">
                 <Phone size={18} color="var(--text-secondary)" />
                 <div>
@@ -208,6 +272,8 @@ export const Footer: React.FC = () => {
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Servicio Muni Dinero</span>
                 </div>
               </a>
+
+              {/* Soporte Técnico */}
               <button
                 type="button"
                 onClick={() => setIsSupportModalOpen(true)}
@@ -217,16 +283,44 @@ export const Footer: React.FC = () => {
                 <Headphones size={18} color="#184266" />
                 <div>
                   <span style={{ display: 'block', fontSize: '0.86rem', fontWeight: 700, color: 'var(--text-primary)' }}>Soporte Técnico Especializado</span>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Incidencias WhatsApp (+240 555 32 00 17)</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Incidencias (+240 555 32 00 17)</span>
                 </div>
               </button>
             </div>
           </div>
 
-          {/* Community & WhatsApp Channel */}
+          {/* Redes Sociales & Canales Oficiales */}
           <div className="footer-social">
-            <h3>Canal Oficial</h3>
-            <div className="social-icons" style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+            <h3>Redes & Canales Oficiales</h3>
+            <div className="social-icons" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {/* Botón Destacado de TikTok Oficial */}
+              <a
+                href="https://www.tiktok.com/@sindyluxury"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-channel-btn"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '10px 18px',
+                  borderRadius: '24px',
+                  background: 'linear-gradient(135deg, #050505, #1c000f)',
+                  border: '1.5px solid rgba(254, 44, 85, 0.45)',
+                  color: 'white',
+                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  textDecoration: 'none',
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.35)',
+                  transition: 'all 0.2s ease',
+                }}
+                title="Seguir cuenta oficial en TikTok (@sindyluxury)"
+              >
+                <TikTokIcon size={20} variant="color" />
+                <span>TikTok: @sindyluxury</span>
+              </a>
+
+              {/* Canal de Novedades WhatsApp */}
               <a
                 href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q"
                 target="_blank"
@@ -246,15 +340,62 @@ export const Footer: React.FC = () => {
                   boxShadow: '0 4px 14px rgba(37,211,102,0.3)',
                   transition: 'transform 0.2s ease',
                 }}
+                title="Unirse al Canal Oficial de WhatsApp"
               >
                 <MessageCircle size={18} />
-                <span>Canal de Novedades WhatsApp</span>
+                <span>Canal Oficial WhatsApp</span>
               </a>
 
-              <div style={{ display: 'flex', gap: '0.8rem', marginTop: '0.2rem', alignItems: 'center' }}>
-                <a href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Canal WhatsApp" title="Canal Oficial WhatsApp"><MessageCircle size={20} color="#25D366" /></a>
-                <a href="https://wa.me/240222633687?text=Quiero%20información%20sobre%20la%20colección%20de%20lujo" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Consulta Lujo" title="Consulta de Lujo por WhatsApp"><Sparkles size={20} color="#D81B60" /></a>
-                <Link to="/catalogo" className="social-link" aria-label="Catálogo Favoritos" title="Explorar Catálogo Exclusivo"><Heart size={20} color="#D81B60" /></Link>
+              {/* Fila de Iconos Oficiales Directos */}
+              <div style={{ display: 'flex', gap: '0.8rem', marginTop: '0.3rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <a 
+                  href="https://www.tiktok.com/@sindyluxury" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="social-link" 
+                  aria-label="TikTok Oficial @sindyluxury" 
+                  title="TikTok Oficial @sindyluxury"
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <TikTokIcon size={20} color="var(--text-primary)" />
+                </a>
+
+                <a 
+                  href="mailto:sindyluxury@gmail.com" 
+                  className="social-link" 
+                  aria-label="Correo Oficial sindyluxury@gmail.com" 
+                  title="Correo Oficial sindyluxury@gmail.com"
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Mail size={20} color="var(--brand-accent)" />
+                </a>
+
+                <a 
+                  href="https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="social-link" 
+                  aria-label="Canal WhatsApp" 
+                  title="Canal Oficial WhatsApp"
+                >
+                  <MessageCircle size={20} color="#25D366" />
+                </a>
+
+                <a 
+                  href="https://wa.me/240222633687?text=Quiero%20informaci%C3%B3n%20sobre%20la%20colecci%C3%B3n%20de%20lujo" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="social-link" 
+                  aria-label="Consulta Lujo" 
+                  title="Consulta de Lujo por WhatsApp"
+                >
+                  <Sparkles size={20} color="#D81B60" />
+                </a>
+
+                <Link to="/catalogo" className="social-link" aria-label="Catálogo Favoritos" title="Explorar Catálogo Exclusivo">
+                  <Heart size={20} color="#D81B60" />
+                </Link>
+
                 <button 
                   type="button" 
                   onClick={handleShareWhatsApp} 

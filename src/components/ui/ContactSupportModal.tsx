@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Mail, Phone, MessageSquare, Send, Sparkles, Headphones, ArrowRight } from 'lucide-react';
+import { X, Mail, Phone, MessageSquare, Send, Sparkles, Headphones, ArrowRight, MapPin } from 'lucide-react';
+import { TikTokIcon } from './TikTokIcon';
 import './contactSupportModal.css';
 
 interface ContactSupportModalProps {
@@ -163,6 +164,54 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
                 </span>
               </div>
             </a>
+          </div>
+
+          {/* Sede Física Oficial & Canales de la Tienda */}
+          <div style={{ marginTop: '14px', marginBottom: '18px', padding: '14px', borderRadius: '16px', background: 'rgba(216, 27, 96, 0.05)', border: '1px solid rgba(216, 27, 96, 0.16)' }}>
+            <div style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--brand-accent)', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={14} /> Sede Física Oficial & Canales de Sindy Luxury
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '10px' }}>
+              {/* Sede Física */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '10px', background: 'var(--canvas-surface)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                <MapPin size={20} style={{ color: 'var(--brand-accent)', flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>Sede Física: Mongomo</div>
+                  <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', lineHeight: 1.35, marginTop: '2px' }}>
+                    Barrio Koete • Al otro lado de la Agencia FORAMA
+                  </div>
+                </div>
+              </div>
+
+              {/* Correo Oficial de la Tienda */}
+              <a 
+                href="mailto:sindyluxury@gmail.com" 
+                style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', background: 'var(--canvas-surface)', borderRadius: '12px', border: '1px solid var(--border-subtle)', textDecoration: 'none', color: 'inherit' }}
+                title="Enviar correo a sindyluxury@gmail.com"
+              >
+                <Mail size={20} style={{ color: 'var(--brand-accent)', flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>Correo Oficial Tienda</div>
+                  <div style={{ fontSize: '0.74rem', color: 'var(--brand-accent)', fontWeight: 600 }}>sindyluxury@gmail.com</div>
+                </div>
+              </a>
+
+              {/* TikTok Oficial */}
+              <a 
+                href="https://www.tiktok.com/@sindyluxury" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', background: 'var(--canvas-surface)', borderRadius: '12px', border: '1px solid var(--border-subtle)', textDecoration: 'none', color: 'inherit' }}
+                title="Seguir en TikTok oficial (@sindyluxury)"
+              >
+                <TikTokIcon size={20} variant="color" />
+                <div>
+                  <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>TikTok Oficial</div>
+                  <div style={{ fontSize: '0.74rem', color: '#FE2C55', fontWeight: 700 }}>@sindyluxury</div>
+                </div>
+              </a>
+            </div>
           </div>
 
           {/* Direct Ticket Form */}

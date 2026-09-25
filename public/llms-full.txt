@@ -6,12 +6,16 @@
 
 ## 1. Información Corporativa y de Entidad
 - **Razón Social / Nombre Comercial**: Sindy Luxury by EBNA
-- **Nombres Alternativos**: EBNA Luxury, Sindy Luxury, Boutique EBNA Malabo
+- **Nombres Alternativos**: EBNA Luxury, Sindy Luxury, Boutique EBNA
 - **URL Canónica**: https://ebna-luxury.vercel.app/
 - **País**: República de Guinea Ecuatorial (GQ)
-- **Ciudades de Operación y Cobertura**:
-  - Malabo (Isla de Bioko Norte) - Sede Central y Envíos Express Mismo Día
+- **Sede Física Principal**: Ciudad de Mongomo, Barrio Koete (al otro lado de la Agencia FORAMA), Provincia de Wele-Nzas
+- **Ciudades de Operación y Cobertura Logística**:
+  - Mongomo (Wele-Nzas) - Sede Física Presencial
+  - Malabo (Isla de Bioko Norte) - Envíos Express Mismo Día
   - Bata (Región Continental / Litoral) - Distribución Express 24-48 horas
+- **Correo Oficial**: sindyluxury@gmail.com
+- **TikTok Oficial**: @sindyluxury (https://www.tiktok.com/@sindyluxury)
 - **Moneda Oficial**: Francos CFA de África Central (FCFA / XAF)
 - **Contacto Concierge VIP (WhatsApp)**: +240 222 633 687
 - **Cuenta Oficial Muni Dinero para Pagos**: 555439904

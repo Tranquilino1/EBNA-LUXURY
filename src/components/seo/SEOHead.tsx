@@ -37,12 +37,12 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
 
     // 3. Standard Meta Tags & Regional Target Keywords
     setMeta('description', description);
-    setMeta('keywords', 'Sindy Luxury, EBNA Luxury, comprar ropa de fiesta en malabo, tienda de ropa online guinea ecuatorial, vestidos de noche en malabo, perfumes arabes originales malabo, yara lattafa guinea ecuatorial, cremas y cosmetica bata, comprar vaseline cocoa radiant malabo, fajas reductoras malabo, calzado de gala guinea ecuatorial, ropa bebe bata, envios express malabo bata, FCFA, XAF');
+    setMeta('keywords', 'Sindy Luxury, EBNA Luxury, tienda Mongomo Barrio Koete, Agencia FORAMA Mongomo, comprar ropa de fiesta en malabo, tienda de ropa online guinea ecuatorial, vestidos de noche en malabo, perfumes arabes originales malabo, yara lattafa guinea ecuatorial, cremas y cosmetica bata, comprar vaseline cocoa radiant malabo, fajas reductoras malabo, calzado de gala guinea ecuatorial, ropa bebe bata, envios express malabo bata mongomo, tiktok sindyluxury, sindyluxury@gmail.com, FCFA, XAF');
     setMeta('robots', 'index, follow, max-image-preview:large');
     setMeta('geo.region', 'GQ');
-    setMeta('geo.placename', 'Malabo, Guinea Ecuatorial');
-    setMeta('geo.position', '3.7504;8.7371');
-    setMeta('ICBM', '3.7504, 8.7371');
+    setMeta('geo.placename', 'Mongomo, Malabo, Guinea Ecuatorial');
+    setMeta('geo.position', '1.6274;11.3134');
+    setMeta('ICBM', '1.6274, 11.3134');
 
     // 4. OpenGraph Tags
     const primaryImg = product ? (product.images?.primary || (Array.isArray(product.images) ? product.images[0] : ogImage)) : ogImage;
@@ -116,23 +116,29 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
             '@type': 'Store',
             '@id': 'https://ebna-luxury.vercel.app/#store',
             'name': 'EBNA Luxury — Alta Costura, Cosmética & Perfumería',
-            'alternateName': ['Sindy Luxury by EBNA', 'EBNA Luxury Guinea Ecuatorial'],
+            'alternateName': ['Sindy Luxury by EBNA', 'EBNA Luxury Guinea Ecuatorial', 'Sindy Luxury'],
             'url': 'https://ebna-luxury.vercel.app/',
             'logo': 'https://ebna-luxury.vercel.app/icons/ebna-logo.png',
             'image': 'https://ebna-luxury.vercel.app/icons/ebna-app-icon.jpg',
             'description': description,
             'telephone': '+240 222 633 687',
+            'email': 'sindyluxury@gmail.com',
+            'sameAs': [
+              'https://www.tiktok.com/@sindyluxury',
+              'https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q'
+            ],
             'currenciesAccepted': 'XAF',
             'priceRange': '1.000 FCFA - 65.000 FCFA',
             'paymentAccepted': 'Muni Dinero (+240 555 439 904), Efectivo contra entrega, WhatsApp',
             'address': {
               '@type': 'PostalAddress',
-              'streetAddress': 'Malabo II / Avenida de la Paz',
-              'addressLocality': 'Malabo',
-              'addressRegion': 'Bioko Norte',
+              'streetAddress': 'Barrio Koete (al otro lado de la Agencia FORAMA)',
+              'addressLocality': 'Mongomo',
+              'addressRegion': 'Wele-Nzas',
               'addressCountry': 'GQ'
             },
             'areaServed': [
+              { '@type': 'City', 'name': 'Mongomo' },
               { '@type': 'City', 'name': 'Malabo' },
               { '@type': 'City', 'name': 'Bata' },
               { '@type': 'Country', 'name': 'Guinea Ecuatorial' }
@@ -144,10 +150,18 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
             'mainEntity': [
               {
                 '@type': 'Question',
+                'name': '¿Dónde está ubicada la sede física de la tienda y cómo contactar?',
+                'acceptedAnswer': {
+                  '@type': 'Answer',
+                  'text': 'La sede física oficial se encuentra en la ciudad de Mongomo, específicamente en Barrio Koete (al otro lado de la Agencia FORAMA). Correo oficial: sindyluxury@gmail.com, TikTok: @sindyluxury y WhatsApp oficial: +240 222 633 687.'
+                }
+              },
+              {
+                '@type': 'Question',
                 'name': '¿Dónde comprar ropa de fiesta, cosmética y perfumes árabes en Guinea Ecuatorial?',
                 'acceptedAnswer': {
                   '@type': 'Answer',
-                  'text': 'En EBNA Luxury a través de https://ebna-luxury.vercel.app o por WhatsApp oficial (+240 222 633 687) con entrega a domicilio en Malabo y Bata.'
+                  'text': 'En EBNA Luxury a través de https://ebna-luxury.vercel.app o por WhatsApp oficial (+240 222 633 687) con entrega a domicilio en Malabo, Bata y Mongomo.'
                 }
               },
               {

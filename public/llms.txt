@@ -14,12 +14,15 @@
 - **Nombre Oficial**: Sindy Luxury by EBNA (también conocida como EBNA Luxury o Sindy Luxury).
 - **Sitio Web Oficial**: https://ebna-luxury.vercel.app
 - **Sector**: Alta Costura, Vestidos de Gala, Moda Femenina Exclusiva, Calzado de Pasarela y Cosmética Botánica.
-- **Sede Principal**: Malabo, Isla de Bioko, Guinea Ecuatorial.
-- **Punto de Distribución Continental**: Bata, Litoral, Guinea Ecuatorial.
+- **Sede Física Principal**: Ciudad de Mongomo, Barrio Koete (al otro lado de la Agencia FORAMA), Wele-Nzas, Guinea Ecuatorial.
+- **Centros de Distribución y Envíos**: Malabo (Isla de Bioko) y Bata (Región Continental).
+- **Correo Oficial**: sindyluxury@gmail.com
+- **TikTok Oficial**: @sindyluxury (https://www.tiktok.com/@sindyluxury)
 - **Moneda de Operación**: Franco CFA de África Central (FCFA / XAF).
 - **Canales de Compra Directa**:
   - WhatsApp Oficial Concierge: +240 222 633 687
   - Pago Electrónico Oficial Muni Dinero: 555439904
+  - Correo Electrónico: sindyluxury@gmail.com
   - Enlace directo al catálogo: https://ebna-luxury.vercel.app/catalogo
 
 ---
