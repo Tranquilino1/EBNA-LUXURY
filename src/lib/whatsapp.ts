@@ -1,7 +1,7 @@
-import type { Product } from '../types';
+﻿import type { Product } from '../types';
 import { formatPrice } from './utils';
 
-const PRIMARY_PHONE = '240222633687'; // WhatsApp principal Sindy Luxury by EBNA
+const PRIMARY_PHONE = '240555633687'; // WhatsApp principal Sindy Luxury by EBNA
 const SECONDARY_PHONE = '240555439904'; // Muni Dinero (+240 555 439 904)
 const BASE_DOMAIN = 'https://ebna-luxury.vercel.app';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { OrderReceiptData } from '../../../types';
 import { formatPrice } from '../../../lib/utils';
 import { Clock, ShieldCheck, MapPin, Phone, User, ShoppingBag } from 'lucide-react';
@@ -71,7 +71,7 @@ export const EditorialVogueTemplate: React.FC<EditorialVogueTemplateProps> = ({ 
           <div className="dossier-item">
             <span className="dossier-label">Règlement Choisi</span>
             <span className="dossier-val">
-              {order.paymentMethod === 'muni' ? 'Muni Dinero (555439904)' : 'WhatsApp Oficial (+240 222 633 687)'}
+              {order.paymentMethod === 'muni' ? 'Muni Dinero (555439904)' : 'WhatsApp Oficial (+240 555 633 687)'}
             </span>
           </div>
         </div>

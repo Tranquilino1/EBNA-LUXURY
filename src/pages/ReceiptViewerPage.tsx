@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router';
 import type { OrderReceiptData, ReceiptTemplateId } from '../types';
 import { decodeOrderData, getReceivedOrders, saveOrderRequest } from '../lib/orderStorage';
@@ -189,7 +189,7 @@ export function ReceiptViewerPage() {
               }}
             >
               <MessageCircle size={14} />
-              <span>Enviar a WhatsApp (+240 222 633 687)</span>
+              <span>Enviar a WhatsApp (+240 555 633 687)</span>
             </a>
           </div>
         </div>

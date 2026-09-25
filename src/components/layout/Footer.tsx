@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, ChevronUp, ChevronDown, Headphones, MapPin, Mail } from 'lucide-react';
 import { QRModal } from '../ui/QRModal';
@@ -276,10 +276,10 @@ export const Footer: React.FC = () => {
               </a>
 
               {/* WhatsApp Concierge */}
-              <a href="https://wa.me/240222633687" target="_blank" rel="noopener noreferrer" className="contact-link">
+              <a href="https://wa.me/240555633687" target="_blank" rel="noopener noreferrer" className="contact-link">
                 <MessageCircle size={18} className="text-ebna" />
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>+240 222 633 687</span>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)' }}>+240 555 633 687</span>
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Atención General WhatsApp</span>
                 </div>
               </a>
@@ -402,7 +402,7 @@ export const Footer: React.FC = () => {
                 </a>
 
                 <a 
-                  href="https://wa.me/240222633687?text=Quiero%20informaci%C3%B3n%20sobre%20la%20colecci%C3%B3n%20de%20lujo" 
+                  href="https://wa.me/240555633687?text=Quiero%20informaci%C3%B3n%20sobre%20la%20colecci%C3%B3n%20de%20lujo" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="social-link" 

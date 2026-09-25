@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+﻿import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
@@ -776,7 +776,7 @@ export function AdminDashboard() {
             <div style={{ padding: '1.5rem', borderRadius: '16px', background: 'var(--color-bg-secondary)', border: '1px solid var(--color-glass-border)' }}>
               <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: 0 }}>Canal Principal de Ventas</p>
               <h3 style={{ fontSize: '1.2rem', color: '#16a34a', margin: '0.4rem 0' }}>WhatsApp Pedido Directo</h3>
-              <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: 0 }}>+240 222 633 687 (EBNA Luxury)</p>
+              <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: 0 }}>+240 555 633 687 (EBNA Luxury)</p>
             </div>
             <div style={{ padding: '1.5rem', borderRadius: '16px', background: 'var(--color-bg-secondary)', border: '1px solid var(--color-glass-border)' }}>
               <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: 0 }}>Productos en Catálogo</p>

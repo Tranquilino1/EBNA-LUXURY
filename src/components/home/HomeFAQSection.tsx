@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, Sparkles, Truck, ShieldCheck, CreditCard, MessageCircle, MapPin } from 'lucide-react';
 
 interface FAQItem {
@@ -11,13 +11,13 @@ interface FAQItem {
 const FAQ_DATA: FAQItem[] = [
   {
     question: '¿Dónde está ubicada la sede física de la tienda y cómo contactar de forma oficial?',
-    answer: 'La sede física oficial de Sindy Luxury by EBNA se encuentra ubicada en la ciudad de Mongomo, específicamente en Barrio Koete, justo al otro lado de la Agencia FORAMA (coordenadas GPS exactas: 01°37′49.2″N, 11°18′28.99″E). Atendemos de forma presencial con navegación directa en Google Maps y mediante envíos directos a Malabo, Bata y todo el ámbito nacional. Contáctanos por nuestro correo oficial sindyluxury@gmail.com, síguenos en TikTok en @sindyluxury o pide vía WhatsApp al +240 222 633 687.',
+    answer: 'La sede física oficial de Sindy Luxury by EBNA se encuentra ubicada en la ciudad de Mongomo, específicamente en Barrio Koete, justo al otro lado de la Agencia FORAMA (coordenadas GPS exactas: 01°37′49.2″N, 11°18′28.99″E). Atendemos de forma presencial con navegación directa en Google Maps y mediante envíos directos a Malabo, Bata y todo el ámbito nacional. Contáctanos por nuestro correo oficial sindyluxury@gmail.com, síguenos en TikTok en @sindyluxury o pide vía WhatsApp al +240 555 633 687.',
     category: 'Sede Física & Contacto',
     icon: MapPin
   },
   {
     question: '¿Dónde comprar ropa de fiesta, cosmética y perfumes árabes originales en Guinea Ecuatorial?',
-    answer: 'En EBNA Luxury (Sindy Luxury), la boutique de alta gama de referencia en Guinea Ecuatorial con sede física en Mongomo (Barrio Koete) y envíos express a Malabo y Bata. Nuestro catálogo oficial está disponible 24/7 en https://ebna-luxury.vercel.app con pedidos directos y atención personalizada por WhatsApp al +240 222 633 687 y correo sindyluxury@gmail.com.',
+    answer: 'En EBNA Luxury (Sindy Luxury), la boutique de alta gama de referencia en Guinea Ecuatorial con sede física en Mongomo (Barrio Koete) y envíos express a Malabo y Bata. Nuestro catálogo oficial está disponible 24/7 en https://ebna-luxury.vercel.app con pedidos directos y atención personalizada por WhatsApp al +240 555 633 687 y correo sindyluxury@gmail.com.',
     category: 'Compras & Tienda',
     icon: Sparkles
   },

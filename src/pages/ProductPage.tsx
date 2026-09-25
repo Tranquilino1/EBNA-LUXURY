@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+﻿import { useState, useMemo, useEffect, useRef } from 'react';
 import { useParams, Link, useSearchParams, useNavigate } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
@@ -280,7 +280,7 @@ export function ProductPage() {
               <ArrowLeft size={18} /> Volver a la Boutique
             </Link>
             <a 
-              href="https://wa.me/240222633687?text=Hola%20Sindy%20Luxury,%20busco%20informaci%C3%B3n%20sobre%20un%20producto"
+              href="https://wa.me/240555633687?text=Hola%20Sindy%20Luxury,%20busco%20informaci%C3%B3n%20sobre%20un%20producto"
               target="_blank"
               rel="noopener noreferrer"
               style={{

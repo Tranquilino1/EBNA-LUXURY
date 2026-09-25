@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { OrderReceiptData } from '../../../types';
 import { formatPrice } from '../../../lib/utils';
 import { Sparkles, MapPin, Phone, User, Clock, ShieldCheck, ShoppingBag } from 'lucide-react';
@@ -82,7 +82,7 @@ export const HauteCoutureTemplate: React.FC<HauteCoutureTemplateProps> = ({ orde
           <div className="dossier-item">
             <span className="dossier-label">Método de Pago</span>
             <span className="dossier-val">
-              {order.paymentMethod === 'muni' ? '📲 Muni Dinero (555439904)' : '💬 WhatsApp Oficial (+240 222 633 687)'}
+              {order.paymentMethod === 'muni' ? '📲 Muni Dinero (555439904)' : '💬 WhatsApp Oficial (+240 555 633 687)'}
             </span>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import type { Product, Profile } from '../types';
+﻿import type { Product, Profile } from '../types';
 import { generateUUID } from './utils';
 import { notifyCatalogChange } from './broadcast';
 import { HD_PRODUCTS } from '../data/hdProducts';
@@ -287,7 +287,7 @@ export function demoGetUsers(): UserAccount[] {
       id: 'admin-1',
       email: 'admin@ebna.gq',
       full_name: 'Administrador EBNA Luxury',
-      phone: '+240 222 633 687',
+      phone: '+240 555 633 687',
       role: 'ADMIN',
       created_at: new Date().toISOString(),
     }
@@ -312,7 +312,7 @@ export function demoSignIn(email: string, _pass: string): { data: { user: any; p
   const profile: Profile = {
     id: userId,
     full_name: isAdmin ? 'Administrador EBNA Luxury' : 'Cliente EBNA Luxury',
-    phone: '+240 222 633 687',
+    phone: '+240 555 633 687',
     role: isAdmin ? 'ADMIN' : 'USER',
     created_at: new Date().toISOString(),
     last_seen: new Date().toISOString(),

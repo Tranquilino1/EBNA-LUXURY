@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { Shield, Loader2, Lock } from 'lucide-react';
@@ -31,7 +31,7 @@ export function AdminLoginPage() {
           id: 'admin-ebna-1',
           role: 'ADMIN',
           full_name: 'Administrador EBNA Luxury',
-          phone: '+240 222 633 687',
+          phone: '+240 555 633 687',
           created_at: new Date().toISOString(),
           last_seen: new Date().toISOString(),
         };

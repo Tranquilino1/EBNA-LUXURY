@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+﻿import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { supabase, isSupabaseConfigured } from '../config/supabase';
 import { demoSignIn, demoSignUp } from '../lib/demoData';
 import type { Profile, AuthContextType } from '../types';
@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           id: userId,
           role: 'ADMIN',
           full_name: 'Administrador EBNA Luxury',
-          phone: '+240 222 633 687',
+          phone: '+240 555 633 687',
           created_at: new Date().toISOString(),
           last_seen: new Date().toISOString(),
         } as Profile;
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: userId,
         role: 'USER',
         full_name: 'Cliente EBNA',
-        phone: '+240 222 633 687',
+        phone: '+240 555 633 687',
         created_at: new Date().toISOString(),
         last_seen: new Date().toISOString(),
       } as Profile;
@@ -121,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           id: 'admin-1',
           role: 'ADMIN',
           full_name: 'Administrador EBNA Luxury',
-          phone: '+240 222 633 687',
+          phone: '+240 555 633 687',
           created_at: new Date().toISOString(),
           last_seen: new Date().toISOString(),
         };

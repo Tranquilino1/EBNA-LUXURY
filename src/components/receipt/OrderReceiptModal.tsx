@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import type { OrderReceiptData, ReceiptTemplateId } from '../../types';
 import { OrderReceiptCard } from './OrderReceiptCard';
 import { buildReceiptWhatsAppUrl, downloadReceiptAsPng, copyReceiptSummary } from '../../lib/receiptExporter';
@@ -106,7 +106,7 @@ export const OrderReceiptModal: React.FC<OrderReceiptModalProps> = ({
             }}
           >
             <MessageCircle size={18} />
-            <span>Enviar Recibo Oficial a WhatsApp (+240 222 633 687)</span>
+            <span>Enviar Recibo Oficial a WhatsApp (+240 555 633 687)</span>
           </a>
 
           <button

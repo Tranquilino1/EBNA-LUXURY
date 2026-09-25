@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, type MouseEvent } from 'react';
+﻿import { useState, useRef, useEffect, useMemo, type MouseEvent } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { 
   ArrowRight, Sparkles, ShieldCheck, Truck, Clock, Flame, 
@@ -263,7 +263,7 @@ export function HomePage() {
               <Compass size={18} /> Explorar Colección Privada <ArrowRight size={18} />
             </Link>
             <a 
-              href="https://wa.me/240222633687?text=%C2%A1Hola%20Sindy%20Luxury!%20Deseo%20recibir%20asesoramiento%20VIP%20sobre%20su%20colecci%C3%B3n."
+              href="https://wa.me/240555633687?text=%C2%A1Hola%20Sindy%20Luxury!%20Deseo%20recibir%20asesoramiento%20VIP%20sobre%20su%20colecci%C3%B3n."
               target="_blank"
               rel="noopener noreferrer"
               className="qr-trigger-btn"

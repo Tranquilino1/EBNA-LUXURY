@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { MessageCircle, ChevronDown, Ticket } from 'lucide-react';
 import type { Product, OrderReceiptData } from '../../types';
 import { buildWhatsAppUrl } from '../../lib/whatsapp';
@@ -125,7 +125,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
             onClick={() => recordProductOrder(product.id)}
             className="wa-dropdown-item"
           >
-            Línea Principal (+240 222 633 687)
+            Línea Principal (+240 555 633 687)
           </a>
           <a 
             href={buildWhatsAppUrl(product, 'secondary')} 

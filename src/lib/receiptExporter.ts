@@ -1,7 +1,7 @@
-import type { OrderReceiptData } from '../types';
+﻿import type { OrderReceiptData } from '../types';
 import { formatPrice } from './utils';
 
-const PRIMARY_PHONE = '240222633687';
+const PRIMARY_PHONE = '240555633687';
 
 /**
  * Builds the official WhatsApp URL for the order receipt (concise and announces the generated ticket)

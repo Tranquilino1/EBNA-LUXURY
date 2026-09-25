@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import type { Product } from '../../types';
 
 interface SEOHeadProps {
@@ -121,7 +121,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
             'logo': 'https://ebna-luxury.vercel.app/icons/ebna-logo.png',
             'image': 'https://ebna-luxury.vercel.app/icons/ebna-app-icon.jpg',
             'description': description,
-            'telephone': '+240 222 633 687',
+            'telephone': '+240 555 633 687',
             'email': 'sindyluxury@gmail.com',
             'sameAs': [
               'https://www.tiktok.com/@sindyluxury',
@@ -159,7 +159,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
                 'name': '¿Dónde está ubicada la sede física de la tienda y cómo contactar?',
                 'acceptedAnswer': {
                   '@type': 'Answer',
-                  'text': 'La sede física oficial se encuentra en la ciudad de Mongomo, específicamente en Barrio Koete (al otro lado de la Agencia FORAMA, coordenadas GPS: 01°37′49.2″N, 11°18′28.99″E). Correo oficial: sindyluxury@gmail.com, TikTok: @sindyluxury y WhatsApp oficial: +240 222 633 687.'
+                  'text': 'La sede física oficial se encuentra en la ciudad de Mongomo, específicamente en Barrio Koete (al otro lado de la Agencia FORAMA, coordenadas GPS: 01°37′49.2″N, 11°18′28.99″E). Correo oficial: sindyluxury@gmail.com, TikTok: @sindyluxury y WhatsApp oficial: +240 555 633 687.'
                 }
               },
               {
@@ -167,7 +167,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
                 'name': '¿Dónde comprar ropa de fiesta, cosmética y perfumes árabes en Guinea Ecuatorial?',
                 'acceptedAnswer': {
                   '@type': 'Answer',
-                  'text': 'En EBNA Luxury a través de https://ebna-luxury.vercel.app o por WhatsApp oficial (+240 222 633 687) con entrega a domicilio en Malabo, Bata y Mongomo.'
+                  'text': 'En EBNA Luxury a través de https://ebna-luxury.vercel.app o por WhatsApp oficial (+240 555 633 687) con entrega a domicilio en Malabo, Bata y Mongomo.'
                 }
               },
               {
