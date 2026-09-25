@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { 
   ShoppingBag, X, Plus, Minus, Trash2, ShieldCheck, Truck, 
-  MapPin, Smartphone, User, Phone, AlertCircle, MessageCircle 
+  MapPin, Smartphone, User, Phone, AlertCircle 
 } from 'lucide-react';
+import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 import { useCart } from '../../contexts/CartContext';
 import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
-import { OrderReceiptModal } from '../receipt/OrderReceiptModal';
+import { TicketProcessingModal } from '../receipt/TicketProcessingModal';
 import { saveOrderRequest } from '../../lib/orderStorage';
-import { buildReceiptWhatsAppUrl, downloadReceiptAsPng } from '../../lib/receiptExporter';
 import type { OrderReceiptData, ReceiptItem } from '../../types';
 import './cart.css';
 
@@ -36,15 +36,16 @@ export const CartDrawer: React.FC = () => {
   });
   const [validationError, setValidationError] = useState('');
 
-  const [isProcessing, setIsProcessing] = useState(false);
+  // Shipping selection: Estándar (5-7 días, Gratis) vs Express (máx. 3 días, 3.000 FCFA)
+  const [shippingType, setShippingType] = useState<'normal' | 'express'>('normal');
+  const shippingCost = shippingType === 'express' ? 3000 : 0;
+  const grandTotal = subtotalPrice + shippingCost;
 
-  // Digital Pending Order Receipt State
-  const [receiptOrder, setReceiptOrder] = useState<OrderReceiptData | null>(null);
-  const [isReceiptOpen, setIsReceiptOpen] = useState(false);
+  // Automated Ticket Processing State
+  const [pendingOrder, setPendingOrder] = useState<OrderReceiptData | null>(null);
+  const [isProcessingModalOpen, setIsProcessingModalOpen] = useState(false);
 
   if (!isCartOpen) return null;
-
-  const grandTotal = subtotalPrice;
 
   const handleNameChange = (val: string) => {
     setCustomerName(val);
@@ -64,7 +65,7 @@ export const CartDrawer: React.FC = () => {
     try { localStorage.setItem('ebna_client_address', val); } catch {}
   };
 
-  const handleDirectTicketCheckout = async (method: 'whatsapp' | 'muni') => {
+  const handleStartOrderProcess = (method: 'whatsapp' | 'muni') => {
     if (cartItems.length === 0) return;
 
     const trimmedName = customerName.trim();
@@ -82,12 +83,10 @@ export const CartDrawer: React.FC = () => {
       if (trimmedAddress) localStorage.setItem('ebna_client_address', trimmedAddress);
     } catch {}
 
-    setIsProcessing(true);
-
     const receiptItems: ReceiptItem[] = cartItems.map(item => {
       recordProductOrder(item.product.id);
       const imgCandidate = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : (item.product.images as any)?.[0]);
-      const rawImg = typeof imgCandidate === 'string' ? imgCandidate.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
+      const rawImg = typeof imgCandidate === 'string' ? imgCandidate.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo-white.png';
       return {
         id: item.cartItemId,
         name: item.product.name,
@@ -97,7 +96,7 @@ export const CartDrawer: React.FC = () => {
         quantity: item.quantity,
         selectedSize: item.selectedSize,
         selectedColor: item.selectedColor,
-        image: rawImg || '/icons/ebna-logo.png',
+        image: rawImg || '/icons/ebna-logo-white.png',
         slug: item.product.slug
       };
     });
@@ -112,38 +111,25 @@ export const CartDrawer: React.FC = () => {
       createdAt: formattedDate,
       customerName: trimmedName,
       customerPhone: cleanPhone,
-      customerAddress: trimmedAddress,
+      customerAddress: trimmedAddress || 'Malabo / Bata',
       region: 'insular',
-      shippingType: 'normal',
+      shippingType,
       paymentMethod: method,
       items: receiptItems,
       subtotal: subtotalPrice,
-      shippingCost: 0,
+      shippingCost,
       total: grandTotal,
       status: 'PENDIENTE'
     };
 
     saveOrderRequest(orderData);
-    setReceiptOrder(orderData);
-    setIsReceiptOpen(true);
+    setPendingOrder(orderData);
+    setIsProcessingModalOpen(true);
+  };
 
-    // Automatically trigger high-resolution PNG ticket download
-    try {
-      await downloadReceiptAsPng(orderData, 'haute-couture');
-    } catch (err) {
-      console.warn('Auto download receipt PNG error:', err);
-    } finally {
-      setIsProcessing(false);
-    }
-
-    if (method === 'muni') {
-      try {
-        navigator.clipboard.writeText('555439904');
-      } catch {}
-    }
-
-    const waUrl = buildReceiptWhatsAppUrl(orderData);
-    window.open(waUrl, '_blank');
+  const handleOrderConfirmed = () => {
+    clearCart();
+    setIsCartOpen(false);
   };
 
   return (
@@ -160,26 +146,32 @@ export const CartDrawer: React.FC = () => {
               <p className="cart-subtitle">{totalItemsCount} {totalItemsCount === 1 ? 'artículo exclusivo' : 'artículos exclusivos'}</p>
             </div>
           </div>
-          <button className="cart-close-btn" onClick={() => setIsCartOpen(false)} aria-label="Cerrar Carrito">
+          <button 
+            type="button" 
+            className="cart-close-btn"
+            onClick={() => setIsCartOpen(false)}
+            aria-label="Cerrar Carrito"
+          >
             <X size={20} />
           </button>
         </div>
 
-        {/* Items List & Delivery Form */}
+        {/* Content Body */}
         <div className="cart-drawer-body">
           {cartItems.length === 0 ? (
-            <div className="cart-empty-state">
-              <div className="cart-empty-icon">
-                <ShoppingBag size={48} color="#D81B60" />
+            <div className="empty-cart-view">
+              <div className="empty-cart-icon-circle">
+                <ShoppingBag size={42} color="#D81B60" style={{ opacity: 0.6 }} />
               </div>
-              <p style={{ fontWeight: 700, fontSize: '1.15rem', color: '#1E293B', marginBottom: '0.4rem' }}>
-                Tu carrito está vacío
-              </p>
-              <p style={{ fontSize: '0.88rem', color: '#64748B', maxWidth: '250px', margin: '0 auto 1.5rem auto' }}>
-                Explora las nuevas colecciones en alta definición de vestidos, calzado y moda exclusiva.
-              </p>
-              <button className="btn-primary" onClick={() => setIsCartOpen(false)} style={{ borderRadius: '30px', padding: '10px 24px' }}>
-                Explorar Catálogo EBNA
+              <h4 className="empty-cart-title">Tu bolsa está vacía</h4>
+              <p className="empty-cart-desc">Explora nuestras colecciones exclusivas de vestidos, moda y calzado de alta costura.</p>
+              <button 
+                type="button" 
+                className="btn-primary" 
+                onClick={() => setIsCartOpen(false)}
+                style={{ marginTop: '1.2rem', padding: '12px 24px', borderRadius: '30px' }}
+              >
+                Continuar Comprando
               </button>
             </div>
           ) : (
@@ -187,64 +179,58 @@ export const CartDrawer: React.FC = () => {
               {/* Product Items List */}
               <div className="cart-items-list">
                 {cartItems.map((item) => {
-                  const priceVal = item.product.priceFCFA || item.product.price || 0;
-                  const itemTotal = priceVal * item.quantity;
-                  const rawItemImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : '/icons/ebna-logo.png');
-                  const itemImg = typeof rawItemImg === 'string' ? rawItemImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
-                  return (
-                    <div key={item.cartItemId} className="cart-item-card glass-card">
-                      <img 
-                        src={itemImg} 
-                        alt={item.product.name} 
-                        className="cart-item-img"
-                        onError={(e) => {
-                          e.currentTarget.src = '/icons/ebna-logo.png';
-                        }}
-                      />
-                      <div className="cart-item-details">
-                        <h4 className="cart-item-name" title={item.product.name}>{item.product.name}</h4>
-                        
-                        {(() => {
-                          const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(item.product.category || '');
-                          const isFootwear = item.product.category === 'CALZADO';
-                          const sizeLabel = isCosmetic ? 'Formato' : isFootwear ? 'Talla EU' : 'Talla';
-                          return (
-                            <div className="cart-item-options">
-                              <span>{sizeLabel}: <strong>{item.selectedSize}</strong></span>
-                              {!isCosmetic && item.selectedColor && item.selectedColor !== 'Original' && (
-                                <>
-                                  <span>•</span>
-                                  <span>Color: <strong>{item.selectedColor}</strong></span>
-                                </>
-                              )}
-                            </div>
-                          );
-                        })()}
+                  const price = item.product.priceFCFA || item.product.price || 0;
+                  const itemSubtotal = price * item.quantity;
+                  const rawItemImg = item.product.images?.primary || (Array.isArray(item.product.images) ? item.product.images[0] : '/icons/ebna-logo-white.png');
+                  const itemImg = typeof rawItemImg === 'string' ? rawItemImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo-white.png';
 
-                        <div className="cart-item-price-row">
-                          <span className="cart-item-unit-price">{formatPrice(priceVal)} c/u</span>
-                          <span className="cart-item-total">{formatPrice(itemTotal)}</span>
+                  return (
+                    <div key={item.cartItemId} className="cart-item-card">
+                      <div className="cart-item-img-container">
+                        <img 
+                          src={itemImg} 
+                          alt={item.product.name} 
+                          className="cart-item-img"
+                          onError={(e) => {
+                            e.currentTarget.src = '/icons/ebna-logo-white.png';
+                          }}
+                        />
+                      </div>
+                      <div className="cart-item-info">
+                        <h4 className="cart-item-name">{item.product.name}</h4>
+                        
+                        <div className="cart-item-variants">
+                          {item.selectedSize && (
+                            <span className="cart-variant-tag">Talla: {item.selectedSize}</span>
+                          )}
+                          {item.selectedColor && (
+                            <span className="cart-variant-tag">Color: {item.selectedColor}</span>
+                          )}
                         </div>
 
-                        {/* Quantity Controls */}
-                        <div className="cart-item-actions">
-                          <div className="quantity-controls">
+                        <div className="cart-item-pricing">
+                          <span className="cart-item-unit-price">{formatPrice(price)} c/u</span>
+                          <span className="cart-item-subtotal">{formatPrice(itemSubtotal)}</span>
+                        </div>
+
+                        <div className="cart-item-bottom-controls">
+                          <div className="cart-qty-pill">
                             <button 
-                              type="button" 
-                              className="qty-btn"
+                              type="button"
+                              className="qty-pill-btn"
                               onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
-                              aria-label="Disminuir cantidad"
+                              title="Restar una unidad"
                             >
-                              <Minus size={14} />
+                              <Minus size={13} />
                             </button>
-                            <span className="qty-value">{item.quantity}</span>
+                            <span className="qty-pill-count">{item.quantity}</span>
                             <button 
-                              type="button" 
-                              className="qty-btn"
+                              type="button"
+                              className="qty-pill-btn"
                               onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                              aria-label="Aumentar cantidad"
+                              title="Añadir una unidad"
                             >
-                              <Plus size={14} />
+                              <Plus size={13} />
                             </button>
                           </div>
 
@@ -272,7 +258,7 @@ export const CartDrawer: React.FC = () => {
                     </div>
                     <div>
                       <h4 className="futuristic-card-title">Datos para tu Ticket Oficial</h4>
-                      <p className="futuristic-card-subtitle">Descarga inmediata en archivo PNG y envío a WhatsApp</p>
+                      <p className="futuristic-card-subtitle">Descarga silenciosa automática y confirmación directa</p>
                     </div>
                   </div>
 
@@ -320,8 +306,75 @@ export const CartDrawer: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* PANEL EXCLUSIVO DE MODALIDAD DE ENVÍO */}
+                  <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px solid rgba(216, 27, 96, 0.12)' }}>
+                    <label className="futuristic-label" style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                      <Truck size={15} color="#D81B60" />
+                      <span>Modalidad de Envío</span>
+                    </label>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      {/* Opción 1: Envío Estándar */}
+                      <button
+                        type="button"
+                        onClick={() => setShippingType('normal')}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '14px',
+                          border: shippingType === 'normal' ? '2px solid #D81B60' : '1.5px solid rgba(0,0,0,0.12)',
+                          background: shippingType === 'normal' ? 'rgba(216, 27, 96, 0.08)' : 'rgba(255, 255, 255, 0.85)',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'all 0.2s ease',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '3px'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontWeight: 800, fontSize: '0.84rem', color: '#1E293B' }}>Envío Estándar</span>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#16A34A', background: 'rgba(22, 163, 74, 0.12)', padding: '2px 6px', borderRadius: '8px' }}>Gratis</span>
+                        </div>
+                        <span style={{ fontSize: '0.74rem', color: '#64748B' }}>Dura de 5 a 7 días</span>
+                      </button>
+
+                      {/* Opción 2: Botón Exclusivo Envío Express 3000 Francos */}
+                      <button
+                        type="button"
+                        onClick={() => setShippingType('express')}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '14px',
+                          border: shippingType === 'express' ? '2px solid #D81B60' : '1.5px solid rgba(216, 27, 96, 0.35)',
+                          background: shippingType === 'express' 
+                            ? 'linear-gradient(135deg, rgba(216, 27, 96, 0.14) 0%, rgba(255, 215, 0, 0.15) 100%)' 
+                            : 'rgba(255, 255, 255, 0.9)',
+                          boxShadow: shippingType === 'express' ? '0 4px 14px rgba(216, 27, 96, 0.25)' : 'none',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'all 0.2s ease',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '3px'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <span style={{ fontWeight: 800, fontSize: '0.84rem', color: '#D81B60', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                            ⚡ Express
+                          </span>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#D81B60', background: 'rgba(216, 27, 96, 0.12)', padding: '2px 6px', borderRadius: '8px' }}>
+                            3.000 FCFA
+                          </span>
+                        </div>
+                        <span style={{ fontSize: '0.74rem', color: '#1E293B', fontWeight: 700 }}>
+                          Dura máx. 3 días
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
                   {validationError && (
-                    <div className="futuristic-alert-banner">
+                    <div className="futuristic-alert-banner" style={{ marginTop: '12px' }}>
                       <AlertCircle size={15} color="#EF4444" />
                       <span>{validationError}</span>
                     </div>
@@ -341,8 +394,10 @@ export const CartDrawer: React.FC = () => {
                 <span className="summary-value">{formatPrice(subtotalPrice)}</span>
               </div>
               <div className="summary-row">
-                <span>Envío Inmediato</span>
-                <span className="summary-value" style={{ color: '#16a34a', fontWeight: 700 }}>Gratis</span>
+                <span>Modalidad de Envío</span>
+                <span className="summary-value" style={{ color: shippingType === 'express' ? '#D81B60' : '#16a34a', fontWeight: 700 }}>
+                  {shippingType === 'express' ? 'Express 3 Días (+3.000 FCFA)' : 'Estándar Gratis (5-7 días)'}
+                </span>
               </div>
               <div className="summary-row grand-total-row">
                 <span>Total a Pagar</span>
@@ -351,30 +406,28 @@ export const CartDrawer: React.FC = () => {
             </div>
 
             <div className="cart-value-props">
-              <div><Truck size={14} color="#25D366" /> <span>Entrega Inmediata en Malabo y Bata</span></div>
-              <div><ShieldCheck size={14} color="#D81B60" /> <span>Ticket Oficial con Foto y Detalle</span></div>
+              <div><Truck size={14} color="#25D366" /> <span>{shippingType === 'express' ? 'Envío Express Prioritario (Máx. 3 Días)' : 'Entrega Estándar en Malabo y Bata'}</span></div>
+              <div><ShieldCheck size={14} color="#D81B60" /> <span>Ticket Oficial con Descarga Automática</span></div>
             </div>
 
             {/* ONLY TWO PAYMENT OPTIONS AS SPECIFIED BY USER */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
-              {/* Option 1: Pagar por WhatsApp */}
+              {/* Option 1: Pagar por WhatsApp (Genera ticket automático con barra de proceso) */}
               <button 
                 type="button" 
                 className="wa-checkout-btn" 
-                onClick={() => handleDirectTicketCheckout('whatsapp')}
-                disabled={isProcessing}
+                onClick={() => handleStartOrderProcess('whatsapp')}
                 style={{ width: '100%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
               >
-                <MessageCircle size={19} />
-                <span>{isProcessing ? 'Generando Ticket...' : 'Pagar por WhatsApp (Descargar Ticket PNG)'}</span>
+                <WhatsAppIcon size={20} color="white" />
+                <span>Pedir por WhatsApp (Generar Ticket)</span>
               </button>
 
               {/* Option 2: Pagar con Muni Dinero (555439904) */}
               <button 
                 type="button"
                 className="btn-muni-navy-3d"
-                onClick={() => handleDirectTicketCheckout('muni')}
-                disabled={isProcessing}
+                onClick={() => handleStartOrderProcess('muni')}
                 style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
               >
                 <Smartphone size={19} color="#60A5FA" />
@@ -389,11 +442,12 @@ export const CartDrawer: React.FC = () => {
         )}
       </div>
 
-      {/* Digital Pending Order Receipt Modal */}
-      <OrderReceiptModal 
-        order={receiptOrder} 
-        isOpen={isReceiptOpen} 
-        onClose={() => setIsReceiptOpen(false)} 
+      {/* Automated Ticket Processing Modal with smooth progress bar & confirmation */}
+      <TicketProcessingModal
+        isOpen={isProcessingModalOpen}
+        order={pendingOrder}
+        onClose={() => setIsProcessingModalOpen(false)}
+        onConfirmed={handleOrderConfirmed}
       />
     </div>
   );

@@ -12,9 +12,8 @@ import { SEOHead } from '../components/seo/SEOHead';
 import { Loader } from '../components/ui/Loader';
 import { formatPrice } from '../lib/utils';
 import { recordProductOrder } from '../lib/popularityTracker';
-import { OrderReceiptModal } from '../components/receipt/OrderReceiptModal';
+import { TicketProcessingModal } from '../components/receipt/TicketProcessingModal';
 import { saveOrderRequest } from '../lib/orderStorage';
-import { buildReceiptWhatsAppUrl, downloadReceiptAsPng } from '../lib/receiptExporter';
 import { WhatsAppIcon } from '../components/ui/WhatsAppIcon';
 import type { OrderReceiptData } from '../types';
 
@@ -92,9 +91,14 @@ export function ProductPage() {
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
 
-  // Digital Pending Order Receipt State
-  const [receiptOrder, setReceiptOrder] = useState<OrderReceiptData | null>(null);
-  const [isReceiptOpen, setIsReceiptOpen] = useState(false);
+  // Shipping type state: Express (3000 FCFA max 3 days) vs Normal (Gratis 5-7 days)
+  const [shippingType, setShippingType] = useState<'normal' | 'express'>('normal');
+  const shippingCost = shippingType === 'express' ? 3000 : 0;
+
+  // Digital Pending Order Receipt & Processing Modal State
+  const [pendingOrder, setPendingOrder] = useState<OrderReceiptData | null>(null);
+  const [isProcessingModalOpen, setIsProcessingModalOpen] = useState(false);
+  const [justAddedToCart, setJustAddedToCart] = useState(false);
 
   // Customer info state (persisted for convenience)
   const [customerName, setCustomerName] = useState(() => {
@@ -106,11 +110,10 @@ export function ProductPage() {
   const [customerAddress, setCustomerAddress] = useState(() => {
     try { return localStorage.getItem('ebna_client_address') || ''; } catch { return ''; }
   });
-  const [isGeneratingPng, setIsGeneratingPng] = useState(false);
   const [orderError, setOrderError] = useState('');
 
-  // Directly generates official Ticket, downloads PNG file and opens WhatsApp
-  const handleDirectTicketPayment = async (method: 'whatsapp' | 'muni') => {
+  // Directly generates official Ticket with automated progress bar and silent download
+  const handleDirectTicketPayment = (method: 'whatsapp' | 'muni') => {
     if (!product) return;
 
     const cName = (customerName || '').trim();
@@ -134,11 +137,14 @@ export function ProductPage() {
     recordProductOrder(product.id);
 
     const rawImg = product.images?.primary || (Array.isArray(product.images) ? product.images[0] : (product.images as any)?.[0]);
-    const cleanImg = typeof rawImg === 'string' ? rawImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
+    const cleanImg = typeof rawImg === 'string' ? rawImg.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo-white.png';
     const priceVal = product.priceFCFA || product.price || 0;
     const now = new Date();
     const formattedDate = now.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }) + 
       ' • ' + now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+    const subtotal = priceVal * quantity;
+    const total = subtotal + shippingCost;
 
     const orderData: OrderReceiptData = {
       orderId: `quick-${Date.now()}`,
@@ -146,9 +152,9 @@ export function ProductPage() {
       createdAt: formattedDate,
       customerName: cName,
       customerPhone: cPhone,
-      customerAddress: cAddress,
+      customerAddress: cAddress || 'Malabo / Bata',
       region: 'insular',
-      shippingType: 'normal',
+      shippingType,
       paymentMethod: method,
       items: [{
         id: product.id,
@@ -162,37 +168,15 @@ export function ProductPage() {
         image: cleanImg,
         slug: product.slug
       }],
-      subtotal: priceVal * quantity,
-      shippingCost: 0,
-      total: priceVal * quantity,
+      subtotal,
+      shippingCost,
+      total,
       status: 'PENDIENTE'
     };
 
-    // Save order & open visual modal
     saveOrderRequest(orderData);
-    setReceiptOrder(orderData);
-    setIsReceiptOpen(true);
-
-    // AUTOMATICALLY GENERATE & DOWNLOAD PNG TICKET
-    setIsGeneratingPng(true);
-    try {
-      await downloadReceiptAsPng(orderData, 'haute-couture');
-    } catch (e) {
-      console.warn('PNG ticket generation error:', e);
-    } finally {
-      setIsGeneratingPng(false);
-    }
-
-    // Copy Muni Dinero number to clipboard if Muni
-    if (method === 'muni') {
-      try {
-        navigator.clipboard.writeText('555439904');
-      } catch {}
-    }
-
-    // Direct routing to WhatsApp with complete description and ticket link
-    const waUrl = buildReceiptWhatsAppUrl(orderData);
-    window.open(waUrl, '_blank');
+    setPendingOrder(orderData);
+    setIsProcessingModalOpen(true);
   };
 
   useEffect(() => {
@@ -715,6 +699,59 @@ export function ProductPage() {
                   />
                 </div>
               </div>
+
+              {/* Panel Exclusivo de Modalidad de Envío */}
+              <div style={{ gridColumn: '1 / -1', marginTop: '2px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#475569', marginBottom: '5px' }}>
+                  Modalidad de Envío:
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  {/* Opción 1: Envío Estándar */}
+                  <button
+                    type="button"
+                    onClick={() => setShippingType('normal')}
+                    style={{
+                      padding: '8px 10px',
+                      borderRadius: '10px',
+                      border: shippingType === 'normal' ? '2px solid #D81B60' : '1px solid #CBD5E1',
+                      background: shippingType === 'normal' ? 'rgba(216, 27, 96, 0.08)' : 'white',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1E293B' }}>Envío Estándar</span>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#16A34A', background: 'rgba(22, 163, 74, 0.12)', padding: '1px 6px', borderRadius: '6px' }}>Gratis</span>
+                    </div>
+                    <span style={{ fontSize: '0.7rem', color: '#64748B' }}>5 a 7 días hábiles</span>
+                  </button>
+
+                  {/* Opción 2: Botón Exclusivo Express 3000 Francos */}
+                  <button
+                    type="button"
+                    onClick={() => setShippingType('express')}
+                    style={{
+                      padding: '8px 10px',
+                      borderRadius: '10px',
+                      border: shippingType === 'express' ? '2px solid #D81B60' : '1px solid rgba(216, 27, 96, 0.35)',
+                      background: shippingType === 'express' 
+                        ? 'linear-gradient(135deg, rgba(216, 27, 96, 0.12), rgba(255, 215, 0, 0.15))' 
+                        : 'white',
+                      boxShadow: shippingType === 'express' ? '0 3px 10px rgba(216, 27, 96, 0.2)' : 'none',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#D81B60' }}>⚡ Express</span>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 800, color: '#D81B60', background: 'rgba(216, 27, 96, 0.12)', padding: '1px 6px', borderRadius: '6px' }}>3.000 FCFA</span>
+                    </div>
+                    <span style={{ fontSize: '0.7rem', color: '#1E293B', fontWeight: 700 }}>Dura máx. 3 días</span>
+                  </button>
+                </div>
+              </div>
             </div>
 
             {orderError && (
@@ -730,7 +767,7 @@ export function ProductPage() {
             <button
               type="button"
               onClick={() => handleDirectTicketPayment('whatsapp')}
-              disabled={!product.in_stock || isGeneratingPng}
+              disabled={!product.in_stock}
               style={{
                 width: '100%',
                 padding: '14px 20px',
@@ -750,14 +787,14 @@ export function ProductPage() {
               }}
             >
               <WhatsAppIcon size={20} color="white" />
-              <span>{isGeneratingPng ? 'Generando Ticket Oficial...' : 'Pedir por WhatsApp (Ticket Oficial)'}</span>
+              <span>Pedir por WhatsApp (Generar Ticket)</span>
             </button>
 
             {/* 2. PAGAR CON MUNI DINERO (555439904) (Direct Ticket Generator) */}
             <button
               type="button"
               onClick={() => handleDirectTicketPayment('muni')}
-              disabled={!product.in_stock || isGeneratingPng}
+              disabled={!product.in_stock}
               style={{
                 width: '100%',
                 padding: '14px 20px',
@@ -780,17 +817,23 @@ export function ProductPage() {
               <span>Pagar con Muni Dinero (555439904)</span>
             </button>
 
-            {/* 3. AGREGAR A LA CESTA (Rosa Lujo EBNA) */}
+            {/* 3. AGREGAR A LA CESTA (Rosa Lujo EBNA con Feedback) */}
             <button
               type="button"
-              onClick={() => addToCart(product, quantity, currentSize, currentColor)}
+              onClick={() => {
+                addToCart(product, quantity, currentSize, currentColor);
+                setJustAddedToCart(true);
+                setTimeout(() => setJustAddedToCart(false), 2000);
+              }}
               disabled={!product.in_stock}
               style={{
                 width: '100%',
                 padding: '12px 20px',
                 borderRadius: '30px',
                 border: 'none',
-                background: product.in_stock ? 'linear-gradient(135deg, #D81B60, #C2185B)' : '#E2E8F0',
+                background: product.in_stock 
+                  ? (justAddedToCart ? 'linear-gradient(135deg, #10B981, #059669)' : 'linear-gradient(135deg, #D81B60, #C2185B)') 
+                  : '#E2E8F0',
                 color: product.in_stock ? '#FFFFFF' : '#94A3B8',
                 fontWeight: 800,
                 fontSize: '0.92rem',
@@ -804,18 +847,21 @@ export function ProductPage() {
                 transition: 'all 0.2s ease'
               }}
             >
-              <ShoppingBag size={18} />
-              <span>{product.in_stock ? `Añadir ${quantity} al Carrito` : 'Producto Agotado'}</span>
+              {justAddedToCart ? <Check size={18} /> : <ShoppingBag size={18} />}
+              <span>
+                {!product.in_stock ? 'Producto Agotado' : (justAddedToCart ? '¡Añadido a tu Carrito!' : `Añadir ${quantity} al Carrito`)}
+              </span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Digital Pending Order Receipt Modal */}
-      <OrderReceiptModal
-        order={receiptOrder}
-        isOpen={isReceiptOpen}
-        onClose={() => setIsReceiptOpen(false)}
+      {/* Automated Ticket Processing Modal with smooth progress bar & confirmation */}
+      <TicketProcessingModal
+        isOpen={isProcessingModalOpen}
+        order={pendingOrder}
+        onClose={() => setIsProcessingModalOpen(false)}
+        onConfirmed={() => {}}
       />
     </div>
   );

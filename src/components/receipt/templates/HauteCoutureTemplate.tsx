@@ -18,7 +18,7 @@ export const HauteCoutureTemplate: React.FC<HauteCoutureTemplateProps> = ({ orde
       <div className="receipt-header">
         <div className="receipt-brand-logo">
           <img 
-            src="/icons/ebna-logo.png" 
+            src="/icons/ebna-logo-white.png" 
             alt="EBNA Crest" 
             className="receipt-crest-img"
             onError={(e) => {
@@ -102,7 +102,7 @@ export const HauteCoutureTemplate: React.FC<HauteCoutureTemplateProps> = ({ orde
         <div className="receipt-items-list">
           {order.items.map((item) => {
             const itemTotal = item.price * item.quantity;
-            const itemImgSrc = item.image ? item.image.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo.png';
+            const itemImgSrc = item.image ? item.image.replace(/\.jfif$/i, '.jpg') : '/icons/ebna-logo-white.png';
             return (
               <div key={item.id} className="receipt-item-row">
                 <div className="receipt-item-thumb-wrapper">
@@ -111,7 +111,7 @@ export const HauteCoutureTemplate: React.FC<HauteCoutureTemplateProps> = ({ orde
                     alt={item.name} 
                     className="receipt-item-thumb-img"
                     onError={(e) => {
-                      e.currentTarget.src = '/icons/ebna-logo.png';
+                      e.currentTarget.src = '/icons/ebna-logo-white.png';
                     }} 
                   />
                   <span className="thumb-qty-badge">x{item.quantity}</span>
@@ -128,11 +128,6 @@ export const HauteCoutureTemplate: React.FC<HauteCoutureTemplateProps> = ({ orde
                     )}
                     <span className="receipt-unit-price">{formatPrice(item.price)} c/u</span>
                   </div>
-                  {item.description && (
-                    <p style={{ margin: '4px 0 0 0', fontSize: '0.78rem', color: '#64748B', lineHeight: 1.35, fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {item.description}
-                    </p>
-                  )}
                 </div>
 
                 <div className="receipt-item-price-col">

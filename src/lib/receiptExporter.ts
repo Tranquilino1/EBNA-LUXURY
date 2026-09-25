@@ -4,56 +4,34 @@ import { formatPrice } from './utils';
 const PRIMARY_PHONE = '240222633687';
 
 /**
- * Builds the official WhatsApp URL for the order receipt
+ * Builds the official WhatsApp URL for the order receipt (concise and announces the generated ticket)
  */
 export function buildReceiptWhatsAppUrl(order: OrderReceiptData): string {
   const baseUrl = typeof window !== 'undefined' && window.location.origin ? window.location.origin : 'https://ebna-luxury.vercel.app';
   const receiptCardUrl = `${baseUrl}/recibo?id=${order.orderId}&ref=${order.orderNumber}`;
-
-  const itemsText = order.items.map((item, idx) => {
-    const itemSubtotal = item.price * item.quantity;
-    const sizeInfo = item.selectedSize ? ` [Talla: ${item.selectedSize}]` : '';
-    const colorInfo = item.selectedColor && item.selectedColor !== 'Original' ? ` [Color: ${item.selectedColor}]` : '';
-    return `${idx + 1}. 👗 *${item.name}* (x${item.quantity})${sizeInfo}${colorInfo}\n   💰 Subtotal: ${formatPrice(itemSubtotal)}`;
-  }).join('\n\n');
-
-  const regionLabel = order.region === 'insular' 
-    ? 'Bioko / Malabo' 
-    : 'Bata / Continental';
 
   const shippingLabel = order.shippingType === 'express'
     ? '⚡ Express 3 Días (+3.000 FCFA)'
     : '📦 Estándar 5 a 7 Días (Gratis)';
 
   const paymentLabel = order.paymentMethod === 'muni'
-    ? '📲 MUNI DINERO (555439904)'
-    : '💬 WHATSAPP DIRECTO (+240 222 633 687)';
+    ? 'Muni Dinero (555439904)'
+    : 'WhatsApp / Contra Entrega';
 
+  // Compact, professional message emphasizing the attached ticket image
   const message = `✨ *SOLICITUD DE PEDIDO — SINDY LUXURY BY EBNA* ✨
 ━━━━━━━━━━━━━━━━━━━━━━
 🎫 *FOLIO:* #${order.orderNumber}
 📅 *FECHA:* ${order.createdAt}
-⏳ *ESTADO:* PENDIENTE DE VALIDACIÓN
-
-👤 *DATOS DEL DESTINATARIO:*
-• Nombre: *${order.customerName}*
-• Teléfono: *${order.customerPhone || 'Pendiente'}*
-• Entrega: *${order.customerAddress}* (${regionLabel})
-
-🛍️ *PRENDAS SELECCIONADAS (${order.items.reduce((acc, i) => acc + i.quantity, 0)} unidades):*
-${itemsText}
-
-━━━━━━━━━━━━━━━━━━━━━━
-💵 *DESGLOSE FINANCIERO:*
-• Subtotal: ${formatPrice(order.subtotal)}
-• Modalidad de Envío: ${shippingLabel}
-• Método de Pago: ${paymentLabel}
+👤 *CLIENTE:* ${order.customerName}
+📞 *TELÉFONO:* ${order.customerPhone || 'N/A'}
+📍 *ENTREGA:* ${order.customerAddress} (${order.region === 'insular' ? 'Bioko/Malabo' : 'Continental/Bata'})
+🚚 *MODALIDAD:* ${shippingLabel}
+💳 *PAGO:* ${paymentLabel}
 ⭐ *TOTAL A PAGAR: ${formatPrice(order.total)}*
 ━━━━━━━━━━━━━━━━━━━━━━
-📸 *Ticket PNG:* Generado y descargado automáticamente en el dispositivo.
+📸 *Ticket Oficial generado y descargado en mi dispositivo (adjunto la imagen en este chat).*
 🔗 *Ver Comprobante Digital:* ${receiptCardUrl}
-
-${order.paymentMethod === 'muni' ? '📌 *Instrucción Muni Dinero:* He solicitado el pedido con pago vía Muni Dinero al 555439904.' : '📌 Adjunto mi comprobante digital para programar la entrega.'}
 
 ¿Me confirman recepción del pedido para empaque y despacho?`;
 
@@ -71,9 +49,8 @@ Fecha: ${order.createdAt}
 Cliente: ${order.customerName}
 Teléfono: ${order.customerPhone || 'N/A'}
 Dirección: ${order.customerAddress} (${order.region === 'insular' ? 'Bioko/Malabo' : 'Continental/Bata'})
-Modalidad de Envío: ${order.shippingType === 'express' ? 'Express 3 Días (+3.000 FCFA)' : 'Estándar Gratis'}
-Método de Pago: ${order.paymentMethod === 'muni' ? 'Muni Dinero' : 'WhatsApp / Efectivo'}
-Artículos: ${order.items.map(i => `${i.name} (x${i.quantity}) - ${formatPrice(i.price * i.quantity)}`).join(', ')}
+Modalidad de Envío: ${order.shippingType === 'express' ? 'Express 3 Días (+3.000 FCFA)' : 'Estándar Gratis (5-7 días)'}
+Método de Pago: ${order.paymentMethod === 'muni' ? 'Muni Dinero (555439904)' : 'WhatsApp / Contra Entrega'}
 Total a Pagar: ${formatPrice(order.total)}`;
 
   try {
@@ -95,49 +72,55 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
       return;
     }
     const img = new Image();
-    // Only set crossOrigin for remote http(s) URLs
     if (src.startsWith('http://') || src.startsWith('https://')) {
       img.crossOrigin = 'anonymous';
     }
     img.onload = () => resolve(img);
-    img.onerror = () => {
-      // Do not load remote images without crossOrigin as that taints canvas and blocks toDataURL
-      resolve(null);
-    };
+    img.onerror = () => resolve(null);
     img.src = src;
   });
 }
 
+export interface GeneratedTicketResult {
+  dataUrl: string;
+  blob: Blob | null;
+  filename: string;
+  copiedToClipboard: boolean;
+}
+
 /**
- * Generates and downloads a high-resolution PNG image (2x DPI) of the receipt card
+ * Generates an elegant, compact standard-size ticket (2x DPI)
+ * Silently downloads the PNG file and copies image to clipboard for easy WhatsApp pasting.
  */
-export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haute-couture' | 'obsidian-gold' | 'editorial-vogue' = 'haute-couture'): Promise<boolean> {
+export async function generateAndDownloadReceipt(
+  order: OrderReceiptData,
+  theme: 'haute-couture' | 'obsidian-gold' | 'editorial-vogue' = 'haute-couture'
+): Promise<GeneratedTicketResult | null> {
   try {
-    const width = 800;
-    // Calculate required height based on items count with room for description
-    const headerHeight = 240;
-    const customerHeight = 200;
-    const itemsHeaderHeight = 60;
-    const itemRowHeight = 112;
+    const width = 540;
+    const headerHeight = 115;
+    const customerHeight = 90;
+    const itemsHeaderHeight = 35;
+    const itemRowHeight = 62;
     const itemsTotalHeight = order.items.length * itemRowHeight;
-    const totalsHeight = 210;
-    const footerHeight = 120;
+    const totalsHeight = 110;
+    const footerHeight = 60;
     const totalHeight = headerHeight + customerHeight + itemsHeaderHeight + itemsTotalHeight + totalsHeight + footerHeight;
 
     const canvas = document.createElement('canvas');
-    const scale = 2; // High Retina resolution
+    const scale = 2; // Retina sharpness
     canvas.width = width * scale;
     canvas.height = totalHeight * scale;
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return false;
+    if (!ctx) return null;
 
     ctx.scale(scale, scale);
 
-    // Theme color palettes
     const isDark = theme === 'obsidian-gold';
     const isVogue = theme === 'editorial-vogue';
 
+    // Background Gradient
     const bgGradient = ctx.createLinearGradient(0, 0, width, totalHeight);
     if (isDark) {
       bgGradient.addColorStop(0, '#0F172A');
@@ -145,169 +128,145 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
       bgGradient.addColorStop(1, '#020617');
     } else if (isVogue) {
       bgGradient.addColorStop(0, '#FFFFFF');
-      bgGradient.addColorStop(1, '#FAFAFA');
+      bgGradient.addColorStop(1, '#F8FAFC');
     } else {
-      // Haute Couture Champagne / Ivory
-      bgGradient.addColorStop(0, '#FFFDF8');
-      bgGradient.addColorStop(0.3, '#FAF5EB');
-      bgGradient.addColorStop(1, '#F7EFE1');
+      bgGradient.addColorStop(0, '#FFFFFF');
+      bgGradient.addColorStop(0.35, '#FFF7F9');
+      bgGradient.addColorStop(1, '#FCEBF1');
     }
 
-    // Fill background
     ctx.fillStyle = bgGradient;
     ctx.fillRect(0, 0, width, totalHeight);
 
-    // Outer Luxury Border
-    const borderGold = isDark ? '#D4AF37' : isVogue ? '#1E293B' : '#C5A880';
-    ctx.strokeStyle = borderGold;
-    ctx.lineWidth = 3;
-    ctx.strokeRect(16, 16, width - 32, totalHeight - 32);
+    // Outer Border
+    const borderBrand = isDark ? '#D4AF37' : '#D81B60';
+    ctx.strokeStyle = borderBrand;
+    ctx.lineWidth = 2;
+    ctx.strokeRect(10, 10, width - 20, totalHeight - 20);
 
     // Inner fine border
-    ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.3)' : 'rgba(197, 168, 128, 0.4)';
+    ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.25)' : 'rgba(216, 27, 96, 0.25)';
     ctx.lineWidth = 1;
-    ctx.strokeRect(24, 24, width - 48, totalHeight - 48);
+    ctx.strokeRect(14, 14, width - 28, totalHeight - 28);
 
-    // Header Pattern / Brand
-    let currentY = 55;
+    // Header Content
+    let currentY = 38;
 
     // Brand Title
     ctx.textAlign = 'center';
-    ctx.fillStyle = isDark ? '#F1E5C9' : isVogue ? '#0F172A' : '#1E1926';
-    ctx.font = 'bold 28px "Playfair Display", Georgia, serif';
+    ctx.fillStyle = isDark ? '#F1E5C9' : '#1E1926';
+    ctx.font = 'bold 22px "Playfair Display", Georgia, serif';
     ctx.fillText('SINDY LUXURY', width / 2, currentY);
 
-    currentY += 24;
-    ctx.font = '600 13px "Cinzel", "Montserrat", sans-serif';
+    currentY += 18;
+    ctx.font = '700 11px "Montserrat", sans-serif';
     ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
     ctx.fillText('HAUTE COUTURE & BOUTIQUE VIP • GUINEA ECUATORIAL', width / 2, currentY);
 
-    currentY += 28;
-    // Gold Ribbon / Divider
-    ctx.strokeStyle = isDark ? '#D4AF37' : '#D81B60';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(width / 2 - 140, currentY);
-    ctx.lineTo(width / 2 + 140, currentY);
-    ctx.stroke();
-
-    currentY += 24;
-    ctx.font = 'bold 16px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#E2E8F0' : '#475569';
-    ctx.fillText('TICKET OFICIAL DE PEDIDO', width / 2, currentY);
-
-    currentY += 26;
-    // Order ID & Status Badge Box
-    const badgeWidth = 460;
-    const badgeX = (width - badgeWidth) / 2;
-    ctx.fillStyle = isDark ? 'rgba(212, 175, 55, 0.15)' : 'rgba(216, 27, 96, 0.08)';
-    ctx.strokeStyle = isDark ? '#D4AF37' : '#D81B60';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(badgeX, currentY - 18, badgeWidth, 36, 18);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.font = 'bold 13px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#FFD700' : '#C2185B';
-    ctx.fillText(`FOLIO: #${order.orderNumber}  •  ⏳ ${order.status}`, width / 2, currentY + 5);
-
-    currentY += 38;
-    ctx.font = '12px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
-    ctx.fillText(`Emitido el ${order.createdAt} (Malabo / Bata)`, width / 2, currentY);
-
-    // Customer Dossier Box
-    currentY += 28;
-    const boxX = 45;
-    const boxWidth = width - 90;
-    const boxHeight = 175;
-
-    ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.85)';
-    ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.25)' : 'rgba(216, 27, 96, 0.2)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.roundRect(boxX, currentY, boxWidth, boxHeight, 14);
-    ctx.fill();
-    ctx.stroke();
-
-    // Box Header
-    ctx.textAlign = 'left';
-    ctx.font = 'bold 13px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
-    ctx.fillText('DATOS DE ENTREGA Y DESTINATARIO', boxX + 20, currentY + 26);
-
-    // Divider
-    ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)';
-    ctx.beginPath();
-    ctx.moveTo(boxX + 20, currentY + 36);
-    ctx.lineTo(boxX + boxWidth - 20, currentY + 36);
-    ctx.stroke();
-
-    // Customer details
-    const textStartY = currentY + 60;
-    const lineSpacing = 24;
-
-    ctx.font = '13px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
-    ctx.fillText('Destinatario:', boxX + 20, textStartY);
-    ctx.fillText('Teléfono / WhatsApp:', boxX + 20, textStartY + lineSpacing);
-    ctx.fillText('Dirección de Entrega:', boxX + 20, textStartY + lineSpacing * 2);
-    ctx.fillText('Región y Modalidad:', boxX + 20, textStartY + lineSpacing * 3);
-    ctx.fillText('Método de Pago:', boxX + 20, textStartY + lineSpacing * 4);
-
-    ctx.font = 'bold 13px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#F8FAFC' : '#1E293B';
-    ctx.fillText(order.customerName, boxX + 180, textStartY);
-    ctx.fillText(order.customerPhone || 'Pendiente de confirmación', boxX + 180, textStartY + lineSpacing);
-    
-    // Truncate address if too long
-    const addressStr = order.customerAddress.length > 55 ? order.customerAddress.substring(0, 52) + '...' : order.customerAddress;
-    ctx.fillText(addressStr, boxX + 180, textStartY + lineSpacing * 2);
-
-    const regionStr = order.region === 'insular' ? 'Bioko (Malabo)' : 'Continental (Bata)';
-    const shippingStr = order.shippingType === 'express' ? 'Express 3 Días (+3.000 FCFA)' : 'Normal Estándar (Gratis)';
-    ctx.fillText(`${regionStr} • ${shippingStr}`, boxX + 180, textStartY + lineSpacing * 3);
-
-    const paymentStr = order.paymentMethod === 'muni' ? 'Muni Dinero (555439904)' : 'WhatsApp / Efectivo (+240 222 633 687)';
-    ctx.fillText(paymentStr, boxX + 180, textStartY + lineSpacing * 4);
-
-    // Items Section Header
-    currentY += boxHeight + 25;
-    ctx.font = 'bold 14px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
-    ctx.fillText('PRENDAS Y ARTÍCULOS SELECCIONADOS', boxX + 5, currentY);
-
-    ctx.textAlign = 'right';
-    ctx.font = '12px "Montserrat", sans-serif';
-    ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
-    ctx.fillText(`${order.items.reduce((sum, item) => sum + item.quantity, 0)} unidades en total`, boxX + boxWidth - 5, currentY);
-
-    currentY += 12;
+    currentY += 16;
+    // Sub-header Divider
     ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.4)' : 'rgba(216, 27, 96, 0.3)';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(boxX, currentY);
-    ctx.lineTo(boxX + boxWidth, currentY);
+    ctx.moveTo(width / 2 - 120, currentY);
+    ctx.lineTo(width / 2 + 120, currentY);
     ctx.stroke();
 
-    currentY += 15;
+    currentY += 20;
+    // Order Folio & Status Badge
+    const badgeW = 340;
+    const badgeX = (width - badgeW) / 2;
+    ctx.fillStyle = isDark ? 'rgba(212, 175, 55, 0.12)' : 'rgba(216, 27, 96, 0.08)';
+    ctx.strokeStyle = isDark ? '#D4AF37' : '#D81B60';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(badgeX, currentY - 14, badgeW, 26, 13);
+    ctx.fill();
+    ctx.stroke();
 
-    // Load thumbnails and draw items
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
+    ctx.fillStyle = isDark ? '#FFD700' : '#C2185B';
+    ctx.fillText(`FOLIO: #${order.orderNumber}  •  ${order.createdAt}`, width / 2, currentY + 3);
+
+    // Customer Info Card (Compact 2-Column layout)
+    currentY += 28;
+    const boxX = 26;
+    const boxW = width - 52;
+    const cBoxH = 76;
+
+    ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.04)' : '#FFFFFF';
+    ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.25)' : 'rgba(216, 27, 96, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(boxX, currentY, boxW, cBoxH, 10);
+    ctx.fill();
+    ctx.stroke();
+
+    // Customer rows
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
+    ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
+    ctx.fillText('DATOS DE ENTREGA', boxX + 14, currentY + 18);
+
+    ctx.font = '11px "Montserrat", sans-serif';
+    ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
+    ctx.fillText('Cliente:', boxX + 14, currentY + 36);
+    ctx.fillText('Teléfono:', boxX + 14, currentY + 52);
+    ctx.fillText('Dirección:', boxX + 14, currentY + 68);
+
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
+    ctx.fillStyle = isDark ? '#F8FAFC' : '#1E293B';
+    ctx.fillText(order.customerName, boxX + 75, currentY + 36);
+    ctx.fillText(order.customerPhone || 'Confirmado', boxX + 75, currentY + 52);
+
+    const cleanAddr = order.customerAddress.length > 35 ? order.customerAddress.substring(0, 33) + '...' : order.customerAddress;
+    ctx.fillText(cleanAddr, boxX + 75, currentY + 68);
+
+    // Shipping Badge right-aligned in customer box
+    const isExpress = order.shippingType === 'express';
+    ctx.textAlign = 'right';
+    ctx.font = 'bold 10px "Montserrat", sans-serif';
+    ctx.fillStyle = isExpress ? '#D81B60' : '#16A34A';
+    ctx.fillText(isExpress ? '⚡ ENVÍO EXPRESS (Máx. 3 Días)' : '📦 ENVÍO ESTÁNDAR (5-7 Días)', boxX + boxW - 14, currentY + 36);
+
+    ctx.font = '10px "Montserrat", sans-serif';
+    ctx.fillStyle = isDark ? '#CBD5E1' : '#64748B';
+    ctx.fillText(order.region === 'insular' ? 'Malabo (Bioko)' : 'Bata (Continental)', boxX + boxW - 14, currentY + 52);
+
+    // Items Header
+    currentY += cBoxH + 18;
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
+    ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
+    ctx.fillText(`PRENDAS (${order.items.reduce((s, i) => s + i.quantity, 0)} unidades)`, boxX, currentY);
+
+    ctx.textAlign = 'right';
+    ctx.font = '600 10px "Montserrat", sans-serif';
+    ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
+    ctx.fillText('SUBTOTAL', boxX + boxW, currentY);
+
+    currentY += 8;
+    ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.3)' : 'rgba(216, 27, 96, 0.2)';
+    ctx.beginPath();
+    ctx.moveTo(boxX, currentY);
+    ctx.lineTo(boxX + boxW, currentY);
+    ctx.stroke();
+
+    currentY += 10;
+
+    // Items list (Compact rows)
     for (const item of order.items) {
-      const itemRowY = currentY;
-      const thumbSize = 74;
+      const rowY = currentY;
+      const thumbSize = 46;
 
-      // Draw item thumbnail container
-      ctx.fillStyle = isDark ? '#1E293B' : '#F8FAFC';
-      ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.35)' : 'rgba(216, 27, 96, 0.2)';
-      ctx.lineWidth = 1;
+      // Thumbnail frame
+      ctx.fillStyle = isDark ? '#1E293B' : '#F1F5F9';
+      ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.2)' : 'rgba(216, 27, 96, 0.15)';
       ctx.beginPath();
-      ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 10);
+      ctx.roundRect(boxX, rowY, thumbSize, thumbSize, 6);
       ctx.fill();
       ctx.stroke();
 
-      // Try loading and drawing image
       let imageDrawn = false;
       if (item.image) {
         try {
@@ -316,162 +275,154 @@ export async function downloadReceiptAsPng(order: OrderReceiptData, theme: 'haut
           if (img) {
             ctx.save();
             ctx.beginPath();
-            ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 10);
+            ctx.roundRect(boxX, rowY, thumbSize, thumbSize, 6);
             ctx.clip();
-            ctx.drawImage(img, boxX, itemRowY, thumbSize, thumbSize);
+            ctx.drawImage(img, boxX, rowY, thumbSize, thumbSize);
             ctx.restore();
             imageDrawn = true;
           }
-        } catch {
-          // Keep placeholder
-        }
+        } catch {}
       }
 
       if (!imageDrawn) {
-        // Luxury monogram fallback
-        ctx.fillStyle = isDark ? '#334155' : '#FCE4EC';
-        ctx.beginPath();
-        ctx.roundRect(boxX, itemRowY, thumbSize, thumbSize, 10);
-        ctx.fill();
         ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
-        ctx.font = 'bold 18px "Playfair Display", Georgia, serif';
+        ctx.font = 'bold 12px serif';
         ctx.textAlign = 'center';
-        ctx.fillText('SL', boxX + thumbSize / 2, itemRowY + thumbSize / 2 + 6);
+        ctx.fillText('SL', boxX + thumbSize / 2, rowY + thumbSize / 2 + 4);
       }
 
-      // Quantity Badge floating on thumbnail
-      ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
-      ctx.beginPath();
-      ctx.roundRect(boxX + thumbSize - 24, itemRowY, 24, 20, 4);
-      ctx.fill();
-
-      ctx.textAlign = 'center';
-      ctx.font = 'bold 11px "Montserrat", sans-serif';
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillText(`x${item.quantity}`, boxX + thumbSize - 12, itemRowY + 14);
-
-      // Item Name
+      // Item Name & Variant
       ctx.textAlign = 'left';
-      ctx.font = 'bold 14px "Playfair Display", Georgia, serif';
+      ctx.font = 'bold 12px "Playfair Display", Georgia, serif';
       ctx.fillStyle = isDark ? '#F8FAFC' : '#1E293B';
-      const itemName = item.name.length > 40 ? item.name.substring(0, 38) + '...' : item.name;
-      ctx.fillText(itemName, boxX + thumbSize + 15, itemRowY + 20);
+      const maxNameLen = 32;
+      const itemName = item.name.length > maxNameLen ? item.name.substring(0, maxNameLen - 2) + '...' : item.name;
+      ctx.fillText(itemName, boxX + thumbSize + 10, rowY + 16);
 
-      // Size / Color Pill
-      ctx.font = '600 11px "Montserrat", sans-serif';
+      ctx.font = '600 10px "Montserrat", sans-serif';
       ctx.fillStyle = isDark ? '#ECC874' : '#C2185B';
-      const variantText = `Talla: ${item.selectedSize || 'Estándar'}${item.selectedColor && item.selectedColor !== 'Original' ? ` • Color: ${item.selectedColor}` : ''}`;
-      ctx.fillText(variantText, boxX + thumbSize + 15, itemRowY + 38);
+      const variantStr = `Talla: ${item.selectedSize || 'Estándar'}${item.selectedColor && item.selectedColor !== 'Original' ? ` • Color: ${item.selectedColor}` : ''}`;
+      ctx.fillText(variantStr, boxX + thumbSize + 10, rowY + 30);
 
-      // Description (Displayed clearly)
-      const descText = item.description || (item.category ? `Colección de Alta Confección • ${item.category.replace(/_/g, ' ')}` : '');
-      if (descText) {
-        ctx.font = 'italic 11px "Montserrat", sans-serif';
-        ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
-        const cleanDesc = descText.length > 68 ? descText.substring(0, 65) + '...' : descText;
-        ctx.fillText(cleanDesc, boxX + thumbSize + 15, itemRowY + 54);
-      }
+      ctx.font = '10px "Montserrat", sans-serif';
+      ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
+      ctx.fillText(`Cant: ${item.quantity}  ×  ${formatPrice(item.price)}`, boxX + thumbSize + 10, rowY + 43);
 
-      // Unit Price
-      ctx.font = 'bold 11px "Montserrat", sans-serif';
-      ctx.fillStyle = isDark ? '#CBD5E1' : '#475569';
-      ctx.fillText(`Precio: ${formatPrice(item.price)} c/u`, boxX + thumbSize + 15, itemRowY + 70);
-
-      // Item Subtotal (Right Aligned)
+      // Subtotal Right Aligned
       ctx.textAlign = 'right';
-      ctx.font = 'bold 15px "Montserrat", sans-serif';
+      ctx.font = 'bold 13px "Montserrat", sans-serif';
       ctx.fillStyle = isDark ? '#FFD700' : '#D81B60';
-      ctx.fillText(formatPrice(item.price * item.quantity), boxX + boxWidth, itemRowY + 38);
-
-      // Row separator
-      ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
-      ctx.beginPath();
-      ctx.moveTo(boxX, itemRowY + itemRowHeight - 12);
-      ctx.lineTo(boxX + boxWidth, itemRowY + itemRowHeight - 12);
-      ctx.stroke();
+      ctx.fillText(formatPrice(item.price * item.quantity), boxX + boxW, rowY + 28);
 
       currentY += itemRowHeight;
     }
 
-    // Accounting / Totals Card
-    currentY += 15;
-    const totalsBoxHeight = 150;
-    ctx.fillStyle = isDark ? 'rgba(212, 175, 55, 0.08)' : 'rgba(216, 27, 96, 0.04)';
-    ctx.strokeStyle = isDark ? '#D4AF37' : 'rgba(216, 27, 96, 0.25)';
+    // Totals Card
+    currentY += 6;
+    const totalsH = 88;
+    ctx.fillStyle = isDark ? 'rgba(212, 175, 55, 0.08)' : 'rgba(216, 27, 96, 0.05)';
+    ctx.strokeStyle = isDark ? '#D4AF37' : 'rgba(216, 27, 96, 0.3)';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.roundRect(boxX, currentY, boxWidth, totalsBoxHeight, 14);
+    ctx.roundRect(boxX, currentY, boxW, totalsH, 10);
     ctx.fill();
     ctx.stroke();
 
-    const tY = currentY + 30;
+    const tY = currentY + 22;
     ctx.textAlign = 'left';
-    ctx.font = '13px "Montserrat", sans-serif';
+    ctx.font = '11px "Montserrat", sans-serif';
     ctx.fillStyle = isDark ? '#CBD5E1' : '#475569';
-    ctx.fillText('Subtotal Prendas:', boxX + 25, tY);
-    ctx.fillText('Modalidad de Envío:', boxX + 25, tY + 28);
+    ctx.fillText('Subtotal:', boxX + 16, tY);
+    ctx.fillText('Modalidad de Envío:', boxX + 16, tY + 18);
 
     ctx.textAlign = 'right';
-    ctx.font = 'bold 14px "Montserrat", sans-serif';
+    ctx.font = 'bold 11px "Montserrat", sans-serif';
     ctx.fillStyle = isDark ? '#F1F5F9' : '#1E293B';
-    ctx.fillText(formatPrice(order.subtotal), boxX + boxWidth - 25, tY);
-    ctx.fillText(order.shippingCost > 0 ? formatPrice(order.shippingCost) : 'Gratis (Promoción)', boxX + boxWidth - 25, tY + 28);
+    ctx.fillText(formatPrice(order.subtotal), boxX + boxW - 16, tY);
+
+    const shipText = order.shippingCost > 0 ? `${formatPrice(order.shippingCost)} (Express)` : 'Gratis (Estándar)';
+    ctx.fillText(shipText, boxX + boxW - 16, tY + 18);
 
     // Grand total line
-    ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.4)' : 'rgba(216, 27, 96, 0.3)';
+    ctx.strokeStyle = isDark ? 'rgba(212, 175, 55, 0.3)' : 'rgba(216, 27, 96, 0.25)';
     ctx.beginPath();
-    ctx.moveTo(boxX + 20, tY + 45);
-    ctx.lineTo(boxX + boxWidth - 20, tY + 45);
+    ctx.moveTo(boxX + 14, tY + 28);
+    ctx.lineTo(boxX + boxW - 14, tY + 28);
     ctx.stroke();
 
     ctx.textAlign = 'left';
-    ctx.font = 'bold 18px "Playfair Display", Georgia, serif';
+    ctx.font = 'bold 14px "Playfair Display", Georgia, serif';
     ctx.fillStyle = isDark ? '#F1E5C9' : '#1E1926';
-    ctx.fillText('GRAN TOTAL A PAGAR:', boxX + 25, tY + 80);
+    ctx.fillText('TOTAL A PAGAR:', boxX + 16, tY + 50);
 
     ctx.textAlign = 'right';
-    ctx.font = 'bold 22px "Montserrat", sans-serif';
+    ctx.font = 'bold 17px "Montserrat", sans-serif';
     ctx.fillStyle = isDark ? '#FFD700' : '#D81B60';
-    ctx.fillText(formatPrice(order.total), boxX + boxWidth - 25, tY + 80);
+    ctx.fillText(formatPrice(order.total), boxX + boxW - 16, tY + 50);
 
-    // Footer & Security Monogram Barcode
-    currentY += totalsBoxHeight + 35;
+    // Compact Footer
+    currentY += totalsH + 20;
     ctx.textAlign = 'center';
-    ctx.font = '11px "Montserrat", sans-serif';
+    ctx.font = '9px "Montserrat", sans-serif';
     ctx.fillStyle = isDark ? '#64748B' : '#94A3B8';
-    ctx.fillText('SINDY LUXURY • AUTÉNTICO Y CERTIFICADO • MALABO & BATA, GUINEA ECUATORIAL', width / 2, currentY);
+    ctx.fillText('SINDY LUXURY • BOUTIQUE OFICIAL • MALABO & BATA, GUINEA ECUATORIAL', width / 2, currentY);
 
-    currentY += 18;
-    // Stylized Security Barcode Lines
-    const barWidth = 320;
-    const barX = (width - barWidth) / 2;
-    ctx.fillStyle = isDark ? '#D4AF37' : '#475569';
-    for (let i = 0; i < barWidth; i += 4) {
-      const lineW = (i % 8 === 0 || i % 12 === 0) ? 2.5 : 1;
-      ctx.fillRect(barX + i, currentY, lineW, 16);
-    }
+    currentY += 14;
+    ctx.font = 'bold 8px monospace';
+    ctx.fillStyle = isDark ? '#D4AF37' : '#D81B60';
+    ctx.fillText(`*TICKET-EBNA-${order.orderNumber}-VALIDADO*`, width / 2, currentY);
 
-    currentY += 26;
-    ctx.font = '9px "Montserrat", monospace';
-    ctx.fillStyle = isDark ? '#94A3B8' : '#64748B';
-    ctx.fillText(`*EBNA-REC-${order.orderNumber}-SECURE-VERIFIED*`, width / 2, currentY);
+    // Export DataURL & Blob
+    const dataUrl = canvas.toDataURL('image/png');
+    const filename = `Ticket-Pedido-EBNA-${order.orderNumber}.png`;
 
-    // Trigger Download with luxury naming
+    // 1. Silent automatic download (non-disruptive)
     try {
-      const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `Ticket-Pedido-EBNA-${order.orderNumber}.png`;
+      link.download = filename;
       link.href = dataUrl;
+      link.style.display = 'none';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      return true;
     } catch (e) {
-      console.error('Canvas export error:', e);
-      return false;
+      console.warn('Silent download warning:', e);
     }
-  } catch (error) {
-    console.error('Error generating receipt PNG:', error);
-    return false;
+
+    // 2. Try copying image to clipboard so user can immediately Paste in WhatsApp
+    let copiedToClipboard = false;
+    let blob: Blob | null = null;
+    try {
+      blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, 'image/png'));
+      if (blob && typeof navigator !== 'undefined' && navigator.clipboard && (window as any).ClipboardItem) {
+        await navigator.clipboard.write([
+          new (window as any).ClipboardItem({ 'image/png': blob })
+        ]);
+        copiedToClipboard = true;
+      }
+    } catch (e) {
+      // Clipboard write of image might require focus or permission on some browsers
+    }
+
+    return {
+      dataUrl,
+      blob,
+      filename,
+      copiedToClipboard
+    };
+  } catch (err) {
+    console.error('Error generating compact receipt PNG:', err);
+    return null;
   }
+}
+
+/**
+ * Backwards compatibility helper
+ */
+export async function downloadReceiptAsPng(
+  order: OrderReceiptData,
+  theme: 'haute-couture' | 'obsidian-gold' | 'editorial-vogue' = 'haute-couture'
+): Promise<boolean> {
+  const res = await generateAndDownloadReceipt(order, theme);
+  return res !== null;
 }

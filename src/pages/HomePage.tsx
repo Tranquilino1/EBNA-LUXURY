@@ -13,6 +13,7 @@ import { SEOHead } from '../components/seo/SEOHead';
 import { FashionFilmModal } from '../components/home/FashionFilmModal';
 import { FashionCinemaPlayer } from '../components/home/FashionCinemaPlayer';
 import { useCustomization } from '../contexts/CustomizationContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { InteractiveSantaHat } from '../components/effects/InteractiveSantaHat';
 
 /**
@@ -60,6 +61,7 @@ function StatCounter({ target, suffix = '', prefix = '' }: { target: number; suf
 
 export function HomePage() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const { products, loading, error } = useProducts();
   const { settings, isChristmasActive } = useCustomization();
   const [orderTick, setOrderTick] = useState(0);
@@ -155,13 +157,13 @@ export function HomePage() {
               >
                 <div className="glare-effect"></div>
                 <img 
-                  src={tiltProduct.images?.primary || (Array.isArray(tiltProduct.images) ? tiltProduct.images[0] : '/icons/ebna-logo.png')} 
+                  src={tiltProduct.images?.primary || (Array.isArray(tiltProduct.images) ? tiltProduct.images[0] : (theme === 'dark' ? '/icons/ebna-logo-dark.png' : '/icons/ebna-logo-white.png'))} 
                   alt={tiltProduct.name} 
                   className="tilt-image" 
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo.png'; }}
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = theme === 'dark' ? '/icons/ebna-logo-dark.png' : '/icons/ebna-logo-white.png'; }}
                 />
                 <div className="tilt-info">
                   <span className="tilt-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
@@ -224,7 +226,9 @@ export function HomePage() {
               width: '48px',
               height: '48px',
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F8 100%)',
+              background: theme === 'dark' 
+                ? 'linear-gradient(135deg, #1E1020 0%, #2D1430 100%)' 
+                : 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F8 100%)',
               border: '2px solid rgba(216, 27, 96, 0.35)',
               display: 'flex',
               alignItems: 'center',
@@ -233,7 +237,12 @@ export function HomePage() {
               marginRight: '12px',
               flexShrink: 0,
             }}>
-              <img src="/icons/ebna-logo.png" alt="EBNA Logo" style={{ width: '36px', height: '36px', objectFit: 'contain' }} />
+              <img 
+                key={theme}
+                src={theme === 'dark' ? '/icons/ebna-logo-dark.png' : '/icons/ebna-logo-white.png'} 
+                alt="EBNA Logo" 
+                style={{ width: '36px', height: '36px', objectFit: 'contain' }} 
+              />
             </div>
             <span className="text-label-luxury" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
               <Sparkles size={16} /> SINDY LUXURY • HAUTE COUTURE BY EBNA

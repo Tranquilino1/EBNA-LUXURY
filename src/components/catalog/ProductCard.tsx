@@ -30,13 +30,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
     toggleSelect
   } = useAdminCrud();
   const { settings, isChristmasActive } = useCustomization();
-  const { addToCart, setIsCartOpen } = useCart();
+  const { addToCart } = useCart();
   const [justAddedToCart, setJustAddedToCart] = useState(false);
   const isSelected = selectedIds.has(product.id);
 
   const imgRef = useRef<HTMLImageElement>(null);
   const resolveInitialImg = () => {
-    const raw = product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : '/icons/ebna-logo.png'));
+    const raw = product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : FALLBACK_SVG));
     if (typeof raw === 'string' && raw.endsWith('.jfif')) {
       return raw.replace(/\.jfif$/i, '.jpg');
     }
@@ -49,7 +49,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
 
   useEffect(() => {
     const nextImg = resolveInitialImg();
-    setImgSrc(nextImg || '/icons/ebna-logo.png');
+    setImgSrc(nextImg || FALLBACK_SVG);
     if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
       setImageLoaded(true);
     }
@@ -432,10 +432,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               e.stopPropagation();
               addToCart(product, 1);
               setJustAddedToCart(true);
-              setTimeout(() => setJustAddedToCart(false), 1800);
-              setIsCartOpen(true);
+              setTimeout(() => setJustAddedToCart(false), 2000);
             }}
-            title="Añadir a la cesta de compras"
+            title="Añadir a la cesta de compras sin salir del catálogo"
             style={{
               padding: '9px 4px',
               borderRadius: '20px',
@@ -458,7 +457,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             }}
           >
             {justAddedToCart ? <Check size={13} /> : <ShoppingCart size={13} />}
-            <span>{justAddedToCart ? 'Listo' : 'Carrito'}</span>
+            <span>{justAddedToCart ? '¡Añadido!' : 'Carrito'}</span>
           </button>
         </div>
       </div>

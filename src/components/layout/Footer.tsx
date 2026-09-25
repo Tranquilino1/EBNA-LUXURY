@@ -111,8 +111,9 @@ export const Footer: React.FC = () => {
                 className="footer-logo-circle" 
                 onError={(e) => { 
                   const img = e.currentTarget as HTMLImageElement;
-                  if (img.src.includes('white') || img.src.includes('dark')) {
-                    img.src = '/icons/ebna-logo.png';
+                  const fallback = theme === 'dark' ? '/icons/ebna-logo-dark.png' : '/icons/ebna-logo-white.png';
+                  if (img.src !== fallback) {
+                    img.src = fallback;
                   }
                 }}
               />
