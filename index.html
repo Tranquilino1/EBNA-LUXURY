@@ -286,12 +286,11 @@
           }
         });
 
-        // Universal Device & Browser Sync: Listen for Service Worker updates and auto-refresh
+        // Universal Device & Browser Sync: Listen for Service Worker updates smoothly
         if ('serviceWorker' in navigator) {
           navigator.serviceWorker.addEventListener('message', function(event) {
             if (event.data && event.data.type === 'EBNA_VERSION_UPDATED') {
-              console.log('[EBNA Sync] Fresh version detected:', event.data.version);
-              window.location.reload();
+              console.log('[EBNA Sync] Fresh version detected in background:', event.data.version);
             }
           });
 

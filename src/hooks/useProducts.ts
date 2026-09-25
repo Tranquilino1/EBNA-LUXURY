@@ -26,7 +26,7 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
 
       let finalList: Product[] = [];
 
-      // 1. Primary: Fetch live updates from Turso Cloud Database
+      // 1. Primary: Fetch live updates from Turso Cloud Database (Universal Source of Truth)
       const localBase = demoGetProducts();
       const tursoProducts = await fetchProductsFromTurso(localBase);
       if (tursoProducts && tursoProducts.length > 0) {
@@ -72,15 +72,11 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
           });
           demoSaveProducts(finalList);
         } else {
-          // Resilient fallback to catalog products if Supabase table is empty or RLS-restricted
-          finalList = demoGetProducts();
+          // 3. Fallback to local catalog if offline
+          const fallbackList = demoGetProducts();
+          const deletedIds = getDeletedProductIds();
+          finalList = deletedIds.length > 0 ? fallbackList.filter(p => !isProductDeleted(p, deletedIds)) : fallbackList;
         }
-      }
-
-      // Guarantee deleted items are permanently excluded
-      const deletedIds = getDeletedProductIds();
-      if (deletedIds.length > 0) {
-        finalList = finalList.filter(p => !isProductDeleted(p, deletedIds));
       }
 
       // Filter out hidden items for public view

@@ -82,16 +82,10 @@ export function markProductAsDeleted(prodOrId: any): void {
 }
 
 export function isProductDeleted(p: Product, deleted: string[]): boolean {
-  if (p.id && p.id.startsWith("sindy-")) return true;
-  if (p.slug && p.slug.startsWith("sindy-")) return true;
   if (!deleted || deleted.length === 0) return false;
   if (p.id && deleted.includes(p.id)) return true;
   if (p.slug && deleted.includes(p.slug)) return true;
   if (p.sku && deleted.includes(p.sku)) return true;
-  if (p.name) {
-    const normName = p.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-    if (deleted.includes(normName)) return true;
-  }
   return false;
 }
 
