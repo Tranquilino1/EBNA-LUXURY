@@ -51,7 +51,7 @@ export const ObsidianGoldTemplate: React.FC<ObsidianGoldTemplateProps> = ({ orde
         </div>
         <div className="dossier-grid">
           <div className="dossier-item">
-            <span className="dossier-label" style={{ color: '#94A3B8' }}>Cliente VIP</span>
+            <span className="dossier-label" style={{ color: '#94A3B8' }}>Cliente / Titular</span>
             <span className="dossier-val">{order.customerName}</span>
           </div>
 

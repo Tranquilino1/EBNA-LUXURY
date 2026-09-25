@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta http-equiv="x-dns-prefetch-control" content="on" />
 
+    <!-- Immediate Fresh Version Delivery Across All Browsers and Devices -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
     <!-- Google Top-1 SEO & Regional Geo Meta Tags (Guinea Ecuatorial: Malabo & Bata) -->
     <title>Sindy Luxury by EBNA | Alta Costura, Vestidos de Gala y Moda en Guinea Ecuatorial</title>
     <meta name="description" content="Sindy Luxury by EBNA: Boutique exclusiva de alta costura, vestidos de gala, conjuntos 2 piezas, calzado de fiesta y cosmética botánica en Malabo y Bata (Guinea Ecuatorial). Pagos en FCFA y envíos express por WhatsApp." />
@@ -264,6 +269,22 @@
             }
           }
         });
+
+        // Universal Device & Browser Sync: Listen for Service Worker updates and auto-refresh
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'EBNA_VERSION_UPDATED') {
+              console.log('[EBNA Sync] Fresh version detected:', event.data.version);
+              window.location.reload();
+            }
+          });
+
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').then(function(reg) {
+              reg.update();
+            }).catch(function() {});
+          });
+        }
       })();
     </script>
     <script type="module" src="/src/main.tsx"></script>

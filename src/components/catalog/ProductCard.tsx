@@ -122,9 +122,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
         <div className="product-badge-group">
           <div style={{ display: 'flex', gap: '5px', alignItems: 'center', flexWrap: 'wrap' }}>
             <span className="product-category-badge">{categoryLabel}</span>
-            {ordersCount >= 25 && (
+            {ordersCount > 0 && (
               <span style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)', color: 'white', padding: '3px 8px', borderRadius: '12px', fontSize: '0.68rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '3px', boxShadow: '0 2px 8px rgba(239, 68, 68, 0.4)' }}>
-                <Flame size={10} /> {ordersCount}+
+                <Flame size={10} /> {ordersCount} {ordersCount === 1 ? 'pedido' : 'pedidos'}
               </span>
             )}
           </div>

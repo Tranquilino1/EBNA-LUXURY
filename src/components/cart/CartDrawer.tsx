@@ -67,14 +67,19 @@ export const CartDrawer: React.FC = () => {
   const handleDirectTicketCheckout = async (method: 'whatsapp' | 'muni') => {
     if (cartItems.length === 0) return;
 
-    const trimmedName = customerName.trim() || 'Cliente VIP';
-    const cleanPhone = customerPhone.trim() || '240222633687';
-    const trimmedAddress = customerAddress.trim() || 'Malabo / Entrega Directa';
+    const trimmedName = customerName.trim();
+    const cleanPhone = customerPhone.trim();
+    const trimmedAddress = customerAddress.trim();
+
+    if (!trimmedName || !cleanPhone) {
+      setValidationError('Por favor ingresa tu nombre y teléfono móvil para procesar tu pedido oficial.');
+      return;
+    }
 
     try {
-      if (customerName.trim()) localStorage.setItem('ebna_client_name', customerName.trim());
-      if (customerPhone.trim()) localStorage.setItem('ebna_client_phone', customerPhone.trim());
-      if (customerAddress.trim()) localStorage.setItem('ebna_client_address', customerAddress.trim());
+      localStorage.setItem('ebna_client_name', trimmedName);
+      localStorage.setItem('ebna_client_phone', cleanPhone);
+      if (trimmedAddress) localStorage.setItem('ebna_client_address', trimmedAddress);
     } catch {}
 
     setIsProcessing(true);
@@ -280,7 +285,7 @@ export const CartDrawer: React.FC = () => {
                           type="text" 
                           value={customerName} 
                           onChange={(e) => handleNameChange(e.target.value)}
-                          placeholder="Ej. Sindy Eyenga"
+                          placeholder="Tu nombre y apellidos"
                           className="futuristic-input"
                         />
                       </div>
@@ -294,7 +299,7 @@ export const CartDrawer: React.FC = () => {
                           type="tel" 
                           value={customerPhone} 
                           onChange={(e) => handlePhoneChange(e.target.value)}
-                          placeholder="+240 222 633 687"
+                          placeholder="Tu teléfono de contacto"
                           className="futuristic-input"
                         />
                       </div>
@@ -308,7 +313,7 @@ export const CartDrawer: React.FC = () => {
                           type="text" 
                           value={customerAddress} 
                           onChange={(e) => handleAddressChange(e.target.value)}
-                          placeholder="Ej. Malabo II, Caracolas o Ela Nguema"
+                          placeholder="Tu barrio o ciudad (ej. Malabo, Bata...)"
                           className="futuristic-input"
                         />
                       </div>

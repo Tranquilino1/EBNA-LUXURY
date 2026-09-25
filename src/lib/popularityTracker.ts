@@ -24,33 +24,30 @@ function getLocalViewMap(): Record<string, number> {
 }
 
 /**
- * Deterministic baseline order generator based on product ID to give initial catalog realistic sales counts.
+ * Baseline orders generator - set strictly to 0 so no artificial numbers are fabricated.
  */
-export function getBaselineOrders(product: Product): number {
-  const numericId = parseInt(product.id.replace(/\D/g, ''), 10) || 1;
-  // Pseudorandom baseline orders between 12 and 180
-  const seed = (numericId * 37 + product.name.length * 13) % 168;
-  return 12 + seed;
+export function getBaselineOrders(_product?: Product): number {
+  return 0;
 }
 
 /**
- * Returns total orders count for a product (Baseline + user orders)
+ * Returns total orders count for a product based solely on authentic database or local orders.
  */
 export function getProductOrdersCount(product: Product): number {
   const localMap = getLocalOrderMap();
   const addedOrders = localMap[product.id] || localMap[product.slug] || 0;
   const dbOrders = product.order_count || product.sales_count || 0;
-  return Math.max(dbOrders, getBaselineOrders(product)) + addedOrders;
+  return dbOrders + addedOrders;
 }
 
 /**
- * Returns total views count for a product
+ * Returns authentic total views count for a product
  */
 export function getProductViewsCount(product: Product): number {
   const localMap = getLocalViewMap();
   const addedViews = localMap[product.id] || localMap[product.slug] || 0;
   const dbViews = product.views_count || 0;
-  return Math.max(dbViews, Math.floor(getBaselineOrders(product) * 3.5)) + addedViews;
+  return dbViews + addedViews;
 }
 
 /**

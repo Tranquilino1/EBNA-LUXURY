@@ -3,7 +3,7 @@ import { useParams, Link, useSearchParams } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
   PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff,
-  Smartphone, User, MapPin 
+  Smartphone, User, MapPin, AlertCircle 
 } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
@@ -107,19 +107,28 @@ export function ProductPage() {
     try { return localStorage.getItem('ebna_client_address') || ''; } catch { return ''; }
   });
   const [isGeneratingPng, setIsGeneratingPng] = useState(false);
+  const [orderError, setOrderError] = useState('');
 
   // Directly generates official Ticket, downloads PNG file and opens WhatsApp
   const handleDirectTicketPayment = async (method: 'whatsapp' | 'muni') => {
     if (!product) return;
 
-    const cName = (customerName || '').trim() || 'Cliente VIP';
-    const cPhone = (customerPhone || '').trim() || '240222633687';
-    const cAddress = (customerAddress || '').trim() || 'Malabo / Entrega Directa';
+    const cName = (customerName || '').trim();
+    const cPhone = (customerPhone || '').trim();
+    const cAddress = (customerAddress || '').trim();
+
+    if (!cName || !cPhone) {
+      setOrderError('Por favor ingresa tu nombre y número de contacto para generar tu pedido oficial.');
+      orderSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    setOrderError('');
 
     try {
-      if (customerName.trim()) localStorage.setItem('ebna_client_name', customerName.trim());
-      if (customerPhone.trim()) localStorage.setItem('ebna_client_phone', customerPhone.trim());
-      if (customerAddress.trim()) localStorage.setItem('ebna_client_address', customerAddress.trim());
+      localStorage.setItem('ebna_client_name', cName);
+      localStorage.setItem('ebna_client_phone', cPhone);
+      if (cAddress) localStorage.setItem('ebna_client_address', cAddress);
     } catch {}
 
     recordProductOrder(product.id);
@@ -148,8 +157,8 @@ export function ProductPage() {
         description: product.description,
         price: priceVal,
         quantity,
-        selectedSize: currentSize || 'M',
-        selectedColor: currentColor || 'Original',
+        selectedSize: currentSize || '',
+        selectedColor: currentColor || '',
         image: cleanImg,
         slug: product.slug
       }],
@@ -632,10 +641,11 @@ export function ProductPage() {
                   <User size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
                   <input
                     type="text"
-                    placeholder="Ej. Sindy Eyenga"
+                    placeholder="Tu nombre y apellidos"
                     value={customerName}
                     onChange={(e) => {
                       setCustomerName(e.target.value);
+                      setOrderError('');
                       try { localStorage.setItem('ebna_client_name', e.target.value); } catch {}
                     }}
                     style={{
@@ -659,10 +669,11 @@ export function ProductPage() {
                   <Phone size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
                   <input
                     type="tel"
-                    placeholder="Ej. 222 633 687 o 555 439 904"
+                    placeholder="Tu teléfono de contacto"
                     value={customerPhone}
                     onChange={(e) => {
                       setCustomerPhone(e.target.value);
+                      setOrderError('');
                       try { localStorage.setItem('ebna_client_phone', e.target.value); } catch {}
                     }}
                     style={{
@@ -686,7 +697,7 @@ export function ProductPage() {
                   <MapPin size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
                   <input
                     type="text"
-                    placeholder="Ej. Malabo II, Caracolas o Ela Nguema"
+                    placeholder="Tu barrio o ciudad (ej. Malabo, Bata...)"
                     value={customerAddress}
                     onChange={(e) => {
                       setCustomerAddress(e.target.value);
@@ -705,6 +716,13 @@ export function ProductPage() {
                 </div>
               </div>
             </div>
+
+            {orderError && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#B91C1C', padding: '8px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600 }}>
+                <AlertCircle size={15} color="#EF4444" />
+                <span>{orderError}</span>
+              </div>
+            )}
           </div>
 
           <div className="product-actions" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '0.6rem' }}>

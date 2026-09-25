@@ -38,8 +38,8 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
     price: product?.price ? String(product.price) : '',
     in_stock: product?.in_stock ?? true,
     is_hidden: product?.is_hidden ?? false,
-    sizes: product?.sizes ? product.sizes.join(', ') : 'S, M, L, XL',
-    colors: product?.colors ? product.colors.join(', ') : 'Blanco, Negro, Rojo',
+    sizes: product?.sizes ? product.sizes.join(', ') : '',
+    colors: product?.colors ? product.colors.join(', ') : '',
   });
   
   const [imageTab, setImageTab] = useState<'pinterest' | 'file' | 'url'>('pinterest');
@@ -112,8 +112,8 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
         in_stock: formData.in_stock,
         inStock: formData.in_stock,
         is_hidden: formData.is_hidden,
-        sizes: parsedSizes.length > 0 ? parsedSizes : ['S', 'M', 'L'],
-        colors: parsedColors.length > 0 ? parsedColors : ['Blanco', 'Negro'],
+        sizes: parsedSizes,
+        colors: parsedColors,
         images: {
           primary: finalImageUrl,
           gallery: [finalImageUrl],
@@ -299,7 +299,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 name="sizes"
                 value={formData.sizes}
                 onChange={handleChange}
-                placeholder="Ej: S, M, L, XL, 38, 39, 40"
+                placeholder="Opcional (ej: S, M, L o 38, 39, 40)"
                 style={{
                   width: '100%',
                   padding: '10px 14px',
@@ -325,7 +325,7 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                 name="colors"
                 value={formData.colors}
                 onChange={handleChange}
-                placeholder="Ej: Blanco Perla, Negro, Rojo Carmesí"
+                placeholder="Opcional (ej: Negro, Dorado, Blanco Perla)"
                 style={{
                   width: '100%',
                   padding: '10px 14px',
