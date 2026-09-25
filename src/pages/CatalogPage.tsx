@@ -113,39 +113,52 @@ export function CatalogPage() {
         </p>
       </header>
 
-      <div className="catalog-controls" style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem', marginBottom: '1.5rem' }}>
+      <div className="catalog-controls" style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginBottom: '1.2rem', overflowAnchor: 'none' }}>
         <SearchBar 
           value={searchQuery} 
           onChange={setSearchQuery} 
           placeholder="Buscar cualquier prenda, vestido, gala, color, calzado o cosmética..."
           products={products}
+          showAutocompleteDropdown={false}
         />
         
-        {/* Universal Search Live Indicator Banner */}
-        {isSearchActive && (
-          <div 
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              background: 'linear-gradient(135deg, rgba(216, 27, 96, 0.08) 0%, rgba(24, 66, 102, 0.05) 100%)',
-              border: '1.5px solid rgba(216, 27, 96, 0.25)',
-              borderRadius: '16px',
-              padding: '10px 18px',
-              margin: '0 auto',
-              width: '100%',
-              maxWidth: '680px',
-              fontSize: '0.88rem',
-              color: '#1E293B',
-              boxShadow: '0 4px 15px rgba(216, 27, 96, 0.06)'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Sparkles size={16} color="#D81B60" />
+        {/* Fixed-Height Universal Search Live Status Bar (Zero Layout Shift when typing) */}
+        <div 
+          style={{
+            minHeight: '44px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: isSearchActive
+              ? 'linear-gradient(135deg, rgba(216, 27, 96, 0.09) 0%, rgba(24, 66, 102, 0.05) 100%)'
+              : 'rgba(216, 27, 96, 0.03)',
+            border: isSearchActive
+              ? '1.5px solid rgba(216, 27, 96, 0.28)'
+              : '1px dashed rgba(216, 27, 96, 0.16)',
+            borderRadius: '16px',
+            padding: '8px 18px',
+            margin: '0 auto',
+            width: '100%',
+            maxWidth: '720px',
+            fontSize: '0.86rem',
+            color: '#1E293B',
+            boxShadow: isSearchActive ? '0 4px 15px rgba(216, 27, 96, 0.06)' : 'none',
+            transition: 'background 0.2s ease, border-color 0.2s ease'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Sparkles size={16} color="#D81B60" />
+            {isSearchActive ? (
               <span>
-                Buscador Universal en Todo el Catálogo: <strong>{processedProducts.length}</strong> {processedProducts.length === 1 ? 'producto encontrado' : 'productos encontrados'}
+                Filtrando en tiempo real: <strong>{processedProducts.length}</strong> {processedProducts.length === 1 ? 'producto encontrado' : 'productos encontrados'} para <strong>"{searchQuery}"</strong>
               </span>
-            </div>
+            ) : (
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.83rem' }}>
+                Escribe arriba para filtrar al instante entre las <strong>{products.length}</strong> piezas del catálogo
+              </span>
+            )}
+          </div>
+          {isSearchActive && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
@@ -166,8 +179,8 @@ export function CatalogPage() {
             >
               <X size={13} /> Limpiar
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
         <CategoryFilter activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
       </div>
@@ -185,52 +198,55 @@ export function CatalogPage() {
         onResetFilters={handleResetFilters}
       />
 
-      {loading && processedProducts.length === 0 ? (
-        <div style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Loader message="Consultando piezas de colección..." />
-        </div>
-      ) : error && processedProducts.length === 0 ? (
-        <div className="error-message" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
-          {error.message || 'Error al cargar los productos del catálogo'}
-        </div>
-      ) : processedProducts.length === 0 ? (
-        <div style={{
-          textAlign: 'center',
-          padding: '4rem 1.5rem',
-          background: 'var(--canvas-elevated)',
-          borderRadius: '24px',
-          margin: '2rem auto',
-          maxWidth: '600px',
-          border: '1px solid var(--border-light)'
-        }}>
-          <Search size={44} color="#D81B60" style={{ margin: '0 auto 1rem auto', opacity: 0.8 }} />
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
-            No encontramos productos para "{searchQuery}"
-          </h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.5, marginBottom: '1.5rem' }}>
-            Prueba a buscar por nombre de prenda (ej. <em>"vestido"</em>, <em>"soleil"</em>, <em>"safari"</em>), color (<em>"rojo"</em>, <em>"amarillo"</em>) o categoría (<em>"cosmética"</em>, <em>"calzado"</em>).
-          </p>
-          <button
-            type="button"
-            onClick={() => { setSearchQuery(''); setActiveCategory('TODOS'); }}
-            style={{
-              padding: '10px 22px',
-              borderRadius: '25px',
-              border: 'none',
-              background: 'linear-gradient(135deg, #D81B60, #C2185B)',
-              color: 'white',
-              fontWeight: 800,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(216, 27, 96, 0.3)'
-            }}
-          >
-            Ver Todo el Catálogo
-          </button>
-        </div>
-      ) : (
-        <ProductGrid products={processedProducts} />
-      )}
+      {/* Stable Min-Height Results Container so page never collapses or jumps while typing */}
+      <div style={{ minHeight: '85vh', overflowAnchor: 'none' }}>
+        {loading && processedProducts.length === 0 ? (
+          <div style={{ minHeight: '40vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Loader message="Consultando piezas de colección..." />
+          </div>
+        ) : error && processedProducts.length === 0 ? (
+          <div className="error-message" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
+            {error.message || 'Error al cargar los productos del catálogo'}
+          </div>
+        ) : processedProducts.length === 0 ? (
+          <div style={{
+            textAlign: 'center',
+            padding: '4rem 1.5rem',
+            background: 'var(--canvas-elevated)',
+            borderRadius: '24px',
+            margin: '2rem auto',
+            maxWidth: '600px',
+            border: '1px solid var(--border-light)'
+          }}>
+            <Search size={44} color="#D81B60" style={{ margin: '0 auto 1rem auto', opacity: 0.8 }} />
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
+              No encontramos productos para "{searchQuery}"
+            </h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: 1.5, marginBottom: '1.5rem' }}>
+              Prueba a buscar por nombre de prenda (ej. <em>"vestido"</em>, <em>"soleil"</em>, <em>"safari"</em>), color (<em>"rojo"</em>, <em>"amarillo"</em>) o categoría (<em>"cosmética"</em>, <em>"calzado"</em>).
+            </p>
+            <button
+              type="button"
+              onClick={() => { setSearchQuery(''); setActiveCategory('TODOS'); }}
+              style={{
+                padding: '10px 22px',
+                borderRadius: '25px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #D81B60, #C2185B)',
+                color: 'white',
+                fontWeight: 800,
+                fontSize: '0.88rem',
+                cursor: 'pointer',
+                boxShadow: '0 4px 14px rgba(216, 27, 96, 0.3)'
+              }}
+            >
+              Ver Todo el Catálogo
+            </button>
+          </div>
+        ) : (
+          <ProductGrid products={processedProducts} />
+        )}
+      </div>
     </div>
   );
 }

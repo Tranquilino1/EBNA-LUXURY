@@ -11,6 +11,7 @@ interface SearchBarProps {
   placeholder?: string;
   products?: Product[];
   onSelectProduct?: (product: Product) => void;
+  showAutocompleteDropdown?: boolean;
 }
 
 export function SearchBar({
@@ -18,7 +19,8 @@ export function SearchBar({
   onChange,
   placeholder = 'Buscar cualquier prenda, vestido, gala, color, calzado o cosmética...',
   products = [],
-  onSelectProduct
+  onSelectProduct,
+  showAutocompleteDropdown = true
 }: SearchBarProps) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -28,21 +30,21 @@ export function SearchBar({
 
   // Compute live autocomplete suggestions (max 5 high-precision items)
   const suggestions = useMemo(() => {
-    if (!value || value.trim().length < 1 || !products || products.length === 0) {
+    if (!showAutocompleteDropdown || !value || value.trim().length < 1 || !products || products.length === 0) {
       return [];
     }
     return getSearchAutocomplete(products, value, 5);
-  }, [value, products]);
+  }, [showAutocompleteDropdown, value, products]);
 
   // Open dropdown when typing
   useEffect(() => {
-    if (value.trim().length >= 1 && suggestions.length > 0) {
+    if (showAutocompleteDropdown && value.trim().length >= 1 && suggestions.length > 0) {
       setIsOpen(true);
       setSelectedIndex(-1);
     } else {
       setIsOpen(false);
     }
-  }, [value, suggestions.length]);
+  }, [showAutocompleteDropdown, value, suggestions.length]);
 
   // Click outside listener to dismiss dropdown
   useEffect(() => {
@@ -102,6 +104,7 @@ export function SearchBar({
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
+          minHeight: '60px',
           background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(253, 248, 250, 0.88) 100%)',
           backdropFilter: 'blur(25px) saturate(190%)',
           WebkitBackdropFilter: 'blur(25px) saturate(190%)',
@@ -112,7 +115,7 @@ export function SearchBar({
           boxShadow: isOpen 
             ? '0 12px 35px rgba(216, 27, 96, 0.16)' 
             : '0 8px 25px rgba(216, 27, 96, 0.08), inset 0 1.5px 2px rgba(255, 255, 255, 0.95)',
-          transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+          transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
         }}
       >
         <Search size={22} color="#D81B60" style={{ flexShrink: 0, marginRight: '14px' }} />

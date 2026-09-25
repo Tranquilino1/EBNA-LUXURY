@@ -822,12 +822,22 @@
 /* =========================================================
    ERGONOMIC INPUT CENTERING & ACTIVE TYPING FOCUS SYSTEM
    ========================================================= */
+/* Guarantee enough bottom scroll space while an input is active so ANY input can be centered on screen */
+body.ebna-input-focused {
+  overflow-anchor: none !important;
+}
+
+body.ebna-input-focused .main-content {
+  padding-bottom: 48vh !important;
+  overflow-anchor: none !important;
+}
+
 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
 textarea,
 select {
-  scroll-margin-top: 130px;
-  scroll-margin-bottom: 180px;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  scroll-margin-top: 120px;
+  scroll-margin-bottom: 220px;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 /* Subtle luxury focus halo when actively typing in standard inputs */
@@ -838,11 +848,10 @@ select.ebna-active-typing-input {
   box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.18), 0 8px 24px rgba(216, 27, 96, 0.1) !important;
 }
 
-/* Highlight wrapper when typing in catalog search bar */
+/* Highlight wrapper when typing in catalog search bar (without vertical transform shift) */
 .search-bar-wrapper:has(.ebna-active-typing-input) {
   border-color: #D81B60 !important;
   box-shadow: 0 0 0 4px rgba(216, 27, 96, 0.18), 0 14px 34px rgba(216, 27, 96, 0.16) !important;
-  transform: translateY(-1px);
 }
 
 /* Prevent iOS Safari / Android Chrome forced horizontal zoom when focusing inputs */
