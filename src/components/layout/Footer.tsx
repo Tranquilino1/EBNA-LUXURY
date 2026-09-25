@@ -196,28 +196,41 @@ export const Footer: React.FC = () => {
           <div className="footer-contact">
             <h3>Sede Física & Contacto</h3>
             <div className="contact-links">
-              {/* Sede Física en Mongomo */}
-              <div 
-                className="contact-link" 
+              {/* Sede Física en Mongomo con Enlace GPS Google Maps */}
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=1.630333,11.308053"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact-link location-badge-link" 
                 style={{ 
-                  cursor: 'default',
                   background: 'rgba(216, 27, 96, 0.05)',
                   padding: '10px 14px',
                   borderRadius: '14px',
                   border: '1px solid rgba(216, 27, 96, 0.16)',
-                  alignItems: 'flex-start'
+                  alignItems: 'flex-start',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
                 }}
+                title="Abrir ubicación exacta en Google Maps (01°37′49.2″N 11°18′28.99″E)"
               >
                 <MapPin size={20} style={{ color: 'var(--brand-accent)', flexShrink: 0, marginTop: '2px' }} />
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.86rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                    Sede Física: Mongomo
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                      Sede Física: Mongomo
+                    </span>
+                    <span style={{ fontSize: '0.66rem', background: 'var(--brand-accent)', color: 'white', padding: '1px 5px', borderRadius: '6px', fontWeight: 700 }}>
+                      GPS
+                    </span>
+                  </div>
                   <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
                     Barrio Koete • Al otro lado de la Agencia FORAMA
                   </span>
+                  <span style={{ fontSize: '0.70rem', color: 'var(--brand-accent)', fontWeight: 600, display: 'block', marginTop: '4px' }}>
+                    📍 Ver en Google Maps (01°37′49.2″N, 11°18′29.0″E) →
+                  </span>
                 </div>
-              </div>
+              </a>
 
               {/* Correo Oficial de la Tienda */}
               <a 

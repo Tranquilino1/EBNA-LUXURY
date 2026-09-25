@@ -41,8 +41,8 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     setMeta('robots', 'index, follow, max-image-preview:large');
     setMeta('geo.region', 'GQ');
     setMeta('geo.placename', 'Mongomo, Malabo, Guinea Ecuatorial');
-    setMeta('geo.position', '1.6274;11.3134');
-    setMeta('ICBM', '1.6274, 11.3134');
+    setMeta('geo.position', '1.630333;11.308053');
+    setMeta('ICBM', '1.630333, 11.308053');
 
     // 4. OpenGraph Tags
     const primaryImg = product ? (product.images?.primary || (Array.isArray(product.images) ? product.images[0] : ogImage)) : ogImage;
@@ -137,6 +137,12 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
               'addressRegion': 'Wele-Nzas',
               'addressCountry': 'GQ'
             },
+            'geo': {
+              '@type': 'GeoCoordinates',
+              'latitude': 1.630333,
+              'longitude': 11.308053
+            },
+            'hasMap': 'https://www.google.com/maps/search/?api=1&query=1.630333,11.308053',
             'areaServed': [
               { '@type': 'City', 'name': 'Mongomo' },
               { '@type': 'City', 'name': 'Malabo' },
@@ -153,7 +159,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
                 'name': '¿Dónde está ubicada la sede física de la tienda y cómo contactar?',
                 'acceptedAnswer': {
                   '@type': 'Answer',
-                  'text': 'La sede física oficial se encuentra en la ciudad de Mongomo, específicamente en Barrio Koete (al otro lado de la Agencia FORAMA). Correo oficial: sindyluxury@gmail.com, TikTok: @sindyluxury y WhatsApp oficial: +240 222 633 687.'
+                  'text': 'La sede física oficial se encuentra en la ciudad de Mongomo, específicamente en Barrio Koete (al otro lado de la Agencia FORAMA, coordenadas GPS: 01°37′49.2″N, 11°18′28.99″E). Correo oficial: sindyluxury@gmail.com, TikTok: @sindyluxury y WhatsApp oficial: +240 222 633 687.'
                 }
               },
               {

@@ -11,7 +11,7 @@ interface FAQItem {
 const FAQ_DATA: FAQItem[] = [
   {
     question: '¿Dónde está ubicada la sede física de la tienda y cómo contactar de forma oficial?',
-    answer: 'La sede física oficial de Sindy Luxury by EBNA se encuentra ubicada en la ciudad de Mongomo, específicamente en Barrio Koete, justo al otro lado de la Agencia FORAMA. Atendemos de forma presencial y mediante envíos directos a Malabo, Bata y todo el ámbito nacional. Contáctanos por nuestro correo oficial sindyluxury@gmail.com, síguenos en TikTok en @sindyluxury o pide vía WhatsApp al +240 222 633 687.',
+    answer: 'La sede física oficial de Sindy Luxury by EBNA se encuentra ubicada en la ciudad de Mongomo, específicamente en Barrio Koete, justo al otro lado de la Agencia FORAMA (coordenadas GPS exactas: 01°37′49.2″N, 11°18′28.99″E). Atendemos de forma presencial con navegación directa en Google Maps y mediante envíos directos a Malabo, Bata y todo el ámbito nacional. Contáctanos por nuestro correo oficial sindyluxury@gmail.com, síguenos en TikTok en @sindyluxury o pide vía WhatsApp al +240 222 633 687.',
     category: 'Sede Física & Contacto',
     icon: MapPin
   },

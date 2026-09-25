@@ -173,16 +173,28 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '10px' }}>
-              {/* Sede Física */}
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '10px', background: 'var(--canvas-surface)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+              {/* Sede Física con GPS */}
+              <a 
+                href="https://www.google.com/maps/search/?api=1&query=1.630333,11.308053"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '10px', background: 'var(--canvas-surface)', borderRadius: '12px', border: '1px solid var(--border-subtle)', textDecoration: 'none', color: 'inherit' }}
+                title="Abrir ubicación exacta en Google Maps (01°37′49.2″N 11°18′28.99″E)"
+              >
                 <MapPin size={20} style={{ color: 'var(--brand-accent)', flexShrink: 0, marginTop: '2px' }} />
                 <div>
-                  <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>Sede Física: Mongomo</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>Sede Física: Mongomo</div>
+                    <span style={{ fontSize: '0.64rem', background: 'var(--brand-accent)', color: 'white', padding: '1px 5px', borderRadius: '6px', fontWeight: 700 }}>GPS</span>
+                  </div>
                   <div style={{ fontSize: '0.74rem', color: 'var(--text-secondary)', lineHeight: 1.35, marginTop: '2px' }}>
                     Barrio Koete • Al otro lado de la Agencia FORAMA
                   </div>
+                  <div style={{ fontSize: '0.70rem', color: 'var(--brand-accent)', fontWeight: 600, marginTop: '2px' }}>
+                    📍 Ver en Google Maps →
+                  </div>
                 </div>
-              </div>
+              </a>
 
               {/* Correo Oficial de la Tienda */}
               <a 
