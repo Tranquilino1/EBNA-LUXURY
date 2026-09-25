@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, ChevronUp, ChevronDown, Headphones, MapPin, Mail, Search, Home } from 'lucide-react';
+import { Phone, MessageCircle, Sparkles, Share2, Heart, QrCode, Smartphone, ChevronUp, ChevronDown, Headphones, MapPin, Mail } from 'lucide-react';
 import { QRModal } from '../ui/QRModal';
 import { ContactSupportModal } from '../ui/ContactSupportModal';
 import { TikTokIcon } from '../ui/TikTokIcon';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import { useTheme } from '../../contexts/ThemeContext';
-import { useGlobalSearch } from '../../contexts/GlobalSearchContext';
 import { ChristmasHat } from '../effects/ChristmasHat';
 import './layout.css';
 
@@ -14,7 +13,6 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const { settings, isChristmasActive } = useCustomization();
   const { theme } = useTheme();
-  const { openSearch } = useGlobalSearch();
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
@@ -26,11 +24,9 @@ export const Footer: React.FC = () => {
       e.stopPropagation();
     }
     if (isExpanded) {
-      // El usuario pulsa "Ocultar Pie de Página"
       setIsExpanded(false);
       setIsManuallyCollapsed(true);
     } else {
-      // El usuario pulsa "Mostrar / Desplegar Pie de Página"
       setIsExpanded(true);
       setIsManuallyCollapsed(false);
       setTimeout(() => {
@@ -44,7 +40,6 @@ export const Footer: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Si el usuario ocultó manualmente el pie de página, respetar su decisión al 100%
       if (isManuallyCollapsed) return;
 
       const scrollPosition = window.innerHeight + window.scrollY;
@@ -78,50 +73,26 @@ export const Footer: React.FC = () => {
     <div 
       className={`footer-wrapper ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}
     >
-      {/* Floating Glassmorphism Dock Bar: Inicio + Lupa de Búsqueda General + Ocultar/Desplegar Pie de Página */}
-      <div className="footer-floating-glass-dock glass-panel">
-        <Link 
-          to="/" 
-          className="footer-dock-home-btn"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          title="Ir al Inicio de la Boutique"
-        >
-          <Home size={14} color="#D81B60" />
-          <span>Inicio</span>
-        </Link>
-
-        <button
-          type="button"
-          className="footer-dock-search-btn"
-          onClick={() => openSearch()}
-          title="Buscador General Instantáneo — Filtra cualquier producto sin entrar al catálogo"
-          aria-label="Abrir buscador general de productos"
-        >
-          <Search size={15} strokeWidth={2.5} />
-          <span>Buscar Producto</span>
-          <span className="footer-dock-shortcut-badge">Ctrl+K</span>
-        </button>
-
-        <button 
-          type="button"
-          className="footer-dock-toggle-btn"
-          onClick={handleToggleFooter}
-          title={isExpanded ? 'Ocultar pie de página' : 'Desplegar pie de página'}
-          aria-expanded={isExpanded}
-        >
-          {isExpanded ? (
-            <>
-              <ChevronDown size={15} color="#D81B60" strokeWidth={2.5} />
-              <span>Ocultar Pie de Página</span>
-            </>
-          ) : (
-            <>
-              <ChevronUp size={15} color="#D81B60" strokeWidth={2.5} />
-              <span>Mostrar Pie de Página</span>
-            </>
-          )}
-        </button>
-      </div>
+      {/* Botón Exclusivo de Ocultar / Mostrar Pie de Página */}
+      <button 
+        type="button"
+        className="footer-toggle-tab glass-panel"
+        onClick={handleToggleFooter}
+        title={isExpanded ? 'Ocultar pie de página' : 'Mostrar pie de página'}
+        aria-expanded={isExpanded}
+      >
+        {isExpanded ? (
+          <>
+            <ChevronDown size={16} color="#D81B60" strokeWidth={2.5} />
+            <span>Ocultar Pie de Página</span>
+          </>
+        ) : (
+          <>
+            <ChevronUp size={16} color="#D81B60" strokeWidth={2.5} />
+            <span>Mostrar Pie de Página</span>
+          </>
+        )}
+      </button>
 
       {/* Main Footer Body */}
       <footer className="footer glass-panel" aria-hidden={!isExpanded}>
@@ -221,18 +192,7 @@ export const Footer: React.FC = () => {
           <div className="footer-links">
             <h3>Navegación</h3>
             <nav className="quick-links">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                <Link to="/">Inicio</Link>
-                <button
-                  type="button"
-                  onClick={() => openSearch()}
-                  className="footer-nav-search-pill glass-panel"
-                  title="Buscador General — Filtrar cualquier producto al instante"
-                >
-                  <Search size={13} strokeWidth={2.5} />
-                  <span>Buscar Producto</span>
-                </button>
-              </div>
+              <Link to="/">Inicio</Link>
               <Link to="/catalogo">Catálogo Completo</Link>
               <Link to="/recibo">Consultar Ticket / Recibo</Link>
               <Link to="/login">Iniciar Sesión Cliente</Link>

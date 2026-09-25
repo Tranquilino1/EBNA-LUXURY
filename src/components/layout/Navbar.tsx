@@ -54,11 +54,6 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  const navLinks = [
-    { name: 'Inicio', path: '/' },
-    { name: 'Catálogo', path: '/catalogo' },
-  ];
-
   return (
     <header className={`navbar-wrapper ${isScrolled ? 'scrolled' : ''}`}>
       {/* 3D Christmas Holiday Promotional Banner */}
@@ -137,23 +132,24 @@ export const Navbar: React.FC = () => {
           </div>
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Nav: Inicio + Lupa de Búsqueda General + Catálogo */}
         <div className="navbar-links desktop-only">
-          {navLinks.map((link) => (
-            <Link key={link.path} to={link.path} className="nav-link">
-              {link.name}
-            </Link>
-          ))}
+          <Link to="/" className="nav-link">
+            Inicio
+          </Link>
           <button
             type="button"
             onClick={() => openSearch()}
             className="navbar-search-glass-btn glass-panel"
-            title="Buscador Rápido (Ctrl+K)"
+            title="Buscador General Rápido (Ctrl+K)"
             aria-label="Abrir buscador rápido"
           >
-            <Search size={15} color="#D81B60" />
+            <Search size={15} strokeWidth={2.4} />
             <span>Buscar</span>
           </button>
+          <Link to="/catalogo" className="nav-link">
+            Catálogo
+          </Link>
         </div>
 
         {/* Right side: Search (Mobile), Theme Toggle, Cart, QR, Traffic and User */}
@@ -273,16 +269,30 @@ export const Navbar: React.FC = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="mobile-menu glass-panel">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.path} 
-              to={link.path} 
-              className="mobile-nav-link"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {link.name}
-            </Link>
-          ))}
+          <Link 
+            to="/" 
+            className="mobile-nav-link"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Inicio
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => { setIsMobileMenuOpen(false); openSearch(); }}
+            className="mobile-nav-link"
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.25)', color: '#D81B60', fontWeight: 700, cursor: 'pointer', textAlign: 'left', width: '100%' }}
+          >
+            <Search size={18} color="#D81B60" /> Buscar Producto
+          </button>
+
+          <Link 
+            to="/catalogo" 
+            className="mobile-nav-link"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Catálogo
+          </Link>
 
           <div className="mobile-menu-divider" />
 
