@@ -5544,7 +5544,8 @@ export function demoGetProducts(): Product[] {
       if (Array.isArray(parsed)) {
         // Sincronizar automáticamente cualquier producto nuevo de INITIAL_PRODUCTS priorizando los recién subidos al inicio
         const existingIds = new Set(parsed.map((p: any) => p.id));
-        const missingFromInitial = INITIAL_PRODUCTS.filter(p => !existingIds.has(p.id));
+        const currentDeleted = getDeletedProductIds();
+        const missingFromInitial = INITIAL_PRODUCTS.filter(p => !existingIds.has(p.id) && !isProductDeleted(p, currentDeleted));
         list = [...missingFromInitial, ...parsed];
       } else {
         list = INITIAL_PRODUCTS;

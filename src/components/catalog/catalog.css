@@ -282,7 +282,6 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
   opacity: 1 !important;
   display: block;
-  content-visibility: auto;
   image-rendering: -webkit-optimize-contrast;
 }
 

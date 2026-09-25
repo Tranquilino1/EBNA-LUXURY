@@ -1,5 +1,6 @@
 import { createClient, type Client } from '@libsql/client/web';
 import type { Product, ProductCategory } from '../types';
+import { getDeletedProductIds } from './demoData';
 
 let tursoWebClient: Client | null = null;
 
@@ -52,6 +53,8 @@ export async function fetchProductsFromTurso(baseProducts?: Product[]): Promise<
     const res = await client.execute('SELECT * FROM products ORDER BY updated_at DESC');
     if (!res.rows || res.rows.length === 0) return [];
 
+    const deletedIds = new Set(getDeletedProductIds());
+
     const baseMap = new Map<string, Product>();
     if (baseProducts && baseProducts.length > 0) {
       baseProducts.forEach(p => {
@@ -60,7 +63,21 @@ export async function fetchProductsFromTurso(baseProducts?: Product[]): Promise<
       });
     }
 
-    return res.rows.map((row: any) => {
+    const validRows = res.rows.filter((row: any) => {
+      const rowId = String(row.id || '');
+      const rowSlug = String(row.slug || '');
+      if (deletedIds.has(rowId) || deletedIds.has(rowSlug)) {
+        // Asynchronously prune from Turso to free cloud database space permanently
+        client.execute({
+          sql: 'DELETE FROM products WHERE id = ? OR slug = ?',
+          args: [rowId, rowSlug]
+        }).catch(() => {});
+        return false;
+      }
+      return true;
+    });
+
+    return validRows.map((row: any) => {
       const rowId = String(row.id);
       const rowSlug = String(row.slug || row.id);
       const existing = baseMap.get(rowId) || baseMap.get(rowSlug);
@@ -225,3 +242,39 @@ export async function deleteProductFromTurso(productIdOrSlug: string): Promise<b
     return false;
   }
 }
+
+/**
+ * Deletes multiple products from Turso Cloud Database in batch
+ */
+export async function deleteMultipleProductsFromTurso(idsOrSlugs: string[]): Promise<boolean> {
+  const client = getTursoClient();
+  if (!client || !idsOrSlugs || idsOrSlugs.length === 0) return false;
+
+  try {
+    const cleanList = idsOrSlugs.filter(Boolean);
+    if (cleanList.length === 0) return true;
+
+    // Use parameterized batch deletion for speed and clean space liberation
+    const placeholders = cleanList.map(() => '?').join(', ');
+    await client.execute({
+      sql: `DELETE FROM products WHERE id IN (${placeholders}) OR slug IN (${placeholders})`,
+      args: [...cleanList, ...cleanList]
+    });
+    console.log(`[Turso Cloud] Successfully batch deleted ${cleanList.length} products.`);
+    return true;
+  } catch (err) {
+    console.warn('[Turso Cloud Batch Delete Warn - falling back to sequential]:', err);
+    for (const item of idsOrSlugs) {
+      if (item) {
+        try {
+          await client.execute({
+            sql: 'DELETE FROM products WHERE id = ? OR slug = ?',
+            args: [item, item]
+          });
+        } catch {}
+      }
+    }
+    return true;
+  }
+}
+

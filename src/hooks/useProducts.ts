@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoGetProducts, demoSaveProducts } from '../lib/demoData';
+import { demoGetProducts, demoSaveProducts, getDeletedProductIds, isProductDeleted } from '../lib/demoData';
 import { subscribeToCatalogChanges } from '../lib/broadcast';
 import { prewarmImages } from '../lib/imagePreloader';
 import { supabase } from '../config/supabase';
@@ -75,6 +75,12 @@ export function useProducts(category?: FilterCategoryType, searchQuery?: string)
           // Resilient fallback to catalog products if Supabase table is empty or RLS-restricted
           finalList = demoGetProducts();
         }
+      }
+
+      // Guarantee deleted items are permanently excluded
+      const deletedIds = getDeletedProductIds();
+      if (deletedIds.length > 0) {
+        finalList = finalList.filter(p => !isProductDeleted(p, deletedIds));
       }
 
       // Filter out hidden items for public view

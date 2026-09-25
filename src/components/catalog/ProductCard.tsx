@@ -35,25 +35,77 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const isSelected = selectedIds.has(product.id);
 
   const imgRef = useRef<HTMLImageElement>(null);
-  const resolveInitialImg = () => {
-    const raw = product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : FALLBACK_SVG));
-    if (typeof raw === 'string' && raw.endsWith('.jfif')) {
-      return raw.replace(/\.jfif$/i, '.jpg');
-    }
-    return raw;
+  const attemptedFallbacksRef = useRef<Set<string>>(new Set());
+
+  const normalizeUrl = (url: unknown): string => {
+    if (typeof url !== 'string' || !url) return FALLBACK_SVG;
+    if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://')) return url;
+    let clean = url.trim();
+    if (!clean.startsWith('/')) clean = '/' + clean;
+    if (clean.endsWith('.jfif')) clean = clean.replace(/\.jfif$/i, '.jpg');
+    return clean;
   };
+
+  const resolveInitialImg = () => {
+    const raw = product.images?.primary || (Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : (typeof product.images === 'string' ? product.images : ''));
+    return normalizeUrl(raw);
+  };
+
   const [imgSrc, setImgSrc] = useState<string>(resolveInitialImg);
   const [imageLoaded, setImageLoaded] = useState(() => {
     return typeof window !== 'undefined' && (imgSrc.startsWith('data:') || false);
   });
 
   useEffect(() => {
+    attemptedFallbacksRef.current.clear();
     const nextImg = resolveInitialImg();
     setImgSrc(nextImg || FALLBACK_SVG);
     if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
       setImageLoaded(true);
     }
   }, [product.images]);
+
+  const handleImageError = () => {
+    const current = imgSrc;
+    attemptedFallbacksRef.current.add(current);
+
+    // Try alternate format: .jpg <-> .png <-> .jfif <-> .webp
+    let alternate = '';
+    if (current.endsWith('.jpg')) {
+      alternate = current.replace(/\.jpg$/i, '.png');
+    } else if (current.endsWith('.png')) {
+      alternate = current.replace(/\.png$/i, '.jpg');
+    } else if (current.endsWith('.webp')) {
+      alternate = current.replace(/\.webp$/i, '.jpg');
+    } else if (current.endsWith('.jfif')) {
+      alternate = current.replace(/\.jfif$/i, '.jpg');
+    }
+
+    if (alternate && !attemptedFallbacksRef.current.has(alternate)) {
+      attemptedFallbacksRef.current.add(alternate);
+      setImgSrc(alternate);
+      return;
+    }
+
+    // Try gallery images
+    const gallery = product.images?.gallery;
+    if (Array.isArray(gallery)) {
+      for (const item of gallery) {
+        const norm = normalizeUrl(item);
+        if (norm && norm !== FALLBACK_SVG && !attemptedFallbacksRef.current.has(norm)) {
+          attemptedFallbacksRef.current.add(norm);
+          setImgSrc(norm);
+          return;
+        }
+      }
+    }
+
+    // Fallback to FALLBACK_SVG only if all attempts failed
+    if (imgSrc !== FALLBACK_SVG) {
+      setImgSrc(FALLBACK_SVG);
+    }
+    setImageLoaded(true);
+  };
 
   const ordersCount = getProductOrdersCount(product);
   const priceVal = product.priceFCFA || product.price || 0;
@@ -78,7 +130,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
       const targetSrc = product.images.primary || (Array.isArray(product.images) ? product.images[0] : '');
       if (targetSrc) {
         const preload = new Image();
-        preload.src = targetSrc;
+        preload.src = normalizeUrl(targetSrc);
       }
     }
   };
@@ -108,15 +160,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           fetchPriority={index < 8 ? 'high' : 'auto'}
           decoding="async"
           onLoad={() => setImageLoaded(true)}
-          onError={() => {
-            const gallery = product.images?.gallery;
-            if (Array.isArray(gallery) && gallery.length > 1 && imgSrc !== gallery[1] && gallery[1]) {
-              setImgSrc(gallery[1]);
-            } else if (imgSrc !== FALLBACK_SVG) {
-              setImgSrc(FALLBACK_SVG);
-            }
-            setImageLoaded(true);
-          }}
+          onError={handleImageError}
         />
         
         <div className="product-badge-group">

@@ -1,8 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
-import { demoAddProduct, demoUpdateProduct, demoDeleteProduct, demoGetProducts, demoSaveProducts } from '../lib/demoData';
+import { 
+  demoAddProduct, 
+  demoUpdateProduct, 
+  demoDeleteProduct, 
+  demoGetProducts, 
+  demoSaveProducts,
+  getDeletedProductIds,
+  isProductDeleted
+} from '../lib/demoData';
 import { subscribeToCatalogChanges, notifyCatalogChange } from '../lib/broadcast';
 import { supabase } from '../config/supabase';
-import { fetchProductsFromTurso, syncProductToTurso, deleteProductFromTurso } from '../lib/tursoClient';
+import { 
+  fetchProductsFromTurso, 
+  syncProductToTurso, 
+  deleteProductFromTurso,
+  deleteMultipleProductsFromTurso 
+} from '../lib/tursoClient';
 import { compressImageFile } from '../lib/imageOptimizer';
 import type { Product, ProductImages } from '../types';
 import { generateSlug } from '../lib/utils';
@@ -92,8 +105,12 @@ export function useAdminProducts() {
             updated_at: item.updated_at,
           };
         });
-        demoSaveProducts(mappedRemote);
-        setProducts(mappedRemote);
+        const currentDeleted = getDeletedProductIds();
+        const cleanRemote = currentDeleted.length > 0 
+          ? mappedRemote.filter(p => !isProductDeleted(p, currentDeleted))
+          : mappedRemote;
+        demoSaveProducts(cleanRemote);
+        setProducts(cleanRemote);
       } else {
         setProducts(demoGetProducts());
       }
@@ -364,13 +381,21 @@ export function useAdminProducts() {
       // 1. Immediate local state update for instant UI feedback (0ms)
       setProducts(prev => prev.filter(p => p.id !== id && p.slug !== targetSlug && p.sku !== id));
       demoDeleteProduct(id);
+      if (prod?.id) demoDeleteProduct(prod.id);
+      if (targetSlug && targetSlug !== id) demoDeleteProduct(targetSlug);
       notifyCatalogChange('delete', { id, slug: targetSlug });
 
-      // 2. Delete from Turso Cloud & Supabase in background
+      // 2. Physical Deletion from Turso Cloud LibSQL (Universal Database) & Supabase
       (async () => {
         try {
           await deleteProductFromTurso(id);
-          if (targetSlug) await deleteProductFromTurso(targetSlug);
+          if (targetSlug && targetSlug !== id) {
+            await deleteProductFromTurso(targetSlug);
+          }
+          if (prod?.id && prod.id !== id) {
+            await deleteProductFromTurso(prod.id);
+          }
+          console.log(`[Turso Cloud DB] Product ${id} permanently deleted.`);
         } catch (tursoErr) {
           console.warn('[Turso Delete Notice]:', tursoErr);
         }
@@ -383,6 +408,10 @@ export function useAdminProducts() {
           if (targetSlug) {
             await supabase.from('products').delete().eq('slug', targetSlug);
           }
+          if (prod?.id) {
+            await supabase.from('products').delete().eq('id', prod.id);
+          }
+          console.log(`[Supabase DB] Product ${id} permanently deleted.`);
         } catch (err) {
           console.warn('Background Supabase delete notice:', err);
         }
@@ -426,18 +455,33 @@ export function useAdminProducts() {
   const bulkDelete = async (ids: string[]) => {
     try {
       const idSet = new Set(ids);
+      // 1. Immediate local UI update (0ms)
       setProducts(prev => prev.filter(p => !idSet.has(p.id) && !idSet.has(p.slug) && !idSet.has(p.sku)));
       
+      // 2. Mark and remove from local storage
       for (const id of ids) {
         demoDeleteProduct(id);
-        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-        if (isUUID) {
-          await supabase.from('products').delete().eq('id', id);
-        } else {
-          await supabase.from('products').delete().eq('slug', id);
-        }
       }
-      notifyCatalogChange('bulk_delete', { count: ids.length });
+
+      // 3. Batch delete from Turso Cloud Database
+      const tursoBatchPromise = deleteMultipleProductsFromTurso(ids);
+
+      // 4. Batch delete from Supabase Database
+      const supabaseBatchPromise = (async () => {
+        try {
+          const uuids = ids.filter(id => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id));
+          if (uuids.length > 0) {
+            await supabase.from('products').delete().in('id', uuids);
+          }
+          await supabase.from('products').delete().in('slug', ids);
+          console.log(`[Supabase DB] ${ids.length} products permanently deleted in batch.`);
+        } catch (err) {
+          console.warn('Supabase bulk delete notice:', err);
+        }
+      })();
+
+      await Promise.allSettled([tursoBatchPromise, supabaseBatchPromise]);
+      notifyCatalogChange('bulk_delete', { count: ids.length, ids });
       await fetchProducts();
     } catch (err) {
       console.error('Error in bulkDelete:', err);
