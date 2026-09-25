@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spot Publicitario 60s Oficial | Sindy Luxury by EBNA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold-primary: #D4AF37;
+      --gold-light: #F3E5AB;
+      --gold-dark: #AA7C11;
+      --bg-dark: #070A10;
+      --bg-surface: #0F172A;
+      --magenta-couture: #D81B60;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1rem 5rem 1rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(216, 27, 96, 0.2));
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-light);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      background: linear-gradient(135deg, #FFFFFF, var(--gold-light), var(--gold-primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.8rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 780px;
+      margin: 0 auto 1.5rem auto;
+      font-weight: 300;
+    }
+
+    /* Video Player & Format Switcher */
+    .controls-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid rgba(212, 175, 55, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+      color: #000;
+      border-color: var(--gold-primary);
+      box-shadow: 0 4px 18px rgba(212, 175, 55, 0.4);
+    }
+
+    .player-section {
+      background: #000;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 24px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      margin-bottom: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .media-container {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #05070B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.4s ease;
+    }
+
+    .media-container.horizontal {
+      max-width: 960px;
+      aspect-ratio: 16 / 9;
+    }
+
+    .media-container.vertical {
+      max-width: 440px;
+      aspect-ratio: 9 / 16;
+    }
+
+    .media-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.5s ease;
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem;
+      pointer-events: none;
+    }
+
+    .overlay-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .overlay-brand {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      letter-spacing: 2px;
+    }
+
+    .live-rec {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #EF4444;
+      background: rgba(0,0,0,0.6);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #EF4444;
+      border-radius: 50%;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+
+    .overlay-bottom {
+      text-align: center;
+    }
+
+    .current-subtitles {
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 0.8rem 1.4rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #FFF;
+      display: inline-block;
+      max-width: 90%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      min-height: 52px;
+    }
+
+    /* Timeline & Playback Bar */
+    .timeline-bar {
+      width: 100%;
+      max-width: 960px;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--magenta-couture), var(--gold-primary));
+      transition: width 0.1s linear;
+    }
+
+    .player-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .btn-play {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+      border: none;
+      color: #000;
+      padding: 8px 24px;
+      border-radius: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+    }
+
+    /* Script Breakdown Table */
+    .script-table-container {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .table-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--gold-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .script-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.88rem;
+    }
+
+    .script-table th, .script-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: top;
+    }
+
+    .script-table th {
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold-primary);
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .script-table tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .time-col {
+      font-weight: 700;
+      color: var(--gold-primary);
+      white-space: nowrap;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    .voiceover-text {
+      color: #FFF;
+      font-style: italic;
+    }
+
+    .download-section {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2.5rem;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(216, 27, 96, 0.06));
+      border: 1.5px solid rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+    }
+
+    .btn-large {
+      padding: 14px 30px;
+      border-radius: 35px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-gold-large {
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+      color: #000;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+      border: none;
+    }
+
+    .btn-gold-large:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(212, 175, 55, 0.6);
+    }
+
+    .btn-outline-large {
+      background: transparent;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      color: #FFF;
+    }
+
+    .btn-outline-large:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--gold-light);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">Producción Audiovisual Oficial • 60 Segundos</span>
+      <h1>Spot Publicitario Cinemático: "La Esencia del Lujo"</h1>
+      <p class="subtitle">
+        Campaña audiovisual omnicanal producida para <strong>Sindy Luxury by EBNA</strong>. Formatos adaptados: <strong>16:9 Widescreen</strong> (TV & Pantallas de Malabo y Bata) y <strong>9:16 Vertical</strong> (TikTok, Instagram Reels & WhatsApp Status).
+      </p>
+    </header>
+
+    <!-- SELECTOR DE FORMATO -->
+    <div class="controls-bar">
+      <button id="btnHorizontal" class="tab-btn active" onclick="switchFormat('horizontal')">
+        📺 Versión Horizontal (16:9 - TV & Marquesinas)
+      </button>
+      <button id="btnVertical" class="tab-btn" onclick="switchFormat('vertical')">
+        📱 Versión Vertical (9:16 - TikTok & Reels)
+      </button>
+    </div>
+
+    <!-- REPRODUCTOR / SIMULADOR AUDIOVISUAL DE 60 SEGUNDOS -->
+    <section class="player-section">
+      <div id="mediaBox" class="media-container horizontal">
+        <img id="spotImage" src="/marketing/video_spot_horizontal_16x9.jpg" alt="Spot Publicitario Sindy Luxury by EBNA">
+
+        <div class="video-overlay">
+          <div class="overlay-top">
+            <span class="overlay-brand">SINDY LUXURY BY EBNA</span>
+            <div class="live-rec">
+              <span class="live-dot"></span> 4K UHD 60 FPS
+            </div>
+          </div>
+          <div class="overlay-bottom">
+            <div id="subtitlesBox" class="current-subtitles">
+              ▶ Pulsa "Reproducir Spot (60s)" para iniciar la simulación con voz y música.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de línea de tiempo interactiva -->
+      <div class="timeline-bar">
+        <div class="progress-track" onclick="seekTrack(event)">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="player-controls">
+          <button id="playBtn" class="btn-play" onclick="togglePlay()">
+            ▶ Iniciar Spot (60s)
+          </button>
+          <span id="timeDisplay">00:00 / 01:00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GUION TÉCNICO COMPLETO SEGUNDO A SEGUNDO -->
+    <section class="script-table-container">
+      <h2 class="table-title">📜 Guion Técnico Literario & Storyboard (1 Minuto / 60 Segundos)</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">
+        Desglose escena a escena con indicaciones de cámara, voz en off (Voiceover), iluminación, atrezzo y efectos de sonido (SFX):
+      </p>
+
+      <table class="script-table">
+        <thead>
+          <tr>
+            <th style="width: 10%;">Tiempo</th>
+            <th style="width: 25%;">Plano & Dirección de Cámara</th>
+            <th style="width: 45%;">Locución (Voz en Off)</th>
+            <th style="width: 20%;">Banda Sonora & SFX</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-col">00:00 - 00:10</td>
+            <td>
+              <strong>Plano Detalle / Dolly In:</strong><br>
+              Luces de candelabros dorados que se encienden lentamente. Tacones con pedrería pisando mármol negro espejo. Capa de seda magenta que ondea a cámara superlenta (120 fps).
+            </td>
+            <td class="voiceover-text">
+              "Hay momentos donde la moda deja de ser una elección... y se convierte en una declaración de poder y distinción."
+            </td>
+            <td>
+              <strong>Música:</strong> Nota de piano sutil con reverberación profunda. <br>
+              <strong>SFX:</strong> Taconeo elegante, roce suave de seda.
+            </td>
+          </tr>
+          <tr>
+            <td class="time-col">00:10 - 00:22</td>
+            <td>
+              <strong>Plano General / Grúa:</strong><br>
+              Supermodelo africana desfilando con majestad en la pasarela de gala. Traje escultural con bordados de oro imperial. Destellos de partículas doradas en el aire.
+            </td>
+            <td class="voiceover-text">
+              "Llega a Guinea Ecuatorial la más exquisita selección de alta costura: vestidos de gala, trajes de fiesta y prendas que transforman cada entrada en una pasarela inolvidable."
+            </td>
+            <td>
+              <strong>Música:</strong> Cuerdas de violines ascendentes de lujo.<br>
+              <strong>SFX:</strong> Flashes sutiles de cámara VIP.
+            </td>
+          </tr>
+          <tr>
+            <td class="time-col">00:22 - 00:35</td>
+            <td>
+              <strong>Macro / Bodegón de Lujo:</strong><br>
+              Gotas de perfume cayendo sobre cristal facetado. Crema facial hidratante sobre mármol y orquídeas frescas. Bolsos de cuero de diseño italiano en vitrina iluminada.
+            </td>
+            <td class="voiceover-text">
+              "Fragancias de autor que dejan una huella imborrable. Cosmética facial francesa que cuida tu piel con la pureza y sofisticación que mereces."
+            </td>
+            <td>
+              <strong>Música:</strong> Melodía refinada con sutil ritmo lounge moderno.<br>
+              <strong>SFX:</strong> Pulverización delicada de perfume.
+            </td>
+          </tr>
+          <tr>
+            <td class="time-col">00:35 - 00:48</td>
+            <td>
+              <strong>Primer Plano / Interfaz Digital:</strong><br>
+              La modelo sostiene un smartphone de borde dorado. En pantalla: navegación fluida por <em>ebna-luxury.vercel.app</em>. Añade un bolso de lujo al carrito con un clic táctil suave.
+            </td>
+            <td class="voiceover-text">
+              "Todo un universo de lujo exclusivo, al alcance de tus dedos. Más de 180 piezas seleccionadas, pedidos directos por WhatsApp y entrega inmediata y discreta en Malabo y Bata."
+            </td>
+            <td>
+              <strong>Música:</strong> Subidón armónico alegre y tecnológico.<br>
+              <strong>SFX:</strong> Sonido nítido de 'chime' de confirmación dorada.
+            </td>
+          </tr>
+          <tr>
+            <td class="time-col">00:48 - 01:00</td>
+            <td>
+              <strong>Plano Medio / Cierre Glorioso:</strong><br>
+              La modelo mira a cámara con sonrisa radiante. El logotipo 3D en oro metalizado de <em>SINDY LUXURY BY EBNA</em> aparece en el centro, junto al código QR y la dirección web.
+            </td>
+            <td class="voiceover-text">
+              "No sigas tendencias. Marca tu propio estándar. Sindy Luxury by EBNA. Entra ahora en ebna-luxury.vercel.app. Tu boutique de alta costura, donde tú estés."
+            </td>
+            <td>
+              <strong>Música:</strong> Cierre orquestal triunfal con acorde de arpa y piano.<br>
+              <strong>SFX:</strong> Resonancia de lujo final.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- DESCARGAS & RECURSOS -->
+    <div class="download-section">
+      <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold-light); margin-bottom: 0.6rem;">
+        📥 Fotogramas Maestros en Alta Resolución
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 650px; margin: 0 auto 1.5rem auto;">
+        Descarga los fotogramas oficiales listos para enviar a editoras de video, productoras de televisión o canales de pauta publicitaria en Malabo y Bata:
+      </p>
+
+      <a href="/marketing/video_spot_horizontal_16x9.jpg" download="Spot_Sindy_Luxury_Horizontal_16x9.jpg" class="btn-large btn-gold-large">
+        📺 Descargar Versión Horizontal (16:9 4K)
+      </a>
+      <a href="/marketing/video_spot_vertical_9x16.jpg" download="Spot_Sindy_Luxury_Vertical_9x16.jpg" class="btn-large btn-outline-large">
+        📱 Descargar Versión Vertical (9:16 HD)
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    const scriptSegments = [
+      { start: 0, end: 10, text: '"Hay momentos donde la moda deja de ser una elección... y se convierte en una declaración de poder y distinción."' },
+      { start: 10, end: 22, text: '"Llega a Guinea Ecuatorial la más exquisita selección de alta costura: vestidos de gala, trajes de fiesta y prendas que transforman cada entrada en una pasarela inolvidable."' },
+      { start: 22, end: 35, text: '"Fragancias de autor que dejan una huella imborrable. Cosmética facial francesa que cuida tu piel con la pureza y sofisticación que mereces."' },
+      { start: 35, end: 48, text: '"Todo un universo de lujo exclusivo, al alcance de tus dedos. Más de 180 piezas seleccionadas, pedidos por WhatsApp y entrega inmediata en Malabo y Bata."' },
+      { start: 48, end: 60, text: '"No sigas tendencias. Marca tu propio estándar. Sindy Luxury by EBNA. Entra ahora en ebna-luxury.vercel.app. Tu boutique de alta costura, donde tú estés."' }
+    ];
+
+    let isPlaying = false;
+    let currentTime = 0;
+    const totalDuration = 60;
+    let timerInterval = null;
+
+    const playBtn = document.getElementById('playBtn');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const progressFill = document.getElementById('progressFill');
+    const subtitlesBox = document.getElementById('subtitlesBox');
+    const spotImage = document.getElementById('spotImage');
+    const mediaBox = document.getElementById('mediaBox');
+    const btnHorizontal = document.getElementById('btnHorizontal');
+    const btnVertical = document.getElementById('btnVertical');
+
+    let currentFormat = 'horizontal';
+
+    function switchFormat(format) {
+      currentFormat = format;
+      if (format === 'horizontal') {
+        mediaBox.className = 'media-container horizontal';
+        spotImage.src = '/marketing/video_spot_horizontal_16x9.jpg';
+        btnHorizontal.className = 'tab-btn active';
+        btnVertical.className = 'tab-btn';
+      } else {
+        mediaBox.className = 'media-container vertical';
+        spotImage.src = '/marketing/video_spot_vertical_9x16.jpg';
+        btnHorizontal.className = 'tab-btn';
+        btnVertical.className = 'tab-btn active';
+      }
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        pausePlayback();
+      } else {
+        startPlayback();
+      }
+    }
+
+    function startPlayback() {
+      isPlaying = true;
+      playBtn.innerHTML = '⏸ Pausar Spot';
+      playVoiceover();
+
+      timerInterval = setInterval(() => {
+        currentTime += 0.2;
+        if (currentTime >= totalDuration) {
+          currentTime = totalDuration;
+          pausePlayback();
+        }
+        updateUI();
+      }, 200);
+    }
+
+    function pausePlayback() {
+      isPlaying = false;
+      playBtn.innerHTML = '▶ Reanudar Spot';
+      clearInterval(timerInterval);
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function updateUI() {
+      const mins = Math.floor(currentTime / 60);
+      const secs = Math.floor(currentTime % 60);
+      timeDisplay.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')} / 01:00`;
+      const pct = (currentTime / totalDuration) * 100;
+      progressFill.style.width = `${pct}%`;
+
+      const currentSeg = scriptSegments.find(s => currentTime >= s.start && currentTime < s.end);
+      if (currentSeg) {
+        subtitlesBox.innerText = currentSeg.text;
+      } else if (currentTime >= 60) {
+        subtitlesBox.innerText = '✨ Fin del spot publicitario de 60 segundos. Sindy Luxury by EBNA.';
+      }
+    }
+
+    function seekTrack(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = clickX / rect.width;
+      currentTime = ratio * totalDuration;
+      updateUI();
+    }
+
+    function playVoiceover() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const currentSeg = scriptSegments.find(s => currentTime >= s.start && currentTime < s.end);
+        if (currentSeg) {
+          const utterance = new SpeechSynthesisUtterance(currentSeg.text.replace(/"/g, ''));
+          utterance.lang = 'es-ES';
+          utterance.rate = 0.95;
+          window.speechSynthesis.speak(utterance);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
