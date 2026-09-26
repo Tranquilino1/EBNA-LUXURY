@@ -112,17 +112,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const originalPriceVal = product.originalPriceFCFA;
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Only prevent navigation if clicking on Admin controls, checkbox or action buttons
     const target = e.target as HTMLElement;
     if (
       target.closest('.admin-checkbox-container') ||
       target.closest('.admin-card-actions') ||
-      target.closest('.btn-card-action')
+      target.closest('.btn-card-pedir') ||
+      target.closest('.btn-card-carrito')
     ) {
       return;
     }
-    navigate(`/producto/${product.slug || product.id}`);
+    // If clicking on an anchor / Link tag, let React Router Link handle it natively
+    if (target.closest('a')) {
+      return;
+    }
+    navigate(productUrl);
   };
+
 
   // Format category badge for display
   const categoryLabel = (product.category || 'MODA').replace(/_/g, ' ');

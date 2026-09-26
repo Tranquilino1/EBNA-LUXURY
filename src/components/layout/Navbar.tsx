@@ -141,8 +141,12 @@ export const Navbar: React.FC = () => {
 
   const handleCategoryNav = (cat: string) => {
     setIsMobileMenuOpen(false);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('ebna_category_nav', { detail: { category: cat } }));
+    }
     navigate(`/catalogo?cat=${cat}`);
   };
+
 
   return (
     <header className={`navbar-wrapper ${isScrolled ? 'scrolled' : ''}`}>
@@ -466,43 +470,42 @@ export const Navbar: React.FC = () => {
                 </Link>
               </div>
 
-              {/* Group 2: Quick Categories (Scrollable Luxury Plates) */}
-              <div className="mobile-drawer-group mobile-collections-group">
+              {/* Group 2: Colecciones Exclusivas (Vertical Luxury List) */}
+              <div className="mobile-drawer-group mobile-collections-list-group">
                 <div className="mobile-group-header-row">
                   <div className="mobile-group-title">Colecciones Exclusivas</div>
-                  <span className="mobile-group-badge">8 Líneas • Desliza ➔</span>
+                  <span className="mobile-group-badge">8 Líneas</span>
                 </div>
                 
-                <div className="mobile-collections-rail">
+                <div className="mobile-collections-vertical-list">
                   {EXCLUSIVE_COLLECTIONS.map((col) => {
                     const IconComp = col.Icon;
                     return (
                       <button 
                         key={col.id}
                         type="button"
-                        className="mobile-collection-plate"
+                        className="mobile-collection-list-item"
                         onClick={() => handleCategoryNav(col.id)}
                       >
-                        <div className="plate-top-row">
-                          <div className="plate-3d-icon-box">
-                            <IconComp size={28} />
+                        <div className="collection-item-left">
+                          <div className="collection-3d-icon-box">
+                            <IconComp size={24} />
                           </div>
-                          <span className="plate-tag">{col.tag}</span>
+                          <div className="collection-item-texts">
+                            <span className="collection-item-title">{col.title}</span>
+                            <span className="collection-item-subtitle">{col.subtitle}</span>
+                          </div>
                         </div>
-                        <div className="plate-content">
-                          <span className="plate-title">{col.title}</span>
-                          <span className="plate-subtitle">{col.subtitle}</span>
-                        </div>
-                        <div className="plate-footer">
-                          <span className="plate-action-link">
-                            Explorar <ChevronRight size={13} />
-                          </span>
+                        <div className="collection-item-right">
+                          <span className="collection-item-tag">{col.tag}</span>
+                          <ChevronRight size={16} className="collection-item-chevron" />
                         </div>
                       </button>
                     );
                   })}
                 </div>
               </div>
+
 
 
               {/* Group 3: Preferences & Experience */}

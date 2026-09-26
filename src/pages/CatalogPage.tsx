@@ -81,6 +81,23 @@ export function CatalogPage() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [urlCat]);
+
+  // Reactive listener for in-app category switching without page remount
+  useEffect(() => {
+    const handleCategoryEvent = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail?.category) {
+        const cat = detail.category;
+        const mapped: FilterCategoryType = (cat === 'VESTIDOS_GALA' ? 'MODA_MUJER' : cat) as FilterCategoryType;
+        setActiveCategoryState(mapped);
+        setSearchQuery('');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+    window.addEventListener('ebna_category_nav', handleCategoryEvent);
+    return () => window.removeEventListener('ebna_category_nav', handleCategoryEvent);
+  }, []);
+
   
   // Universal data fetch: load all products once into memory for instant 0ms search
   const { products, loading, error } = useProducts();

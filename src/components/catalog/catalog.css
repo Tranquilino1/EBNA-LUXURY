@@ -263,15 +263,23 @@
   z-index: 5;
 }
 
-.product-card:hover {
-  transform: translateY(-8px) scale(var(--card-hover-scale, 1.04)) translateZ(0);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--border-brand);
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover {
+    transform: translateY(-8px) scale(var(--card-hover-scale, 1.04)) translateZ(0);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-brand);
+  }
+
+  .product-card:hover .product-card-glow-border {
+    opacity: 1;
+  }
 }
 
-.product-card:hover .product-card-glow-border {
-  opacity: 1;
+.product-card:active {
+  transform: scale(0.985);
+  transition: transform 0.1s ease;
 }
+
 
 /* Image Container & Aspect Ratio */
 .product-image-container {
@@ -325,9 +333,12 @@
   100% { background-position: -200% 0; }
 }
 
-.product-card:hover .product-image {
-  transform: scale(1.07);
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-image {
+    transform: scale(1.07);
+  }
 }
+
 
 /* Badge Group & Dynamic Badges - Positioned at bottom of image to NEVER overlap top admin buttons */
 .product-badge-group {
@@ -983,48 +994,50 @@
   transform: scale(0.95);
 }
 
-/* En teléfonos y pantallas angostas: Formato simétrico y limpio en 2 columnas sin solapamiento */
+/* En teléfonos y pantallas angostas: Formato simétrico, elegante, fuentes y precios compactos en 2 columnas */
 @media (max-width: 640px) {
   .product-card {
-    border-radius: 16px !important;
+    border-radius: 14px !important;
+    touch-action: manipulation !important;
   }
   
   .product-image-container {
     aspect-ratio: 1 / 1 !important;
-    padding: 8px !important;
-    max-height: 200px !important;
+    padding: 6px !important;
+    max-height: 165px !important;
   }
 
   .product-info {
-    padding: 10px 10px 12px 10px !important;
+    padding: 8px 8px 10px 8px !important;
   }
 
   .product-brand-tag {
-    font-size: 0.65rem !important;
+    font-size: 0.60rem !important;
     margin-bottom: 1px !important;
   }
 
   .product-name {
-    font-size: 0.86rem !important;
+    font-size: 0.78rem !important;
     line-height: 1.25 !important;
     height: 2.5em !important;
-    margin-bottom: 3px !important;
+    margin-bottom: 2px !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
+    font-weight: 700 !important;
   }
 
-  /* Ocultamos snippet de descripción en cuadrícula de 2 columnas móvil para evitar tarjetas kilométricas y solapamientos */
+  /* Ocultamos snippet de descripción en cuadrícula de 2 columnas móvil para evitar tarjetas kilométricas */
   .product-description-snippet {
     display: none !important;
   }
 
   .product-price-row {
-    margin-top: 4px !important;
-    margin-bottom: 8px !important;
-    padding-top: 6px !important;
-    align-items: center !important;
+    margin-top: 3px !important;
+    margin-bottom: 6px !important;
+    padding-top: 4px !important;
+    align-items: baseline !important;
   }
 
   .product-price-label {
@@ -1032,26 +1045,33 @@
   }
 
   .product-price-value {
-    font-size: 0.98rem !important;
+    font-size: 0.85rem !important;
     font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
   }
 
   .product-actions-trio {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 6px !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 4px !important;
     margin-top: 4px !important;
   }
 
   .btn-card-ver {
-    display: none !important;
+    display: flex !important;
   }
 
   .btn-card-action {
-    min-height: 34px !important;
-    padding: 6px 4px !important;
-    font-size: 0.74rem !important;
-    gap: 4px !important;
-    border-radius: 16px !important;
+    min-height: 32px !important;
+    padding: 4px 2px !important;
+    font-size: 0.68rem !important;
+    gap: 3px !important;
+    border-radius: 12px !important;
+  }
+
+  .btn-card-action .btn-card-text {
+    font-size: 0.66rem !important;
+    font-weight: 700 !important;
   }
 }
+
 

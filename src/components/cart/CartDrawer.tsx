@@ -281,6 +281,8 @@ export const CartDrawer: React.FC = () => {
                           onChange={(e) => handleNameChange(e.target.value)}
                           placeholder="Tu nombre y apellidos"
                           className="futuristic-input"
+                          autoComplete="name"
+                          enterKeyHint="next"
                         />
                       </div>
                     </div>
@@ -291,10 +293,13 @@ export const CartDrawer: React.FC = () => {
                         <Phone size={15} className="input-icon" />
                         <input 
                           type="tel" 
+                          inputMode="tel"
                           value={customerPhone} 
                           onChange={(e) => handlePhoneChange(e.target.value)}
                           placeholder="Tu teléfono de contacto"
                           className="futuristic-input"
+                          autoComplete="tel"
+                          enterKeyHint="next"
                         />
                       </div>
                     </div>
@@ -309,7 +314,10 @@ export const CartDrawer: React.FC = () => {
                           onChange={(e) => handleAddressChange(e.target.value)}
                           placeholder="Tu barrio o ciudad (ej. Malabo, Bata...)"
                           className="futuristic-input"
+                          autoComplete="street-address"
+                          enterKeyHint="done"
                         />
+
                       </div>
                     </div>
                   </div>

@@ -13,6 +13,7 @@ import { ChristmasSnowOverlay } from '../effects/ChristmasSnowOverlay';
 import { ChristmasMagicOverlay } from '../effects/ChristmasMagicOverlay';
 import { ScrollToTopButton } from '../ui/ScrollToTopButton';
 import { SmartInputCentering } from '../ui/SmartInputCentering';
+import { AppWelcomeSplash } from '../ui/AppWelcomeSplash';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import './layout.css';
 
@@ -23,6 +24,7 @@ export const Layout: React.FC = () => {
     <GlobalSearchProvider>
       <AdminCrudProvider>
         <div className="luxury-canvas min-h-screen">
+          <AppWelcomeSplash />
           <SmartInputCentering />
           <ParticleBackground />
           {isChristmasActive && settings.christmasSnow && <ChristmasSnowOverlay />}

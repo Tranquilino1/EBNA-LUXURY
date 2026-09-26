@@ -163,13 +163,24 @@ export const GlobalSearchModal: React.FC = () => {
               <Search size={22} color="#D81B60" style={{ flexShrink: 0 }} />
               <input
                 ref={inputRef}
-                type="text"
+                type="search"
+                inputMode="search"
+                enterKeyHint="search"
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck="false"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    inputRef.current?.blur();
+                  }
+                }}
                 placeholder="Buscar cualquier prenda, vestido, jabón, crema, calzado, bolso..."
                 className="global-search-input"
                 aria-label="Escribe para buscar productos"
               />
+
               {searchQuery && (
                 <button 
                   type="button" 

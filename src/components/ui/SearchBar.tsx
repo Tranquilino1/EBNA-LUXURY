@@ -122,7 +122,12 @@ export function SearchBar({
         
         <input
           ref={inputRef}
-          type="text"
+          type="search"
+          inputMode="search"
+          enterKeyHint="search"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck="false"
           className="search-input-field"
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -131,7 +136,12 @@ export function SearchBar({
               setIsOpen(true);
             }
           }}
-          onKeyDown={handleKeyDown}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              inputRef.current?.blur();
+            }
+            handleKeyDown(e);
+          }}
           placeholder={placeholder}
           aria-label="Buscar productos en el catálogo"
           aria-autocomplete="list"
@@ -148,6 +158,7 @@ export function SearchBar({
             fontFamily: 'inherit',
           }}
         />
+
 
         {value ? (
           <button 
