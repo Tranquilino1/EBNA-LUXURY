@@ -9,6 +9,7 @@ import { formatPrice } from '../../lib/utils';
 import { recordProductOrder } from '../../lib/popularityTracker';
 import { TicketProcessingModal } from '../receipt/TicketProcessingModal';
 import { saveOrderRequest } from '../../lib/orderStorage';
+import { useModalLock } from '../../hooks/useModalLock';
 import type { OrderReceiptData, ReceiptItem } from '../../types';
 import './cart.css';
 
@@ -23,6 +24,9 @@ export const CartDrawer: React.FC = () => {
     totalItemsCount, 
     subtotalPrice 
   } = useCart();
+
+  // Background isolation, touch lock, and Escape key listener
+  useModalLock(isCartOpen, () => setIsCartOpen(false));
 
   // Delivery & Customer Form State (persisted in localStorage for convenience)
   const [customerName, setCustomerName] = useState(() => {
@@ -148,9 +152,10 @@ export const CartDrawer: React.FC = () => {
           </div>
           <button 
             type="button" 
-            className="cart-close-btn"
+            className="luxury-close-circle-btn"
             onClick={() => setIsCartOpen(false)}
-            aria-label="Cerrar Carrito"
+            aria-label="Cerrar Carrito (ESC)"
+            title="Cerrar Carrito (ESC)"
           >
             <X size={20} />
           </button>
@@ -197,7 +202,7 @@ export const CartDrawer: React.FC = () => {
                         />
                       </div>
                       <div className="cart-item-info">
-                        <h4 className="cart-item-name">{item.product.name}</h4>
+                        <h4 className="cart-item-name" title={item.product.name}>{item.product.name}</h4>
                         
                         <div className="cart-item-variants">
                           {item.selectedSize && (
@@ -214,31 +219,34 @@ export const CartDrawer: React.FC = () => {
                         </div>
 
                         <div className="cart-item-bottom-controls">
-                          <div className="cart-qty-pill">
+                          <div className="cart-qty-stepper-pill">
                             <button 
                               type="button"
-                              className="qty-pill-btn"
+                              className="cart-stepper-action-btn minus"
                               onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                               title="Restar una unidad"
+                              aria-label="Restar una unidad"
                             >
-                              <Minus size={13} />
+                              <Minus size={13} strokeWidth={2.5} />
                             </button>
-                            <span className="qty-pill-count">{item.quantity}</span>
+                            <span className="cart-stepper-value">{item.quantity}</span>
                             <button 
                               type="button"
-                              className="qty-pill-btn"
+                              className="cart-stepper-action-btn plus"
                               onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                               title="Añadir una unidad"
+                              aria-label="Añadir una unidad"
                             >
-                              <Plus size={13} />
+                              <Plus size={13} strokeWidth={2.5} />
                             </button>
                           </div>
 
                           <button 
                             type="button" 
-                            className="cart-remove-btn"
+                            className="cart-remove-luxury-btn"
                             onClick={() => removeFromCart(item.cartItemId)}
                             title="Eliminar del carrito"
+                            aria-label="Eliminar producto del carrito"
                           >
                             <Trash2 size={16} />
                           </button>

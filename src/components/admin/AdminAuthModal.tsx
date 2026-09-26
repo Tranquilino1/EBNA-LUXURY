@@ -1,8 +1,9 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router';
 import { ShieldCheck, Lock, Mail, X, KeyRound, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { supabase } from '../../config/supabase';
+import { useModalLock } from '../../hooks/useModalLock';
 
 interface AdminAuthModalProps {
   isOpen: boolean;
@@ -17,6 +18,9 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ isOpen, onClose 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  // Background isolation, touch lock, and Escape key listener
+  useModalLock(isOpen, onClose);
 
   if (!isOpen) return null;
 

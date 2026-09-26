@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Mail, Phone, MessageSquare, Send, Sparkles, Headphones, ArrowRight, MapPin } from 'lucide-react';
 import { TikTokIcon } from './TikTokIcon';
+import { useModalLock } from '../../hooks/useModalLock';
 import './contactSupportModal.css';
 
 interface ContactSupportModalProps {
@@ -17,24 +18,14 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
   const [submitted, setSubmitted] = useState(false);
   const [submittedUrl, setSubmittedUrl] = useState('');
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+  // Background isolation, touch lock, and Escape key listener
+  useModalLock(isOpen, onClose);
 
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', handleEscape);
-    } else {
-      document.body.style.overflow = '';
+  useEffect(() => {
+    if (!isOpen) {
       setSubmitted(false);
     }
-
-    return () => {
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -90,7 +81,12 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({ isOpen
               <p>Asistencia técnica para incidencias, plataforma web y pedidos</p>
             </div>
           </div>
-          <button className="contact-close-btn" onClick={onClose} aria-label="Cerrar ventana">
+          <button 
+            className="contact-close-btn luxury-close-circle-btn" 
+            onClick={onClose} 
+            aria-label="Cerrar ventana (ESC)"
+            title="Cerrar ventana (ESC)"
+          >
             <X size={20} />
           </button>
         </div>

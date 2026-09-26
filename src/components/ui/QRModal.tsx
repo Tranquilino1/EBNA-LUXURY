@@ -4,6 +4,7 @@ import {
   Smartphone, Monitor, Apple, Download, X, 
   CheckCircle, Sparkles, Laptop, ShieldCheck 
 } from 'lucide-react';
+import { useModalLock } from '../../hooks/useModalLock';
 import './qrModal.css';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -21,6 +22,9 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
   const [isIOS, setIsIOS] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
   const [installedSuccess, setInstalledSuccess] = useState(false);
+
+  // Background isolation, touch lock, and Escape key listener
+  useModalLock(isOpen, onClose);
 
   useEffect(() => {
     const userAgent = window.navigator.userAgent.toLowerCase();
@@ -64,7 +68,12 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
   return createPortal(
     <div className="qr-modal-overlay" onClick={onClose}>
       <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()}>
-        <button className="qr-modal-close" onClick={onClose} aria-label="Cerrar modal de aplicación">
+        <button 
+          className="qr-modal-close luxury-close-circle-btn" 
+          onClick={onClose} 
+          aria-label="Cerrar modal de aplicación (ESC)"
+          title="Cerrar modal de aplicación (ESC)"
+        >
           <X size={20} />
         </button>
 

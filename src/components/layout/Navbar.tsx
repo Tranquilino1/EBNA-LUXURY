@@ -16,6 +16,7 @@ import { ContactSupportModal } from '../ui/ContactSupportModal';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import { InteractiveSantaHat } from '../effects/InteractiveSantaHat';
 import { isStandaloneApp } from '../../lib/deviceDetection';
+import { useModalLock } from '../../hooks/useModalLock';
 import './layout.css';
 
 export const Navbar: React.FC = () => {
@@ -36,6 +37,9 @@ export const Navbar: React.FC = () => {
   
   const navigate = useNavigate();
 
+  // Background isolation, touch lock, and Escape key listener for Mobile Drawer
+  useModalLock(isMobileMenuOpen, () => setIsMobileMenuOpen(false));
+
   useEffect(() => {
     setInApp(isStandaloneApp());
   }, []);
@@ -47,18 +51,6 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Lock body scroll and prevent touch drag while mobile drawer is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.classList.add('mobile-drawer-open');
-    } else {
-      document.body.classList.remove('mobile-drawer-open');
-    }
-    return () => {
-      document.body.classList.remove('mobile-drawer-open');
-    };
-  }, [isMobileMenuOpen]);
 
   const handleLogout = async () => {
     await signOut();
@@ -345,9 +337,10 @@ export const Navbar: React.FC = () => {
               </div>
               <button 
                 type="button" 
-                className="mobile-drawer-close-btn"
+                className="luxury-close-circle-btn"
                 onClick={() => setIsMobileMenuOpen(false)}
-                aria-label="Cerrar menú"
+                aria-label="Cerrar menú (ESC)"
+                title="Cerrar menú (ESC)"
               >
                 <X size={20} />
               </button>

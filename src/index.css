@@ -1910,4 +1910,77 @@ img {
   opacity: 0.65;
 }
 
+/* ==========================================================================
+   Universal Background Isolation & Panel Scroll Guard
+   Locks background scrolling while preserving smooth tactile scroll inside active panel
+   ========================================================================== */
+html.ebna-modal-locked,
+body.ebna-modal-locked {
+  overflow: hidden !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+  height: 100% !important;
+}
+
+.modal-overlay,
+.cart-drawer-overlay,
+.global-search-backdrop,
+.qr-modal-overlay,
+.support-modal-overlay,
+.receipt-modal-overlay,
+.product-lightbox-overlay,
+.mobile-drawer-backdrop {
+  touch-action: none;
+}
+
+.modal-body,
+.cart-drawer-body,
+.global-search-results-area,
+.qr-modal-content,
+.support-modal-content,
+.mobile-drawer-content,
+.ebna-scrollable-panel {
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Universal Luxury Exit Button Style */
+.luxury-close-circle-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(216, 27, 96, 0.22);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.luxury-close-circle-btn:hover {
+  background: #D81B60;
+  border-color: #D81B60;
+  color: #FFFFFF !important;
+  transform: rotate(90deg) scale(1.06);
+  box-shadow: 0 4px 14px rgba(216, 27, 96, 0.35);
+}
+
+.luxury-close-circle-btn:active {
+  transform: scale(0.92);
+}
+
+[data-theme="dark"] .luxury-close-circle-btn {
+  background: rgba(35, 18, 28, 0.85);
+  border-color: rgba(216, 27, 96, 0.4);
+  color: #F8FAFC;
+}
+
 

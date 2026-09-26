@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+import { useModalLock } from '../../hooks/useModalLock';
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,23 +12,8 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, title, children, footer }: ModalProps) {
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', handleEscape);
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    return () => {
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [isOpen, onClose]);
+  // Background isolation, touch lock, and Escape key listener
+  useModalLock(isOpen, onClose);
 
   if (!isOpen) return null;
 
@@ -36,8 +22,13 @@ export function Modal({ isOpen, onClose, title, children, footer }: ModalProps) 
       <div className="modal-content glass-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">{title}</h2>
-          <button className="modal-close-btn" onClick={onClose}>
-            <X size={24} />
+          <button 
+            className="modal-close-btn luxury-close-circle-btn" 
+            onClick={onClose}
+            aria-label="Cerrar modal (ESC)"
+            title="Cerrar modal (ESC)"
+          >
+            <X size={20} />
           </button>
         </div>
         <div className="modal-body">

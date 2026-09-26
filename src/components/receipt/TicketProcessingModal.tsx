@@ -15,6 +15,7 @@ import {
   type GeneratedTicketResult 
 } from '../../lib/receiptExporter';
 import { formatPrice } from '../../lib/utils';
+import { useModalLock } from '../../hooks/useModalLock';
 import './receipt.css';
 
 interface TicketProcessingModalProps {
@@ -35,6 +36,9 @@ export const TicketProcessingModal: React.FC<TicketProcessingModalProps> = ({
   const [ticketResult, setTicketResult] = useState<GeneratedTicketResult | null>(null);
   const [stepText, setStepText] = useState('Iniciando procesamiento de pedido...');
   const hasTriggeredRef = useRef(false);
+
+  // Background isolation, touch lock, and Escape key listener
+  useModalLock(isOpen, onClose);
 
   useEffect(() => {
     if (!isOpen || !order) {
@@ -101,9 +105,7 @@ export const TicketProcessingModal: React.FC<TicketProcessingModalProps> = ({
   return (
     <div 
       className="receipt-modal-overlay" 
-      onClick={() => {
-        if (isCompleted) onClose();
-      }}
+      onClick={onClose}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -160,27 +162,15 @@ export const TicketProcessingModal: React.FC<TicketProcessingModalProps> = ({
             </div>
           </div>
 
-          {isCompleted && (
-            <button
-              type="button"
-              onClick={onClose}
-              style={{
-                background: 'rgba(0,0,0,0.05)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: '#64748B',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              <X size={16} />
-            </button>
-          )}
+          <button
+            type="button"
+            className="luxury-close-circle-btn"
+            onClick={onClose}
+            aria-label="Cerrar ventana de ticket (ESC)"
+            title="Cerrar ventana de ticket (ESC)"
+          >
+            <X size={18} />
+          </button>
         </div>
 
         {/* Modal Body */}

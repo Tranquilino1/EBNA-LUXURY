@@ -12,20 +12,31 @@ import {
 import { useGlobalSearch } from '../../contexts/GlobalSearchContext';
 import { useProducts } from '../../hooks/useProducts';
 import { useCart } from '../../contexts/CartContext';
+import { useModalLock } from '../../hooks/useModalLock';
+import { 
+  Icon3DAll, 
+  Icon3DFacial, 
+  Icon3DBody, 
+  Icon3DFashion, 
+  Icon3DBags, 
+  Icon3DShoes, 
+  Icon3DPerfume, 
+  Icon3DKids 
+} from '../ui/Category3DIcons';
 import { filterProductsBySearch, highlightMatch } from '../../lib/searchUtils';
 import { formatPrice } from '../../lib/utils';
 import type { Product, FilterCategoryType } from '../../types';
 import './globalSearch.css';
 
-const CATEGORY_TABS: { id: FilterCategoryType; label: string; icon: string }[] = [
-  { id: 'TODOS', label: 'Todos', icon: '✨' },
-  { id: 'COSMETICA_FACIAL', label: 'Cosmética Facial', icon: '🌸' },
-  { id: 'HIGIENE_CORPORAL', label: 'Higiene Corporal', icon: '🫧' },
-  { id: 'MODA_MUJER', label: 'Moda Mujer', icon: '👗' },
-  { id: 'BOLSOS_ACCESORIOS', label: 'Bolsos & Accesorios', icon: '👜' },
-  { id: 'CALZADO', label: 'Calzado', icon: '👠' },
-  { id: 'PERFUMERIA', label: 'Perfumería', icon: '💎' },
-  { id: 'MODA_INFANTIL', label: 'Línea Infantil', icon: '🍼' },
+const CATEGORY_TABS: { id: FilterCategoryType; label: string; icon: React.ReactNode }[] = [
+  { id: 'TODOS', label: 'Todos', icon: <Icon3DAll size={24} /> },
+  { id: 'COSMETICA_FACIAL', label: 'Cosmética Facial', icon: <Icon3DFacial size={24} /> },
+  { id: 'HIGIENE_CORPORAL', label: 'Higiene Corporal', icon: <Icon3DBody size={24} /> },
+  { id: 'MODA_MUJER', label: 'Moda Mujer', icon: <Icon3DFashion size={24} /> },
+  { id: 'BOLSOS_ACCESORIOS', label: 'Bolsos & Accesorios', icon: <Icon3DBags size={24} /> },
+  { id: 'CALZADO', label: 'Calzado', icon: <Icon3DShoes size={24} /> },
+  { id: 'PERFUMERIA', label: 'Perfumería', icon: <Icon3DPerfume size={24} /> },
+  { id: 'MODA_INFANTIL', label: 'Línea Infantil', icon: <Icon3DKids size={24} /> },
 ];
 
 const POPULAR_SUGGESTIONS = [
@@ -58,6 +69,9 @@ export const GlobalSearchModal: React.FC = () => {
   const [addedProductId, setAddedProductId] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'relevance' | 'price-asc' | 'price-desc'>('relevance');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Background isolation, touch lock, and Escape key listener
+  useModalLock(isOpen, closeSearch);
 
   // Focus input automatically whenever modal opens
   useEffect(() => {
@@ -141,44 +155,47 @@ export const GlobalSearchModal: React.FC = () => {
       aria-modal="true"
       aria-label="Buscador general de productos"
     >
-      <div className="global-search-card">
-        {/* Header with Search Input & Close button */}
+      <div className="global-search-card" onClick={(e) => e.stopPropagation()}>
+        {/* Header with Search Input & Prominent Luxury Close button */}
         <div className="global-search-header">
-          <div className="global-search-input-box">
-            <Search size={22} color="#D81B60" style={{ flexShrink: 0 }} />
-            <input
-              ref={inputRef}
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar cualquier prenda, vestido, jabón, crema, calzado, bolso..."
-              className="global-search-input"
-              aria-label="Escribe para buscar productos"
-            />
-            {searchQuery && (
-              <button 
-                type="button" 
-                onClick={() => setSearchQuery('')}
-                className="global-search-clear-btn"
-                title="Borrar texto"
-              >
-                <X size={15} />
-              </button>
-            )}
-            <span className="global-search-esc-badge desktop-only">ESC</span>
+          <div className="global-search-header-row">
+            <div className="global-search-input-box">
+              <Search size={22} color="#D81B60" style={{ flexShrink: 0 }} />
+              <input
+                ref={inputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Buscar cualquier prenda, vestido, jabón, crema, calzado, bolso..."
+                className="global-search-input"
+                aria-label="Escribe para buscar productos"
+              />
+              {searchQuery && (
+                <button 
+                  type="button" 
+                  onClick={() => setSearchQuery('')}
+                  className="global-search-clear-btn"
+                  title="Borrar texto"
+                >
+                  <X size={15} />
+                </button>
+              )}
+              <span className="global-search-esc-badge desktop-only">ESC</span>
+            </div>
+
             <button 
               type="button" 
               onClick={closeSearch}
-              className="global-search-clear-btn"
-              title="Cerrar buscador"
-              style={{ background: 'rgba(0, 0, 0, 0.05)', color: 'var(--text-secondary)' }}
+              className="luxury-close-circle-btn"
+              title="Cerrar buscador (ESC)"
+              aria-label="Cerrar buscador"
             >
-              <X size={16} />
+              <X size={20} />
             </button>
           </div>
         </div>
 
-        {/* Category Horizontal Filter Pills */}
+        {/* Category Horizontal Filter Pills with 3D Icons */}
         <div className="global-search-categories-scroll">
           {CATEGORY_TABS.map(tab => {
             const isActive = selectedCategory === tab.id;
@@ -189,8 +206,8 @@ export const GlobalSearchModal: React.FC = () => {
                 className={`global-search-cat-chip ${isActive ? 'is-active' : ''}`}
                 onClick={() => setSelectedCategory(tab.id)}
               >
-                <span>{tab.icon}</span>
-                <span>{tab.label}</span>
+                <span className="global-search-3d-icon-wrap">{tab.icon}</span>
+                <span className="global-search-cat-label">{tab.label}</span>
               </button>
             );
           })}

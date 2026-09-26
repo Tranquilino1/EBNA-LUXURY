@@ -15,6 +15,7 @@ import { recordProductOrder } from '../lib/popularityTracker';
 import { TicketProcessingModal } from '../components/receipt/TicketProcessingModal';
 import { saveOrderRequest } from '../lib/orderStorage';
 import { WhatsAppIcon } from '../components/ui/WhatsAppIcon';
+import { useModalLock } from '../hooks/useModalLock';
 import type { OrderReceiptData } from '../types';
 
 export function ProductPage() {
@@ -212,18 +213,11 @@ export function ProductPage() {
     }
   }, [defaultMainImg]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsLightboxOpen(false);
-        setIsZoomed(false);
-      }
-    };
-    if (isLightboxOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-    }
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen]);
+  // Background isolation, touch lock, and Escape key listener for Lightbox
+  useModalLock(isLightboxOpen, () => {
+    setIsLightboxOpen(false);
+    setIsZoomed(false);
+  });
 
   const galleryImages = useMemo(() => {
     if (!product) return [];
@@ -1083,22 +1077,15 @@ export function ProductPage() {
                   setIsLightboxOpen(false);
                   setIsZoomed(false);
                 }}
+                className="luxury-close-circle-btn"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  color: 'white',
                   width: '42px',
                   height: '42px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
                 }}
-                aria-label="Cerrar vista completa"
+                title="Cerrar vista completa (ESC)"
+                aria-label="Cerrar vista completa (ESC)"
               >
-                <X size={22} />
+                <X size={20} />
               </button>
             </div>
           </div>
