@@ -630,6 +630,8 @@ body.mobile-drawer-open {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0 !important;
+  margin-bottom: 2px;
 }
 
 .mobile-group-title {
@@ -649,6 +651,7 @@ body.mobile-drawer-open {
   border: 1.5px solid var(--border-subtle);
   border-radius: 18px;
   overflow: hidden;
+  flex-shrink: 0 !important;
 }
 
 .mobile-group-header-row {
@@ -740,9 +743,8 @@ body.mobile-drawer-open {
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .collection-item-subtitle {

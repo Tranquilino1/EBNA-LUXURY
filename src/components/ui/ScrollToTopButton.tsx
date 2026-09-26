@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { ArrowUp } from 'lucide-react';
 
 export const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+  const isProductPage = location.pathname.startsWith('/producto');
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 380) {
+      if (window.scrollY > 420) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -25,6 +28,8 @@ export const ScrollToTopButton: React.FC = () => {
       behavior: 'smooth',
     });
   };
+
+  if (isProductPage) return null;
 
   return (
     <button

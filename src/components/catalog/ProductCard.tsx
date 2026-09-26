@@ -129,8 +129,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   };
 
 
-  // Format category badge for display
-  const categoryLabel = (product.category || 'MODA').replace(/_/g, ' ');
 
   const handleMouseEnter = () => {
     if (typeof window !== 'undefined' && product.images) {
@@ -186,19 +184,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           onError={handleImageError}
         />
         
-        <div className="product-badge-group">
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <span className="product-category-badge">{categoryLabel}</span>
-            {ordersCount > 0 && (
-              <span style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)', color: 'white', padding: '3px 8px', borderRadius: '12px', fontSize: '0.68rem', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '3px', boxShadow: '0 2px 8px rgba(239, 68, 68, 0.4)' }}>
-                <Flame size={10} /> {ordersCount} {ordersCount === 1 ? 'pedido' : 'pedidos'}
-              </span>
-            )}
-          </div>
-          {product.inStock || product.in_stock ? (
-            <span className="product-stock-badge in-stock">EN STOCK</span>
-          ) : (
-            <span className="product-stock-badge out-of-stock">AGOTADO</span>
+        {/* Subtle Fashion Badges: Top-Left Discount or Out-of-Stock */}
+        <div className="product-shein-badges">
+          {originalPriceVal && originalPriceVal > priceVal && (
+            <span className="shein-discount-badge">
+              -{Math.round(((originalPriceVal - priceVal) / originalPriceVal) * 100)}%
+            </span>
+          )}
+          {!(product.inStock || product.in_stock) && (
+            <span className="shein-soldout-badge">Agotado</span>
+          )}
+          {ordersCount > 0 && (
+            <span className="shein-trend-badge">
+              <Flame size={10} /> Popular
+            </span>
           )}
         </div>
 
@@ -437,49 +436,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           </div>
         </div>
         
-        <div className="product-actions-trio">
-          {/* Botón 1: VER (Desktop/Tablets, en móvil pulsar la tarjeta ya abre el producto) */}
+        <div className="product-actions-shein">
+          {/* Botón 1: PEDIR WHATSAPP (Verde Esmeralda Lujo) */}
           <button
             type="button"
-            className="btn-card-action btn-card-ver"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/producto/${product.slug || product.id}`);
-            }}
-            title="Ver producto y detalles"
-          >
-            <Eye size={13} />
-            <span className="btn-card-text">Ver</span>
-          </button>
-
-          {/* Botón 2: PEDIR (Verde WhatsApp con Logo Limpio) */}
-          <button
-            type="button"
-            className="btn-card-action btn-card-pedir"
+            className="btn-shein-pedir"
             onClick={(e) => {
               e.stopPropagation();
               navigate(`/producto/${product.slug || product.id}?pedir=true`);
             }}
-            title="Pedir directamente por WhatsApp con comprobante oficial"
+            title="Pedir directamente por WhatsApp"
           >
             <WhatsAppIcon size={14} color="white" />
-            <span className="btn-card-text">Pedir</span>
+            <span className="btn-shein-text">Pedir</span>
           </button>
 
-          {/* Botón 3: CARRITO / CESTA (Rosa Lujo EBNA) */}
+          {/* Botón 2: CESTA (Rosa Lujo EBNA) */}
           <button
             type="button"
-            className={`btn-card-action btn-card-carrito ${justAddedToCart ? 'is-added' : ''}`}
+            className={`btn-shein-carrito ${justAddedToCart ? 'is-added' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               addToCart(product, 1);
               setJustAddedToCart(true);
               setTimeout(() => setJustAddedToCart(false), 2000);
             }}
-            title="Añadir a la cesta de compras sin salir del catálogo"
+            title="Añadir a la cesta de compras"
           >
-            {justAddedToCart ? <Check size={13} /> : <ShoppingCart size={13} />}
-            <span className="btn-card-text">{justAddedToCart ? '¡Listo!' : 'Cesta'}</span>
+            {justAddedToCart ? <Check size={14} /> : <ShoppingCart size={14} />}
+            <span className="btn-shein-text">{justAddedToCart ? '¡Listo!' : 'Cesta'}</span>
           </button>
         </div>
       </div>

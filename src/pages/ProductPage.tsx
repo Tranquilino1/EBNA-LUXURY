@@ -1,9 +1,9 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link, useSearchParams, useNavigate } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
   PackageX, ShoppingBag, Plus, Minus, Pencil, Trash2, Eye, EyeOff,
-  Smartphone, User, MapPin, AlertCircle, ZoomIn, ZoomOut, X 
+  Smartphone, AlertCircle, ZoomIn, ZoomOut, X 
 } from 'lucide-react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../contexts/CartContext';
@@ -17,16 +17,17 @@ import { saveOrderRequest } from '../lib/orderStorage';
 import { WhatsAppIcon } from '../components/ui/WhatsAppIcon';
 import { useModalLock } from '../hooks/useModalLock';
 import type { OrderReceiptData } from '../types';
+import './productPage.css';
 
 export function ProductPage() {
   const navigate = useNavigate();
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const isPedirAction = searchParams.get('pedir') === 'true';
-  const orderSectionRef = useRef<HTMLDivElement>(null);
 
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isCheckoutDrawerOpen, setIsCheckoutDrawerOpen] = useState(isPedirAction);
 
   const { products, loading } = useProducts();
   const { addToCart } = useCart();
@@ -53,23 +54,19 @@ export function ProductPage() {
     );
   }, [products, slug]);
 
-  // Handle scroll: if pedir=true, scroll directly to order section; otherwise to top
+  // Lock bottom sheet modal
+  useModalLock(isCheckoutDrawerOpen, () => setIsCheckoutDrawerOpen(false));
+
+  // Always scroll to top when opening product; if pedir=true open bottom sheet
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     if (isPedirAction) {
-      const timer = setTimeout(() => {
-        if (orderSectionRef.current) {
-          orderSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 250);
-      return () => clearTimeout(timer);
-    } else {
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      setIsCheckoutDrawerOpen(true);
     }
-  }, [slug, isPedirAction, product]);
+  }, [slug, isPedirAction]);
 
   const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product?.category || '');
   const isFootwear = product?.category === 'CALZADO';
-  const isAccessory = product?.category === 'BOLSOS_ACCESORIOS';
 
   // Available formats or sizes based on actual product category
   const availableSizes = useMemo(() => {
@@ -127,7 +124,7 @@ export function ProductPage() {
 
     if (!cName || !cPhone) {
       setOrderError('Por favor ingresa tu nombre y número de contacto para generar tu pedido oficial.');
-      orderSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+      setIsCheckoutDrawerOpen(true);
       return;
     }
 
@@ -442,187 +439,108 @@ export function ProductPage() {
         </div>
       )}
 
-      <div className="product-detail-container product-detail-grid">
-        <div 
-          className="product-image-section glass-panel" 
-          style={{ 
-            padding: 'clamp(0.75rem, 2.5vw, 1.25rem)', 
-            borderRadius: '24px', 
-            background: 'var(--canvas-elevated)', 
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            width: '100%'
-          }}
-        >
-          {/* Centered Image Stage with Clean Aspect Ratio */}
-          <div
+      <div className="product-shein-grid">
+        {/* Left Column: Hero Image Gallery (SHEIN / Haute Couture Standard) */}
+        <div className="product-hero-image-wrap">
+          <div 
+            className="product-hero-stage"
             onClick={() => setIsLightboxOpen(true)}
-            style={{
-              position: 'relative',
-              width: '100%',
-              minHeight: '280px',
-              maxHeight: '520px',
-              aspectRatio: '1 / 1',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '20px',
-              background: 'radial-gradient(circle at center, rgba(255, 245, 248, 0.8) 0%, rgba(248, 250, 252, 0.96) 100%)',
-              border: '1.5px solid rgba(216, 27, 96, 0.15)',
-              overflow: 'hidden',
-              cursor: 'zoom-in',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.05)',
-              transition: 'all 0.3s ease'
-            }}
-            title="Haz clic para ver la imagen ampliada en resolución completa"
+            title="Haz clic para ver la imagen ampliada"
           >
             <img 
               src={activeImage} 
               alt={product.name} 
-              className="main-image" 
-              style={{ 
-                maxWidth: '100%', 
-                maxHeight: '480px', 
-                width: 'auto',
-                height: 'auto',
-                objectFit: 'contain', 
-                display: 'block',
-                margin: '0 auto',
-                borderRadius: '14px',
-                transition: 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)' 
-              }}
+              className="product-hero-img"
               onError={(e) => {
                 e.currentTarget.src = '/icons/ebna-logo-white.png';
               }}
             />
-
-            {/* Subtle Zoom Badge Hint */}
-            <div 
-              style={{
-                position: 'absolute',
-                bottom: '14px',
-                right: '14px',
-                background: 'rgba(255, 255, 255, 0.94)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(216, 27, 96, 0.25)',
-                borderRadius: '20px',
-                padding: '6px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '0.75rem',
-                fontWeight: 800,
-                color: '#D81B60',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.08)',
-                pointerEvents: 'none'
-              }}
-            >
-              <ZoomIn size={14} /> Clic para ampliar
-            </div>
-
-            {/* Availability Badge */}
-            <div style={{ position: 'absolute', top: '14px', left: '14px', display: 'flex', gap: '8px' }}>
-              {product.inStock || product.in_stock ? (
-                <span style={{ background: 'linear-gradient(135deg, #10B981, #059669)', color: 'white', fontWeight: 800, fontSize: '0.72rem', padding: '5px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}>
+            
+            <div className="product-hero-top-badges">
+              {product.in_stock ? (
+                <span className="hero-stock-pill in-stock">
                   <PackageCheck size={13} /> EN STOCK
                 </span>
               ) : (
-                <span style={{ background: 'linear-gradient(135deg, #EF4444, #DC2626)', color: 'white', fontWeight: 800, fontSize: '0.72rem', padding: '5px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '5px', boxShadow: '0 4px 12px rgba(239,68,68,0.3)' }}>
+                <span className="hero-stock-pill out-of-stock">
                   <PackageX size={13} /> AGOTADO
                 </span>
               )}
             </div>
+
+            <div className="hero-zoom-hint">
+              <ZoomIn size={14} /> Clic para ampliar
+            </div>
           </div>
 
-          {/* Interactive Thumbnail Gallery Strip */}
           {galleryImages.length > 1 && (
-            <div style={{ display: 'flex', gap: '10px', marginTop: '14px', width: '100%', justifyContent: 'center', overflowX: 'auto', padding: '4px 0' }}>
+            <div className="product-thumb-strip">
               {galleryImages.map((img, i) => (
                 <button
                   key={i}
                   type="button"
                   onClick={() => setActiveImage(img)}
-                  style={{
-                    width: '64px',
-                    height: '64px',
-                    borderRadius: '14px',
-                    padding: '3px',
-                    border: activeImage === img ? '2.5px solid var(--brand-accent)' : '1.5px solid var(--border-subtle)',
-                    background: 'var(--canvas-surface)',
-                    cursor: 'pointer',
-                    overflow: 'hidden',
-                    flexShrink: 0,
-                    transition: 'all 0.2s ease',
-                    boxShadow: activeImage === img ? '0 0 12px rgba(216, 27, 96, 0.35)' : 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
+                  className={`product-thumb-btn ${activeImage === img ? 'is-active' : ''}`}
                   title={`Ver fotografía ${i + 1}`}
                 >
-                  <img 
-                    src={img} 
-                    alt="" 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '10px' }} 
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo-white.png'; }}
-                  />
+                  <img src={img} alt="" onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/icons/ebna-logo-white.png'; }} />
                 </button>
               ))}
             </div>
           )}
         </div>
         
-        <div className="product-info-section glass-panel" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', flexDirection: 'column', gap: '1.25rem', background: 'var(--canvas-surface)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span className={`badge badge-${(product.category || '').toLowerCase()}`} style={{ fontSize: '0.8rem', padding: '6px 14px', background: 'var(--brand-gold-light)', color: 'var(--brand-accent)', borderRadius: '20px', fontWeight: 700, border: '1px solid var(--border-subtle)' }}>
-              {(product.category || '').replace(/_/g, ' ')}
+        {/* Right Column: Clean Haute Couture Product Info */}
+        <div className="product-shein-info">
+          <div className="product-meta-header">
+            <span className="product-brand-label">
+              {product.brand || 'SINDY LUXURY • HAUTE COUTURE'}
             </span>
-            <span style={{ fontSize: '0.8rem', color: '#25D366', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span className="product-authentic-badge">
               <Sparkles size={14} /> 100% Auténtico
             </span>
           </div>
 
-          <h1 className="product-title" style={{ fontFamily: 'var(--font-serif)', fontSize: '2.2rem', lineHeight: 1.2, color: 'var(--text-primary)' }}>
+          <h1 className="product-main-name">
             {product.name}
           </h1>
 
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ fontSize: '2.2rem', fontWeight: 800, color: 'var(--brand-accent)', letterSpacing: '-0.02em' }}>
+          <div className="product-price-box">
+            <span className="product-current-price">
               {formatPrice(priceVal)}
             </span>
-          </div>
-          
-          <div className="product-description" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: 'var(--text-secondary)', background: 'var(--canvas-elevated)', padding: '1.25rem', borderRadius: '16px', border: '1px solid var(--border-light)' }}>
-            <p>{product.description}</p>
+            {product.originalPriceFCFA && product.originalPriceFCFA > priceVal && (
+              <span className="product-original-price">
+                {formatPrice(product.originalPriceFCFA)}
+              </span>
+            )}
+            {product.originalPriceFCFA && product.originalPriceFCFA > priceVal && (
+              <span className="product-discount-pill">
+                -{Math.round(((product.originalPriceFCFA - priceVal) / product.originalPriceFCFA) * 100)}%
+              </span>
+            )}
           </div>
 
-          {/* Sizes / Formats Selector */}
+          <p style={{ fontSize: '0.90rem', color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>
+            {product.description}
+          </p>
+
+          {/* Sizes / Formats */}
           {availableSizes.length > 0 && (
-            <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                {isCosmetic ? 'Presentación / Formato:' : isFootwear ? 'Seleccionar Talla de Calzado (EU):' : isAccessory ? 'Medida:' : 'Seleccionar Talla:'}
-              </label>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="selector-block">
+              <div className="selector-label-row">
+                <span className="selector-label">
+                  {isCosmetic ? 'Presentación:' : isFootwear ? 'Talla de Calzado (EU):' : 'Talla:'}
+                </span>
+                <span className="selector-value-hint">{currentSize}</span>
+              </div>
+              <div className="chips-row">
                 {availableSizes.map(size => (
                   <button
                     key={size}
                     type="button"
                     onClick={() => setSelectedSize(size)}
-                    style={{
-                      padding: '8px 16px',
-                      borderRadius: '12px',
-                      border: currentSize === size ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
-                      background: currentSize === size ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
-                      color: currentSize === size ? 'var(--brand-accent)' : 'var(--text-primary)',
-                      fontWeight: currentSize === size ? 800 : 600,
-                      fontSize: '0.88rem',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
+                    className={`size-chip-btn ${currentSize === size ? 'is-active' : ''}`}
                   >
                     {size}
                   </button>
@@ -631,366 +549,279 @@ export function ProductPage() {
             </div>
           )}
 
-          {/* Colors Selector */}
+          {/* Colors */}
           {availableColors.length > 0 && (
-            <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                {isCosmetic ? 'Tono / Variante:' : 'Seleccionar Color:'}
-              </label>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="selector-block">
+              <div className="selector-label-row">
+                <span className="selector-label">
+                  {isCosmetic ? 'Tono:' : 'Color:'}
+                </span>
+                <span className="selector-value-hint">{currentColor}</span>
+              </div>
+              <div className="chips-row">
                 {availableColors.map(color => (
                   <button
                     key={color}
                     type="button"
                     onClick={() => setSelectedColor(color)}
-                    style={{
-                      padding: '8px 16px',
-                      borderRadius: '12px',
-                      border: currentColor === color ? '2px solid var(--brand-accent)' : '1px solid var(--border-light)',
-                      background: currentColor === color ? 'var(--brand-gold-light)' : 'var(--canvas-surface)',
-                      color: currentColor === color ? 'var(--brand-accent)' : 'var(--text-primary)',
-                      fontWeight: currentColor === color ? 800 : 600,
-                      fontSize: '0.88rem',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      transition: 'all 0.2s'
-                    }}
+                    className={`color-chip-btn ${currentColor === color ? 'is-active' : ''}`}
                   >
                     {currentColor === color && <Check size={14} />}
-                    {color}
+                    <span>{color}</span>
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Quantity Selector */}
-          <div className="variant-selector-group" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Cantidad (Unidades):
-            </label>
-            <div style={{ display: 'inline-flex', alignItems: 'center', background: 'var(--canvas-elevated)', borderRadius: '14px', padding: '4px', width: 'fit-content', border: '1px solid var(--border-light)' }}>
-              <button
-                type="button"
-                onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                style={{ width: '36px', height: '36px', borderRadius: '10px', border: 'none', background: 'var(--canvas-surface)', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}
-                aria-label="Disminuir cantidad"
-              >
-                <Minus size={16} />
-              </button>
-              <span style={{ padding: '0 18px', fontWeight: 800, fontSize: '1.05rem', color: 'var(--text-primary)' }}>{quantity}</span>
-              <button
-                type="button"
-                onClick={() => setQuantity(prev => prev + 1)}
-                style={{ width: '36px', height: '36px', borderRadius: '10px', border: 'none', background: 'var(--canvas-surface)', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.06)' }}
-                aria-label="Aumentar cantidad"
-              >
-                <Plus size={16} />
-              </button>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', margin: '0.5rem 0' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', color: '#6E5B65' }}>
-              <Truck size={18} style={{ color: '#25D366' }} />
-              <span>Entrega inmediata en Malabo y envíos a todo Guinea Ecuatorial</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', color: '#6E5B65' }}>
-              <ShieldCheck size={18} style={{ color: '#D81B60' }} />
-              <span>Atención directa por WhatsApp con confirmación de stock</span>
-            </div>
-          </div>
-
-          {/* Compact Customer Info for Instant Ticket */}
-          <div 
-            ref={orderSectionRef}
-            className="glass-panel"
-            style={{
-              background: isPedirAction 
-                ? 'var(--canvas-elevated)' 
-                : 'var(--canvas-surface)',
-              border: isPedirAction ? '2px solid var(--brand-accent)' : '1.5px solid var(--border-subtle)',
-              borderRadius: '20px',
-              padding: '16px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-              marginTop: '0.4rem',
-              boxShadow: isPedirAction ? '0 0 24px rgba(216, 27, 96, 0.25)' : 'var(--shadow-sm)',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--brand-accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                {isPedirAction ? '⚡ Pedido Inmediato — Ticket Oficial' : 'Datos para tu Ticket Oficial de Compra'}
-              </span>
-              <span style={{ fontSize: '0.74rem', color: '#16a34a', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                ✓ Descarga Directa PNG
+          {/* Quantity */}
+          <div className="selector-block">
+            <span className="selector-label">Cantidad:</span>
+            <div className="quantity-control-row">
+              <div className="quantity-stepper">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                  className="qty-step-btn"
+                  aria-label="Disminuir"
+                >
+                  <Minus size={15} />
+                </button>
+                <span className="qty-display-value">{quantity}</span>
+                <button
+                  type="button"
+                  onClick={() => setQuantity(prev => prev + 1)}
+                  className="qty-step-btn"
+                  aria-label="Aumentar"
+                >
+                  <Plus size={15} />
+                </button>
+              </div>
+              <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                Total: <strong style={{ color: 'var(--brand-accent)' }}>{formatPrice(priceVal * quantity)}</strong>
               </span>
             </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                  Nombre y Apellidos:
-                </label>
-                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                  <User size={15} style={{ position: 'absolute', left: '12px', color: 'var(--text-secondary)', pointerEvents: 'none' }} />
-                  <input
-                    type="text"
-                    placeholder="Tu nombre completo"
-                    value={customerName}
-                    onChange={(e) => {
-                      setCustomerName(e.target.value);
-                      setOrderError('');
-                      try { localStorage.setItem('ebna_client_name', e.target.value); } catch {}
-                    }}
-                    className="luxury-ios-input"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                  Teléfono / WhatsApp:
-                </label>
-                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                  <Phone size={15} style={{ position: 'absolute', left: '12px', color: 'var(--text-secondary)', pointerEvents: 'none' }} />
-                  <input
-                    type="tel"
-                    placeholder="Tu teléfono o WhatsApp"
-                    value={customerPhone}
-                    onChange={(e) => {
-                      setCustomerPhone(e.target.value);
-                      setOrderError('');
-                      try { localStorage.setItem('ebna_client_phone', e.target.value); } catch {}
-                    }}
-                    className="luxury-ios-input"
-                  />
-                </div>
-              </div>
-
-              <div style={{ gridColumn: '1 / -1' }}>
-                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '4px' }}>
-                  Dirección / Barrio de Entrega:
-                </label>
-                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                  <MapPin size={15} style={{ position: 'absolute', left: '12px', color: 'var(--text-secondary)', pointerEvents: 'none' }} />
-                  <input
-                    type="text"
-                    placeholder="Tu barrio o ciudad (ej. Malabo, Bata...)"
-                    value={customerAddress}
-                    onChange={(e) => {
-                      setCustomerAddress(e.target.value);
-                      try { localStorage.setItem('ebna_client_address', e.target.value); } catch {}
-                    }}
-                    className="luxury-ios-input"
-                  />
-                </div>
-              </div>
-
-              {/* Panel Exclusivo de Modalidad de Envío */}
-              <div style={{ gridColumn: '1 / -1', marginTop: '2px' }}>
-                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                  Modalidad de Envío:
-                </label>
-                <div className="shipping-options-grid">
-                  {/* Opción 1: Envío Normal - Azul Animado Elegante y Simple */}
-                  <button
-                    type="button"
-                    onClick={() => setShippingType('normal')}
-                    className={shippingType === 'normal' ? 'shipping-btn-normal-active' : 'shipping-btn-normal-inactive'}
-                    style={{
-                      padding: '10px 12px',
-                      borderRadius: '14px',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '4px',
-                      position: 'relative',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.84rem', fontWeight: 800 }}>Envío Normal</span>
-                      <span style={{ 
-                        fontSize: '0.7rem', 
-                        fontWeight: 900, 
-                        color: shippingType === 'normal' ? '#FFFFFF' : '#1D4ED8', 
-                        background: shippingType === 'normal' ? 'rgba(255, 255, 255, 0.22)' : 'rgba(37, 99, 235, 0.12)', 
-                        padding: '1px 6px', 
-                        borderRadius: '8px' 
-                      }}>
-                        Gratis
-                      </span>
-                    </div>
-                    <span style={{ 
-                      fontSize: '0.72rem', 
-                      fontWeight: 600, 
-                      color: shippingType === 'normal' ? 'rgba(255, 255, 255, 0.92)' : '#475569' 
-                    }}>
-                      Duración máxima 1 semana
-                    </span>
-                  </button>
-
-                  {/* Opción 2: Botón Exclusivo Envío Exprés - Oro Dorado 3D Imperial */}
-                  <button
-                    type="button"
-                    onClick={() => setShippingType('express')}
-                    className={shippingType === 'express' ? 'shipping-btn-express-3d-active' : 'shipping-btn-express-3d-inactive'}
-                    style={{
-                      padding: '10px 12px',
-                      borderRadius: '14px',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '4px',
-                      position: 'relative',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ 
-                        fontSize: '0.84rem', 
-                        fontWeight: 900, 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '3px',
-                        color: shippingType === 'express' ? '#FFFFFF' : '#92400E',
-                        textShadow: shippingType === 'express' ? '0 1px 2px rgba(0,0,0,0.3)' : 'none'
-                      }}>
-                        ⚡ Envío Exprés
-                      </span>
-                      <span style={{ 
-                        fontSize: '0.7rem', 
-                        fontWeight: 900, 
-                        color: shippingType === 'express' ? '#78350F' : '#B45309', 
-                        background: shippingType === 'express' ? '#FDE68A' : 'rgba(245, 158, 11, 0.2)', 
-                        padding: '1px 6px', 
-                        borderRadius: '8px' 
-                      }}>
-                        3.000 FCFA
-                      </span>
-                    </div>
-                    <span style={{ 
-                      fontSize: '0.72rem', 
-                      fontWeight: 700, 
-                      color: shippingType === 'express' ? '#FFFBEB' : '#78350F' 
-                    }}>
-                      Duración máx. 3 días
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {orderError && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#B91C1C', padding: '8px 12px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 600 }}>
-                <AlertCircle size={15} color="#EF4444" />
-                <span>{orderError}</span>
-              </div>
-            )}
           </div>
 
-          <div className="product-actions" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '0.6rem' }}>
-            {/* 1. PAGAR POR WHATSAPP (Direct Ticket Generator) */}
+          {/* Reassurance Grid */}
+          <div className="reassurance-grid">
+            <div className="reassurance-pill">
+              <Truck size={16} color="#10B981" />
+              <span>Envíos en Malabo & Bata</span>
+            </div>
+            <div className="reassurance-pill">
+              <ShieldCheck size={16} color="#D81B60" />
+              <span>Boutique Oficial Verificada</span>
+            </div>
+          </div>
+
+          {/* Desktop Direct Action Buttons (Mobile uses the Sticky Bottom Bar) */}
+          <div className="desktop-actions-block">
             <button
               type="button"
-              onClick={() => handleDirectTicketPayment('whatsapp')}
+              className="desktop-btn-whatsapp"
+              onClick={() => setIsCheckoutDrawerOpen(true)}
               disabled={!product.in_stock}
-              style={{
-                width: '100%',
-                padding: '14px 20px',
-                borderRadius: '30px',
-                border: 'none',
-                background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
-                color: 'white',
-                fontWeight: 800,
-                fontSize: '0.98rem',
-                cursor: product.in_stock ? 'pointer' : 'not-allowed',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px',
-                boxShadow: '0 6px 18px rgba(37, 211, 102, 0.35)',
-                transition: 'all 0.2s ease'
-              }}
             >
-              <WhatsAppIcon size={20} color="white" />
+              <WhatsAppIcon size={18} color="white" />
               <span>Pedir por WhatsApp (Generar Ticket)</span>
             </button>
 
-            {/* 2. PAGAR CON MUNI DINERO (555439904) (Direct Ticket Generator) */}
             <button
               type="button"
-              onClick={() => handleDirectTicketPayment('muni')}
-              disabled={!product.in_stock}
-              style={{
-                width: '100%',
-                padding: '14px 20px',
-                borderRadius: '30px',
-                border: '1.5px solid #002060',
-                background: 'linear-gradient(135deg, #002060 0%, #001238 100%)',
-                color: '#FFFFFF',
-                fontWeight: 800,
-                fontSize: '0.98rem',
-                cursor: product.in_stock ? 'pointer' : 'not-allowed',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px',
-                boxShadow: '0 6px 18px rgba(0, 32, 96, 0.35)',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              <Smartphone size={20} color="#60A5FA" />
-              <span>Pagar con Muni Dinero (555439904)</span>
-            </button>
-
-            {/* 3. AGREGAR A LA CESTA (Rosa Lujo EBNA con Feedback) */}
-            <button
-              type="button"
+              className="desktop-btn-cart"
               onClick={() => {
                 addToCart(product, quantity, currentSize, currentColor);
                 setJustAddedToCart(true);
                 setTimeout(() => setJustAddedToCart(false), 2000);
               }}
               disabled={!product.in_stock}
-              style={{
-                width: '100%',
-                padding: '12px 20px',
-                borderRadius: '30px',
-                border: 'none',
-                background: product.in_stock 
-                  ? (justAddedToCart ? 'linear-gradient(135deg, #10B981, #059669)' : 'linear-gradient(135deg, #D81B60, #C2185B)') 
-                  : '#E2E8F0',
-                color: product.in_stock ? '#FFFFFF' : '#94A3B8',
-                fontWeight: 800,
-                fontSize: '0.92rem',
-                cursor: product.in_stock ? 'pointer' : 'not-allowed',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                marginTop: '2px',
-                boxShadow: product.in_stock ? '0 4px 14px rgba(216, 27, 96, 0.3)' : 'none',
-                transition: 'all 0.2s ease'
-              }}
             >
               {justAddedToCart ? <Check size={18} /> : <ShoppingBag size={18} />}
-              <span>
-                {!product.in_stock ? 'Producto Agotado' : (justAddedToCart ? '¡Añadido a tu Carrito!' : `Añadir ${quantity} al Carrito`)}
-              </span>
+              <span>{justAddedToCart ? '¡Añadido a tu Cesta!' : `Añadir ${quantity} a la Cesta`}</span>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Sticky Bottom Bar for Mobile Conversion */}
+      <div className="shein-sticky-bottom-bar">
+        <div className="sticky-bar-info">
+          <span className="sticky-bar-price">{formatPrice(priceVal * quantity)}</span>
+          <span className="sticky-bar-variant">{currentSize || 'Talla Única'} • {quantity} ud.</span>
+        </div>
+        <div className="sticky-bar-actions">
+          <button
+            type="button"
+            className="sticky-btn-pedir"
+            onClick={() => setIsCheckoutDrawerOpen(true)}
+            disabled={!product.in_stock}
+          >
+            <WhatsAppIcon size={16} color="white" />
+            <span>Pedir</span>
+          </button>
+          <button
+            type="button"
+            className={`sticky-btn-cesta ${justAddedToCart ? 'is-added' : ''}`}
+            onClick={() => {
+              addToCart(product, quantity, currentSize, currentColor);
+              setJustAddedToCart(true);
+              setTimeout(() => setJustAddedToCart(false), 2000);
+            }}
+            disabled={!product.in_stock}
+          >
+            {justAddedToCart ? <Check size={16} /> : <ShoppingBag size={16} />}
+            <span>{justAddedToCart ? '¡Listo!' : 'Cesta'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Express Checkout Bottom Sheet Modal */}
+      {isCheckoutDrawerOpen && (
+        <>
+          <div 
+            className="bottom-sheet-backdrop" 
+            onClick={() => setIsCheckoutDrawerOpen(false)} 
+          />
+          <div className="bottom-sheet-panel" role="dialog" aria-modal="true" aria-label="Confirmar Pedido Express">
+            <div className="bottom-sheet-handle-bar" />
+            <div className="bottom-sheet-header">
+              <h3 className="bottom-sheet-title">Confirmar Pedido Express</h3>
+              <button 
+                type="button" 
+                className="bottom-sheet-close-btn"
+                onClick={() => setIsCheckoutDrawerOpen(false)}
+                aria-label="Cerrar formulario"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="bottom-sheet-body">
+              <div className="sheet-product-summary">
+                <img src={activeImage} alt="" className="sheet-thumb-img" />
+                <div className="sheet-summary-info">
+                  <span className="sheet-summary-title">{product.name}</span>
+                  <span className="sheet-summary-meta">{currentSize || 'Talla Única'} • Cantidad: {quantity}</span>
+                </div>
+                <span className="sheet-summary-price">{formatPrice(priceVal * quantity + shippingCost)}</span>
+              </div>
+
+              <div className="sheet-input-group">
+                <label className="sheet-input-label">Nombre y Apellidos</label>
+                <input
+                  type="text"
+                  className="sheet-input"
+                  placeholder="Tu nombre completo"
+                  value={customerName}
+                  onChange={(e) => {
+                    setCustomerName(e.target.value);
+                    setOrderError('');
+                  }}
+                  autoComplete="name"
+                  enterKeyHint="next"
+                />
+              </div>
+
+              <div className="sheet-input-group">
+                <label className="sheet-input-label">Teléfono / WhatsApp</label>
+                <input
+                  type="tel"
+                  inputMode="tel"
+                  className="sheet-input"
+                  placeholder="Número de WhatsApp en Guinea Ecuatorial"
+                  value={customerPhone}
+                  onChange={(e) => {
+                    setCustomerPhone(e.target.value);
+                    setOrderError('');
+                  }}
+                  autoComplete="tel"
+                  enterKeyHint="next"
+                />
+              </div>
+
+              <div className="sheet-input-group">
+                <label className="sheet-input-label">Dirección o Barrio (Malabo / Bata)</label>
+                <input
+                  type="text"
+                  className="sheet-input"
+                  placeholder="Barrio o referencia de entrega"
+                  value={customerAddress}
+                  onChange={(e) => setCustomerAddress(e.target.value)}
+                  autoComplete="street-address"
+                  enterKeyHint="done"
+                />
+              </div>
+
+              <div className="sheet-input-group">
+                <label className="sheet-input-label">Modalidad de Envío</label>
+                <div className="sheet-shipping-grid">
+                  <button
+                    type="button"
+                    className={`sheet-shipping-option ${shippingType === 'normal' ? 'is-selected' : ''}`}
+                    onClick={() => setShippingType('normal')}
+                  >
+                    <span className="sheet-shipping-title">Envío Normal</span>
+                    <span className="sheet-shipping-price">Gratis</span>
+                    <span className="sheet-shipping-sub">Máx. 1 semana</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`sheet-shipping-option ${shippingType === 'express' ? 'is-selected' : ''}`}
+                    onClick={() => setShippingType('express')}
+                  >
+                    <span className="sheet-shipping-title">⚡ Envío Exprés</span>
+                    <span className="sheet-shipping-price" style={{ color: '#D97706' }}>3.000 FCFA</span>
+                    <span className="sheet-shipping-sub">Máx. 3 días</span>
+                  </button>
+                </div>
+              </div>
+
+              {orderError && (
+                <div style={{ color: '#EF4444', fontSize: '0.80rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <AlertCircle size={14} />
+                  <span>{orderError}</span>
+                </div>
+              )}
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '6px' }}>
+                <button
+                  type="button"
+                  className="desktop-btn-whatsapp"
+                  onClick={() => handleDirectTicketPayment('whatsapp')}
+                >
+                  <WhatsAppIcon size={18} color="white" />
+                  <span>Pedir por WhatsApp (Ticket Oficial)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleDirectTicketPayment('muni')}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    borderRadius: '16px',
+                    border: '1.5px solid #002060',
+                    background: '#002060',
+                    color: '#FFFFFF',
+                    fontWeight: 800,
+                    fontSize: '0.88rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <Smartphone size={16} color="#60A5FA" />
+                  <span>Pagar con Muni Dinero (555439904)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Automated Ticket Processing Modal with smooth progress bar & confirmation */}
       <TicketProcessingModal
