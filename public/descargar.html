@@ -44,20 +44,25 @@
       overflow: hidden;
     }
     .crown-badge {
-      width: 76px;
-      height: 76px;
-      background: linear-gradient(135deg, #D81B60, #AD1457);
-      border-radius: 22px;
+      width: 96px;
+      height: 96px;
+      background: radial-gradient(circle, #250F1D 0%, #12060E 100%);
+      border: 2.5px solid #D4AF37;
+      border-radius: 50%;
       margin: 0 auto 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 24px rgba(216, 27, 96, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 24px rgba(216, 27, 96, 0.45);
+      overflow: hidden;
+      position: relative;
     }
     .crown-badge img {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
+      width: 86px;
+      height: 86px;
+      object-fit: cover;
+      border-radius: 50%;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
     }
     .brand-title {
       font-family: 'Playfair Display', Georgia, serif;
@@ -224,7 +229,7 @@
 
   <div class="card">
     <div class="crown-badge">
-      <img src="/icons/apple-touch-icon.png" alt="Sindy Luxury" />
+      <img src="/icons/icon-512x512.png" alt="Sindy Luxury by EBNA Oficial" />
     </div>
 
     <div class="brand-title">EBNA SINDY <span>LUXURY</span></div>

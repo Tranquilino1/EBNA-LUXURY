@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { 
   Smartphone, Monitor, Apple, Download, X, 
-  CheckCircle, Sparkles, Laptop, ShieldCheck 
+  CheckCircle, Laptop, ShieldCheck 
 } from 'lucide-react';
 import { useModalLock } from '../../hooks/useModalLock';
 import './qrModal.css';
@@ -78,10 +78,10 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
         </button>
 
         <div className="qr-modal-header">
-          <div className="qr-icon-badge">
-            <Sparkles size={24} color="#D81B60" />
+          <div className="qr-icon-badge" style={{ overflow: 'hidden', padding: '2px', background: 'radial-gradient(circle, #250F1D 0%, #12060E 100%)', border: '2px solid #D4AF37' }}>
+            <img src="/icons/icon-512x512.png" alt="Sindy Luxury by EBNA" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
           </div>
-          <h2>Aplicación Oficial EBNA Luxury</h2>
+          <h2>Aplicación Oficial Sindy Luxury by EBNA</h2>
           <p className="qr-subtitle">
             Tecnología PWA Universal: descarga e instalación directa y ligera para cualquier tipo de dispositivo sin ocupar espacio de almacenamiento.
           </p>

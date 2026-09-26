@@ -4,19 +4,21 @@
 .category-filter-wrapper {
   position: relative;
   width: 100%;
-  margin-bottom: 10px;
+  max-width: 1100px;
+  margin: 0 auto 10px auto;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .category-filter-container {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   overflow-x: auto;
   padding: 10px 48px;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  justify-content: flex-start;
+  justify-content: safe center;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
@@ -98,36 +100,28 @@
 }
 
 /* ==========================================================================
-   SHEIN-Style Illustrated Circular Category Navigation Bar
+   SHEIN-Style Illustrated Circular Category Navigation Bar with Zoom Effect
    ========================================================================== */
 .category-shein-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 2px 4px;
+  padding: 4px 6px;
   flex-shrink: 0;
   outline: none;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }
 
-.category-shein-item:hover {
-  transform: translateY(-2px);
-}
-
-.category-shein-item:active {
-  transform: scale(0.95);
-}
-
 .category-shein-circle-wrap {
   position: relative;
-  width: 68px;
-  height: 68px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   padding: 3px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 238, 242, 0.9));
@@ -137,7 +131,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 [data-theme="dark"] .category-shein-circle-wrap {
@@ -146,20 +140,13 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
 }
 
-.category-shein-item.is-active .category-shein-circle-wrap {
-  background: linear-gradient(135deg, #D4AF37 0%, #D81B60 100%);
-  border-color: transparent;
-  box-shadow: 0 0 20px rgba(216, 27, 96, 0.55), 0 4px 14px rgba(0, 0, 0, 0.2);
-  transform: scale(1.08);
-}
-
 .category-shein-img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   background: #f8f6f7;
 }
 
@@ -167,8 +154,41 @@
   background: #140c12;
 }
 
+/* High-End Tactile Zoom Animation on Hover */
+.category-shein-item:hover {
+  transform: translateY(-5px);
+}
+
+.category-shein-item:hover .category-shein-circle-wrap {
+  transform: scale(1.18);
+  box-shadow: 0 12px 28px rgba(216, 27, 96, 0.38), 0 0 16px rgba(212, 175, 55, 0.45);
+  border-color: #D4AF37;
+}
+
 .category-shein-item:hover .category-shein-img {
+  transform: scale(1.16);
+}
+
+.category-shein-item:hover .category-shein-label {
+  color: var(--brand-accent);
+  font-weight: 800;
   transform: scale(1.06);
+}
+
+.category-shein-item:active {
+  transform: scale(0.95);
+}
+
+/* Active State with Rich Luxury Halo */
+.category-shein-item.is-active .category-shein-circle-wrap {
+  background: linear-gradient(135deg, #D4AF37 0%, #D81B60 100%);
+  border-color: #FFFFFF;
+  box-shadow: 0 0 22px rgba(216, 27, 96, 0.6), 0 6px 18px rgba(0, 0, 0, 0.25);
+  transform: scale(1.14);
+}
+
+.category-shein-item.is-active:hover .category-shein-circle-wrap {
+  transform: scale(1.24);
 }
 
 .category-shein-label {
@@ -179,8 +199,8 @@
   text-align: center;
   white-space: nowrap;
   letter-spacing: -0.01em;
-  transition: color 0.2s ease, font-weight 0.2s ease;
-  max-width: 84px;
+  transition: color 0.25s ease, font-weight 0.25s ease, transform 0.25s ease;
+  max-width: 88px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -191,14 +211,18 @@
   text-shadow: 0 0 10px rgba(216, 27, 96, 0.25);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
+  .category-filter-wrapper {
+    margin-bottom: 6px;
+  }
   .category-filter-container {
+    justify-content: flex-start !important;
     gap: 12px !important;
-    padding: 6px 10px 10px !important;
+    padding: 4px 10px 10px !important;
   }
   .category-shein-circle-wrap {
-    width: 60px !important;
-    height: 60px !important;
+    width: 62px !important;
+    height: 62px !important;
     padding: 2.5px !important;
   }
   .category-shein-label {
