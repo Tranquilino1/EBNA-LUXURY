@@ -1,5 +1,6 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { HelpCircle, ChevronDown, Sparkles, Truck, ShieldCheck, CreditCard, MessageCircle, MapPin } from 'lucide-react';
+import './homeFAQSection.css';
 
 interface FAQItem {
   question: string;
@@ -61,58 +62,22 @@ export const HomeFAQSection: React.FC = () => {
   };
 
   return (
-    <section 
-      className="home-faq-section" 
-      style={{
-        marginTop: '3.5rem',
-        marginBottom: '3rem',
-        padding: '2.5rem 1.5rem',
-        borderRadius: '24px',
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(253, 242, 248, 0.85) 100%)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: '1.5px solid rgba(216, 27, 96, 0.18)',
-        boxShadow: '0 12px 35px rgba(216, 27, 96, 0.06)'
-      }}
-    >
-      <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 2.5rem auto' }}>
-        <div 
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            background: 'rgba(216, 27, 96, 0.1)',
-            color: 'var(--brand-accent)',
-            padding: '5px 16px',
-            borderRadius: '20px',
-            fontSize: '0.78rem',
-            fontWeight: 800,
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            marginBottom: '0.8rem'
-          }}
-        >
+    <section className="home-faq-section" aria-label="Centro de Información y Preguntas Frecuentes">
+      <div className="home-faq-header">
+        <div className="home-faq-pill">
           <Sparkles size={14} /> Centro de Información y Preguntas Frecuentes
         </div>
 
-        <h2 
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '2.1rem',
-            color: 'var(--text-primary)',
-            lineHeight: 1.25,
-            margin: '0 0 0.8rem 0'
-          }}
-        >
-          Todo lo que Necesitas Saber sobre EBNA Luxury
+        <h2 className="home-faq-title">
+          Todo lo que Necesitas Saber sobre Sindy Luxury by EBNA
         </h2>
 
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, margin: 0 }}>
+        <p className="home-faq-subtitle">
           Resolvemos tus dudas sobre compras, opciones de envío express a Malabo y Bata, métodos de pago en FCFA y garantía de autenticidad.
         </p>
       </div>
 
-      <div style={{ maxWidth: '840px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="home-faq-list">
         {FAQ_DATA.map((item, idx) => {
           const isOpen = openIndex === idx;
           const IconComponent = item.icon;
@@ -120,68 +85,27 @@ export const HomeFAQSection: React.FC = () => {
           return (
             <div
               key={idx}
-              style={{
-                borderRadius: '16px',
-                border: isOpen ? '1.5px solid var(--brand-accent)' : '1px solid rgba(216, 27, 96, 0.12)',
-                background: isOpen ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.7)',
-                overflow: 'hidden',
-                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: isOpen ? '0 8px 24px rgba(216, 27, 96, 0.12)' : 'none'
-              }}
+              className={`home-faq-item ${isOpen ? 'is-open' : ''}`}
             >
               <button
                 type="button"
                 onClick={() => toggleItem(idx)}
                 aria-expanded={isOpen}
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '14px',
-                  padding: '1.2rem 1.4rem',
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textAlign: 'left'
-                }}
+                className="home-faq-trigger"
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
-                  <div 
-                    style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '10px',
-                      background: isOpen ? 'var(--brand-accent)' : 'rgba(216, 27, 96, 0.08)',
-                      color: isOpen ? '#FFFFFF' : 'var(--brand-accent)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
+                  <div className="home-faq-icon-box">
                     <IconComponent size={18} />
                   </div>
-                  <span 
-                    style={{
-                      fontSize: '0.98rem',
-                      fontWeight: 700,
-                      color: isOpen ? 'var(--brand-accent)' : 'var(--text-primary)',
-                      fontFamily: 'var(--font-sans)',
-                      lineHeight: 1.4
-                    }}
-                  >
+                  <span className="home-faq-question">
                     {item.question}
                   </span>
                 </div>
 
                 <div 
+                  className="home-faq-chevron"
                   style={{
-                    transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.25s ease',
-                    color: isOpen ? 'var(--brand-accent)' : '#94A3B8',
-                    flexShrink: 0
+                    transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
                   }}
                 >
                   <ChevronDown size={20} />
@@ -189,29 +113,12 @@ export const HomeFAQSection: React.FC = () => {
               </button>
 
               {isOpen && (
-                <div 
-                  style={{
-                    padding: '0 1.4rem 1.3rem 4.2rem',
-                    color: 'var(--text-secondary)',
-                    fontSize: '0.92rem',
-                    lineHeight: 1.7,
-                    borderTop: '1px solid rgba(216, 27, 96, 0.06)'
-                  }}
-                >
+                <div className="home-faq-answer-wrap">
                   <div style={{ paddingTop: '0.8rem' }}>
                     {item.answer}
                   </div>
                   <div style={{ marginTop: '0.8rem', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                    <span 
-                      style={{
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        background: 'rgba(216, 27, 96, 0.06)',
-                        color: 'var(--brand-accent)',
-                        padding: '2px 8px',
-                        borderRadius: '6px'
-                      }}
-                    >
+                    <span className="home-faq-tag">
                       {item.category}
                     </span>
                   </div>

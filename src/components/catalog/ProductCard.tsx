@@ -378,8 +378,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             const formatStr = product.details?.volume || (product.sizes && product.sizes[0] && !['S', 'M', 'L', 'XL', 'XS'].includes(product.sizes[0]) ? product.sizes[0] : null) || (product.details?.size && product.details.size[0]);
             return (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '4px 0 6px 0' }}>
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#D81B60', textTransform: 'uppercase' }}>Formato:</span>
-                <span style={{ background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.25)', color: '#D81B60', fontSize: '0.68rem', fontWeight: 800, padding: '1px 8px', borderRadius: '6px' }}>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--brand-accent)', textTransform: 'uppercase' }}>Formato:</span>
+                <span className="product-format-badge">
                   {formatStr || 'Original'}
                 </span>
               </div>
@@ -389,11 +389,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           if (isAccessory) {
             return (
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px', margin: '4px 0 6px 0' }}>
-                <span style={{ background: 'rgba(197, 168, 128, 0.15)', border: '1px solid rgba(197, 168, 128, 0.4)', color: '#8B6F47', fontSize: '0.66rem', fontWeight: 700, padding: '1px 6px', borderRadius: '4px' }}>
+                <span className="product-size-badge">
                   Talla Única
                 </span>
                 {product.colors && product.colors.length > 0 && (
-                  <span style={{ fontSize: '0.66rem', color: '#9E9298', marginLeft: 'auto', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.66rem', color: 'var(--text-tertiary)', marginLeft: 'auto', fontWeight: 600 }}>
                     {product.colors.length} {product.colors.length === 1 ? 'color' : 'colores'}
                   </span>
                 )}
@@ -407,16 +407,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
 
           return (
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap', margin: '4px 0 6px 0' }}>
-              <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#888', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>
                 {isFootwear ? 'Tallas EU:' : 'Tallas:'}
               </span>
               {rawSizes.slice(0, 4).map((sz) => (
-                <span key={sz} style={{ background: 'rgba(197, 168, 128, 0.15)', border: '1px solid rgba(197, 168, 128, 0.4)', color: '#8B6F47', fontSize: '0.66rem', fontWeight: 800, padding: '1px 6px', borderRadius: '4px' }}>
+                <span key={sz} className="product-size-badge">
                   {sz}
                 </span>
               ))}
               {product.colors && product.colors.length > 0 && (
-                <span style={{ fontSize: '0.66rem', color: '#9E9298', marginLeft: 'auto', fontWeight: 600 }}>
+                <span style={{ fontSize: '0.66rem', color: 'var(--text-tertiary)', marginLeft: 'auto', fontWeight: 600 }}>
                   {product.colors.length} {product.colors.length === 1 ? 'color' : 'colores'}
                 </span>
               )}
