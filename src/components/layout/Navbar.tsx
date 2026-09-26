@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { Menu, X, User, LogOut, ShieldCheck, QrCode, ShoppingBag, ShoppingCart, Circle, Sun, Moon, Headphones, Search } from 'lucide-react';
+import { 
+  Menu, X, User, LogOut, ShieldCheck, QrCode, ShoppingBag, 
+  ShoppingCart, Circle, Sun, Moon, Headphones, Search, 
+  Sparkles, ChevronRight, Home, Smartphone, CheckCircle2
+} from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTraffic } from '../../contexts/TrafficContext';
 import { useCart } from '../../contexts/CartContext';
@@ -11,6 +15,7 @@ import { AdminAuthModal } from '../admin/AdminAuthModal';
 import { ContactSupportModal } from '../ui/ContactSupportModal';
 import { useCustomization } from '../../contexts/CustomizationContext';
 import { InteractiveSantaHat } from '../effects/InteractiveSantaHat';
+import { isStandaloneApp } from '../../lib/deviceDetection';
 import './layout.css';
 
 export const Navbar: React.FC = () => {
@@ -20,6 +25,7 @@ export const Navbar: React.FC = () => {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isAdminAuthModalOpen, setIsAdminAuthModalOpen] = useState(false);
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
+  const [inApp, setInApp] = useState(false);
   
   const { user, profile, isAdmin, signOut } = useAuth();
   const { onlineCount } = useTraffic();
@@ -31,16 +37,33 @@ export const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setInApp(isStandaloneApp());
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 30);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Lock body scroll and prevent touch drag while mobile drawer is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.classList.add('mobile-drawer-open');
+    } else {
+      document.body.classList.remove('mobile-drawer-open');
+    }
+    return () => {
+      document.body.classList.remove('mobile-drawer-open');
+    };
+  }, [isMobileMenuOpen]);
 
   const handleLogout = async () => {
     await signOut();
     setIsProfileOpen(false);
+    setIsMobileMenuOpen(false);
     navigate('/');
   };
 
@@ -52,6 +75,11 @@ export const Navbar: React.FC = () => {
     } else {
       setIsAdminAuthModalOpen(true);
     }
+  };
+
+  const handleCategoryNav = (cat: string) => {
+    setIsMobileMenuOpen(false);
+    navigate(`/catalogo?cat=${cat}`);
   };
 
   return (
@@ -80,7 +108,7 @@ export const Navbar: React.FC = () => {
           }}
         >
           <span>🎄</span>
-          <span>¡Colección Especial Fiestas Navideñas EBNA! Pedidos directos y envíos inmediatos por WhatsApp</span>
+          <span>¡Colección Especial Fiestas Navideñas EBNA! Pedidos directos por WhatsApp</span>
           <span style={{ background: 'rgba(254, 243, 199, 0.2)', padding: '2px 8px', borderRadius: '999px', fontSize: '0.7rem', border: '1px solid rgba(254, 243, 199, 0.35)' }}>
             1 Dic - 6 Ene
           </span>
@@ -89,24 +117,25 @@ export const Navbar: React.FC = () => {
       )}
 
       <nav className="navbar glass-panel">
-        {/* Mobile Menu Toggle */}
+        {/* Left: Mobile Menu Toggle Button */}
         <button 
           className="mobile-menu-toggle"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Abrir menú"
+          onClick={() => setIsMobileMenuOpen(true)}
+          aria-label="Abrir menú de navegación"
+          title="Menú de Navegación"
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          <Menu size={22} strokeWidth={2.2} />
         </button>
 
-        {/* Logo */}
-        <Link to="/" className="navbar-logo" style={{ position: 'relative' }}>
+        {/* Center / Brand: Logo + Typography */}
+        <Link to="/" className="navbar-logo">
           {isChristmasActive && settings.christmasHats && (
             <InteractiveSantaHat 
-              size={34} 
+              size={30} 
               style={{ 
                 position: 'absolute', 
-                top: '-15px', 
-                left: '-10px', 
+                top: '-14px', 
+                left: '-8px', 
                 zIndex: 25
               }} 
             />
@@ -128,11 +157,11 @@ export const Navbar: React.FC = () => {
           />
           <div className="logo-text-brand">
             <span className="brand-name-uppercase">SINDY LUXURY</span>
-            <span className="brand-sub-syndy">BY EBNA</span>
+            <span className="brand-sub-syndy desktop-only">BY EBNA</span>
           </div>
         </Link>
 
-        {/* Desktop Nav: Inicio + Lupa de Búsqueda General + Catálogo */}
+        {/* Desktop Navigation Links */}
         <div className="navbar-links desktop-only">
           <Link to="/" className="nav-link">
             Inicio
@@ -152,24 +181,39 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Right side: Search (Mobile), Theme Toggle, Cart, QR, Traffic and User */}
+        {/* Right Actions: Clean, Uncluttered 2-Action Mobile Layout vs Full Desktop Actions */}
         <div className="navbar-actions">
-          {/* Mobile Quick Search Button */}
+          {/* Mobile Action 1: Search Button */}
           <button
             type="button"
-            className="theme-toggle-btn mobile-only"
+            className="mobile-header-action-btn mobile-only"
             onClick={() => openSearch()}
             title="Buscar productos"
             aria-label="Buscar productos"
-            style={{ color: '#D81B60', border: '1px solid rgba(216, 27, 96, 0.3)' }}
           >
-            <Search size={17} />
+            <Search size={18} strokeWidth={2.3} />
           </button>
 
-          {/* Theme Toggle Button */}
+          {/* Mobile Action 2: Shopping Bag Button */}
           <button
             type="button"
-            className="theme-toggle-btn"
+            className="mobile-header-action-btn mobile-cart-btn mobile-only"
+            onClick={() => setIsCartOpen(true)}
+            title="Ver Cesta de Compras"
+            aria-label="Ver Cesta de Compras"
+          >
+            <ShoppingBag size={18} strokeWidth={2.3} />
+            {totalItemsCount > 0 && (
+              <span className="cart-badge-counter">
+                {totalItemsCount}
+              </span>
+            )}
+          </button>
+
+          {/* Desktop-Only Actions */}
+          <button
+            type="button"
+            className="theme-toggle-btn desktop-only"
             onClick={toggleTheme}
             title={theme === 'dark' ? 'Cambiar a Modo Día (Ivory Silk)' : 'Cambiar a Modo Noche (Deep Obsidian)'}
             aria-label="Cambiar tema de color"
@@ -178,12 +222,12 @@ export const Navbar: React.FC = () => {
           </button>
 
           <button
-            className="cart-trigger-nav-btn"
+            className="cart-trigger-nav-btn desktop-only"
             onClick={() => setIsCartOpen(true)}
             title="Ver Carrito de Compras"
           >
             <ShoppingBag size={18} />
-            <span className="desktop-only">Carrito</span>
+            <span>Carrito</span>
             {totalItemsCount > 0 && (
               <span className="cart-badge-counter">
                 {totalItemsCount}
@@ -191,23 +235,25 @@ export const Navbar: React.FC = () => {
             )}
           </button>
 
-          <button 
-            className="qr-trigger-btn"
-            onClick={() => setIsQRModalOpen(true)}
-            title="Ver Código QR de la App"
-          >
-            <QrCode size={18} />
-            <span className="desktop-only">App QR</span>
-          </button>
+          {!inApp && (
+            <button 
+              className="qr-trigger-btn desktop-only"
+              onClick={() => setIsQRModalOpen(true)}
+              title="Descargar App Android (.APK) / Ver QR"
+            >
+              <QrCode size={18} />
+              <span>App APK</span>
+            </button>
+          )}
 
-          <div className="traffic-counter">
+          <div className="traffic-counter desktop-only">
             <Circle className="pulse-dot" size={10} fill="#10B981" color="#10B981" />
             <span>{onlineCount} en línea</span>
           </div>
 
-          {/* User Icon Menu (Icono de Persona Unificado) */}
+          {/* User Icon Menu (Desktop) */}
           <div 
-            className="profile-menu-container"
+            className="profile-menu-container desktop-only"
             onMouseLeave={() => setIsProfileOpen(false)}
           >
             <button 
@@ -266,106 +312,270 @@ export const Navbar: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      {/* Mobile Menu Backdrop & Drawer */}
+      {/* =========================================================================
+          NATIVE-GRADE SLIDE-OVER MOBILE DRAWER (iOS 18 / LUXURY STANDARD)
+          ========================================================================= */}
       {isMobileMenuOpen && (
-        <>
+        <div className="mobile-drawer-root">
+          {/* Dimmed Backdrop */}
           <div 
-            className="mobile-menu-backdrop" 
+            className="mobile-drawer-backdrop"
             onClick={() => setIsMobileMenuOpen(false)}
-            aria-label="Cerrar menú móvil" 
+            aria-label="Cerrar menú"
           />
-          <div className="mobile-menu glass-panel">
-            <Link 
-              to="/" 
-              className="mobile-nav-link"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Inicio
-            </Link>
 
-            <button
-              type="button"
-              onClick={() => { setIsMobileMenuOpen(false); openSearch(); }}
-              className="mobile-nav-link"
-              style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.25)', color: '#D81B60', fontWeight: 700, cursor: 'pointer', textAlign: 'left', width: '100%', borderRadius: '12px' }}
-            >
-              <Search size={18} color="#D81B60" /> Buscar Producto (Catálogo)
-            </button>
-
-            <Link 
-              to="/catalogo" 
-              className="mobile-nav-link"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Catálogo Completo
-            </Link>
-
-            {/* App Android (.APK) / Universal PWA */}
-            <button
-              type="button"
-              onClick={() => { setIsMobileMenuOpen(false); setIsQRModalOpen(true); }}
-              className="mobile-nav-link"
-              style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#059669', background: 'rgba(16, 185, 129, 0.09)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', textAlign: 'left', width: '100%' }}
-            >
-              <QrCode size={18} color="#059669" /> Descargar App Android (.APK) / Ver QR
-            </button>
-
-            {/* Live Traffic Presence Badge in Mobile Menu */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '12px', fontSize: '0.82rem', color: '#047857', fontWeight: 700 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Circle size={8} fill="#10B981" color="#10B981" className="pulse-dot" />
-                <span>Clientas Conectadas en Vivo:</span>
+          {/* Slide-in Drawer Container */}
+          <aside className="mobile-drawer-panel glass-panel" aria-label="Menú de Navegación Móvil">
+            {/* Drawer Header */}
+            <div className="mobile-drawer-header">
+              <div className="mobile-drawer-brand">
+                <img 
+                  src={theme === 'dark' ? '/icons/ebna-logo-dark.png' : '/icons/ebna-logo-white.png'} 
+                  alt="EBNA" 
+                  className="mobile-drawer-logo"
+                  onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    img.src = '/icons/ebna-logo-white.png';
+                  }}
+                />
+                <div>
+                  <div className="mobile-drawer-title">SINDY LUXURY</div>
+                  <div className="mobile-drawer-subtitle">HAUTE COUTURE • MALABO</div>
+                </div>
               </div>
-              <span style={{ background: '#10B981', color: 'white', padding: '2px 8px', borderRadius: '10px', fontSize: '0.74rem', fontWeight: 800 }}>
-                {onlineCount} online
-              </span>
+              <button 
+                type="button" 
+                className="mobile-drawer-close-btn"
+                onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Cerrar menú"
+              >
+                <X size={20} />
+              </button>
             </div>
 
-            {/* Theme Toggle shortcut in Mobile Menu */}
-            <button
-              type="button"
-              onClick={() => { toggleTheme(); }}
-              className="mobile-nav-link"
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'transparent', border: '1px solid var(--border-light)', borderRadius: '12px', cursor: 'pointer', width: '100%' }}
-            >
-              <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                {theme === 'dark' ? <Sun size={18} color="#F59E0B" /> : <Moon size={18} color="#D81B60" />}
-                <span>Tema: {theme === 'dark' ? 'Modo Día (Ivory Silk)' : 'Modo Noche (Obsidian)'}</span>
-              </span>
-              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>Cambiar</span>
-            </button>
+            {/* Spotlight Search Shortcut */}
+            <div className="mobile-drawer-search-wrap">
+              <button 
+                type="button" 
+                className="mobile-drawer-search-btn"
+                onClick={() => { setIsMobileMenuOpen(false); openSearch(); }}
+              >
+                <Search size={16} color="var(--brand-accent)" />
+                <span>Buscar vestidos, calzado, perfumes...</span>
+              </button>
+            </div>
 
-            <div className="mobile-menu-divider" />
+            {/* Scrollable Navigation Body */}
+            <div className="mobile-drawer-body">
+              {/* Group 1: Main Navigation */}
+              <div className="mobile-drawer-group">
+                <div className="mobile-group-title">Navegación Principal</div>
+                
+                <Link 
+                  to="/" 
+                  className="mobile-drawer-item"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className="mobile-item-left">
+                    <div className="mobile-item-icon-box">
+                      <Home size={18} />
+                    </div>
+                    <span>Inicio Boutique</span>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </Link>
 
-            <button
-              onClick={() => { setIsMobileMenuOpen(false); navigate('/catalogo'); }}
-              className="mobile-nav-link mobile-client-btn"
-            >
-              <ShoppingCart size={18} color="#25D366" /> Modo Cliente / Catálogo
-            </button>
+                <Link 
+                  to="/catalogo" 
+                  className="mobile-drawer-item"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <div className="mobile-item-left">
+                    <div className="mobile-item-icon-box highlight">
+                      <Sparkles size={18} />
+                    </div>
+                    <div>
+                      <span style={{ display: 'block', fontWeight: 700 }}>Catálogo Completo</span>
+                      <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>188 Prendas de Lujo en Stock</span>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </Link>
+              </div>
 
-            <button
-              onClick={handleAdminAccess}
-              className="mobile-nav-link mobile-admin-btn"
-            >
-              <ShieldCheck size={18} color="var(--brand-accent)" /> Acceso Panel Administrador
-            </button>
+              {/* Group 2: Quick Categories */}
+              <div className="mobile-drawer-group">
+                <div className="mobile-group-title">Colecciones Exclusivas</div>
+                
+                <button 
+                  type="button"
+                  className="mobile-drawer-item"
+                  onClick={() => handleCategoryNav('VESTIDOS_GALA')}
+                >
+                  <div className="mobile-item-left">
+                    <span className="category-bullet">👗</span>
+                    <span>Vestidos de Gala</span>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </button>
 
-            <button
-              onClick={() => { setIsMobileMenuOpen(false); setIsSupportModalOpen(true); }}
-              className="mobile-nav-link"
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#184266', fontWeight: 800 }}
-            >
-              <Headphones size={18} color="#184266" /> Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '1.05rem' }}>AiDA</span>
-            </button>
-          </div>
-        </>
+                <button 
+                  type="button"
+                  className="mobile-drawer-item"
+                  onClick={() => handleCategoryNav('COSMETICA_FACIAL')}
+                >
+                  <div className="mobile-item-left">
+                    <span className="category-bullet">✨</span>
+                    <span>Cosmética Facial Coreana</span>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </button>
+
+                <button 
+                  type="button"
+                  className="mobile-drawer-item"
+                  onClick={() => handleCategoryNav('CALZADO')}
+                >
+                  <div className="mobile-item-left">
+                    <span className="category-bullet">👠</span>
+                    <span>Calzado & Tacones de Fiesta</span>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </button>
+
+                <button 
+                  type="button"
+                  className="mobile-drawer-item"
+                  onClick={() => handleCategoryNav('BOLSOS_ACCESORIOS')}
+                >
+                  <div className="mobile-item-left">
+                    <span className="category-bullet">👜</span>
+                    <span>Bolsos & Carteras de Lujo</span>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </button>
+              </div>
+
+              {/* Group 3: Preferences & Experience */}
+              <div className="mobile-drawer-group">
+                <div className="mobile-group-title">Ajustes & Experiencia</div>
+                
+                {/* Theme Switch Row */}
+                <div className="mobile-drawer-item" onClick={toggleTheme} style={{ cursor: 'pointer' }}>
+                  <div className="mobile-item-left">
+                    <div className="mobile-item-icon-box">
+                      {theme === 'dark' ? <Moon size={18} color="#D81B60" /> : <Sun size={18} color="#F59E0B" />}
+                    </div>
+                    <span>{theme === 'dark' ? 'Modo Noche (Obsidian)' : 'Modo Día (Ivory Silk)'}</span>
+                  </div>
+                  <div className={`ios-switch-pill ${theme === 'dark' ? 'is-active' : ''}`}>
+                    <div className="ios-switch-thumb" />
+                  </div>
+                </div>
+
+                {/* Live Client Count Pill */}
+                <div className="mobile-drawer-item live-presence-item">
+                  <div className="mobile-item-left">
+                    <Circle size={8} fill="#10B981" color="#10B981" className="pulse-dot" />
+                    <span>Clientas conectadas en vivo</span>
+                  </div>
+                  <span className="live-counter-tag">{onlineCount} online</span>
+                </div>
+              </div>
+
+              {/* Group 4: Concierge & Administration */}
+              <div className="mobile-drawer-group">
+                <div className="mobile-group-title">Atención & Seguridad</div>
+
+                <button
+                  type="button"
+                  className="mobile-drawer-item"
+                  onClick={() => { setIsMobileMenuOpen(false); setIsSupportModalOpen(true); }}
+                >
+                  <div className="mobile-item-left">
+                    <div className="mobile-item-icon-box aida-box">
+                      <Headphones size={18} />
+                    </div>
+                    <div>
+                      <span style={{ display: 'block', fontWeight: 700 }}>Soporte Técnico AiDA</span>
+                      <span style={{ display: 'block', fontSize: '0.72rem', color: '#184266' }}>WhatsApp Concierge e Incidencias</span>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </button>
+
+                <button
+                  type="button"
+                  className="mobile-drawer-item"
+                  onClick={handleAdminAccess}
+                >
+                  <div className="mobile-item-left">
+                    <div className="mobile-item-icon-box admin-box">
+                      <ShieldCheck size={18} />
+                    </div>
+                    <span>Acceso Administrador</span>
+                  </div>
+                  <ChevronRight size={16} className="mobile-item-chevron" />
+                </button>
+
+                {user ? (
+                  <button
+                    type="button"
+                    className="mobile-drawer-item logout-item"
+                    onClick={handleLogout}
+                  >
+                    <div className="mobile-item-left">
+                      <div className="mobile-item-icon-box">
+                        <LogOut size={18} />
+                      </div>
+                      <span>Cerrar Sesión</span>
+                    </div>
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="mobile-drawer-item"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <div className="mobile-item-left">
+                      <div className="mobile-item-icon-box">
+                        <User size={18} />
+                      </div>
+                      <span>Iniciar Sesión Cliente</span>
+                    </div>
+                    <ChevronRight size={16} className="mobile-item-chevron" />
+                  </Link>
+                )}
+              </div>
+
+              {/* App Status / Download Section */}
+              <div className="mobile-drawer-footer-card">
+                {inApp ? (
+                  <div className="app-installed-badge">
+                    <CheckCircle2 size={16} color="#10B981" />
+                    <span>App Oficial Android EBNA • v1.0.0 (Instalada)</span>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="app-download-cta-btn"
+                    onClick={() => { setIsMobileMenuOpen(false); setIsQRModalOpen(true); }}
+                  >
+                    <Smartphone size={18} />
+                    <span>Descargar App Android (.APK) / Ver QR</span>
+                  </button>
+                )}
+                <div className="mobile-drawer-copyright">
+                  © 2026 EBNA SINDY LUXURY. Malabo, Guinea Ecuatorial.
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
       )}
 
       {/* QR Modal */}
       <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
-
 
       {/* Contact & Support Modal */}
       <ContactSupportModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />

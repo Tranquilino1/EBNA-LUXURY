@@ -916,3 +916,85 @@
     transform: translateX(100%);
   }
 }
+
+/* ==========================================================================
+   Product Card Action Buttons & Mobile Ergonomics
+   ========================================================================== */
+.product-actions-trio {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-top: 0.65rem;
+}
+
+.btn-card-action {
+  padding: 8px 6px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  user-select: none;
+  min-height: 36px;
+}
+
+.btn-card-ver {
+  border: 1.5px solid rgba(216, 27, 96, 0.3);
+  background: var(--canvas-surface);
+  color: var(--brand-accent);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.btn-card-ver:active {
+  background: rgba(216, 27, 96, 0.12);
+  transform: scale(0.95);
+}
+
+.btn-card-pedir {
+  border: none;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #FFFFFF;
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3);
+}
+
+.btn-card-pedir:active {
+  transform: scale(0.95);
+  box-shadow: 0 1px 4px rgba(37, 211, 102, 0.4);
+}
+
+.btn-card-carrito {
+  border: none;
+  background: linear-gradient(135deg, #D81B60, #C2185B);
+  color: #FFFFFF;
+  box-shadow: 0 3px 10px rgba(216, 27, 96, 0.3);
+}
+
+.btn-card-carrito.is-added {
+  background: linear-gradient(135deg, #10B981, #059669);
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
+}
+
+.btn-card-carrito:active {
+  transform: scale(0.95);
+}
+
+/* En teléfonos y pantallas angostas: Ocultamos el botón redundante 'Ver' (tocar la tarjeta completa ya abre el detalle) y dejamos 2 botones perfectamente espaciados sin recorte de texto */
+@media (max-width: 640px) {
+  .product-actions-trio {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .btn-card-ver {
+    display: none !important;
+  }
+  .btn-card-action {
+    padding: 8px 8px !important;
+    font-size: 0.82rem !important;
+  }
+}
+

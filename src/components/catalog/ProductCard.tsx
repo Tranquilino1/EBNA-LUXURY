@@ -407,8 +407,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
           </div>
         </div>
         
-        <div className="product-actions-trio" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', marginTop: '0.65rem' }}>
-          {/* Botón 1: VER */}
+        <div className="product-actions-trio">
+          {/* Botón 1: VER (Desktop/Tablets, en móvil pulsar la tarjeta ya abre el producto) */}
           <button
             type="button"
             className="btn-card-action btn-card-ver"
@@ -417,28 +417,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               navigate(`/producto/${product.slug || product.id}`);
             }}
             title="Ver producto y detalles"
-            style={{
-              padding: '9px 4px',
-              borderRadius: '20px',
-              border: '1.5px solid rgba(216, 27, 96, 0.35)',
-              background: 'rgba(255, 255, 255, 0.95)',
-              color: '#D81B60',
-              fontWeight: 800,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '4px',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
-            }}
           >
             <Eye size={13} />
             <span className="btn-card-text">Ver</span>
           </button>
 
-          {/* Botón 2: PEDIR (Verde WhatsApp con Logo Ajustable y Limpio) */}
+          {/* Botón 2: PEDIR (Verde WhatsApp con Logo Limpio) */}
           <button
             type="button"
             className="btn-card-action btn-card-pedir"
@@ -447,31 +431,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               navigate(`/producto/${product.slug || product.id}?pedir=true`);
             }}
             title="Pedir directamente por WhatsApp con comprobante oficial"
-            style={{
-              padding: '9px 4px',
-              borderRadius: '20px',
-              border: 'none',
-              background: 'linear-gradient(135deg, #25D366, #128C7E)',
-              color: 'white',
-              fontWeight: 800,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '5px',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 3px 10px rgba(37, 211, 102, 0.35)'
-            }}
           >
             <WhatsAppIcon size={14} color="white" />
             <span className="btn-card-text">Pedir</span>
           </button>
 
-          {/* Botón 3: CARRITO (Rosa Lujo EBNA) */}
+          {/* Botón 3: CARRITO / CESTA (Rosa Lujo EBNA) */}
           <button
             type="button"
-            className="btn-card-action btn-card-carrito"
+            className={`btn-card-action btn-card-carrito ${justAddedToCart ? 'is-added' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               addToCart(product, 1);
@@ -479,29 +447,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               setTimeout(() => setJustAddedToCart(false), 2000);
             }}
             title="Añadir a la cesta de compras sin salir del catálogo"
-            style={{
-              padding: '9px 4px',
-              borderRadius: '20px',
-              border: 'none',
-              background: justAddedToCart 
-                ? 'linear-gradient(135deg, #10B981, #059669)' 
-                : 'linear-gradient(135deg, #D81B60, #C2185B)',
-              color: 'white',
-              fontWeight: 800,
-              fontSize: '0.82rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '4px',
-              transition: 'all 0.2s ease',
-              boxShadow: justAddedToCart 
-                ? '0 3px 10px rgba(16, 185, 129, 0.35)' 
-                : '0 3px 10px rgba(216, 27, 96, 0.35)'
-            }}
           >
             {justAddedToCart ? <Check size={13} /> : <ShoppingCart size={13} />}
-            <span className="btn-card-text">{justAddedToCart ? '¡Añadido!' : 'Carrito'}</span>
+            <span className="btn-card-text">{justAddedToCart ? '¡Listo!' : 'Cesta'}</span>
           </button>
         </div>
       </div>

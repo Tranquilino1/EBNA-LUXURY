@@ -37,7 +37,7 @@ export const ScrollToTopButton: React.FC = () => {
         position: 'fixed',
         bottom: '88px',
         right: '24px',
-        zIndex: 1100,
+        zIndex: 900,
         width: '44px',
         height: '44px',
         borderRadius: '50%',
@@ -59,6 +59,9 @@ export const ScrollToTopButton: React.FC = () => {
     >
       <ArrowUp size={19} strokeWidth={2.4} />
       <style>{`
+        body.mobile-drawer-open .scroll-to-top-luxury-btn {
+          display: none !important;
+        }
         .scroll-to-top-luxury-btn:hover {
           background: linear-gradient(135deg, #D81B60, #C2185B) !important;
           color: #FFFFFF !important;

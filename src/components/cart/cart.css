@@ -962,5 +962,76 @@
   }
 }
 
+/* ==========================================================================
+   Dark Theme Obsidian Support for Cart Drawer
+   ========================================================================== */
+[data-theme="dark"] .cart-drawer-panel {
+  background: linear-gradient(165deg, rgba(20, 10, 17, 0.98) 0%, rgba(12, 6, 10, 0.96) 100%) !important;
+  border-left: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: -10px 0 50px rgba(0, 0, 0, 0.65);
+}
+
+[data-theme="dark"] .cart-title,
+[data-theme="dark"] .futuristic-card-title,
+[data-theme="dark"] .payment-title,
+[data-theme="dark"] .futuristic-group-title,
+[data-theme="dark"] .interactive-card-title {
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .cart-subtitle,
+[data-theme="dark"] .futuristic-card-subtitle,
+[data-theme="dark"] .interactive-card-detail {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .futuristic-label {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .futuristic-input {
+  background: rgba(30, 18, 26, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .futuristic-input:focus {
+  border-color: #D81B60 !important;
+  background: rgba(40, 24, 35, 0.95) !important;
+}
+
+[data-theme="dark"] .futuristic-interactive-card,
+[data-theme="dark"] .shipping-card,
+[data-theme="dark"] .payment-method-card {
+  background: rgba(25, 14, 22, 0.75) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .futuristic-interactive-card.active-border {
+  background: linear-gradient(145deg, rgba(45, 18, 35, 0.85) 0%, rgba(30, 12, 24, 0.9) 100%) !important;
+  border-color: #D81B60 !important;
+}
+
+[data-theme="dark"] .futuristic-interactive-card.active-border-gold {
+  background: linear-gradient(145deg, rgba(40, 28, 10, 0.85) 0%, rgba(28, 18, 6, 0.9) 100%) !important;
+  border-color: #D97706 !important;
+}
+
+[data-theme="dark"] .cart-close-btn {
+  background: rgba(30, 18, 26, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .cart-item-card {
+  background: rgba(25, 14, 22, 0.75) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .cart-item-name {
+  color: #F8FAFC !important;
+}
+
+
 
 

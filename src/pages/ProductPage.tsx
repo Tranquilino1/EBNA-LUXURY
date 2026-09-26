@@ -315,40 +315,43 @@ export function ProductPage() {
         ogImage={activeImage} 
         type="product"
       />
-      <nav className="breadcrumb" style={{ display: 'flex', gap: '8px', fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '0.8rem', flexWrap: 'wrap' }}>
-        <Link to="/" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Inicio</Link> &gt; 
-        <Link to="/catalogo" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Catálogo</Link> &gt; 
-        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{product.name}</span>
-      </nav>
+      <div className="product-nav-top-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '1.2rem', flexWrap: 'wrap' }}>
+        <button
+          type="button"
+          onClick={() => {
+            if (window.history.length > 1) {
+              navigate(-1);
+            } else {
+              navigate('/catalogo', { state: { restoreScroll: true } });
+            }
+          }}
+          className="luxury-back-nav-btn"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+            borderRadius: '999px',
+            background: 'var(--canvas-elevated)',
+            border: '1.5px solid var(--border-subtle)',
+            color: 'var(--text-primary)',
+            fontWeight: 700,
+            fontSize: '0.86rem',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
+          }}
+        >
+          <ArrowLeft size={16} strokeWidth={2.4} color="var(--brand-accent)" />
+          <span>Volver al Catálogo</span>
+        </button>
 
-      <button
-        type="button"
-        onClick={() => {
-          if (window.history.length > 1) {
-            navigate(-1);
-          } else {
-            navigate('/catalogo', { state: { restoreScroll: true } });
-          }
-        }}
-        className="back-link"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '8px 18px',
-          borderRadius: '999px',
-          background: 'rgba(216, 27, 96, 0.09)',
-          border: '1.5px solid rgba(216, 27, 96, 0.28)',
-          color: '#D81B60',
-          fontWeight: 700,
-          fontSize: '0.9rem',
-          cursor: 'pointer',
-          marginBottom: '1.5rem',
-          boxShadow: '0 4px 12px rgba(216, 27, 96, 0.08)'
-        }}
-      >
-        <ArrowLeft size={18} /> Volver a la zona anterior
-      </button>
+        <nav className="breadcrumb" style={{ display: 'flex', gap: '6px', fontSize: '0.82rem', color: 'var(--text-secondary)', alignItems: 'center', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', maxWidth: '100%' }}>
+          <Link to="/" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Inicio</Link> &gt; 
+          <Link to="/catalogo" style={{ color: 'var(--brand-accent)', textDecoration: 'none' }}>Catálogo</Link> &gt; 
+          <span style={{ color: 'var(--text-primary)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</span>
+        </nav>
+      </div>
 
       {/* Admin Quick Control Bar on Product Page */}
       {isAdmin && (
@@ -709,93 +712,78 @@ export function ProductPage() {
           {/* Compact Customer Info for Instant Ticket */}
           <div 
             ref={orderSectionRef}
+            className="glass-panel"
             style={{
               background: isPedirAction 
-                ? 'linear-gradient(135deg, rgba(255, 245, 248, 0.98) 0%, rgba(254, 235, 243, 0.95) 100%)' 
-                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 245, 248, 0.85) 100%)',
-              border: isPedirAction ? '2px solid #D81B60' : '1px solid rgba(216, 27, 96, 0.2)',
-              borderRadius: '16px',
-              padding: '14px',
+                ? 'var(--canvas-elevated)' 
+                : 'var(--canvas-surface)',
+              border: isPedirAction ? '2px solid var(--brand-accent)' : '1.5px solid var(--border-subtle)',
+              borderRadius: '20px',
+              padding: '16px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '8px',
+              gap: '12px',
               marginTop: '0.4rem',
-              boxShadow: isPedirAction ? '0 0 20px rgba(216, 27, 96, 0.25)' : 'none',
+              boxShadow: isPedirAction ? '0 0 24px rgba(216, 27, 96, 0.25)' : 'var(--shadow-sm)',
               transition: 'all 0.3s ease'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--brand-accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                {isPedirAction ? '⚡ Pedido Inmediato - Generación de Ticket Oficial' : 'Datos para tu Ticket Oficial de Compra'}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px' }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--brand-accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {isPedirAction ? '⚡ Pedido Inmediato — Ticket Oficial' : 'Datos para tu Ticket Oficial de Compra'}
               </span>
-              <span style={{ fontSize: '0.72rem', color: '#16a34a', fontWeight: 700 }}>
-                ✓ Descarga Ticket PNG
+              <span style={{ fontSize: '0.74rem', color: '#16a34a', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                ✓ Descarga Directa PNG
               </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '10px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#475569', marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '4px' }}>
                   Nombre y Apellidos:
                 </label>
-                <div style={{ position: 'relative' }}>
-                  <User size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <User size={15} style={{ position: 'absolute', left: '12px', color: 'var(--text-secondary)', pointerEvents: 'none' }} />
                   <input
                     type="text"
-                    placeholder="Tu nombre y apellidos"
+                    placeholder="Tu nombre completo"
                     value={customerName}
                     onChange={(e) => {
                       setCustomerName(e.target.value);
                       setOrderError('');
                       try { localStorage.setItem('ebna_client_name', e.target.value); } catch {}
                     }}
-                    style={{
-                      width: '100%',
-                      padding: '7px 10px 7px 30px',
-                      borderRadius: '10px',
-                      border: '1px solid #CBD5E1',
-                      fontSize: '0.84rem',
-                      outline: 'none',
-                      background: 'white'
-                    }}
+                    className="luxury-ios-input"
                   />
                 </div>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#475569', marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '4px' }}>
                   Teléfono / WhatsApp:
                 </label>
-                <div style={{ position: 'relative' }}>
-                  <Phone size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <Phone size={15} style={{ position: 'absolute', left: '12px', color: 'var(--text-secondary)', pointerEvents: 'none' }} />
                   <input
                     type="tel"
-                    placeholder="Tu teléfono de contacto"
+                    placeholder="Tu teléfono o WhatsApp"
                     value={customerPhone}
                     onChange={(e) => {
                       setCustomerPhone(e.target.value);
                       setOrderError('');
                       try { localStorage.setItem('ebna_client_phone', e.target.value); } catch {}
                     }}
-                    style={{
-                      width: '100%',
-                      padding: '7px 10px 7px 30px',
-                      borderRadius: '10px',
-                      border: '1px solid #CBD5E1',
-                      fontSize: '0.84rem',
-                      outline: 'none',
-                      background: 'white'
-                    }}
+                    className="luxury-ios-input"
                   />
                 </div>
               </div>
 
               <div style={{ gridColumn: '1 / -1' }}>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#475569', marginBottom: '3px' }}>
+                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '4px' }}>
                   Dirección / Barrio de Entrega:
                 </label>
-                <div style={{ position: 'relative' }}>
-                  <MapPin size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#94a3b8' }} />
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <MapPin size={15} style={{ position: 'absolute', left: '12px', color: 'var(--text-secondary)', pointerEvents: 'none' }} />
                   <input
                     type="text"
                     placeholder="Tu barrio o ciudad (ej. Malabo, Bata...)"
@@ -804,22 +792,14 @@ export function ProductPage() {
                       setCustomerAddress(e.target.value);
                       try { localStorage.setItem('ebna_client_address', e.target.value); } catch {}
                     }}
-                    style={{
-                      width: '100%',
-                      padding: '7px 10px 7px 30px',
-                      borderRadius: '10px',
-                      border: '1px solid #CBD5E1',
-                      fontSize: '0.84rem',
-                      outline: 'none',
-                      background: 'white'
-                    }}
+                    className="luxury-ios-input"
                   />
                 </div>
               </div>
 
               {/* Panel Exclusivo de Modalidad de Envío */}
               <div style={{ gridColumn: '1 / -1', marginTop: '2px' }}>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#475569', marginBottom: '5px' }}>
+                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '6px' }}>
                   Modalidad de Envío:
                 </label>
                 <div className="shipping-options-grid">

@@ -29,6 +29,7 @@
   max-width: 580px;
   max-height: 90vh;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--canvas-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 28px;
@@ -36,14 +37,20 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(216, 27, 96, 0.25) transparent;
 }
 
 .contact-modal-card::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+}
+
+.contact-modal-card::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .contact-modal-card::-webkit-scrollbar-thumb {
-  background: var(--brand-accent);
+  background: rgba(216, 27, 96, 0.25);
   border-radius: 10px;
 }
 
@@ -204,9 +211,11 @@
 }
 
 .channel-card-val {
-  font-size: 0.9rem;
+  font-size: clamp(0.76rem, 3.2vw, 0.88rem);
   font-weight: 700;
   color: var(--text-primary);
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 /* Quick Ticket Form */
@@ -283,9 +292,17 @@
 
 /* Universal Mobile Responsiveness */
 @media (max-width: 560px) {
+  .contact-modal-overlay {
+    padding: 10px;
+  }
   .contact-modal-card {
-    border-radius: 20px;
-    max-height: 92vh;
+    border-radius: 22px;
+    max-height: 90dvh;
+    width: 100%;
+    scrollbar-width: none;
+  }
+  .contact-modal-card::-webkit-scrollbar {
+    display: none;
   }
   .contact-modal-header {
     padding: 14px 16px;
@@ -303,4 +320,5 @@
     grid-template-columns: 1fr;
   }
 }
+
 

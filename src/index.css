@@ -17,19 +17,24 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 body {
   min-height: 100vh;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
   font-family: var(--font-sans);
   color: var(--text-primary);
   background-color: var(--canvas-base);
-  overflow-x: hidden;
+  overflow-x: clip;
   line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: contain;
+}
+
+#root, .luxury-canvas {
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* ==========================================================================
@@ -1875,4 +1880,34 @@ img {
   border-color: #F59E0B !important;
   transform: translateY(-1px);
 }
+
+/* ==========================================================================
+   Luxury iOS Human Interface Input System
+   ========================================================================== */
+.luxury-ios-input {
+  width: 100%;
+  height: 48px;
+  padding: 12px 14px 12px 38px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border-subtle);
+  background: var(--canvas-elevated);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.luxury-ios-input:focus {
+  border-color: var(--brand-accent) !important;
+  box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.16), inset 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+  background: var(--canvas-surface) !important;
+}
+
+.luxury-ios-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.65;
+}
+
 
