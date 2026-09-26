@@ -305,10 +305,10 @@ export const Navbar: React.FC = () => {
             <button 
               className="qr-trigger-btn desktop-only"
               onClick={() => setIsQRModalOpen(true)}
-              title="Descargar App Android (.APK) / Ver QR"
+              title="Escanear Código QR / App Oficial"
             >
               <QrCode size={18} />
-              <span>App APK</span>
+              <span>QR</span>
             </button>
           )}
 

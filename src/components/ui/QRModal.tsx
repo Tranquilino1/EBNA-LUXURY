@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { 
-  Smartphone, Monitor, Apple, Download, X, 
-  CheckCircle, Laptop, ShieldCheck 
+  Smartphone, Download, X, CheckCircle2, Camera, Apple, Monitor 
 } from 'lucide-react';
 import { useModalLock } from '../../hooks/useModalLock';
 import './qrModal.css';
@@ -51,120 +50,106 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
       }
       setDeferredPrompt(null);
     } else {
-      // Toggle device specific installation guide
-      setShowGuide(true);
+      setShowGuide(prev => !prev);
     }
   };
 
-  const devices = [
-    { label: 'iOS (iPhone/iPad)', icon: <Apple size={14} /> },
-    { label: 'Android', icon: <Smartphone size={14} /> },
-    { label: 'Windows', icon: <Monitor size={14} /> },
-    { label: 'macOS', icon: <Laptop size={14} /> },
-    { label: 'Chromebook', icon: <Laptop size={14} /> },
-    { label: 'Linux', icon: <Monitor size={14} /> },
-  ];
-
   return createPortal(
-    <div className="qr-modal-overlay" onClick={onClose}>
-      <div className="qr-modal-content glass-panel" onClick={(e) => e.stopPropagation()}>
+    <div className="qr-modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="qr-modal-card" onClick={(e) => e.stopPropagation()}>
+        {/* Close Button */}
         <button 
-          className="qr-modal-close luxury-close-circle-btn" 
+          className="qr-modal-close-btn" 
           onClick={onClose} 
-          aria-label="Cerrar modal de aplicación (ESC)"
-          title="Cerrar modal de aplicación (ESC)"
+          aria-label="Cerrar ventana QR"
+          title="Cerrar (ESC)"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
-        <div className="qr-modal-header">
-          <div className="qr-icon-badge" style={{ overflow: 'hidden', padding: '2px', background: 'radial-gradient(circle, #250F1D 0%, #12060E 100%)', border: '2px solid #D4AF37' }}>
-            <img src="/icons/icon-512x512.png" alt="Sindy Luxury by EBNA" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+        {/* Brand Header */}
+        <div className="qr-card-header">
+          <div className="qr-brand-emblem">
+            <img 
+              src="/icons/icon-512x512.png" 
+              alt="EBNA Sindy Luxury" 
+              className="qr-brand-logo" 
+            />
           </div>
-          <h2>Aplicación Oficial Sindy Luxury by EBNA</h2>
-          <p className="qr-subtitle">
-            Tecnología PWA Universal: descarga e instalación directa y ligera para cualquier tipo de dispositivo sin ocupar espacio de almacenamiento.
+          <h2 className="qr-card-title">SINDY LUXURY</h2>
+          <p className="qr-card-subtitle">
+            Escanea con tu cámara o descarga la app oficial
           </p>
         </div>
 
-        {/* Scannable Luxury QR */}
-        <div className="qr-image-container">
-          <img 
-            src="/icons/ebna-scannable-qr.png" 
-            alt="Código QR Oficial EBNA Luxury" 
-            className="qr-code-img"
-          />
-          <div className="qr-glow-ring"></div>
-        </div>
-
-        {/* Universal Compatibility Badges */}
-        <div className="universal-devices-container">
-          <div className="universal-devices-label">
-            <ShieldCheck size={14} color="#10B981" />
-            <span>Disponible e Instalable en Todos los Dispositivos:</span>
+        {/* Centerpiece Luxury QR Plaque */}
+        <div className="qr-plaque-wrapper">
+          <div className="qr-code-frame">
+            <img 
+              src="/icons/ebna-scannable-qr.png" 
+              alt="Código QR Oficial EBNA Luxury" 
+              className="qr-code-graphic" 
+            />
           </div>
-          <div className="universal-badges-grid">
-            {devices.map(d => (
-              <span key={d.label} className="universal-device-chip">
-                {d.icon}
-                <span>{d.label}</span>
-              </span>
-            ))}
+          <div className="qr-scan-badge">
+            <Camera size={13} />
+            <span>Apunta con la cámara de tu teléfono</span>
           </div>
         </div>
 
+        {/* Direct Action Buttons */}
         {installedSuccess ? (
-          <div style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', color: '#15803D', padding: '12px 16px', borderRadius: '16px', margin: '1rem 0', fontSize: '0.88rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-            <CheckCircle size={18} /> ¡Aplicación instalada con éxito en tu pantalla de inicio!
+          <div className="qr-installed-alert">
+            <CheckCircle2 size={18} />
+            <span>¡App añadida a tu pantalla de inicio!</span>
           </div>
         ) : (
-          /* Single Unified Universal PWA Download / Install Action & Android APK */
-          <div className="qr-modal-actions" style={{ marginTop: '1.2rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="qr-card-actions">
             <a 
               href="/ebna-sindy-luxury.apk"
               download="EBNA_Sindy_Luxury.apk"
-              className="btn-qr-download"
-              style={{ width: '100%', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', borderRadius: '16px', fontSize: '0.92rem', fontWeight: 800, background: 'linear-gradient(135deg, #10B981, #059669)', color: '#FFFFFF', boxShadow: '0 4px 16px rgba(16, 185, 129, 0.35)' }}
+              className="qr-btn-primary"
             >
-              <Smartphone size={19} />
-              <span>Descargar APK Nativo para Android (529 KB)</span>
+              <Smartphone size={17} />
+              <span>Descargar APK Android</span>
             </a>
+
             <button 
               type="button"
               onClick={handleInstallUniversalPWA} 
-              className="btn-qr-download"
-              style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '11px 20px', borderRadius: '16px', fontSize: '0.88rem', fontWeight: 700, background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(216, 27, 96, 0.3)' }}
+              className="qr-btn-secondary"
             >
-              <Download size={18} />
-              <span>Instalar como App PWA (iPhone / PC)</span>
+              <Download size={16} />
+              <span>Instalar en Pantalla de Inicio</span>
             </button>
           </div>
         )}
 
-        {/* Universal 1-Step Guide Accordion */}
+        {/* Guided Quick Tips (Expandable) */}
         {showGuide && (
-          <div style={{ marginTop: '1.2rem', padding: '1.1rem', background: '#FFFFFF', borderRadius: '16px', border: '1.5px solid rgba(216,27,96,0.25)', textAlign: 'left', boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}>
-            <h4 style={{ fontSize: '0.88rem', fontWeight: 800, color: '#1E293B', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span>📲 Instrucciones de Instalación Inmediata:</span>
-            </h4>
+          <div className="qr-quick-guide">
+            <div className="qr-guide-header">
+              {isIOS ? <Apple size={15} /> : <Monitor size={15} />}
+              <span>Instalación rápida en tu dispositivo:</span>
+            </div>
             {isIOS ? (
-              <ol style={{ fontSize: '0.82rem', color: '#475569', paddingLeft: '1.2rem', lineHeight: 1.6, margin: 0 }}>
-                <li>En Safari, toca el icono <strong>Compartir</strong> (rectángulo con flecha hacia arriba).</li>
-                <li>Desliza hacia abajo y selecciona <strong>"Añadir a pantalla de inicio"</strong>.</li>
-                <li>Pulsa <strong>Añadir</strong> en la esquina superior derecha.</li>
+              <ol className="qr-guide-steps">
+                <li>Toca el botón <strong>Compartir</strong> (icono de cuadrado con flecha).</li>
+                <li>Selecciona <strong>"Añadir a pantalla de inicio"</strong>.</li>
+                <li>Pulsa <strong>Añadir</strong> arriba a la derecha.</li>
               </ol>
             ) : (
-              <ol style={{ fontSize: '0.82rem', color: '#475569', paddingLeft: '1.2rem', lineHeight: 1.6, margin: 0 }}>
-                <li>En Chrome o Edge, pulsa los <strong>tres puntos</strong> arriba a la derecha o el icono <strong>Instalar</strong> en la barra de direcciones.</li>
-                <li>Selecciona <strong>"Instalar Sindy Luxury by EBNA"</strong>.</li>
-                <li>¡Listo! La tienda se abrirá como una aplicación nativa ultra-rápida.</li>
+              <ol className="qr-guide-steps">
+                <li>En tu navegador, abre el menú de opciones (<strong>⋮</strong>).</li>
+                <li>Pulsa <strong>"Instalar aplicación"</strong> o "Añadir a inicio".</li>
+                <li>¡Listo para acceder al instante!</li>
               </ol>
             )}
           </div>
         )}
 
-        <div className="qr-modal-footer-note" style={{ marginTop: '1rem', fontSize: '0.74rem', color: 'var(--text-secondary)' }}>
-          https://ebna-luxury.vercel.app • Actualizaciones automáticas y funcionamiento sin conexión
+        <div className="qr-card-footer">
+          <span>ebna-luxury.vercel.app • Malabo, Guinea Ecuatorial</span>
         </div>
       </div>
     </div>,

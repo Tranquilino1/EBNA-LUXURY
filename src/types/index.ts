@@ -106,7 +106,7 @@ export interface CartContextType {
   cartItems: CartItem[];
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
-  addToCart: (product: Product, quantity?: number, selectedSize?: string, selectedColor?: string) => void;
+  addToCart: (product: Product, quantity?: number, selectedSize?: string, selectedColor?: string, openCartDrawer?: boolean) => void;
   removeFromCart: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, newQuantity: number) => void;
   clearCart: () => void;

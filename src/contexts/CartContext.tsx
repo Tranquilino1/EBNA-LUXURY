@@ -36,7 +36,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     product: Product,
     quantity: number = 1,
     selectedSize?: string,
-    selectedColor?: string
+    selectedColor?: string,
+    openCartDrawer: boolean = false
   ) => {
     const isCosmetic = ['COSMETICA_FACIAL', 'HIGIENE_CORPORAL', 'PERFUMERIA'].includes(product.category || '');
     const isAccessory = product.category === 'BOLSOS_ACCESORIOS';
@@ -73,7 +74,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
 
     triggerParticleBurst(product.in_stock ? 'green' : 'red');
-    setIsCartOpen(true);
+    if (openCartDrawer) {
+      setIsCartOpen(true);
+    }
   };
 
   const removeFromCart = (cartItemId: string) => {

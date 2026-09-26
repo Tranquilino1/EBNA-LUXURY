@@ -1,229 +1,400 @@
+/* qrModal.css - Curated Luxury QR Card with Seamless Multi-Device Centering */
+
 .qr-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 10, 20, 0.85);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(12, 6, 14, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 16px;
+  animation: qrOverlayFadeIn 0.25s ease-out forwards;
   overflow-y: auto;
-  animation: fadeIn 0.25s ease-out;
+  -webkit-overflow-scrolling: touch;
 }
 
-.qr-modal-content {
+@keyframes qrOverlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.qr-modal-card {
   position: relative;
-  width: 90%;
-  max-width: 420px;
-  max-height: 90vh;
-  overflow-y: auto;
+  width: 100%;
+  max-width: 360px;
   margin: auto;
-  background: linear-gradient(135deg, rgba(255, 240, 245, 0.98), rgba(255, 225, 235, 0.95));
-  border: 1.5px solid rgba(216, 27, 96, 0.4);
-  box-shadow: 0 20px 50px rgba(216, 27, 96, 0.3), 0 0 40px rgba(255, 182, 193, 0.4);
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.98), rgba(254, 242, 246, 0.95));
+  border: 1.5px solid rgba(212, 175, 55, 0.38);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.3),
+    0 0 35px rgba(216, 27, 96, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   border-radius: 28px;
-  padding: 2.2rem 1.6rem 1.8rem 1.6rem;
+  padding: 28px 22px 20px 22px;
   text-align: center;
   color: #1E293B;
+  animation: qrCardPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-sizing: border-box;
 }
 
-.qr-modal-close {
+[data-theme="dark"] .qr-modal-card {
+  background: linear-gradient(155deg, rgba(28, 16, 24, 0.98), rgba(18, 10, 16, 0.96));
+  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: 
+    0 28px 70px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(212, 175, 55, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: #F8FAFC;
+}
+
+@keyframes qrCardPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Close Button */
+.qr-modal-close-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: linear-gradient(135deg, #D81B60, #C2185B);
-  border: 2px solid #FFFFFF;
-  color: #FFFFFF;
-  width: 44px;
-  height: 44px;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
+  border: 1px solid rgba(216, 27, 96, 0.25);
+  background: rgba(255, 255, 255, 0.85);
+  color: #64748B;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(216, 27, 96, 0.5);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 100;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 10;
   -webkit-tap-highlight-color: transparent;
 }
 
-.qr-modal-close:hover, .qr-modal-close:active {
-  background: #A31545;
-  transform: scale(1.1) rotate(90deg);
-  box-shadow: 0 6px 20px rgba(216, 27, 96, 0.6);
+[data-theme="dark"] .qr-modal-close-btn {
+  background: rgba(40, 24, 34, 0.85);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: #CBD5E1;
 }
 
-.qr-icon-badge {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 0.75rem auto;
-  background: rgba(254, 237, 242, 0.9);
-  border: 2px solid rgba(216, 27, 96, 0.3);
+.qr-modal-close-btn:hover {
+  background: #D81B60;
+  color: #FFFFFF;
+  border-color: #D81B60;
+  transform: rotate(90deg) scale(1.08);
+  box-shadow: 0 4px 14px rgba(216, 27, 96, 0.4);
+}
+
+/* Brand Header */
+.qr-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.qr-brand-emblem {
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
+  border: 2px solid #D4AF37;
+  background: radial-gradient(circle, #250F1D 0%, #12060E 100%);
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 16px rgba(212, 175, 55, 0.35);
+  margin-bottom: 10px;
+  overflow: hidden;
 }
 
-.qr-modal-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
+.qr-brand-logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.qr-card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.32rem;
   font-weight: 700;
+  letter-spacing: 0.06em;
   color: #1E293B;
-  margin-bottom: 0.3rem;
+  margin: 0 0 4px 0;
 }
 
-.qr-subtitle {
-  font-size: 0.85rem;
+[data-theme="dark"] .qr-card-title {
+  color: #FFFFFF;
+}
+
+.qr-card-subtitle {
+  font-size: 0.80rem;
   color: #64748B;
+  margin: 0;
+  line-height: 1.35;
+  max-width: 280px;
 }
 
-.qr-image-container {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  margin: 1.2rem auto;
-  padding: 10px;
+[data-theme="dark"] .qr-card-subtitle {
+  color: #94A3B8;
+}
+
+/* Centerpiece Luxury QR Plaque */
+.qr-plaque-wrapper {
+  margin: 14px 0 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-code-frame {
+  width: 175px;
+  height: 175px;
   background: #FFFFFF;
   border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(216, 27, 96, 0.2);
-  border: 2px solid #F48FB1;
+  padding: 10px;
+  border: 1.5px solid rgba(212, 175, 55, 0.45);
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(216, 27, 96, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
 }
 
-.qr-code-img {
+.qr-code-frame:hover {
+  transform: scale(1.02);
+  border-color: #D4AF37;
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.15),
+    0 0 24px rgba(212, 175, 55, 0.3);
+}
+
+.qr-code-graphic {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
-.universal-devices-container {
-  margin: 1rem 0;
-  text-align: center;
-}
-
-.universal-devices-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 0.76rem;
-  font-weight: 800;
-  color: #1E293B;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 8px;
-}
-
-.universal-badges-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: center;
-}
-
-.universal-device-chip {
+.qr-scan-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 12px;
   border-radius: 20px;
   background: rgba(216, 27, 96, 0.08);
-  border: 1px solid rgba(216, 27, 96, 0.22);
-  color: #B8114E;
-  font-size: 0.74rem;
+  border: 1px solid rgba(216, 27, 96, 0.2);
+  color: #D81B60;
+  font-size: 0.72rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
-.app-status-badge {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #880E4F;
-  margin-bottom: 0.2rem;
+[data-theme="dark"] .qr-scan-badge {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: #F5E6B3;
 }
 
-.url-text {
-  font-size: 0.78rem;
-  color: #64748B;
-  margin-bottom: 1.4rem;
-  font-family: monospace;
-}
-
-.qr-modal-actions {
+/* Action Buttons */
+.qr-card-actions {
   display: flex;
-  gap: 0.6rem;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 2px;
 }
 
-.btn-qr-download, .btn-qr-open {
-  flex: 1;
+.qr-btn-primary {
+  width: 100%;
+  text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  padding: 0.75rem;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.btn-qr-download {
-  background: linear-gradient(135deg, #D81B60, #C2185B);
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10B981, #059669);
   color: #FFFFFF;
-  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.32);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  letter-spacing: 0.01em;
 }
 
-.btn-qr-download:hover {
+.qr-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(216, 27, 96, 0.4);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.42);
+  filter: brightness(1.05);
 }
 
-.btn-qr-open {
-  background: rgba(255, 255, 255, 0.95);
+.qr-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.qr-btn-secondary {
+  width: 100%;
   border: 1px solid rgba(216, 27, 96, 0.3);
-  color: #880E4F;
-}
-
-.btn-qr-open:hover {
-  background: #FFFFFF;
+  background: rgba(255, 255, 255, 0.85);
   color: #D81B60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 14px;
+  font-size: 0.80rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+[data-theme="dark"] .qr-btn-secondary {
+  background: rgba(35, 20, 30, 0.85);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: #F5E6B3;
 }
 
+.qr-btn-secondary:hover {
+  background: rgba(216, 27, 96, 0.1);
+  color: #D81B60;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .qr-btn-secondary:hover {
+  background: rgba(212, 175, 55, 0.15);
+  color: #FFFFFF;
+}
+
+.qr-btn-secondary:active {
+  transform: scale(0.98);
+}
+
+/* Success Alert */
+.qr-installed-alert {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #059669;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+[data-theme="dark"] .qr-installed-alert {
+  color: #34D399;
+}
+
+/* Expandable Quick Guide */
+.qr-quick-guide {
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(216, 27, 96, 0.2);
+  border-radius: 14px;
+  text-align: left;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  animation: qrOverlayFadeIn 0.2s ease-out;
+}
+
+[data-theme="dark"] .qr-quick-guide {
+  background: rgba(20, 10, 18, 0.7);
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+.qr-guide-header {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1E293B;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+[data-theme="dark"] .qr-guide-header {
+  color: #F8FAFC;
+}
+
+.qr-guide-steps {
+  font-size: 0.74rem;
+  color: #64748B;
+  line-height: 1.5;
+  padding-left: 18px;
+  margin: 0;
+}
+
+[data-theme="dark"] .qr-guide-steps {
+  color: #CBD5E1;
+}
+
+/* Footer Minimal Info */
+.qr-card-footer {
+  margin-top: 14px;
+  font-size: 0.68rem;
+  color: #94A3B8;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .qr-card-footer {
+  color: #64748B;
+}
+
+/* Mobile Screen Tuning */
 @media (max-width: 480px) {
-  .qr-modal-content {
-    width: calc(100% - 16px);
-    padding: 1.6rem 1rem 1.2rem 1rem;
-    border-radius: 22px;
+  .qr-modal-overlay {
+    padding: 12px;
   }
-  .qr-image-container {
-    width: 160px;
-    height: 160px;
-    margin: 0.8rem auto;
+  .qr-modal-card {
+    max-width: 340px;
+    padding: 24px 18px 16px 18px;
+    border-radius: 24px;
   }
-  .qr-modal-header h2 {
-    font-size: 1.25rem;
+  .qr-brand-emblem {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 8px;
   }
-  .qr-subtitle {
-    font-size: 0.78rem;
+  .qr-card-title {
+    font-size: 1.2rem;
   }
-  .btn-qr-download {
-    padding: 10px 14px !important;
-    font-size: 0.82rem !important;
+  .qr-code-frame {
+    width: 155px;
+    height: 155px;
+    padding: 8px;
+    border-radius: 16px;
+  }
+  .qr-btn-primary {
+    padding: 10px 14px;
+    font-size: 0.82rem;
+  }
+  .qr-btn-secondary {
+    padding: 8px 12px;
+    font-size: 0.76rem;
   }
 }
-
-
