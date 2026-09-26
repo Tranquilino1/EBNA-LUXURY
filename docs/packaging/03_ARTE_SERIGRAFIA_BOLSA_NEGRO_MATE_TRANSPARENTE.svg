@@ -1,0 +1,56 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" style="background: transparent;">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@500;700;800&amp;display=swap');
+      .brand-title { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 105px; fill: #18181B; letter-spacing: 0.12em; text-anchor: middle; }
+      .brand-lux   { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-size: 130px; fill: #18181B; letter-spacing: 0.16em; text-anchor: middle; }
+      .brand-sub   { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-weight: 700; font-size: 32px; fill: #3F3F46; letter-spacing: 0.42em; text-anchor: middle; }
+      .brand-loc   { font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-weight: 600; font-size: 24px; fill: #3F3F46; letter-spacing: 0.32em; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- ROYAL QUEEN CROWN -->
+  <g transform="translate(800, 240) scale(1.15)">
+    <!-- Crown Base -->
+    <path d="M -150 70 Q 0 85 150 70 Q 0 75 -150 70 Z" fill="#18181B" />
+    <path d="M -150 82 Q 0 97 150 82 Q 0 87 -150 82 Z" fill="#18181B" />
+
+    <!-- Crown Jewels on Base -->
+    <circle cx="-120" cy="76" r="3.5" fill="#18181B" />
+    <circle cx="-80"  cy="78" r="3.5" fill="#18181B" />
+    <circle cx="-40"  cy="80" r="3.5" fill="#18181B" />
+    <circle cx="0"    cy="81" r="4.5" fill="#18181B" />
+    <circle cx="40"   cy="80" r="3.5" fill="#18181B" />
+    <circle cx="80"   cy="78" r="3.5" fill="#18181B" />
+    <circle cx="120"  cy="76" r="3.5" fill="#18181B" />
+
+    <!-- Crown Peaks Silhouette -->
+    <path d="M -150 70 L -175 -25 L -90 28 L 0 -65 L 90 28 L 175 -25 L 150 70 Z" 
+          fill="none" stroke="#18181B" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" />
+    
+    <!-- Inner Filigree / Arches -->
+    <path d="M -175 -25 Q -90 10 0 -65 Q 90 10 175 -25" fill="none" stroke="#18181B" stroke-width="4.5" opacity="0.85" />
+    <circle cx="0" cy="5" r="16" fill="none" stroke="#18181B" stroke-width="4.5" />
+    <circle cx="0" cy="5" r="6" fill="#18181B" />
+
+    <!-- Crown Spheres on Peaks -->
+    <circle cx="-175" cy="-28" r="13" fill="#18181B" />
+    <circle cx="-90"  cy="25"  r="10" fill="#18181B" />
+    <circle cx="0"    cy="-72" r="18" fill="#18181B" />
+    <circle cx="90"   cy="25"  r="10" fill="#18181B" />
+    <circle cx="175"  cy="-28" r="13" fill="#18181B" />
+  </g>
+
+  <!-- BRAND NAME -->
+  <text x="800" y="520" class="brand-title">EBNA SINDY</text>
+  <text x="800" y="660" class="brand-lux">LUXURY</text>
+
+  <!-- DECORATIVE DIVIDER WITH DIAMOND -->
+  <line x1="320" y1="740" x2="740" y2="740" stroke="#3F3F46" stroke-width="3" stroke-linecap="round" opacity="0.9" />
+  <polygon points="800,728 812,740 800,752 788,740" fill="#3F3F46" />
+  <line x1="860" y1="740" x2="1280" y2="740" stroke="#3F3F46" stroke-width="3" stroke-linecap="round" opacity="0.9" />
+
+  <!-- SUBTITLES -->
+  <text x="800" y="815" class="brand-sub">MODA Y COSMÉTICA</text>
+  <text x="800" y="880" class="brand-loc">BOUTIQUE EXCLUSIVA • MONGOMO</text>
+</svg>
