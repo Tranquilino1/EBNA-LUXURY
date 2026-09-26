@@ -26,51 +26,40 @@
     <link rel="icon" type="image/png" href="/icons/favicon.png" />
     <link rel="preload" href="/icons/ebna-logo.png" as="image" type="image/png" fetchpriority="high" />
 
-    <!-- 0.0ms High-Priority Image Preloads & GPU Pre-warm -->
-    <link rel="preload" href="/products/nuevos/yara-de-lattafa-perfumes-edp-100ml-original-a-15000.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/nuevos/wokali-sherbet-body-scrub-exfoliante-corporal-5000.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/hd/hd_ebna_01.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/hd/hd_ebna_02.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/hd/hd_ebna_03.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/hd/hd_ebna_04.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/hd/hd_ebna_05.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/hd/hd_ebna_06.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/products/hd/hd_ebna_07.jpg" as="image" fetchpriority="high" />
-    <script>
-      (function() {
-        var priorityImgs = [
-          '/products/nuevos/yara-de-lattafa-perfumes-edp-100ml-original-a-15000.jpg',
-          '/products/nuevos/wokali-sherbet-body-scrub-exfoliante-corporal-5000.jpg',
-          '/products/nuevos/vestido-camisero-fluido-de-paseo-y-resort-con-20000.jpg',
-          '/products/hd/hd_ebna_01.jpg',
-          '/products/hd/hd_ebna_02.jpg',
-          '/products/hd/hd_ebna_03.jpg',
-          '/products/hd/hd_ebna_04.jpg',
-          '/products/hd/hd_ebna_05.jpg',
-          '/products/hd/hd_ebna_06.jpg',
-          '/products/hd/hd_ebna_07.jpg',
-          '/products/hd/hd_ebna_08.jpg',
-          '/products/hd/hd_ebna_09.jpg',
-          '/products/hd/hd_ebna_10.jpg',
-          '/products/hd/hd_ebna_11.jpg',
-          '/products/hd/hd_ebna_12.jpg',
-          '/products/hd/hd_ebna_13.jpg',
-          '/products/hd/hd_ebna_14.jpg',
-          '/products/hd/hd_ebna_15.jpg',
-          '/products/hd/hd_ebna_16.jpg'
-        ];
-        window.__ebna_prewarm = [];
-        for (var i = 0; i < priorityImgs.length; i++) {
-          var im = new Image();
-          im.src = priorityImgs[i];
-          im.decoding = 'async';
-          if ('decode' in im) {
-            im.decode().catch(function(){});
-          }
-          window.__ebna_prewarm.push(im);
-        }
-      })();
+    <!-- Ultra-Fast LCP Preload (Logo & Primary Hero Asset only) -->
+    <link rel="preload" href="/icons/icon-512x512.png" as="image" type="image/png" fetchpriority="high" />
 
+    <!-- Critical CSS for Instant Paint & Zero CLS -->
+    <style>
+      :root {
+        --brand-accent: #D81B60;
+        --canvas-bg: #FAF9F6;
+        --text-primary: #1E293B;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: var(--canvas-bg);
+        color: var(--text-primary);
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      #root {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .luxury-container {
+        max-width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    </style>
+
+    <script>
       // Auto-detect QR scan on Android devices to trigger direct APK download/installer
       (function() {
         try {

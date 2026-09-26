@@ -1,4 +1,4 @@
-﻿import { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminProducts } from '../hooks/useAdminProducts';
@@ -570,10 +570,30 @@ export function AdminDashboard() {
                           <td style={{ padding: '0.8rem 1rem', fontWeight: 700, color: '#1E293B' }}>
                             {formatPrice(product.price)}
                           </td>
-                          <td style={{ padding: '0.8rem 1rem' }}>
-                            <span style={{ padding: '0.25rem 0.7rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 700, background: product.in_stock ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: product.in_stock ? '#15803d' : '#b91c1c' }}>
-                              {product.in_stock ? 'En Stock' : 'Agotado'}
-                            </span>
+                          <td style={{ padding: '0.8rem 1rem' }} onClick={(e) => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              onClick={() => toggleStock(product.id, product.in_stock)}
+                              style={{
+                                padding: '0.35rem 0.85rem',
+                                borderRadius: '999px',
+                                fontSize: '0.78rem',
+                                fontWeight: 800,
+                                border: product.in_stock ? '1.5px solid #10B981' : '1.5px solid #EF4444',
+                                background: product.in_stock ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                                color: product.in_stock ? '#059669' : '#DC2626',
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                transition: 'all 0.2s ease',
+                                boxShadow: product.in_stock ? '0 2px 8px rgba(16, 185, 129, 0.18)' : '0 2px 8px rgba(239, 68, 68, 0.18)'
+                              }}
+                              title={product.in_stock ? 'Disponible (Clic para poner como Agotado)' : 'Agotado (Clic para poner En Stock)'}
+                            >
+                              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: product.in_stock ? '#10B981' : '#EF4444' }}></span>
+                              <span>{product.in_stock ? '✓ En Stock' : '✗ Agotado'}</span>
+                            </button>
                           </td>
                           <td style={{ padding: '0.8rem 1rem' }}>
                             <button
@@ -689,9 +709,30 @@ export function AdminDashboard() {
 
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '8px' }}>
                         <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                          <span style={{ padding: '3px 8px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 700, background: product.in_stock ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: product.in_stock ? '#15803d' : '#b91c1c' }}>
-                            {product.in_stock ? 'En Stock' : 'Agotado'}
-                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleStock(product.id, product.in_stock);
+                            }}
+                            style={{
+                              padding: '4px 10px',
+                              borderRadius: '12px',
+                              fontSize: '0.74rem',
+                              fontWeight: 800,
+                              border: product.in_stock ? '1.5px solid #10B981' : '1.5px solid #EF4444',
+                              background: product.in_stock ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                              color: product.in_stock ? '#059669' : '#DC2626',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '5px'
+                            }}
+                            title="Toca para cambiar estado de stock"
+                          >
+                            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: product.in_stock ? '#10B981' : '#EF4444' }}></span>
+                            <span>{product.in_stock ? '✓ En Stock' : '✗ Agotado'}</span>
+                          </button>
 
                           <button
                             onClick={(e) => {

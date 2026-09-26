@@ -364,40 +364,73 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
               />
             </div>
 
-            {/* Campo 6: Stock y Visibilidad (Mini tarjetas interactivas) */}
+            {/* Campo 6: Estado de Stock (Verde / Rojo) y Visibilidad */}
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.45rem' }}>
                 <PackageCheck size={15} color="#D81B60" />
-                <span>Estado de Stock y Visibilidad</span>
+                <span>Estado de Stock en Catálogo *</span>
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                {/* Botón Switch Stock */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+                {/* Opción En Stock (Verde) */}
                 <button
                   type="button"
                   onClick={() => {
                     setIsDirty(true);
-                    setFormData(prev => ({ ...prev, in_stock: !prev.in_stock }));
+                    setFormData(prev => ({ ...prev, in_stock: true }));
                   }}
                   style={{
-                    padding: '8px 10px',
+                    padding: '9px 10px',
                     borderRadius: '10px',
-                    border: formData.in_stock ? '1.5px solid #10B981' : '1.5px solid #EF4444',
-                    background: formData.in_stock ? 'rgba(16, 185, 129, 0.08)' : 'rgba(239, 68, 68, 0.08)',
-                    color: formData.in_stock ? '#059669' : '#DC2626',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
+                    border: formData.in_stock ? '2px solid #10B981' : '1px solid #E2E8F0',
+                    background: formData.in_stock ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)' : '#F8FAFC',
+                    color: formData.in_stock ? '#FFFFFF' : '#64748B',
+                    fontSize: '0.82rem',
+                    fontWeight: 800,
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '6px'
+                    gap: '6px',
+                    boxShadow: formData.in_stock ? '0 3px 10px rgba(16, 185, 129, 0.35)' : 'none',
+                    transition: 'all 0.2s ease'
                   }}
                 >
-                  {formData.in_stock ? <PackageCheck size={15} /> : <PackageX size={15} />}
-                  <span>{formData.in_stock ? 'Disponible' : 'Agotado'}</span>
+                  <PackageCheck size={16} />
+                  <span>✓ En Stock</span>
                 </button>
 
-                {/* Botón Switch Visibilidad */}
+                {/* Opción Agotado (Rojo) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDirty(true);
+                    setFormData(prev => ({ ...prev, in_stock: false }));
+                  }}
+                  style={{
+                    padding: '9px 10px',
+                    borderRadius: '10px',
+                    border: !formData.in_stock ? '2px solid #EF4444' : '1px solid #E2E8F0',
+                    background: !formData.in_stock ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)' : '#F8FAFC',
+                    color: !formData.in_stock ? '#FFFFFF' : '#64748B',
+                    fontSize: '0.82rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    boxShadow: !formData.in_stock ? '0 3px 10px rgba(239, 68, 68, 0.35)' : 'none',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <PackageX size={16} />
+                  <span>✗ Agotado</span>
+                </button>
+              </div>
+
+              {/* Visibilidad pública / oculta */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: 'var(--canvas-elevated, #F8FAFC)', borderRadius: '10px', border: '1px solid var(--border-light, #E2E8F0)' }}>
+                <span style={{ fontSize: '0.76rem', color: 'var(--text-secondary, #64748B)', fontWeight: 600 }}>Visibilidad:</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -405,22 +438,20 @@ export function ProductFormModal({ product, onClose, onSave }: ProductFormModalP
                     setFormData(prev => ({ ...prev, is_hidden: !prev.is_hidden }));
                   }}
                   style={{
-                    padding: '8px 10px',
-                    borderRadius: '10px',
-                    border: formData.is_hidden ? '1.5px solid #94A3B8' : '1.5px solid #D81B60',
-                    background: formData.is_hidden ? 'rgba(148, 163, 184, 0.08)' : 'rgba(216, 27, 96, 0.08)',
+                    padding: '4px 10px',
+                    borderRadius: '20px',
+                    border: formData.is_hidden ? '1px solid #94A3B8' : '1px solid #D81B60',
+                    background: formData.is_hidden ? 'rgba(148, 163, 184, 0.1)' : 'rgba(216, 27, 96, 0.1)',
                     color: formData.is_hidden ? '#64748B' : '#D81B60',
-                    fontSize: '0.78rem',
+                    fontSize: '0.74rem',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px'
+                    gap: '5px'
                   }}
                 >
-                  {formData.is_hidden ? <EyeOff size={15} /> : <Eye size={15} />}
-                  <span>{formData.is_hidden ? 'Oculto' : 'Público'}</span>
+                  {formData.is_hidden ? <><EyeOff size={13} /> Oculto</> : <><Eye size={13} /> Visible en catálogo</>}
                 </button>
               </div>
             </div>

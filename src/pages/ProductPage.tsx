@@ -499,6 +499,11 @@ export function ProductPage() {
             <span className="product-authentic-badge">
               <Sparkles size={14} /> 100% Auténtico
             </span>
+            {product.in_stock || product.inStock ? (
+              <span className="shein-instock-badge">✓ En Stock</span>
+            ) : (
+              <span className="shein-soldout-badge">✗ Agotado</span>
+            )}
           </div>
 
           <h1 className="product-main-name">
@@ -621,24 +626,26 @@ export function ProductPage() {
               type="button"
               className="desktop-btn-whatsapp"
               onClick={() => setIsCheckoutDrawerOpen(true)}
-              disabled={!product.in_stock}
+              style={!(product.in_stock || product.inStock) ? { background: 'linear-gradient(135deg, #475569 0%, #334155 100%)' } : undefined}
             >
               <WhatsAppIcon size={18} color="white" />
-              <span>Pedir por WhatsApp (Generar Ticket)</span>
+              <span>{product.in_stock || product.inStock ? 'Pedir por WhatsApp (Generar Ticket)' : 'Consultar Reposición / Reservar por WhatsApp'}</span>
             </button>
 
             <button
               type="button"
               className="desktop-btn-cart"
               onClick={() => {
+                if (!(product.in_stock || product.inStock)) return;
                 addToCart(product, quantity, currentSize, currentColor);
                 setJustAddedToCart(true);
                 setTimeout(() => setJustAddedToCart(false), 2000);
               }}
-              disabled={!product.in_stock}
+              disabled={!(product.in_stock || product.inStock)}
+              style={!(product.in_stock || product.inStock) ? { opacity: 0.65, cursor: 'not-allowed', background: '#94A3B8' } : undefined}
             >
               {justAddedToCart ? <Check size={18} /> : <ShoppingBag size={18} />}
-              <span>{justAddedToCart ? '¡Añadido a tu Cesta!' : `Añadir ${quantity} a la Cesta`}</span>
+              <span>{!(product.in_stock || product.inStock) ? 'Artículo Agotado' : (justAddedToCart ? '¡Añadido a tu Cesta!' : `Añadir ${quantity} a la Cesta`)}</span>
             </button>
           </div>
         </div>
@@ -655,23 +662,25 @@ export function ProductPage() {
             type="button"
             className="sticky-btn-pedir"
             onClick={() => setIsCheckoutDrawerOpen(true)}
-            disabled={!product.in_stock}
+            style={!(product.in_stock || product.inStock) ? { background: 'linear-gradient(135deg, #475569 0%, #334155 100%)' } : undefined}
           >
             <WhatsAppIcon size={16} color="white" />
-            <span>Pedir</span>
+            <span>{product.in_stock || product.inStock ? 'Pedir' : 'Reservar'}</span>
           </button>
           <button
             type="button"
             className={`sticky-btn-cesta ${justAddedToCart ? 'is-added' : ''}`}
             onClick={() => {
+              if (!(product.in_stock || product.inStock)) return;
               addToCart(product, quantity, currentSize, currentColor);
               setJustAddedToCart(true);
               setTimeout(() => setJustAddedToCart(false), 2000);
             }}
-            disabled={!product.in_stock}
+            disabled={!(product.in_stock || product.inStock)}
+            style={!(product.in_stock || product.inStock) ? { opacity: 0.65, cursor: 'not-allowed', background: '#94A3B8' } : undefined}
           >
             {justAddedToCart ? <Check size={16} /> : <ShoppingBag size={16} />}
-            <span>{justAddedToCart ? '¡Listo!' : 'Cesta'}</span>
+            <span>{!(product.in_stock || product.inStock) ? 'Agotado' : (justAddedToCart ? '¡Listo!' : 'Cesta')}</span>
           </button>
         </div>
       </div>

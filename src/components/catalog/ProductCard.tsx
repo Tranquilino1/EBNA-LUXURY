@@ -191,8 +191,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               -{Math.round(((originalPriceVal - priceVal) / originalPriceVal) * 100)}%
             </span>
           )}
-          {!(product.inStock || product.in_stock) && (
-            <span className="shein-soldout-badge">Agotado</span>
+          {!(product.inStock || product.in_stock) ? (
+            <span className="shein-soldout-badge">✗ Agotado</span>
+          ) : (
+            <span className="shein-instock-badge">✓ En Stock</span>
           )}
           {ordersCount > 0 && (
             <span className="shein-trend-badge">
@@ -437,7 +439,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
         </div>
         
         <div className="product-actions-shein">
-          {/* Botón 1: PEDIR WHATSAPP (Verde Esmeralda Lujo) */}
+          {/* Botón 1: PEDIR WHATSAPP / RESERVAR */}
           <button
             type="button"
             className="btn-shein-pedir"
@@ -445,26 +447,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
               e.stopPropagation();
               navigate(`/producto/${product.slug || product.id}?pedir=true`);
             }}
-            title="Pedir directamente por WhatsApp"
+            title={product.in_stock || product.inStock ? "Pedir directamente por WhatsApp" : "Reservar o consultar reposición por WhatsApp"}
+            style={!(product.in_stock || product.inStock) ? { background: 'linear-gradient(135deg, #475569 0%, #334155 100%)' } : undefined}
           >
             <WhatsAppIcon size={14} color="white" />
-            <span className="btn-shein-text">Pedir</span>
+            <span className="btn-shein-text">{product.in_stock || product.inStock ? 'Pedir' : 'Reservar'}</span>
           </button>
 
           {/* Botón 2: CESTA (Rosa Lujo EBNA) */}
           <button
             type="button"
             className={`btn-shein-carrito ${justAddedToCart ? 'is-added' : ''}`}
+            disabled={!(product.in_stock || product.inStock)}
             onClick={(e) => {
               e.stopPropagation();
+              if (!(product.in_stock || product.inStock)) return;
               addToCart(product, 1);
               setJustAddedToCart(true);
               setTimeout(() => setJustAddedToCart(false), 2000);
             }}
-            title="Añadir a la cesta de compras"
+            title={product.in_stock || product.inStock ? "Añadir a la cesta de compras" : "Artículo temporalmente agotado"}
+            style={!(product.in_stock || product.inStock) ? { opacity: 0.65, cursor: 'not-allowed', background: '#94A3B8' } : undefined}
           >
             {justAddedToCart ? <Check size={14} /> : <ShoppingCart size={14} />}
-            <span className="btn-shein-text">{justAddedToCart ? '¡Listo!' : 'Cesta'}</span>
+            <span className="btn-shein-text">
+              {!(product.in_stock || product.inStock) ? 'Agotado' : (justAddedToCart ? '¡Listo!' : 'Cesta')}
+            </span>
           </button>
         </div>
       </div>

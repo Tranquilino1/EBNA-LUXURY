@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Mail, Headphones, MessageCircle, Share2, ChevronUp, ChevronDown } from 'lucide-react';
+import { MapPin, Mail, Headphones, MessageCircle, Share2, ChevronUp, ChevronDown, HelpCircle } from 'lucide-react';
 import { ContactSupportModal } from '../ui/ContactSupportModal';
 import { TikTokIcon } from '../ui/TikTokIcon';
 import { useCustomization } from '../../contexts/CustomizationContext';
@@ -174,6 +174,21 @@ export const Footer: React.FC = () => {
                 <span className="footer-chip-sub">+240 555 32 00 17</span>
               </div>
             </button>
+
+            {/* Preguntas Frecuentes FAQ */}
+            <a 
+              href="/#faq" 
+              className="footer-contact-chip"
+              title="Preguntas Frecuentes sobre envíos, pagos en FCFA y garantías"
+            >
+              <div className="footer-chip-icon-box faq-box" style={{ color: '#D4AF37' }}>
+                <HelpCircle size={17} />
+              </div>
+              <div className="footer-chip-text">
+                <span className="footer-chip-title">Dudas Frecuentes</span>
+                <span className="footer-chip-sub">Envíos, Pagos & FAQ</span>
+              </div>
+            </a>
           </div>
 
           {/* Pure Social Icons */}
