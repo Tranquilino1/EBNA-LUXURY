@@ -117,6 +117,22 @@
   box-shadow: var(--shadow-sm);
 }
 
+@media (max-width: 640px) {
+  .category-filter-container {
+    padding: 6px 12px !important;
+    gap: 8px !important;
+  }
+  .category-nav-arrow {
+    display: none !important;
+  }
+  .category-pill {
+    padding: 7px 14px !important;
+    font-size: 0.78rem !important;
+    gap: 5px !important;
+  }
+}
+
+
 .category-pill.active {
   background: var(--brand-gradient);
   color: #FFFFFF;
@@ -779,33 +795,51 @@
 /* Product Grid Layout & Desktop/Mobile Proportional System */
 .product-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 22px;
-  max-width: 1340px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(8px, 2.5vw, 14px);
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 8px;
+  padding: 4px;
+  width: 100%;
 }
 
-@media (min-width: 540px) {
+@media (max-width: 329px) {
+  .product-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 600px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    gap: 18px;
+    padding: 8px;
   }
 }
 
-@media (min-width: 920px) {
+@media (min-width: 900px) {
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
+    gap: 22px;
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1200px) {
   .product-grid {
     grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
+    gap: 26px;
   }
 }
+
+@media (min-width: 1600px) {
+  .product-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 28px;
+    max-width: 1680px;
+  }
+}
+
 
 .empty-state {
   padding: 64px 24px;

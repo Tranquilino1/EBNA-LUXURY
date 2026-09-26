@@ -435,7 +435,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             }}
           >
             <Eye size={13} />
-            <span>Ver</span>
+            <span className="btn-card-text">Ver</span>
           </button>
 
           {/* Botón 2: PEDIR (Verde WhatsApp con Logo Ajustable y Limpio) */}
@@ -465,7 +465,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             }}
           >
             <WhatsAppIcon size={14} color="white" />
-            <span>Pedir</span>
+            <span className="btn-card-text">Pedir</span>
           </button>
 
           {/* Botón 3: CARRITO (Rosa Lujo EBNA) */}
@@ -501,7 +501,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
             }}
           >
             {justAddedToCart ? <Check size={13} /> : <ShoppingCart size={13} />}
-            <span>{justAddedToCart ? '¡Añadido!' : 'Carrito'}</span>
+            <span className="btn-card-text">{justAddedToCart ? '¡Añadido!' : 'Carrito'}</span>
           </button>
         </div>
       </div>

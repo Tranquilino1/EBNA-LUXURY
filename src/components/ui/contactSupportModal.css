@@ -280,3 +280,27 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 22px rgba(24, 66, 102, 0.45);
 }
+
+/* Universal Mobile Responsiveness */
+@media (max-width: 560px) {
+  .contact-modal-card {
+    border-radius: 20px;
+    max-height: 92vh;
+  }
+  .contact-modal-header {
+    padding: 14px 16px;
+  }
+  .contact-modal-body {
+    padding: 14px 16px;
+    gap: 14px;
+  }
+  .aida-startup-banner {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .contact-channels-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

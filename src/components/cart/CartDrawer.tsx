@@ -313,7 +313,7 @@ export const CartDrawer: React.FC = () => {
                       <span>Modalidad de Envío</span>
                     </label>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div className="shipping-options-grid">
                       {/* Opción 1: Envío Normal - Azul Animado Elegante y Simple */}
                       <button
                         type="button"

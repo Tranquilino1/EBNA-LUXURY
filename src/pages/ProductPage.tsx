@@ -1,4 +1,4 @@
-﻿import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useParams, Link, useSearchParams, useNavigate } from 'react-router';
 import { 
   ArrowLeft, Phone, ShieldCheck, Truck, Sparkles, Check, PackageCheck, 
@@ -307,7 +307,7 @@ export function ProductPage() {
   const priceVal = product.priceFCFA || product.price || 0;
 
   return (
-    <div className="product-page luxury-container" style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
+    <div className="product-page luxury-container" style={{ paddingTop: 'clamp(5.5rem, 12vw, 8rem)', paddingBottom: '4rem' }}>
       <SEOHead 
         title={`${product.name} — EBNA Luxury`} 
         description={product.description} 
@@ -445,18 +445,19 @@ export function ProductPage() {
         </div>
       )}
 
-      <div className="product-detail-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem', alignItems: 'start' }}>
+      <div className="product-detail-container product-detail-grid">
         <div 
           className="product-image-section glass-panel" 
           style={{ 
-            padding: '1.25rem', 
+            padding: 'clamp(0.75rem, 2.5vw, 1.25rem)', 
             borderRadius: '24px', 
             background: 'var(--canvas-elevated)', 
             position: 'relative',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'flex-start'
+            justifyContent: 'flex-start',
+            width: '100%'
           }}
         >
           {/* Centered Image Stage with Clean Aspect Ratio */}
@@ -465,8 +466,9 @@ export function ProductPage() {
             style={{
               position: 'relative',
               width: '100%',
-              minHeight: '440px',
+              minHeight: '280px',
               maxHeight: '520px',
+              aspectRatio: '1 / 1',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -820,7 +822,7 @@ export function ProductPage() {
                 <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#475569', marginBottom: '5px' }}>
                   Modalidad de Envío:
                 </label>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div className="shipping-options-grid">
                   {/* Opción 1: Envío Normal - Azul Animado Elegante y Simple */}
                   <button
                     type="button"

@@ -506,3 +506,40 @@
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(216, 27, 96, 0.35);
 }
+
+/* ==========================================================================
+   Responsive Cinema Player Controls for Mobile & Tablets
+   ========================================================================== */
+@media (max-width: 640px) {
+  .fashion-cinema-section {
+    margin: 2rem auto;
+  }
+  .cinema-video-frame {
+    border-radius: 16px;
+  }
+  .cinema-volume-slider {
+    display: none !important;
+  }
+  .controls-left, .controls-right {
+    gap: 6px;
+  }
+  .cinema-time-display {
+    font-size: 0.72rem;
+  }
+  .cinema-headline {
+    font-size: 1.5rem !important;
+  }
+  .cinema-subtext {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .cinema-time-display {
+    display: none;
+  }
+  .quality-badge-btn span {
+    display: none;
+  }
+}
+

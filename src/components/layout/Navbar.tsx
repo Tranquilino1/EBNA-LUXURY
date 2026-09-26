@@ -267,61 +267,105 @@ export const Navbar: React.FC = () => {
       </nav>
 
       {/* Mobile Menu */}
+      {/* Mobile Menu Backdrop & Drawer */}
       {isMobileMenuOpen && (
-        <div className="mobile-menu glass-panel">
-          <Link 
-            to="/" 
-            className="mobile-nav-link"
+        <>
+          <div 
+            className="mobile-menu-backdrop" 
             onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Inicio
-          </Link>
+            aria-label="Cerrar menú móvil" 
+          />
+          <div className="mobile-menu glass-panel">
+            <Link 
+              to="/" 
+              className="mobile-nav-link"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Inicio
+            </Link>
 
-          <button
-            type="button"
-            onClick={() => { setIsMobileMenuOpen(false); openSearch(); }}
-            className="mobile-nav-link"
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.25)', color: '#D81B60', fontWeight: 700, cursor: 'pointer', textAlign: 'left', width: '100%' }}
-          >
-            <Search size={18} color="#D81B60" /> Buscar Producto
-          </button>
+            <button
+              type="button"
+              onClick={() => { setIsMobileMenuOpen(false); openSearch(); }}
+              className="mobile-nav-link"
+              style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.25)', color: '#D81B60', fontWeight: 700, cursor: 'pointer', textAlign: 'left', width: '100%', borderRadius: '12px' }}
+            >
+              <Search size={18} color="#D81B60" /> Buscar Producto (Catálogo)
+            </button>
 
-          <Link 
-            to="/catalogo" 
-            className="mobile-nav-link"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Catálogo
-          </Link>
+            <Link 
+              to="/catalogo" 
+              className="mobile-nav-link"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Catálogo Completo
+            </Link>
 
-          <div className="mobile-menu-divider" />
+            {/* App Android (.APK) / Universal PWA */}
+            <button
+              type="button"
+              onClick={() => { setIsMobileMenuOpen(false); setIsQRModalOpen(true); }}
+              className="mobile-nav-link"
+              style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#059669', background: 'rgba(16, 185, 129, 0.09)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '12px', fontWeight: 700, cursor: 'pointer', textAlign: 'left', width: '100%' }}
+            >
+              <QrCode size={18} color="#059669" /> Descargar App Android (.APK) / Ver QR
+            </button>
 
-          <button
-            onClick={() => { setIsMobileMenuOpen(false); navigate('/catalogo'); }}
-            className="mobile-nav-link mobile-client-btn"
-          >
-            <ShoppingCart size={18} color="#25D366" /> Modo Cliente / Catálogo
-          </button>
+            {/* Live Traffic Presence Badge in Mobile Menu */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 14px', background: 'rgba(16, 185, 129, 0.08)', borderRadius: '12px', fontSize: '0.82rem', color: '#047857', fontWeight: 700 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Circle size={8} fill="#10B981" color="#10B981" className="pulse-dot" />
+                <span>Clientas Conectadas en Vivo:</span>
+              </div>
+              <span style={{ background: '#10B981', color: 'white', padding: '2px 8px', borderRadius: '10px', fontSize: '0.74rem', fontWeight: 800 }}>
+                {onlineCount} online
+              </span>
+            </div>
 
-          <button
-            onClick={handleAdminAccess}
-            className="mobile-nav-link mobile-admin-btn"
-          >
-            <ShieldCheck size={18} color="var(--brand-accent)" /> Acceso Panel Administrador
-          </button>
+            {/* Theme Toggle shortcut in Mobile Menu */}
+            <button
+              type="button"
+              onClick={() => { toggleTheme(); }}
+              className="mobile-nav-link"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'transparent', border: '1px solid var(--border-light)', borderRadius: '12px', cursor: 'pointer', width: '100%' }}
+            >
+              <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {theme === 'dark' ? <Sun size={18} color="#F59E0B" /> : <Moon size={18} color="#D81B60" />}
+                <span>Tema: {theme === 'dark' ? 'Modo Día (Ivory Silk)' : 'Modo Noche (Obsidian)'}</span>
+              </span>
+              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>Cambiar</span>
+            </button>
 
-          <button
-            onClick={() => { setIsMobileMenuOpen(false); setIsSupportModalOpen(true); }}
-            className="mobile-nav-link"
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#184266', fontWeight: 800 }}
-          >
-            <Headphones size={18} color="#184266" /> Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '1.05rem' }}>AiDA</span>
-          </button>
-        </div>
+            <div className="mobile-menu-divider" />
+
+            <button
+              onClick={() => { setIsMobileMenuOpen(false); navigate('/catalogo'); }}
+              className="mobile-nav-link mobile-client-btn"
+            >
+              <ShoppingCart size={18} color="#25D366" /> Modo Cliente / Catálogo
+            </button>
+
+            <button
+              onClick={handleAdminAccess}
+              className="mobile-nav-link mobile-admin-btn"
+            >
+              <ShieldCheck size={18} color="var(--brand-accent)" /> Acceso Panel Administrador
+            </button>
+
+            <button
+              onClick={() => { setIsMobileMenuOpen(false); setIsSupportModalOpen(true); }}
+              className="mobile-nav-link"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#184266', fontWeight: 800 }}
+            >
+              <Headphones size={18} color="#184266" /> Soporte Técnico <span className="aida-highlight-blue" style={{ fontSize: '1.05rem' }}>AiDA</span>
+            </button>
+          </div>
+        </>
       )}
 
       {/* QR Modal */}
       <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
+
 
       {/* Contact & Support Modal */}
       <ContactSupportModal isOpen={isSupportModalOpen} onClose={() => setIsSupportModalOpen(false)} />

@@ -758,52 +758,107 @@ p {
 }
 
 /* ==========================================================================
-   Responsive Breakpoints
-/* Standard Responsive Container & Grid System */
+   Responsive Breakpoints & Universal Adaptive Grid System
+   (Foldables, Phones 320-430px, Tablets 768-1024px, Desktops & 4K Ultrawide)
+   ========================================================================== */
 .luxury-container {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
 }
 
-.product-grid {
+/* Default Mobile: 2 Columns with optimized gap for phone screens (iPhone SE, Pro Max, Galaxy, Pixel) */
+.product-grid, .catalog-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: clamp(8px, 2.5vw, 14px);
+  width: 100%;
 }
 
-@media (min-width: 640px) {
-  .product-grid {
+/* Foldable outer displays and ultra-compact screens (< 330px) */
+@media (max-width: 329px) {
+  .product-grid, .catalog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* Tablets Portrait & Large Phablets (600px - 899px) */
+@media (min-width: 600px) {
+  .product-grid, .catalog-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 18px;
   }
   .luxury-container {
-    padding: 0 1.5rem;
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
   }
 }
 
+/* Tablets Landscape & Small Laptops (900px - 1199px) */
 @media (min-width: 900px) {
-  .product-grid {
+  .product-grid, .catalog-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 22px;
   }
-  .glass-nav {
-    width: 92%;
-    max-width: 1280px;
+  .luxury-container {
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
   }
 }
 
+/* Standard Desktops & High-Res Laptops (1200px - 1599px) */
 @media (min-width: 1200px) {
-  .product-grid {
+  .product-grid, .catalog-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
   }
+}
+
+/* Ultra-wide Monitors & 2K / 4K Displays (>= 1600px) */
+@media (min-width: 1600px) {
   .luxury-container {
-    max-width: 1280px;
-    padding: 0 2rem;
+    max-width: 1680px;
+  }
+  .product-grid, .catalog-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 28px;
   }
 }
+
+/* Universal Product Detail Adaptive Layout */
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  width: 100%;
+}
+
+@media (min-width: 860px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.75rem;
+  }
+}
+
+/* Universal Adaptive Shipping Options Grid */
+.shipping-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+@media (max-width: 370px) {
+  .shipping-options-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
 
 /* ==========================================================================
    Component Styles
@@ -1147,19 +1202,40 @@ p {
    ========================================================================== */
 .stats-counter-section {
   width: 100%;
-  max-width: 1280px;
-  margin: 3.5rem auto;
+  max-width: 1360px;
+  margin: 3rem auto;
   padding: 0 1rem;
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 329px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+@media (min-width: 600px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 960px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
 }
 
 .stat-card {
-  padding: 2rem 1.5rem;
+  padding: clamp(1.2rem, 3vw, 2rem) clamp(0.75rem, 2vw, 1.5rem);
   border-radius: var(--radius-md);
   text-align: center;
   border: 1px solid var(--border-subtle);
@@ -1174,11 +1250,11 @@ p {
 
 .stat-number {
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-size: clamp(1.6rem, 3.2vw, 2.75rem);
   font-weight: 800;
   color: var(--brand-gold-bright);
   line-height: 1.1;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
   letter-spacing: -0.02em;
 }
 
@@ -1187,14 +1263,14 @@ p {
 }
 
 .stat-label {
-  font-size: 0.95rem;
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .stat-sublabel {
-  font-size: 0.78rem;
+  font-size: clamp(0.7rem, 1.5vw, 0.78rem);
   color: var(--text-secondary);
 }
 
@@ -1202,15 +1278,30 @@ p {
    Curated Luxury Value Pillars
    ========================================================================== */
 .features-banner-luxury {
-  margin: 3.5rem 0;
-  padding: 2rem;
+  margin: 3rem 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.75rem;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   background: var(--canvas-surface);
 }
+
+@media (min-width: 600px) {
+  .features-banner-luxury {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1080px) {
+  .features-banner-luxury {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.75rem;
+  }
+}
+
 
 .feature-item-luxury {
   display: flex;
@@ -1621,34 +1712,52 @@ img {
     font-size: 14px;
   }
   
-  .hero-title {
-    font-size: 2.1rem !important;
-    line-height: 1.25 !important;
+  .hero-title, .text-hero-display {
+    font-size: clamp(1.85rem, 5.5vw, 2.5rem) !important;
+    line-height: 1.2 !important;
   }
 
-  .hero-subtitle {
-    font-size: 1rem !important;
+  .hero-lead {
+    font-size: clamp(0.88rem, 2.4vw, 1.05rem) !important;
   }
 
-  .catalog-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
-    gap: 12px !important;
+  .hero-section {
+    padding: clamp(5rem, 14vw, 6.5rem) 1rem 2.5rem 1rem !important;
+    gap: 1.5rem !important;
+  }
+
+  .hero-visual {
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 0 auto !important;
   }
 
   .product-card {
-    padding: 10px !important;
+    padding: 8px !important;
+    border-radius: 16px !important;
+  }
+
+  .product-actions-trio {
+    gap: 3px !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .btn-card-action {
+    padding: 7px 2px !important;
+    font-size: 0.74rem !important;
+    border-radius: 14px !important;
   }
 
   .navbar {
-    padding: 8px 14px !important;
+    padding: 7px 12px !important;
   }
 
-  .brand-name {
-    font-size: 1.1rem !important;
+  .brand-name-uppercase {
+    font-size: clamp(0.92rem, 3.8vw, 1.15rem) !important;
   }
 
-  .brand-sub {
-    font-size: 0.6rem !important;
+  .brand-sub-syndy {
+    font-size: 0.55rem !important;
   }
 
   .admin-stats-grid {
@@ -1663,7 +1772,7 @@ img {
 
   .modal-content, .qr-modal-content {
     padding: 1.25rem !important;
-    border-radius: 18px !important;
+    border-radius: 20px !important;
   }
 
   .platform-badges {
@@ -1671,11 +1780,32 @@ img {
   }
 }
 
-@media (max-width: 380px) {
-  .catalog-grid {
-    grid-template-columns: 1fr !important;
+/* Ultra-compact screens (< 350px e.g. Foldables or iPhone 5/SE1) */
+@media (max-width: 349px) {
+  .product-actions-trio .btn-card-text {
+    display: none !important;
+  }
+
+  .btn-card-action {
+    padding: 7px 4px !important;
+    justify-content: center !important;
+  }
+
+  .btn-card-action svg {
+    margin: 0 !important;
   }
 }
+
+/* Outer Foldable screens (< 330px) fallback to 1 single column */
+@media (max-width: 329px) {
+  .catalog-grid, .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .product-actions-trio .btn-card-text {
+    display: inline !important;
+  }
+}
+
 
 /* ==========================================================================
    Luxury Exclusive Shipping Buttons (Blue Animated & 3D Imperial Gold)
