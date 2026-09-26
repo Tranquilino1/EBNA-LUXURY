@@ -109,16 +109,25 @@ export const QRModal: React.FC<QRModalProps> = ({ isOpen, onClose }) => {
             <CheckCircle size={18} /> ¡Aplicación instalada con éxito en tu pantalla de inicio!
           </div>
         ) : (
-          /* Single Unified Universal PWA Download / Install Action */
-          <div className="qr-modal-actions" style={{ marginTop: '1.2rem' }}>
+          /* Single Unified Universal PWA Download / Install Action & Android APK */
+          <div className="qr-modal-actions" style={{ marginTop: '1.2rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <a 
+              href="/ebna-sindy-luxury.apk"
+              download="EBNA_Sindy_Luxury.apk"
+              className="btn-qr-download"
+              style={{ width: '100%', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', borderRadius: '16px', fontSize: '0.92rem', fontWeight: 800, background: 'linear-gradient(135deg, #10B981, #059669)', color: '#FFFFFF', boxShadow: '0 4px 16px rgba(16, 185, 129, 0.35)' }}
+            >
+              <Smartphone size={19} />
+              <span>Descargar APK Nativo para Android (529 KB)</span>
+            </a>
             <button 
               type="button"
               onClick={handleInstallUniversalPWA} 
               className="btn-qr-download"
-              style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 20px', borderRadius: '16px', fontSize: '0.92rem', fontWeight: 800, background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: '#FFFFFF', boxShadow: '0 4px 16px rgba(216, 27, 96, 0.4)' }}
+              style={{ width: '100%', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '11px 20px', borderRadius: '16px', fontSize: '0.88rem', fontWeight: 700, background: 'linear-gradient(135deg, #D81B60, #C2185B)', color: '#FFFFFF', boxShadow: '0 4px 14px rgba(216, 27, 96, 0.3)' }}
             >
-              <Download size={19} />
-              <span>Instalar Aplicación Oficial PWA</span>
+              <Download size={18} />
+              <span>Instalar como App PWA (iPhone / PC)</span>
             </button>
           </div>
         )}

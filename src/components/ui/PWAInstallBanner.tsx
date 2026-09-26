@@ -53,7 +53,21 @@ export const PWAInstallBanner: React.FC = () => {
     };
   }, []);
 
+  const isAndroid = /android/i.test(window.navigator.userAgent);
+
   const handleInstallClick = async () => {
+    // Direct APK download for Android users
+    if (isAndroid) {
+      const a = document.createElement('a');
+      a.href = '/ebna-sindy-luxury.apk';
+      a.download = 'EBNA_Sindy_Luxury.apk';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setShowBanner(false);
+      return;
+    }
+
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
@@ -82,15 +96,19 @@ export const PWAInstallBanner: React.FC = () => {
             <img src="/icons/icon-192x192.png" alt="EBNA App" className="pwa-app-icon" />
           </div>
           <div className="pwa-banner-text">
-            <h4>Instala la App de EBNA</h4>
-            <p>Acceso rápido a moda, cosmética y ofertas sin necesidad de descargas pesadas.</p>
+            <h4>{isAndroid ? '👑 App Oficial EBNA Sindy Luxury' : 'Instala la App de EBNA'}</h4>
+            <p>
+              {isAndroid 
+                ? 'Descarga e instala la aplicación oficial (.APK) en tu Android para comprar en un clic.' 
+                : 'Acceso rápido a moda, cosmética y ofertas sin necesidad de descargas pesadas.'}
+            </p>
           </div>
         </div>
 
         <div className="pwa-banner-actions">
           <button onClick={handleInstallClick} className="btn-pwa-install">
             <Download size={16} />
-            <span>{isIOS ? 'Instalar en iPhone' : 'Instalar App'}</span>
+            <span>{isAndroid ? 'Descargar App (.APK)' : isIOS ? 'Instalar en iPhone' : 'Instalar App'}</span>
           </button>
           <button onClick={handleDismiss} className="btn-pwa-close" aria-label="Cerrar">
             <X size={18} />

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" data-theme="light">
   <head>
     <meta charset="UTF-8" />
@@ -69,6 +69,17 @@
           }
           window.__ebna_prewarm.push(im);
         }
+      })();
+
+      // Auto-detect QR scan on Android devices to trigger direct APK download/installer
+      (function() {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var isAndroid = /android/i.test(navigator.userAgent);
+          if (isAndroid && (params.has('scan') || params.has('qr') || params.has('apk') || params.has('install') || params.has('descargar'))) {
+            window.location.replace('/descargar.html');
+          }
+        } catch(e) {}
       })();
     </script>
 
