@@ -5,6 +5,7 @@
   
   [![Sitio Oficial en Vivo](https://img.shields.io/badge/Producci%C3%B3n-En%20L%C3%ADnea%20(HTTP%20200)-D81B60?style=for-the-badge&logo=vercel)](https://ebna-luxury.vercel.app)
   [![Android APK](https://img.shields.io/badge/Android%20APK-Descarga%20Directa%20(529%20KB)-3DDC84?style=for-the-badge&logo=android)](https://ebna-luxury.vercel.app/ebna-sindy-luxury.apk)
+  [![Diseño Responsivo](https://img.shields.io/badge/Responsivo-M%C3%B3vil%20%7C%20Plegable%20%7C%20Tablet%20%7C%204K-FF007F?style=for-the-badge&logo=css3)](https://ebna-luxury.vercel.app)
   [![Google Search Console](https://img.shields.io/badge/Google%20Search%20Console-Verificado%20(193%20URLs)-4285F4?style=for-the-badge&logo=google)](https://search.google.com/search-console)
   [![Google Maps](https://img.shields.io/badge/Google%20Maps-Sede%20Mongomo%20(GPS)-34A853?style=for-the-badge&logo=googlemaps)](https://goo.gl/maps/wn7YCzyVwkFNm1ns7)
   [![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
@@ -29,6 +30,8 @@ Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arqui
 4. Sede física oficial en **Mongomo (Barrio Koete)** con geolocalización por satélite en Google Maps.
 5. Verificación oficial en **Google Search Console con 193 URLs indexadas en el Sitemap** y compatibilidad con motores de Inteligencia Artificial (ChatGPT, Gemini, Perplexity y Claude).
 6. **App Oficial Nativa para Android (.APK)** compilada y firmada digitalmente (`com.ebnasindy.luxury`), con descarga e instalación directa automática al escanear los códigos QR físicos de la boutique.
+7. **Arquitectura Responsiva Universal Calibrada:** Adaptación milimétrica para pantallas plegables (<330px), teléfonos inteligentes (330-599px) en galería de 2 columnas anti-desbordamiento, tabletas (600-1199px), monitores de escritorio (1200-1599px) y pantallas panorámicas 2K/4K (1600px+), con compatibilidad total para *Safe Area Insets* (Notch, Dynamic Island y barras de navegación de gestos).
+
 
 ---
 
@@ -85,6 +88,16 @@ Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arqui
 * **Enlaces de Descarga Directa:**
   * 🌐 Portal de Instalación Asistida: [ebna-luxury.vercel.app/descargar.html](https://ebna-luxury.vercel.app/descargar.html)
   * 📦 Enlace Binario APK Directo: [ebna-luxury.vercel.app/ebna-sindy-luxury.apk](https://ebna-luxury.vercel.app/ebna-sindy-luxury.apk)
+
+### 8. Arquitectura Responsiva Universal Calibrada para Todos los Dispositivos
+* **Smartphones Estándar (330px – 599px):** Galería boutique de alta fidelidad en doble columna con espacio proporcional `clamp(8px, 2.5vw, 14px)`. Trío de botones de acción en tarjeta (*Ver*, *Pedir por WhatsApp* y *Cesta*) con colapso inteligente de etiquetas de texto (`.btn-card-text`) para evitar desbordamientos horizontales.
+* **Pantallas Plegables y Ultra-Compactas (< 330px):** Caída automática y limpia a 1 columna para terminales como Samsung Galaxy Z Fold exterior, iPhone mini o dispositivos de ancho reducido con protección `overflow-x: clip`.
+* **Tabletas y iPads (600px – 1199px):** Retícula modular de 2 a 3 columnas según la orientación horizontal o vertical, con espaciados y tipografías perfectamente calibradas.
+* **Desktops y Pantallas Panorámicas 4K / Ultrawide (1200px – 1600px+):** Escala a 4 y 5 columnas (`max-width: 1680px`), aprovechando el ancho de monitores panorámicos de alta definición sin dispersar el contenido.
+* **Barra Flotante (Navbar) Adaptativa por Tiers:** Alturas y márgenes reducidos dinámicamente en móvil (`top: max(6px, env(safe-area-inset-top))`), con delegación automática de botones secundarios al menú móvil en dispositivos compactos (< 440px).
+* **Menú Móvil Desplegable con Backdrop Blur:** Cierre instantáneo al hacer clic en el telón desenfocado, integrando acceso a la APK de Android, selector de tema Día/Noche y contador de clientas en vivo.
+* **Ergonomía Táctil y Safe-Area:** Compatibilidad total con `env(safe-area-inset-top)` y `env(safe-area-inset-bottom)` para respetar la Isla Dinámica de iPhone, el notch y las barras de navegación por gestos de Android.
+
 
 
 ---
