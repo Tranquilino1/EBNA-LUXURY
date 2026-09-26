@@ -4,6 +4,7 @@
   ### Plataforma E-Commerce & PWA Universal de Alta Costura, Moda y Cosmética de Lujo
   
   [![Sitio Oficial en Vivo](https://img.shields.io/badge/Producci%C3%B3n-En%20L%C3%ADnea%20(HTTP%20200)-D81B60?style=for-the-badge&logo=vercel)](https://ebna-luxury.vercel.app)
+  [![Android APK](https://img.shields.io/badge/Android%20APK-Descarga%20Directa%20(529%20KB)-3DDC84?style=for-the-badge&logo=android)](https://ebna-luxury.vercel.app/ebna-sindy-luxury.apk)
   [![Google Search Console](https://img.shields.io/badge/Google%20Search%20Console-Verificado%20(193%20URLs)-4285F4?style=for-the-badge&logo=google)](https://search.google.com/search-console)
   [![Google Maps](https://img.shields.io/badge/Google%20Maps-Sede%20Mongomo%20(GPS)-34A853?style=for-the-badge&logo=googlemaps)](https://goo.gl/maps/wn7YCzyVwkFNm1ns7)
   [![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
@@ -11,7 +12,7 @@
   [![Turso LibSQL](https://img.shields.io/badge/Turso%20Cloud-LibSQL%20Distribuido-00E599?style=for-the-badge&logo=sqlite)](https://turso.tech)
   [![TikTok](https://img.shields.io/badge/TikTok-%40sindyluxury-000000?style=for-the-badge&logo=tiktok)](https://www.tiktok.com/@sindyluxury)
 
-  **[🌐 Entrar a la Boutique en Vivo](https://ebna-luxury.vercel.app)** • **[📍 Ver en Google Maps](https://goo.gl/maps/wn7YCzyVwkFNm1ns7)** • **[📄 Ver Dossier & Contrato Imprimible](https://ebna-luxury.vercel.app/dossier-contrato.html)** • **[💬 Canal Oficial WhatsApp](https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q)**
+  **[🌐 Entrar a la Boutique en Vivo](https://ebna-luxury.vercel.app)** • **[📱 Descargar APK Android](https://ebna-luxury.vercel.app/descargar.html)** • **[📍 Ver en Google Maps](https://goo.gl/maps/wn7YCzyVwkFNm1ns7)** • **[📄 Ver Dossier & Contrato](https://ebna-luxury.vercel.app/dossier-contrato.html)** • **[💬 Canal WhatsApp](https://whatsapp.com/channel/0029VbCGaZxGpLHLcSBIdi2Q)**
 
 </div>
 
@@ -27,6 +28,7 @@ Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arqui
 3. Pasarela de pagos integrada para **Muni Dinero (`555439904`)** y despacho directo a **WhatsApp Concierge (`+240 555 633 687`)**.
 4. Sede física oficial en **Mongomo (Barrio Koete)** con geolocalización por satélite en Google Maps.
 5. Verificación oficial en **Google Search Console con 193 URLs indexadas en el Sitemap** y compatibilidad con motores de Inteligencia Artificial (ChatGPT, Gemini, Perplexity y Claude).
+6. **App Oficial Nativa para Android (.APK)** compilada y firmada digitalmente (`com.ebnasindy.luxury`), con descarga e instalación directa automática al escanear los códigos QR físicos de la boutique.
 
 ---
 
@@ -75,6 +77,16 @@ Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arqui
 * **Schema.org Graph:** Marcado enriquecido con `ClothingStore`, `Store`, `GeoCoordinates`, `PostalAddress` y `FAQPage`.
 * **Estándares GEO:** Archivos `llms.txt` y `llms-full.txt` estructurados para posicionar la boutique en ChatGPT, Google Gemini, Perplexity AI y Claude.
 
+### 7. App Oficial Nativa para Android (.APK) con Auto-Instalación por QR
+* **Paquete Oficial y Compilación:** `com.ebnasindy.luxury` (minSdk 24 - Android 7.0+, targetSdk 34 - Android 14) compilada con Android SDK Build-Tools 34.0.0 y firmada criptográficamente con algoritmo RSA 2048-bit (esquemas v2 y v3 oficiales de Google).
+* **Ultra-Ligera y de Rendimiento Instantáneo:** Con un tamaño optimizado de apenas **529 KB** (`529,261 bytes`), ahorra un 95% de espacio y batería respecto a aplicaciones convencionales.
+* **Auto-Detección y Descarga al Escanear QR:** Al escanear el código QR impreso en las bolsas zipper o tarjetas físicas desde la cámara o lector de cualquier teléfono Android, la plataforma detecta de forma inteligente el sistema operativo y lanza inmediatamente la descarga e instalación automática con guía visual paso a paso ([`descargar.html`](https://ebna-luxury.vercel.app/descargar.html)).
+* **Integración Nativa de Intents:** Intercepta y gestiona de forma nativa la apertura de WhatsApp Concierge (`+240 555 633 687`), discador telefónico (`tel:`), correo electrónico (`mailto:`) y Google Maps satelital sin salir de la experiencia de la tienda.
+* **Enlaces de Descarga Directa:**
+  * 🌐 Portal de Instalación Asistida: [ebna-luxury.vercel.app/descargar.html](https://ebna-luxury.vercel.app/descargar.html)
+  * 📦 Enlace Binario APK Directo: [ebna-luxury.vercel.app/ebna-sindy-luxury.apk](https://ebna-luxury.vercel.app/ebna-sindy-luxury.apk)
+
+
 ---
 
 ## 🖨️ Tarjetas Oficiales de Imprenta & Fidelidad VIP (`8.5 × 5.5 cm` a `600 DPI`)
@@ -100,14 +112,36 @@ La identidad de la boutique cuenta con su suite gráfica de imprenta en ultra-al
 
 ---
 
+## 🛍️ Packaging Imprimible Oficial (Bolsas Zipper de Ropa & Papelería Textil)
+
+El proyecto incluye la suite completa de embalaje de lujo para prendas de alta costura, calzado y cosmética:
+
+<div align="center">
+  <img src="docs/packaging/00_MOCKUP_FOTOGRAFICO_BOLSAS_SINDY_LUXURY.jpg" width="700" alt="Mockup Packaging Bolsas Zipper Sindy Luxury" />
+</div>
+
+### 1. Bolsas Zipper Herméticas de Ropa (2 Caras Imprimibles)
+* **Cara 1 (Frente de Gala):** Logotipo maestro Sindy Luxury, corona heráldica dorada, tipografía editorial y eslogan *"Elegancia Exclusiva & Moda de Gala"*.
+* **Cara 2 (Reverso Conectado):** Código QR oficial para auto-instalación de la App Android, canales de WhatsApp Concierge (`+240 555 633 687`), TikTok y cuadro internacional de conservación textil (lavado fino, plancha tibia, no usar lejía).
+* **Formatos de Fabricación:** Clichés vectoriales en SVG y PNG para serigrafía en blanco puro, rosa oro y negro mate (`docs/packaging/`).
+
+### 2. Papelería de Despacho & Cuidados de Prenda
+* **Plancha A4 de Pegatinas Circulares (50 mm):** Hoja troquelada de 12 sellos adhesivos para el precinto de bolsas y paquetes ([`docs/packaging/04_PLANCHA_PEGATINAS_REDONDAS_5CM_A4.pdf`](docs/packaging/04_PLANCHA_PEGATINAS_REDONDAS_5CM_A4.pdf)).
+* **Tarjeta de Agradecimiento & Cuidados (10 × 15 cm):** Tarjetón de lujo con recomendaciones de lavado y garantía de satisfacción ([`docs/packaging/05_TARJETA_AGRADECIMIENTO_Y_CUIDADOS_PRENDA_10x15cm.pdf`](docs/packaging/05_TARJETA_AGRADECIMIENTO_Y_CUIDADOS_PRENDA_10x15cm.pdf)).
+* **PDFs Unificados de Producción:** Archivos listos para imprenta generados en alta resolución (`IMPRIMIBLE_BOLSA_2_CARAS.pdf` e `IMPRIMIBLE_TARJETA_2_CARAS.pdf`).
+
+---
+
 ## 🛠️ Stack Tecnológico
 
 | Capa | Tecnología | Función en la Plataforma |
 | :--- | :--- | :--- |
 | **Frontend** | React 19 + TypeScript 5 | Arquitectura de componentes tipada, robusta y reactiva. |
 | **Bundler & Build** | Vite 8 + Rolldown | Empaquetado modular hiper-rápido con división modular vendor. |
+| **Android Nativo** | Java 17 + Android SDK 34 | Compilador nativo (`aapt2`, `d8`, `apksigner`) para APK de 529 KB. |
 | **Database Cloud** | Turso Cloud LibSQL | Motor SQLite distribuido en la nube con micro-latencia. |
 | **Diseño & Estilos** | CSS Variables + Glassmorphism | Diseño editorial de lujo con modo Claro/Oscuro y blur vítreo. |
+| **Packaging & Vector**| SVG + PDF 600 DPI | Artes de serigrafía textil, troqueles y tarjetas a 600 DPI. |
 | **Iconografía** | Lucide React + Vector SVG | Glifos oficiales de TikTok, WhatsApp, MapPin y Mail. |
 | **Tickets Gráficos** | html2canvas | Conversión y descarga automática de comprobantes en PNG HD. |
 | **PWA Engine** | Workbox Service Worker | Caché progresiva, soporte offline e instalación universal. |
@@ -121,6 +155,14 @@ La identidad de la boutique cuenta con su suite gráfica de imprenta en ultra-al
 EBNA-LUXURY/
 ├── docs/                                 # Documentación técnica, legal, contratos e imprenta
 │   ├── DOSSIER_TECNICO_Y_CONTRATO_SINDY_LUXURY.md # Dossier técnico oficial y contrato comercial
+│   ├── packaging/                        # Suite de embalaje y bolsas zipper de ropa
+│   │   ├── 00_GUIA_FABRICACION_BOLSAS_ZIPPER_Y_PACKAGING.pdf # Manual de fabricación industrial
+│   │   ├── 00_MOCKUP_FOTOGRAFICO_BOLSAS_SINDY_LUXURY.jpg     # Mockup fotorrealista de exhibición
+│   │   ├── 01_ARTE_SERIGRAFIA_BOLSA_BLANCO_PURO_TRANSPARENTE.svg # Cliché vector blanco nieve
+│   │   ├── 02_ARTE_SERIGRAFIA_BOLSA_ROSA_ORO_TRANSPARENTE.svg    # Cliché vector rosa oro
+│   │   ├── 03_ARTE_SERIGRAFIA_BOLSA_NEGRO_MATE_TRANSPARENTE.svg  # Cliché vector negro mate
+│   │   ├── 04_PLANCHA_PEGATINAS_REDONDAS_5CM_A4.pdf              # Plancha A4 de 12 sellos 50mm
+│   │   └── 05_TARJETA_AGRADECIMIENTO_Y_CUIDADOS_PRENDA_10x15cm.pdf # Tarjeta de cuidados 10x15cm
 │   └── tarjetas/                         # Archivos maestros de imprenta a 600 DPI (8.5 × 5.5 cm)
 │       ├── 01_CARA_1_FRENTE_CLIENTAS_NUEVAS_BLANCO_ROSA_85x55mm.jpg
 │       ├── 02_CARA_2_REVERSO_CLIENTAS_NUEVAS_BLANCO_ROSA_85x55mm.jpg
@@ -129,7 +171,11 @@ EBNA-LUXURY/
 │       ├── 05_QR_ORIGINAL_APP_EBNA_SINDY_LUXURY.png
 │       └── ESPECIFICACIONES_IMPRENTA_Y_TARJETAS_SINDY_LUXURY.md
 ├── public/                               # Archivos estáticos servidos en la raíz del CDN
+│   ├── descargar.html                    # Asistente visual y de auto-descarga de la APK para Android
 │   ├── dossier-contrato.html             # Portal oficial imprimible con botón para exportar a PDF
+│   ├── downloads/                        # Espejo de descargas directas
+│   │   └── ebna-luxury.apk               # Espejo APK Android firmado (529 KB)
+│   ├── ebna-sindy-luxury.apk             # APK Oficial Android firmado (529 KB) para auto-instalación
 │   ├── googled6fb95f26de3d100.html       # Archivo oficial de verificación en Google Search Console
 │   ├── googlebabf16967b746d2a.html       # Archivo secundario de verificación Google
 │   ├── icons/                            # Logotipos oficiales (EBNA, AiDA, favicon, PWA icons)
