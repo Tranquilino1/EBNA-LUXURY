@@ -97,56 +97,114 @@
   background: linear-gradient(to left, var(--canvas-base), transparent);
 }
 
-.category-pill {
+/* ==========================================================================
+   SHEIN-Style Illustrated Circular Category Navigation Bar
+   ========================================================================== */
+.category-shein-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.category-shein-item:hover {
+  transform: translateY(-2px);
+}
+
+.category-shein-item:active {
+  transform: scale(0.95);
+}
+
+.category-shein-circle-wrap {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 238, 242, 0.9));
+  border: 1.5px solid var(--border-light);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 22px;
-  border-radius: 40px;
-  border: 1px solid var(--border-subtle);
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .category-shein-circle-wrap {
+  background: linear-gradient(145deg, rgba(35, 22, 30, 0.95), rgba(20, 12, 18, 0.98));
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+.category-shein-item.is-active .category-shein-circle-wrap {
+  background: linear-gradient(135deg, #D4AF37 0%, #D81B60 100%);
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(216, 27, 96, 0.55), 0 4px 14px rgba(0, 0, 0, 0.2);
+  transform: scale(1.08);
+}
+
+.category-shein-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  background: #f8f6f7;
+}
+
+[data-theme="dark"] .category-shein-img {
+  background: #140c12;
+}
+
+.category-shein-item:hover .category-shein-img {
+  transform: scale(1.06);
+}
+
+.category-shein-label {
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
   font-weight: 700;
-  font-size: 0.88rem;
-  letter-spacing: 0.03em;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   color: var(--text-primary);
-  background: var(--glass-primary);
-  backdrop-filter: var(--glass-filter);
-  -webkit-backdrop-filter: var(--glass-filter);
-  box-shadow: var(--shadow-sm);
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease, font-weight 0.2s ease;
+  max-width: 84px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.category-shein-item.is-active .category-shein-label {
+  color: var(--brand-accent);
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(216, 27, 96, 0.25);
 }
 
 @media (max-width: 640px) {
   .category-filter-container {
-    padding: 6px 12px !important;
-    gap: 8px !important;
+    gap: 12px !important;
+    padding: 6px 10px 10px !important;
   }
-  .category-nav-arrow {
-    display: none !important;
+  .category-shein-circle-wrap {
+    width: 60px !important;
+    height: 60px !important;
+    padding: 2.5px !important;
   }
-  .category-pill {
-    padding: 7px 14px !important;
-    font-size: 0.78rem !important;
-    gap: 5px !important;
+  .category-shein-label {
+    font-size: 0.68rem !important;
+    max-width: 72px !important;
   }
-}
-
-
-.category-pill.active {
-  background: var(--brand-gradient);
-  color: #FFFFFF;
-  border-color: transparent;
-  box-shadow: 0 8px 24px rgba(216, 27, 96, 0.35);
-  transform: translateY(-2px) translateZ(0);
-}
-
-.category-pill:not(.active):hover {
-  background: var(--canvas-surface);
-  color: var(--brand-accent);
-  border-color: var(--brand-accent);
-  transform: translateY(-2px) translateZ(0);
-  box-shadow: var(--shadow-md);
 }
 
 /* Luxury Crystalline Floating Product Card Frame */

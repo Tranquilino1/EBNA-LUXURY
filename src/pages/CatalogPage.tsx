@@ -4,7 +4,6 @@ import { useProducts } from '../hooks/useProducts';
 import { SearchBar } from '../components/ui/SearchBar';
 import { CategoryFilter } from '../components/catalog/CategoryFilter';
 import { ProductGrid } from '../components/catalog/ProductGrid';
-import { CatalogSortBar, type SortOptionType, type PriceRangeType } from '../components/catalog/CatalogSortBar';
 import { Loader } from '../components/ui/Loader';
 import type { FilterCategoryType } from '../types';
 import { getSortedByPopularity } from '../lib/popularityTracker';
@@ -16,9 +15,6 @@ import { getSavedZoneScroll } from '../components/ui/SmartInputCentering';
 interface CatalogZoneSnapshot {
   activeCategory: FilterCategoryType;
   searchQuery: string;
-  sortBy: SortOptionType;
-  priceRange: PriceRangeType;
-  onlyInStock: boolean;
   scrollY: number;
 }
 
@@ -51,9 +47,6 @@ export function CatalogPage() {
     savedInitial.activeCategory || 'TODOS'
   );
   const [searchQuery, setSearchQuery] = useState<string>(savedInitial.searchQuery || '');
-  const [sortBy, setSortByState] = useState<SortOptionType>(savedInitial.sortBy || 'popularity');
-  const [priceRange, setPriceRangeState] = useState<PriceRangeType>(savedInitial.priceRange || 'all');
-  const [onlyInStock, setOnlyInStockState] = useState<boolean>(savedInitial.onlyInStock || false);
   const [zoneHistory, setZoneHistory] = useState<CatalogZoneSnapshot[]>(() => loadSavedCatalogHistory());
 
   // Respond immediately when user clicks a collection from the mobile navigation drawer
@@ -108,14 +101,11 @@ export function CatalogPage() {
       const current: CatalogZoneSnapshot = {
         activeCategory,
         searchQuery,
-        sortBy,
-        priceRange,
-        onlyInStock,
         scrollY: window.scrollY,
       };
       sessionStorage.setItem(CATALOG_STATE_STORAGE_KEY, JSON.stringify(current));
     } catch {}
-  }, [activeCategory, searchQuery, sortBy, priceRange, onlyInStock]);
+  }, [activeCategory, searchQuery]);
 
   useEffect(() => {
     try {
@@ -142,37 +132,16 @@ export function CatalogPage() {
     const snap: CatalogZoneSnapshot = {
       activeCategory,
       searchQuery,
-      sortBy,
-      priceRange,
-      onlyInStock,
       scrollY: Math.round(window.scrollY),
     };
     setZoneHistory(prev => [...prev.slice(-11), snap]);
-  }, [activeCategory, searchQuery, sortBy, priceRange, onlyInStock]);
+  }, [activeCategory, searchQuery]);
 
   const setActiveCategory = useCallback((nextCat: FilterCategoryType) => {
     if (nextCat === activeCategory) return;
     pushCurrentSnapshotToHistory();
     setActiveCategoryState(nextCat);
   }, [activeCategory, pushCurrentSnapshotToHistory]);
-
-  const setSortBy = useCallback((nextSort: SortOptionType) => {
-    if (nextSort === sortBy) return;
-    pushCurrentSnapshotToHistory();
-    setSortByState(nextSort);
-  }, [sortBy, pushCurrentSnapshotToHistory]);
-
-  const setPriceRange = useCallback((nextRange: PriceRangeType) => {
-    if (nextRange === priceRange) return;
-    pushCurrentSnapshotToHistory();
-    setPriceRangeState(nextRange);
-  }, [priceRange, pushCurrentSnapshotToHistory]);
-
-  const setOnlyInStock = useCallback((nextStock: boolean) => {
-    if (nextStock === onlyInStock) return;
-    pushCurrentSnapshotToHistory();
-    setOnlyInStockState(nextStock);
-  }, [onlyInStock, pushCurrentSnapshotToHistory]);
 
   // Step back to the exact previous filter/category zone and exact scrollY
   const handleStepBackZone = useCallback(() => {
@@ -181,9 +150,6 @@ export function CatalogPage() {
       setZoneHistory(prev => prev.slice(0, -1));
       setActiveCategoryState(last.activeCategory);
       setSearchQuery(last.searchQuery);
-      setSortByState(last.sortBy);
-      setPriceRangeState(last.priceRange);
-      setOnlyInStockState(last.onlyInStock);
       window.setTimeout(() => {
         window.scrollTo({ top: last.scrollY, behavior: 'smooth' });
       }, 40);
@@ -214,56 +180,11 @@ export function CatalogPage() {
           return p.category === activeCategory;
         });
       }
-    }
-
-    // 3. Stock Filter
-    if (onlyInStock) {
-      list = list.filter(p => p.in_stock || p.inStock);
-    }
-
-    // 4. Price Range Filter
-    if (priceRange === 'under-25k') {
-      list = list.filter(p => (p.priceFCFA || p.price || 0) <= 25000);
-    } else if (priceRange === '25k-50k') {
-      list = list.filter(p => {
-        const pr = p.priceFCFA || p.price || 0;
-        return pr > 25000 && pr <= 50000;
-      });
-    } else if (priceRange === 'over-50k') {
-      list = list.filter(p => (p.priceFCFA || p.price || 0) > 50000);
-    }
-
-    // 5. Sorting
-    if (isSearchActive && sortBy === 'popularity') {
-      // Preserve search relevance order: items whose initials match query come first!
-    } else if (sortBy === 'popularity') {
       list = getSortedByPopularity(list);
-    } else if (sortBy === 'price-asc') {
-      list.sort((a, b) => (a.priceFCFA || a.price || 0) - (b.priceFCFA || b.price || 0));
-    } else if (sortBy === 'price-desc') {
-      list.sort((a, b) => (b.priceFCFA || b.price || 0) - (a.priceFCFA || a.price || 0));
-    } else if (sortBy === 'newest') {
-      list.sort((a, b) => {
-        const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
-        const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
-        return dateB - dateA;
-      });
-    } else if (sortBy === 'in-stock') {
-      list.sort((a, b) => {
-        const stockA = a.in_stock || a.inStock ? 1 : 0;
-        const stockB = b.in_stock || b.inStock ? 1 : 0;
-        return stockB - stockA;
-      });
     }
 
     return list;
-  }, [products, isSearchActive, searchQuery, activeCategory, onlyInStock, priceRange, sortBy]);
-
-  const handleResetFilters = () => {
-    setSortBy('popularity');
-    setPriceRange('all');
-    setOnlyInStock(false);
-  };
+  }, [products, isSearchActive, searchQuery, activeCategory]);
 
   return (
     <div className="catalog-page luxury-container" style={{ paddingBottom: '5rem' }}>
@@ -272,19 +193,13 @@ export function CatalogPage() {
         description="Explora nuestro catálogo completo de vestidos de gala, conjuntos de pasarela, calzado joya y alta cosmética botánica con entrega inmediata en FCFA en Guinea Ecuatorial."
       />
 
-      <header className="catalog-header compact-luxury-header" style={{ textAlign: 'center', marginBottom: '0.8rem', marginTop: '0.4rem' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 12px', borderRadius: '20px', background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.2)', color: 'var(--brand-accent)', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>
-          Colección Oficial EBNA
-        </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.6rem, 3.2vw, 2.5rem)', color: 'var(--text-primary)', marginBottom: '0.2rem', fontWeight: 900, letterSpacing: '-0.02em' }}>
-          Catálogo de Alta Costura
+      <header className="catalog-header compact-luxury-header" style={{ textAlign: 'center', marginBottom: '0.35rem', marginTop: '0.15rem' }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.35rem, 2.5vw, 1.9rem)', color: 'var(--text-primary)', margin: 0, fontWeight: 900, letterSpacing: '-0.02em' }}>
+          Catálogo Exclusivo
         </h1>
-        <p className="desktop-only" style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto', fontSize: '0.88rem', lineHeight: 1.4 }}>
-          Prendas exclusivas, conjuntos de gala, calzado joya y alta cosmética con entrega en Guinea Ecuatorial.
-        </p>
       </header>
 
-      <div className="catalog-controls" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', overflowAnchor: 'none' }}>
+      <div className="catalog-controls" style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '0.4rem', overflowAnchor: 'none' }}>
         {zoneHistory.length > 0 && (
           <div style={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '720px', width: '100%', margin: '0 auto' }}>
             <button
@@ -294,20 +209,20 @@ export function CatalogPage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '6px 14px',
+                padding: '5px 12px',
                 borderRadius: '999px',
                 background: 'rgba(216, 27, 96, 0.09)',
                 border: '1.5px solid rgba(216, 27, 96, 0.28)',
                 color: '#D81B60',
                 fontWeight: 700,
-                fontSize: '0.8rem',
+                fontSize: '0.78rem',
                 cursor: 'pointer',
                 boxShadow: '0 4px 12px rgba(216, 27, 96, 0.08)'
               }}
               title="Regresar exactamente al ajuste o categoría anterior y su posición en pantalla"
             >
-              <ArrowLeft size={15} />
-              <span>Volver a la zona anterior ({zoneHistory[zoneHistory.length - 1].activeCategory === 'TODOS' ? 'Todo el Catálogo' : zoneHistory[zoneHistory.length - 1].activeCategory.replace('_', ' ')})</span>
+              <ArrowLeft size={14} />
+              <span>Volver a ({zoneHistory[zoneHistory.length - 1].activeCategory === 'TODOS' ? 'Todo el Catálogo' : zoneHistory[zoneHistory.length - 1].activeCategory.replace('_', ' ')})</span>
             </button>
           </div>
         )}
@@ -315,7 +230,7 @@ export function CatalogPage() {
         <SearchBar 
           value={searchQuery} 
           onChange={setSearchQuery} 
-          placeholder="Buscar cualquier prenda, vestido, gala, color, calzado o cosmética..."
+          placeholder="Buscar vestido, calzado, bolso o cosmética..."
           products={products}
           showAutocompleteDropdown={false}
         />
@@ -330,17 +245,17 @@ export function CatalogPage() {
               background: 'linear-gradient(135deg, rgba(216, 27, 96, 0.09) 0%, rgba(24, 66, 102, 0.05) 100%)',
               border: '1.5px solid rgba(216, 27, 96, 0.28)',
               borderRadius: '14px',
-              padding: '6px 16px',
+              padding: '5px 14px',
               margin: '0 auto',
               width: '100%',
               maxWidth: '720px',
-              fontSize: '0.84rem',
+              fontSize: '0.82rem',
               color: '#1E293B',
               boxShadow: '0 4px 15px rgba(216, 27, 96, 0.06)'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Sparkles size={15} color="#D81B60" />
+              <Sparkles size={14} color="#D81B60" />
               <span>
                 Filtrando: <strong>{processedProducts.length}</strong> {processedProducts.length === 1 ? 'producto' : 'productos'} para <strong>"{searchQuery}"</strong>
               </span>
@@ -353,12 +268,12 @@ export function CatalogPage() {
                 border: 'none',
                 color: '#D81B60',
                 fontWeight: 800,
-                fontSize: '0.78rem',
+                fontSize: '0.76rem',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '4px',
-                padding: '3px 8px',
+                padding: '2px 8px',
                 borderRadius: '16px',
                 transition: 'all 0.2s ease'
               }}
@@ -370,19 +285,6 @@ export function CatalogPage() {
 
         <CategoryFilter activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
       </div>
-
-      {/* Luxury Catalog Sorting & Filtering Toolbar */}
-      <CatalogSortBar
-        totalCount={products.length}
-        filteredCount={processedProducts.length}
-        sortBy={sortBy}
-        onSortChange={setSortBy}
-        priceRange={priceRange}
-        onPriceRangeChange={setPriceRange}
-        onlyInStock={onlyInStock}
-        onOnlyInStockChange={setOnlyInStock}
-        onResetFilters={handleResetFilters}
-      />
 
       {/* Stable Min-Height Results Container so page never collapses or jumps while typing */}
       <div style={{ minHeight: '85vh', overflowAnchor: 'none' }}>

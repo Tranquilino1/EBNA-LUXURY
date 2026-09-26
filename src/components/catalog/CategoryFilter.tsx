@@ -1,16 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { 
-  Icon3DAll, 
-  Icon3DFashion, 
-  Icon3DKids, 
-  Icon3DMen,
-  Icon3DShoes, 
-  Icon3DBags, 
-  Icon3DPerfume, 
-  Icon3DFacial, 
-  Icon3DBody 
-} from '../ui/Category3DIcons';
 import type { FilterCategoryType } from '../../types';
 import './catalog.css';
 
@@ -18,6 +7,60 @@ interface CategoryFilterProps {
   activeCategory: FilterCategoryType;
   onCategoryChange: (category: FilterCategoryType) => void;
 }
+
+interface CategorySheinItem {
+  id: FilterCategoryType;
+  label: string;
+  image: string;
+}
+
+const CATEGORIES: CategorySheinItem[] = [
+  { 
+    id: 'TODOS', 
+    label: 'Todos', 
+    image: '/icons/icon-192x192.png'
+  },
+  { 
+    id: 'MODA_MUJER', 
+    label: 'Vestidos & Moda', 
+    image: '/products/sindy_luxury/conjunto_capa_rojo_carmesi.jpg'
+  },
+  { 
+    id: 'CALZADO', 
+    label: 'Calzado Joya', 
+    image: '/products/sindy_luxury/bailarinas_mary_jane_rosa.jpg'
+  },
+  { 
+    id: 'BOLSOS_ACCESORIOS', 
+    label: 'Bolsos & Lujo', 
+    image: '/products/sindy_luxury/bolso_clutch_matelasse.jpg'
+  },
+  { 
+    id: 'PERFUMERIA', 
+    label: 'Perfumería', 
+    image: '/products/cosmetics_baby/perfume_safir_mujer.jpg'
+  },
+  { 
+    id: 'COSMETICA_FACIAL', 
+    label: 'Cosmética', 
+    image: '/products/sindy_luxury/crema_terminator_eclaircissante.jpg'
+  },
+  { 
+    id: 'HIGIENE_CORPORAL', 
+    label: 'Jabones & Spa', 
+    image: '/products/sindy_luxury/jabon_curcuma_felicite.jpg'
+  },
+  { 
+    id: 'MODA_INFANTIL', 
+    label: 'Bebé & Niños', 
+    image: '/products/cosmetics_baby/chicco_crema_corporal.jpg'
+  },
+  { 
+    id: 'MODA_HOMBRE', 
+    label: 'Hombre', 
+    image: '/products/cosmetics_baby/perfume_sauvage_hombre.jpg'
+  }
+];
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, onCategoryChange }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,18 +70,6 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
   const [startX, setStartX] = useState(0);
   const [startScrollLeft, setStartScrollLeft] = useState(0);
   const [hasDragged, setHasDragged] = useState(false);
-
-  const categories: { id: FilterCategoryType; label: string; icon: React.ReactNode }[] = [
-    { id: 'TODOS', label: 'Todas las Categorías', icon: <Icon3DAll size={20} /> },
-    { id: 'MODA_MUJER', label: 'Moda Femenina & Vestidos', icon: <Icon3DFashion size={20} /> },
-    { id: 'MODA_INFANTIL', label: 'Moda Infantil & Bebés', icon: <Icon3DKids size={20} /> },
-    { id: 'MODA_HOMBRE', label: 'Moda Masculina', icon: <Icon3DMen size={20} /> },
-    { id: 'CALZADO', label: 'Calzado & Sneakers', icon: <Icon3DShoes size={20} /> },
-    { id: 'BOLSOS_ACCESORIOS', label: 'Bolsos & Accesorios', icon: <Icon3DBags size={20} /> },
-    { id: 'PERFUMERIA', label: 'Perfumería de Lujo', icon: <Icon3DPerfume size={20} /> },
-    { id: 'COSMETICA_FACIAL', label: 'Cosmética Facial', icon: <Icon3DFacial size={20} /> },
-    { id: 'HIGIENE_CORPORAL', label: 'Higiene Corporal & Jabones', icon: <Icon3DBody size={20} /> },
-  ];
 
   const updateScrollState = useCallback(() => {
     const el = containerRef.current;
@@ -55,7 +86,6 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
 
     const el = containerRef.current;
     if (el) {
-      // Convert vertical mouse wheel deltaY to horizontal scroll smoothly
       const handleWheel = (e: WheelEvent) => {
         if (el.scrollWidth > el.clientWidth) {
           if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
@@ -83,7 +113,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
     }
   };
 
-  // Mouse drag-to-scroll implementation
+  // Drag-to-scroll implementation
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
     setIsMouseDown(true);
@@ -110,13 +140,13 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
   };
 
   return (
-    <div className="category-filter-wrapper" role="region" aria-label="Filtro por Categorías">
+    <div className="category-filter-wrapper" role="region" aria-label="Filtro por Categorías SHEIN Style">
       {/* Left Navigation Scroll Button */}
       {canScrollLeft && (
         <button
           type="button"
           className="category-nav-arrow left"
-          onClick={() => handleScrollBy(-320)}
+          onClick={() => handleScrollBy(-280)}
           title="Ver categorías anteriores"
           aria-label="Ver categorías anteriores"
         >
@@ -137,21 +167,37 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            type="button"
-            className={`category-pill ${activeCategory === cat.id ? 'active' : 'glass-panel'}`}
-            onClick={() => {
-              if (!hasDragged) {
-                onCategoryChange(cat.id);
-              }
-            }}
-          >
-            {cat.icon}
-            <span>{cat.label}</span>
-          </button>
-        ))}
+        {CATEGORIES.map((cat) => {
+          const isActive = activeCategory === cat.id;
+
+          return (
+            <button
+              key={cat.id}
+              type="button"
+              className={`category-shein-item ${isActive ? 'is-active' : ''}`}
+              onClick={() => {
+                if (!hasDragged) {
+                  onCategoryChange(cat.id);
+                }
+              }}
+              title={`Filtrar por ${cat.label}`}
+              aria-pressed={isActive}
+            >
+              <div className="category-shein-circle-wrap">
+                <img 
+                  src={cat.image} 
+                  alt={cat.label} 
+                  className="category-shein-img"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = '/icons/icon-192x192.png';
+                  }}
+                />
+              </div>
+              <span className="category-shein-label">{cat.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Right Fade Mask Indicator */}
@@ -162,7 +208,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
         <button
           type="button"
           className="category-nav-arrow right"
-          onClick={() => handleScrollBy(320)}
+          onClick={() => handleScrollBy(280)}
           title="Ver más categorías"
           aria-label="Ver más categorías"
         >
