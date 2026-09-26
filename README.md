@@ -24,7 +24,7 @@
 Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arquitectura cloud distribuida, la plataforma combina:
 1. Un catálogo curado de **188 productos reales** sincronizados en la nube.
 2. Un motor generador de **Tickets Oficiales digitales en imagen PNG de alta resolución** con folio criptográfico único.
-3. Pasarela de pagos integrada para **Muni Dinero (`555439904`)** y despacho directo a **WhatsApp Concierge (`+240 222 633 687`)**.
+3. Pasarela de pagos integrada para **Muni Dinero (`555439904`)** y despacho directo a **WhatsApp Concierge (`+240 555 633 687`)**.
 4. Sede física oficial en **Mongomo (Barrio Koete)** con geolocalización por satélite en Google Maps.
 5. Verificación oficial en **Google Search Console con 193 URLs indexadas en el Sitemap** y compatibilidad con motores de Inteligencia Artificial (ChatGPT, Gemini, Perplexity y Claude).
 
@@ -39,7 +39,7 @@ Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arqui
 * **Centros de Distribución & Envíos:** Cobertura en Mongomo, Malabo (Isla de Bioko) y Bata (Región Continental).
 * **Correo Oficial de la Tienda:** `sindyluxury@gmail.com`.
 * **TikTok Oficial:** [@sindyluxury](https://www.tiktok.com/@sindyluxury).
-* **Teléfono Concierge WhatsApp:** `+240 222 633 687`.
+* **Teléfono Concierge WhatsApp:** `+240 555 633 687` / `+240 555 439 904`.
 * **Cuenta Oficial Muni Dinero:** `555439904` (+240 555 439 904).
 * **Moneda de Operación:** Francos CFA de África Central (FCFA / XAF).
 
@@ -70,10 +70,33 @@ Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arqui
 * Pre-calentamiento en GPU de 19 imágenes críticas para renderizado visual a **0.0 milisegundos**.
 
 ### 6. Posicionamiento Top-1 en Google y Motores de IA (AIO / GEO)
-* **Google Search Console:** Verificación oficial completada mediante token `googled6fb95f26de3d100` y archivo `googled6fb95f26de3d100.html`.
-* **Sitemap Dinámico:** **193 URLs registradas** en `https://ebna-luxury.vercel.app/sitemap.xml`.
+* **Google Search Console:** Propiedad 100% verificada e indexada por el Robot de Google para smartphones (*Mobile-First Indexing*).
+* **Sitemap Dinámico:** **193 URLs registradas** en `https://ebna-luxury.vercel.app/sitemap.xml` con rastreo continuo.
 * **Schema.org Graph:** Marcado enriquecido con `ClothingStore`, `Store`, `GeoCoordinates`, `PostalAddress` y `FAQPage`.
 * **Estándares GEO:** Archivos `llms.txt` y `llms-full.txt` estructurados para posicionar la boutique en ChatGPT, Google Gemini, Perplexity AI y Claude.
+
+---
+
+## 🖨️ Tarjetas Oficiales de Imprenta & Fidelidad VIP (`8.5 × 5.5 cm` a `600 DPI`)
+
+La identidad de la boutique cuenta con su suite gráfica de imprenta en ultra-alta definición (`600 DPI` reales — `2008 × 1299 px`) para tirada de **200 unidades** en cartulina estucada de 350g con acabado mate soft-touch y barniz selectivo brillante:
+
+### Modelo 1: Tarjeta de Presentación General (Clientas Nuevas)
+*Fondo blanco seda y rosa pastel, tipografías metálicas 3D y personaje animado de Sindy Luxury.*
+
+| Cara 1: Frente (Full Bleed) | Cara 2: Reverso (Mongomo + QR Oficial App) |
+| :---: | :---: |
+| <img src="docs/tarjetas/01_CARA_1_FRENTE_CLIENTAS_NUEVAS_BLANCO_ROSA_85x55mm.jpg" width="380" alt="Cara 1 Frente" /> | <img src="docs/tarjetas/02_CARA_2_REVERSO_CLIENTAS_NUEVAS_BLANCO_ROSA_85x55mm.jpg" width="380" alt="Cara 2 Reverso" /> |
+
+### Modelo 2: Tarjeta VIP de Fidelidad (Socias Fieles)
+*Fondo negro mate de ultra-lujo, corona rosa oro, beneficio del **5% de descuento** en compras y acceso QR al catálogo.*
+
+| Cara 3: Frente VIP (Socia Fiel) | Cara 4: Reverso VIP (5% Descuento + Mongomo) |
+| :---: | :---: |
+| <img src="docs/tarjetas/03_CARA_3_FRENTE_VIP_SOCIAS_NEGRO_ROSA_85x55mm.jpg" width="380" alt="Cara 3 Frente VIP" /> | <img src="docs/tarjetas/04_CARA_4_REVERSO_VIP_SOCIAS_5_PORCIENTO_NEGRO_ROSA_85x55mm.jpg" width="380" alt="Cara 4 Reverso VIP" /> |
+
+* 📐 **Especificaciones completas de imprenta:** [`docs/tarjetas/ESPECIFICACIONES_IMPRENTA_Y_TARJETAS_SINDY_LUXURY.md`](docs/tarjetas/ESPECIFICACIONES_IMPRENTA_Y_TARJETAS_SINDY_LUXURY.md).
+* 📱 **QR Oficial de la App:** Conduce directamente a [`https://ebna-luxury.vercel.app/`](https://ebna-luxury.vercel.app/) para compras inmediatas en FCFA por WhatsApp.
 
 ---
 
@@ -96,11 +119,19 @@ Diseñada bajo los más rigurosos estándares de rendimiento, ultra-lujo y arqui
 
 ```
 EBNA-LUXURY/
-├── docs/                                 # Documentación técnica, legal y contratos
-│   └── DOSSIER_TECNICO_Y_CONTRATO_SINDY_LUXURY.md # Dossier técnico oficial y contrato comercial
+├── docs/                                 # Documentación técnica, legal, contratos e imprenta
+│   ├── DOSSIER_TECNICO_Y_CONTRATO_SINDY_LUXURY.md # Dossier técnico oficial y contrato comercial
+│   └── tarjetas/                         # Archivos maestros de imprenta a 600 DPI (8.5 × 5.5 cm)
+│       ├── 01_CARA_1_FRENTE_CLIENTAS_NUEVAS_BLANCO_ROSA_85x55mm.jpg
+│       ├── 02_CARA_2_REVERSO_CLIENTAS_NUEVAS_BLANCO_ROSA_85x55mm.jpg
+│       ├── 03_CARA_3_FRENTE_VIP_SOCIAS_NEGRO_ROSA_85x55mm.jpg
+│       ├── 04_CARA_4_REVERSO_VIP_SOCIAS_5_PORCIENTO_NEGRO_ROSA_85x55mm.jpg
+│       ├── 05_QR_ORIGINAL_APP_EBNA_SINDY_LUXURY.png
+│       └── ESPECIFICACIONES_IMPRENTA_Y_TARJETAS_SINDY_LUXURY.md
 ├── public/                               # Archivos estáticos servidos en la raíz del CDN
 │   ├── dossier-contrato.html             # Portal oficial imprimible con botón para exportar a PDF
 │   ├── googled6fb95f26de3d100.html       # Archivo oficial de verificación en Google Search Console
+│   ├── googlebabf16967b746d2a.html       # Archivo secundario de verificación Google
 │   ├── icons/                            # Logotipos oficiales (EBNA, AiDA, favicon, PWA icons)
 │   ├── llms.txt                          # Directivas y conocimiento para ChatGPT, Gemini y Claude
 │   ├── llms-full.txt                     # Base de conocimiento extendida con catálogo en FCFA
