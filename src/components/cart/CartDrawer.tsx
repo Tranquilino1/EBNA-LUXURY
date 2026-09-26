@@ -227,7 +227,7 @@ export const CartDrawer: React.FC = () => {
                               title="Restar una unidad"
                               aria-label="Restar una unidad"
                             >
-                              <Minus size={13} strokeWidth={2.5} />
+                              <Minus size={15} strokeWidth={2.8} />
                             </button>
                             <span className="cart-stepper-value">{item.quantity}</span>
                             <button 
@@ -237,7 +237,7 @@ export const CartDrawer: React.FC = () => {
                               title="Añadir una unidad"
                               aria-label="Añadir una unidad"
                             >
-                              <Plus size={13} strokeWidth={2.5} />
+                              <Plus size={15} strokeWidth={2.8} />
                             </button>
                           </div>
 

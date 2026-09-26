@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { useProducts } from '../hooks/useProducts';
 import { SearchBar } from '../components/ui/SearchBar';
 import { CategoryFilter } from '../components/catalog/CategoryFilter';
@@ -43,6 +43,8 @@ function loadSavedCatalogHistory(): CatalogZoneSnapshot[] {
 
 export function CatalogPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlCat = searchParams.get('cat');
   const savedInitial = useMemo(() => loadSavedCatalogState(), []);
 
   const [activeCategory, setActiveCategoryState] = useState<FilterCategoryType>(
@@ -53,6 +55,32 @@ export function CatalogPage() {
   const [priceRange, setPriceRangeState] = useState<PriceRangeType>(savedInitial.priceRange || 'all');
   const [onlyInStock, setOnlyInStockState] = useState<boolean>(savedInitial.onlyInStock || false);
   const [zoneHistory, setZoneHistory] = useState<CatalogZoneSnapshot[]>(() => loadSavedCatalogHistory());
+
+  // Respond immediately when user clicks a collection from the mobile navigation drawer
+  useEffect(() => {
+    if (urlCat) {
+      let mappedCat: FilterCategoryType = 'TODOS';
+      if (urlCat === 'VESTIDOS_GALA' || urlCat === 'MODA_MUJER') {
+        mappedCat = 'MODA_MUJER';
+      } else if (urlCat === 'COSMETICA_FACIAL') {
+        mappedCat = 'COSMETICA_FACIAL';
+      } else if (urlCat === 'CALZADO') {
+        mappedCat = 'CALZADO';
+      } else if (urlCat === 'BOLSOS_ACCESORIOS') {
+        mappedCat = 'BOLSOS_ACCESORIOS';
+      } else if (urlCat === 'PERFUMERIA') {
+        mappedCat = 'PERFUMERIA';
+      } else if (urlCat === 'HIGIENE_CORPORAL') {
+        mappedCat = 'HIGIENE_CORPORAL';
+      } else if (urlCat === 'MODA_INFANTIL') {
+        mappedCat = 'MODA_INFANTIL';
+      } else if (urlCat === 'MODA_HOMBRE') {
+        mappedCat = 'MODA_HOMBRE';
+      }
+      setActiveCategoryState(mappedCat);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [urlCat]);
   
   // Universal data fetch: load all products once into memory for instant 0ms search
   const { products, loading, error } = useProducts();
@@ -227,19 +255,19 @@ export function CatalogPage() {
         description="Explora nuestro catálogo completo de vestidos de gala, conjuntos de pasarela, calzado joya y alta cosmética botánica con entrega inmediata en FCFA en Guinea Ecuatorial."
       />
 
-      <header className="catalog-header" style={{ textAlign: 'center', marginBottom: '2.5rem', marginTop: '1rem' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '4px 14px', borderRadius: '20px', background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.2)', color: 'var(--brand-accent)', fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.8rem' }}>
+      <header className="catalog-header compact-luxury-header" style={{ textAlign: 'center', marginBottom: '0.8rem', marginTop: '0.4rem' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 12px', borderRadius: '20px', background: 'rgba(216, 27, 96, 0.08)', border: '1px solid rgba(216, 27, 96, 0.2)', color: 'var(--brand-accent)', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>
           Colección Oficial EBNA
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', color: 'var(--text-primary)', marginBottom: '0.5rem', fontWeight: 900, letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.6rem, 3.2vw, 2.5rem)', color: 'var(--text-primary)', marginBottom: '0.2rem', fontWeight: 900, letterSpacing: '-0.02em' }}>
           Catálogo de Alta Costura
         </h1>
-        <p style={{ color: 'var(--text-secondary)', maxWidth: '640px', margin: '0 auto', fontSize: '1.05rem', lineHeight: 1.6 }}>
-          Prendas de gala exclusivas, conjuntos de pasarela, calzado joya y alta cosmética botánica con entrega directa en Guinea Ecuatorial.
+        <p className="desktop-only" style={{ color: 'var(--text-secondary)', maxWidth: '580px', margin: '0 auto', fontSize: '0.88rem', lineHeight: 1.4 }}>
+          Prendas exclusivas, conjuntos de gala, calzado joya y alta cosmética con entrega en Guinea Ecuatorial.
         </p>
       </header>
 
-      <div className="catalog-controls" style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginBottom: '1.2rem', overflowAnchor: 'none' }}>
+      <div className="catalog-controls" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '0.5rem', overflowAnchor: 'none' }}>
         {zoneHistory.length > 0 && (
           <div style={{ display: 'flex', justifyContent: 'flex-start', maxWidth: '720px', width: '100%', margin: '0 auto' }}>
             <button
@@ -249,13 +277,13 @@ export function CatalogPage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '7px 16px',
+                padding: '6px 14px',
                 borderRadius: '999px',
                 background: 'rgba(216, 27, 96, 0.09)',
                 border: '1.5px solid rgba(216, 27, 96, 0.28)',
                 color: '#D81B60',
                 fontWeight: 700,
-                fontSize: '0.84rem',
+                fontSize: '0.8rem',
                 cursor: 'pointer',
                 boxShadow: '0 4px 12px rgba(216, 27, 96, 0.08)'
               }}
@@ -275,43 +303,31 @@ export function CatalogPage() {
           showAutocompleteDropdown={false}
         />
         
-        {/* Fixed-Height Universal Search Live Status Bar (Zero Layout Shift when typing) */}
-        <div 
-          style={{
-            minHeight: '44px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            background: isSearchActive
-              ? 'linear-gradient(135deg, rgba(216, 27, 96, 0.09) 0%, rgba(24, 66, 102, 0.05) 100%)'
-              : 'rgba(216, 27, 96, 0.03)',
-            border: isSearchActive
-              ? '1.5px solid rgba(216, 27, 96, 0.28)'
-              : '1px dashed rgba(216, 27, 96, 0.16)',
-            borderRadius: '16px',
-            padding: '8px 18px',
-            margin: '0 auto',
-            width: '100%',
-            maxWidth: '720px',
-            fontSize: '0.86rem',
-            color: '#1E293B',
-            boxShadow: isSearchActive ? '0 4px 15px rgba(216, 27, 96, 0.06)' : 'none',
-            transition: 'background 0.2s ease, border-color 0.2s ease'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Sparkles size={16} color="#D81B60" />
-            {isSearchActive ? (
+        {/* Universal Search Live Status Bar - Only rendered when searching actively */}
+        {isSearchActive && (
+          <div 
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              background: 'linear-gradient(135deg, rgba(216, 27, 96, 0.09) 0%, rgba(24, 66, 102, 0.05) 100%)',
+              border: '1.5px solid rgba(216, 27, 96, 0.28)',
+              borderRadius: '14px',
+              padding: '6px 16px',
+              margin: '0 auto',
+              width: '100%',
+              maxWidth: '720px',
+              fontSize: '0.84rem',
+              color: '#1E293B',
+              boxShadow: '0 4px 15px rgba(216, 27, 96, 0.06)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Sparkles size={15} color="#D81B60" />
               <span>
-                Filtrando en tiempo real: <strong>{processedProducts.length}</strong> {processedProducts.length === 1 ? 'producto encontrado' : 'productos encontrados'} para <strong>"{searchQuery}"</strong>
+                Filtrando: <strong>{processedProducts.length}</strong> {processedProducts.length === 1 ? 'producto' : 'productos'} para <strong>"{searchQuery}"</strong>
               </span>
-            ) : (
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.83rem' }}>
-                Escribe arriba para filtrar al instante entre las <strong>{products.length}</strong> piezas del catálogo
-              </span>
-            )}
-          </div>
-          {isSearchActive && (
+            </div>
             <button
               type="button"
               onClick={() => setSearchQuery('')}
@@ -320,20 +336,20 @@ export function CatalogPage() {
                 border: 'none',
                 color: '#D81B60',
                 fontWeight: 800,
-                fontSize: '0.8rem',
+                fontSize: '0.78rem',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '4px',
-                padding: '4px 10px',
-                borderRadius: '20px',
+                padding: '3px 8px',
+                borderRadius: '16px',
                 transition: 'all 0.2s ease'
               }}
             >
-              <X size={13} /> Limpiar
+              <X size={12} /> Limpiar
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         <CategoryFilter activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
       </div>

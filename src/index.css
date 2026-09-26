@@ -351,6 +351,94 @@ p {
   border-radius: var(--radius-lg);
 }
 
+/* Universal Luxury Circular Close Button for all Panels, Drawers and Modals */
+.luxury-close-circle-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--canvas-surface, #FFFFFF);
+  border: 1.5px solid var(--border-subtle, rgba(216, 27, 96, 0.2));
+  color: var(--text-primary, #120D10);
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.luxury-close-circle-btn:hover {
+  background: var(--brand-accent, #D81B60);
+  border-color: var(--brand-accent, #D81B60);
+  color: #FFFFFF !important;
+  transform: rotate(90deg) scale(1.08);
+  box-shadow: 0 4px 14px rgba(216, 27, 96, 0.4);
+}
+
+.luxury-close-circle-btn:active {
+  transform: rotate(90deg) scale(0.92);
+}
+
+[data-theme="dark"] .luxury-close-circle-btn {
+  background: rgba(35, 18, 28, 0.95);
+  border-color: rgba(216, 27, 96, 0.4);
+  color: #F8FAFC;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .luxury-close-circle-btn:hover {
+  background: var(--brand-accent, #D81B60);
+  border-color: #FF3B7B;
+  color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   STRICT MODAL BACKGROUND ISOLATION & SCROLL CHOKE (iOS & Android Native Grade)
+   ========================================================================== */
+html.ebna-modal-locked,
+body.ebna-modal-locked {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+/* Dimmed backdrop elements prevent background touch-through */
+.cart-drawer-overlay,
+.mobile-drawer-backdrop,
+.global-search-backdrop,
+.modal-backdrop,
+.qr-modal-backdrop,
+.ticket-processing-modal-backdrop {
+  overscroll-behavior: contain !important;
+  touch-action: none !important;
+}
+
+/* Modals & panels allow smooth internal scrolling only */
+.cart-drawer-panel,
+.mobile-drawer-panel,
+.global-search-card,
+.modal-container,
+.qr-modal-container {
+  touch-action: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+.cart-drawer-body,
+.mobile-drawer-body,
+.global-search-results,
+.modal-body {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
+}
+
+
+
 /* Wave Header — Organic Curved Top */
 .wave-header {
   background: linear-gradient(135deg, #D81B60, #C2185B);

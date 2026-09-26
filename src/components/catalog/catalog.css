@@ -4,7 +4,7 @@
 .category-filter-wrapper {
   position: relative;
   width: 100%;
-  margin-bottom: 28px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
@@ -381,14 +381,14 @@
    LUXURY CATALOG SORT & FILTER TOOLBAR
    ========================================================= */
 .catalog-sort-bar-wrapper {
-  margin: 18px 0 28px 0;
-  padding: 18px 22px;
-  border-radius: 20px;
+  margin: 8px 0 16px 0;
+  padding: 10px 18px;
+  border-radius: 18px;
   background: var(--canvas-surface);
   backdrop-filter: var(--glass-filter);
   -webkit-backdrop-filter: var(--glass-filter);
   border: 1px solid var(--border-subtle);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
 }
 
 .sort-bar-header {
@@ -983,18 +983,75 @@
   transform: scale(0.95);
 }
 
-/* En teléfonos y pantallas angostas: Ocultamos el botón redundante 'Ver' (tocar la tarjeta completa ya abre el detalle) y dejamos 2 botones perfectamente espaciados sin recorte de texto */
+/* En teléfonos y pantallas angostas: Formato simétrico y limpio en 2 columnas sin solapamiento */
 @media (max-width: 640px) {
+  .product-card {
+    border-radius: 16px !important;
+  }
+  
+  .product-image-container {
+    aspect-ratio: 1 / 1 !important;
+    padding: 8px !important;
+    max-height: 200px !important;
+  }
+
+  .product-info {
+    padding: 10px 10px 12px 10px !important;
+  }
+
+  .product-brand-tag {
+    font-size: 0.65rem !important;
+    margin-bottom: 1px !important;
+  }
+
+  .product-name {
+    font-size: 0.86rem !important;
+    line-height: 1.25 !important;
+    height: 2.5em !important;
+    margin-bottom: 3px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  /* Ocultamos snippet de descripción en cuadrícula de 2 columnas móvil para evitar tarjetas kilométricas y solapamientos */
+  .product-description-snippet {
+    display: none !important;
+  }
+
+  .product-price-row {
+    margin-top: 4px !important;
+    margin-bottom: 8px !important;
+    padding-top: 6px !important;
+    align-items: center !important;
+  }
+
+  .product-price-label {
+    display: none !important; /* Ahorra espacio horizontal vital en 2 columnas */
+  }
+
+  .product-price-value {
+    font-size: 0.98rem !important;
+    font-weight: 800 !important;
+  }
+
   .product-actions-trio {
     grid-template-columns: 1fr 1fr !important;
-    gap: 8px !important;
+    gap: 6px !important;
+    margin-top: 4px !important;
   }
+
   .btn-card-ver {
     display: none !important;
   }
+
   .btn-card-action {
-    padding: 8px 8px !important;
-    font-size: 0.82rem !important;
+    min-height: 34px !important;
+    padding: 6px 4px !important;
+    font-size: 0.74rem !important;
+    gap: 4px !important;
+    border-radius: 16px !important;
   }
 }
 

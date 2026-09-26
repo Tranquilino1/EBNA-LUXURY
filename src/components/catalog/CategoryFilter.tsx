@@ -1,8 +1,16 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
-  Sparkles, Footprints, ShoppingBag, Flame, Sparkle, Heart, 
-  Droplets, User, Baby, ChevronLeft, ChevronRight 
-} from 'lucide-react';
+  Icon3DAll, 
+  Icon3DFashion, 
+  Icon3DKids, 
+  Icon3DMen,
+  Icon3DShoes, 
+  Icon3DBags, 
+  Icon3DPerfume, 
+  Icon3DFacial, 
+  Icon3DBody 
+} from '../ui/Category3DIcons';
 import type { FilterCategoryType } from '../../types';
 import './catalog.css';
 
@@ -21,15 +29,15 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, 
   const [hasDragged, setHasDragged] = useState(false);
 
   const categories: { id: FilterCategoryType; label: string; icon: React.ReactNode }[] = [
-    { id: 'TODOS', label: 'Todas las Categorías', icon: <Sparkles size={18} /> },
-    { id: 'MODA_MUJER', label: 'Moda Femenina & Vestidos', icon: <Heart size={18} /> },
-    { id: 'MODA_INFANTIL', label: 'Moda Infantil & Bebés', icon: <Baby size={18} /> },
-    { id: 'MODA_HOMBRE', label: 'Moda Masculina', icon: <User size={18} /> },
-    { id: 'CALZADO', label: 'Calzado & Sneakers', icon: <Footprints size={18} /> },
-    { id: 'BOLSOS_ACCESORIOS', label: 'Bolsos & Accesorios', icon: <ShoppingBag size={18} /> },
-    { id: 'PERFUMERIA', label: 'Perfumería de Lujo', icon: <Flame size={18} /> },
-    { id: 'COSMETICA_FACIAL', label: 'Cosmética Facial', icon: <Sparkle size={18} /> },
-    { id: 'HIGIENE_CORPORAL', label: 'Higiene Corporal & Jabones', icon: <Droplets size={18} /> },
+    { id: 'TODOS', label: 'Todas las Categorías', icon: <Icon3DAll size={20} /> },
+    { id: 'MODA_MUJER', label: 'Moda Femenina & Vestidos', icon: <Icon3DFashion size={20} /> },
+    { id: 'MODA_INFANTIL', label: 'Moda Infantil & Bebés', icon: <Icon3DKids size={20} /> },
+    { id: 'MODA_HOMBRE', label: 'Moda Masculina', icon: <Icon3DMen size={20} /> },
+    { id: 'CALZADO', label: 'Calzado & Sneakers', icon: <Icon3DShoes size={20} /> },
+    { id: 'BOLSOS_ACCESORIOS', label: 'Bolsos & Accesorios', icon: <Icon3DBags size={20} /> },
+    { id: 'PERFUMERIA', label: 'Perfumería de Lujo', icon: <Icon3DPerfume size={20} /> },
+    { id: 'COSMETICA_FACIAL', label: 'Cosmética Facial', icon: <Icon3DFacial size={20} /> },
+    { id: 'HIGIENE_CORPORAL', label: 'Higiene Corporal & Jabones', icon: <Icon3DBody size={20} /> },
   ];
 
   const updateScrollState = useCallback(() => {

@@ -17,9 +17,79 @@ import { useCustomization } from '../../contexts/CustomizationContext';
 import { InteractiveSantaHat } from '../effects/InteractiveSantaHat';
 import { isStandaloneApp } from '../../lib/deviceDetection';
 import { useModalLock } from '../../hooks/useModalLock';
+import { 
+  Icon3DFashion, 
+  Icon3DFacial, 
+  Icon3DShoes, 
+  Icon3DBags, 
+  Icon3DPerfume, 
+  Icon3DBody, 
+  Icon3DKids,
+  Icon3DMen
+} from '../ui/Category3DIcons';
 import './layout.css';
 
+const EXCLUSIVE_COLLECTIONS = [
+  {
+    id: 'MODA_MUJER',
+    title: 'Vestidos de Gala',
+    subtitle: 'Alta Costura & Noche',
+    tag: 'Haute Couture',
+    Icon: Icon3DFashion,
+  },
+  {
+    id: 'COSMETICA_FACIAL',
+    title: 'Cosmética Facial',
+    subtitle: 'Glow & Skincare Coreano',
+    tag: 'K-Beauty',
+    Icon: Icon3DFacial,
+  },
+  {
+    id: 'CALZADO',
+    title: 'Calzado & Tacones',
+    subtitle: 'Stilettos & Fiesta',
+    tag: 'Edición Joya',
+    Icon: Icon3DShoes,
+  },
+  {
+    id: 'BOLSOS_ACCESORIOS',
+    title: 'Bolsos & Carteras',
+    subtitle: 'Cuero Genuino & Chic',
+    tag: 'Lujo Atemporal',
+    Icon: Icon3DBags,
+  },
+  {
+    id: 'PERFUMERIA',
+    title: 'Perfumería de Lujo',
+    subtitle: 'Fragancias & Esencias',
+    tag: 'Esencias Árabes',
+    Icon: Icon3DPerfume,
+  },
+  {
+    id: 'HIGIENE_CORPORAL',
+    title: 'Higiene Corporal',
+    subtitle: 'Jabones & Spa Botánico',
+    tag: 'Piel de Seda',
+    Icon: Icon3DBody,
+  },
+  {
+    id: 'MODA_INFANTIL',
+    title: 'Línea Infantil Real',
+    subtitle: 'Princesas & Niños',
+    tag: 'Colección Junior',
+    Icon: Icon3DKids,
+  },
+  {
+    id: 'MODA_HOMBRE',
+    title: 'Moda Masculina',
+    subtitle: 'Trajes & Blazers de Gala',
+    tag: 'Gentleman Line',
+    Icon: Icon3DMen,
+  },
+];
+
 export const Navbar: React.FC = () => {
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -396,58 +466,44 @@ export const Navbar: React.FC = () => {
                 </Link>
               </div>
 
-              {/* Group 2: Quick Categories */}
-              <div className="mobile-drawer-group">
-                <div className="mobile-group-title">Colecciones Exclusivas</div>
+              {/* Group 2: Quick Categories (Scrollable Luxury Plates) */}
+              <div className="mobile-drawer-group mobile-collections-group">
+                <div className="mobile-group-header-row">
+                  <div className="mobile-group-title">Colecciones Exclusivas</div>
+                  <span className="mobile-group-badge">8 Líneas • Desliza ➔</span>
+                </div>
                 
-                <button 
-                  type="button"
-                  className="mobile-drawer-item"
-                  onClick={() => handleCategoryNav('VESTIDOS_GALA')}
-                >
-                  <div className="mobile-item-left">
-                    <span className="category-bullet">👗</span>
-                    <span>Vestidos de Gala</span>
-                  </div>
-                  <ChevronRight size={16} className="mobile-item-chevron" />
-                </button>
-
-                <button 
-                  type="button"
-                  className="mobile-drawer-item"
-                  onClick={() => handleCategoryNav('COSMETICA_FACIAL')}
-                >
-                  <div className="mobile-item-left">
-                    <span className="category-bullet">✨</span>
-                    <span>Cosmética Facial Coreana</span>
-                  </div>
-                  <ChevronRight size={16} className="mobile-item-chevron" />
-                </button>
-
-                <button 
-                  type="button"
-                  className="mobile-drawer-item"
-                  onClick={() => handleCategoryNav('CALZADO')}
-                >
-                  <div className="mobile-item-left">
-                    <span className="category-bullet">👠</span>
-                    <span>Calzado & Tacones de Fiesta</span>
-                  </div>
-                  <ChevronRight size={16} className="mobile-item-chevron" />
-                </button>
-
-                <button 
-                  type="button"
-                  className="mobile-drawer-item"
-                  onClick={() => handleCategoryNav('BOLSOS_ACCESORIOS')}
-                >
-                  <div className="mobile-item-left">
-                    <span className="category-bullet">👜</span>
-                    <span>Bolsos & Carteras de Lujo</span>
-                  </div>
-                  <ChevronRight size={16} className="mobile-item-chevron" />
-                </button>
+                <div className="mobile-collections-rail">
+                  {EXCLUSIVE_COLLECTIONS.map((col) => {
+                    const IconComp = col.Icon;
+                    return (
+                      <button 
+                        key={col.id}
+                        type="button"
+                        className="mobile-collection-plate"
+                        onClick={() => handleCategoryNav(col.id)}
+                      >
+                        <div className="plate-top-row">
+                          <div className="plate-3d-icon-box">
+                            <IconComp size={28} />
+                          </div>
+                          <span className="plate-tag">{col.tag}</span>
+                        </div>
+                        <div className="plate-content">
+                          <span className="plate-title">{col.title}</span>
+                          <span className="plate-subtitle">{col.subtitle}</span>
+                        </div>
+                        <div className="plate-footer">
+                          <span className="plate-action-link">
+                            Explorar <ChevronRight size={13} />
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
+
 
               {/* Group 3: Preferences & Experience */}
               <div className="mobile-drawer-group">

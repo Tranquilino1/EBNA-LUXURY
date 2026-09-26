@@ -345,3 +345,49 @@ export const Icon3DKids: React.FC<Icon3DProps> = ({ size = 26, className = '' })
     </g>
   </svg>
 );
+
+/**
+ * 3D Luxury Gentleman Tuxedo / Blazer (Moda Masculina)
+ */
+export const Icon3DMen: React.FC<Icon3DProps> = ({ size = 26, className = '' }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 48 48" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={`icon-3d-luxury ${className}`}
+  >
+    <defs>
+      <linearGradient id="menSuit" x1="10" y1="8" x2="38" y2="44" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#312E81" />
+        <stop offset="0.4" stopColor="#1E1B4B" />
+        <stop offset="1" stopColor="#0F172A" />
+      </linearGradient>
+      <linearGradient id="menGoldTie" x1="18" y1="14" x2="30" y2="28" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#FDE68A" />
+        <stop offset="0.5" stopColor="#F59E0B" />
+        <stop offset="1" stopColor="#B45309" />
+      </linearGradient>
+      <filter id="menGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#312E81" floodOpacity="0.4" />
+      </filter>
+    </defs>
+    <g filter="url(#menGlow)">
+      {/* Suit Shoulders & Body */}
+      <path d="M8 14 L24 8 L40 14 L42 42 L6 42 Z" fill="url(#menSuit)" stroke="#4338CA" strokeWidth="0.8" />
+      {/* Crisp White Shirt Triangle */}
+      <polygon points="24,8 17,24 31,24" fill="#FFFFFF" />
+      {/* Left Lapel */}
+      <polygon points="12,12 24,32 17,32 8,14" fill="#1E1B4B" stroke="#6366F1" strokeWidth="0.8" />
+      {/* Right Lapel */}
+      <polygon points="36,12 24,32 31,32 40,14" fill="#1E1B4B" stroke="#6366F1" strokeWidth="0.8" />
+      {/* Gold Bowtie / Tie */}
+      <polygon points="20,16 28,16 26,26 24,28 22,26" fill="url(#menGoldTie)" stroke="#FEF3C7" strokeWidth="0.6" />
+      <circle cx="24" cy="16" r="2.2" fill="#FDE68A" stroke="#B45309" strokeWidth="0.6" />
+      {/* Gold Pocket Square Pin */}
+      <rect x="29" y="27" width="6" height="2" rx="1" fill="url(#menGoldTie)" />
+    </g>
+  </svg>
+);
+

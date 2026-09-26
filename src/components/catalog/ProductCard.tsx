@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 import { Flame, Pencil, Trash2, Eye, EyeOff, ShoppingCart, Check } from 'lucide-react';
 import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 import type { Product } from '../../types';
@@ -112,10 +112,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
   const originalPriceVal = product.originalPriceFCFA;
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Only prevent navigation if clicking on Admin controls or checkbox
+    // Only prevent navigation if clicking on Admin controls, checkbox or action buttons
+    const target = e.target as HTMLElement;
     if (
-      (e.target as HTMLElement).closest('.admin-checkbox-container') ||
-      (e.target as HTMLElement).closest('.admin-card-actions')
+      target.closest('.admin-checkbox-container') ||
+      target.closest('.admin-card-actions') ||
+      target.closest('.btn-card-action')
     ) {
       return;
     }
@@ -135,6 +137,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
     }
   };
 
+  const productUrl = `/producto/${product.slug || product.id}`;
+
   return (
     <div 
       className={`product-card ${isSelected ? 'is-admin-selected' : ''}`} 
@@ -149,7 +153,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
     >
       <div className="product-card-glow-border"></div>
 
-      <div className="product-image-container">
+      <Link 
+        to={productUrl}
+        className="product-image-container"
+        onClick={(e) => {
+          const target = e.target as HTMLElement;
+          if (
+            target.closest('.admin-checkbox-container') ||
+            target.closest('.admin-card-actions')
+          ) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+        aria-label={`Ver detalles de ${product.name}`}
+      >
         {!imageLoaded && <div className="product-image-skeleton shimmer"></div>}
         <img 
           ref={imgRef}
@@ -327,15 +345,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
         )}
 
         <div className="specular-sweep"></div>
-      </div>
+      </Link>
       
       <div className="product-info">
-        {product.brand && (
-          <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#D81B60', fontWeight: 700, marginBottom: '2px', display: 'block' }}>
-            {product.brand}
-          </span>
-        )}
-        <h3 className="product-name" title={product.name}>{product.name}</h3>
+        <Link 
+          to={productUrl}
+          className="product-title-link"
+          style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+          aria-label={`Ver detalles de ${product.name}`}
+        >
+          {product.brand && (
+            <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#D81B60', fontWeight: 700, marginBottom: '2px', display: 'block' }}>
+              {product.brand}
+            </span>
+          )}
+          <h3 className="product-name" title={product.name}>{product.name}</h3>
+        </Link>
         
         <p className="product-description-snippet">{product.description}</p>
         
